@@ -1,3 +1,4 @@
+import { cancelVisit } from '../features/requests/visits.js';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
@@ -23,6 +24,10 @@ function withDemoMatches(saved) {
   return [...saved, ...demoMatches.filter(demo => !saved.some(match => match.eventId === demo.eventId && match.resident_id === demo.resident_id))];
 }
 
+function validVisitSlots(saved) {
+  return Array.isArray(saved) && saved.every(slot => slot.id && typeof slot.guide === 'string' && slot.date && slot.start && slot.end && sites.some(site => site.id === slot.site)) ? saved : [];
+}
+
 // Saves only what changed since the last load or save, so reloading never writes back.
 function useSync(key, value, ready, synced, onError) {
   useEffect(() => {
@@ -38,18 +43,31 @@ function useSync(key, value, ready, synced, onError) {
 export function StoreProvider({ children }) {
   const [events, setEvents] = useState(initialEvents);
   const [matches, setMatches] = useState(demoMatches);
-  const [siteId, setSiteId] = useState(sites.find(site => site.real)?.id ?? sites[0].id);
+  const [visitSlots, saveVisitSlots] = useState([]);
+  const [siteId, setSiteId] = useState(() => {
+    try {
+      const saved = localStorage.getItem('marthe-site-v1');
+      if (sites.some(site => site.id === saved)) return saved;
+    } catch { /* Use the main site when storage is unavailable. */ }
+    return sites.find(site => site.real)?.id ?? sites[0].id;
+  });
+  useEffect(() => {
+    try { localStorage.setItem('marthe-site-v1', siteId); }
+    catch { /* The site selection remains available for this session. */ }
+  }, [siteId]);
   const [status, setStatus] = useState('loading');
   const [storageError, setStorageError] = useState('');
   const [toast, setToast] = useState('');
   const synced = useRef({});
   useEffect(() => {
-    const load = () => Promise.all([fetchStored('events'), fetchStored('matches')]).then(([savedEvents, savedMatches]) => {
+    const load = () => Promise.all([fetchStored('events'), fetchStored('matches'), fetchStored('visitSlots')]).then(([savedEvents, savedMatches, savedVisitSlots]) => {
       const nextEvents = validEvents(savedEvents);
       const nextMatches = withDemoMatches(savedMatches);
+      const nextVisitSlots = validVisitSlots(savedVisitSlots);
       if (savedEvents) synced.current.events = JSON.stringify(nextEvents);
       if (savedMatches) synced.current.matches = JSON.stringify(nextMatches);
-      setEvents(nextEvents); setMatches(nextMatches); setStorageError(''); setStatus('ready');
+      if (savedVisitSlots) synced.current.visitSlots = JSON.stringify(nextVisitSlots);
+      setEvents(nextEvents); setMatches(nextMatches); saveVisitSlots(nextVisitSlots); setStorageError(''); setStatus('ready');
     }).catch(() => {
       setStorageError('Le serveur est injoignable : vos modifications ne seront pas enregistrées.');
       setStatus(current => current === 'loading' ? 'offline' : current);
@@ -62,8 +80,10 @@ export function StoreProvider({ children }) {
   const saveFailed = () => setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.');
   useSync('events', events, status === 'ready', synced, saveFailed);
   useSync('matches', matches, status === 'ready', synced, saveFailed);
+  useSync('visitSlots', visitSlots, status === 'ready', synced, saveFailed);
   useEffect(() => { if (toast) { const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); } }, [toast]);
   function saveEvent(event) {
+    if (event.status === 'cancelled') saveVisitSlots(current => current.reduce((slots, slot) => slot.booking?.eventId === event.id && !slot.outcome ? cancelVisit(slots, slot.id, 'Demande refusée ou annulée') : slots, current));
     setEvents(current => current.some(item => item.id === event.id) ? current.map(item => item.id === event.id ? event : item) : [...current, event]);
   }
   function replaceSuggestions(eventId, suggestions) {
@@ -87,7 +107,7 @@ export function StoreProvider({ children }) {
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
   if (status === 'loading') return null;
-  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
+  return <Store.Provider value={{ events, saveEvent, visitSlots, saveVisitSlots, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 
 export const useStore = () => useContext(Store);

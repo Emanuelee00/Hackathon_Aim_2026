@@ -1,3 +1,5 @@
+import QuotePanel from './QuotePanel.jsx';
+import VisitsPanel from './VisitsPanel.jsx';
 import AssociationsPanel from './AssociationsPanel.jsx';
 import QueuePanel from './QueuePanel.jsx';
 import SatisfactionPanel from '../../reports/components/SatisfactionPanel.jsx';
@@ -18,6 +20,8 @@ export default function EventDetails({ event, events, onSave, onEdit, onClose, n
     <section className="detail-copy"><h3>La demande</h3><p>{event.description || 'Aucune description renseignée.'}</p></section>
     {(requestQuestions[event.requestType] || []).map(([key, label]) => <section className="detail-copy" key={key}><h3>{label}</h3><p>{event[key] || 'À renseigner'}</p></section>)}
     {event.approval && <section className="detail-copy"><h3>Décision enregistrée · {event.approval.authority === 'committee' ? 'Comité de coordination' : 'Coordinatrice'}</h3><p>{event.approval.reviewer} · {event.approval.date}</p><p>{event.approval.note}</p></section>}
+    {event.requestType === 'rental' && <QuotePanel key={event.id} event={event} onSave={onSave} />}
+    <VisitsPanel key={`visits-${event.id}`} event={event} />
     {event.status === 'pending' && <RequestReview event={event} events={events} onSave={onSave} onClose={onClose} notify={notify} />}
     {queueStatuses.includes(event.status) && <QueuePanel event={event} onSave={onSave} />}
     <AssociationsPanel event={event} onSave={onSave} />

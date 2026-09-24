@@ -40,3 +40,10 @@
 .opportunity-box small { display: block; margin-bottom: 4px; font-size: 12px; font-weight: 700; letter-spacing: .1em; }
 .opportunity-box p { margin: 0; font-size: 14px; }
 
+
+/* Quotes and site visits */
+.request-module { display: grid; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.request-module summary { cursor: pointer; padding-block: 8px; font-weight: 600; }
+.visit-slots { display: grid; gap: 12px; padding: 0; list-style: none; }
+.visit-slots li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.visit-slots li > span { flex: 1 1 200px; }
