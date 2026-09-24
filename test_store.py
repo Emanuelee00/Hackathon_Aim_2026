@@ -14,6 +14,7 @@ from accounts.passwords import hash_password
 from accounts.routes import router as accounts_router
 from sharing import identity
 from sharing.forms import router as forms_router
+from sharing.qr import router as qr_router
 from sharing.routes import router
 
 WEB = Path(__file__).parent / "web" / "src"
@@ -80,7 +81,7 @@ def client_as(tmp_path, monkeypatch):
         )
         session.commit()
     app = FastAPI()
-    for included in (router, forms_router, accounts_router):
+    for included in (router, forms_router, qr_router, accounts_router):
         app.include_router(included)
 
     def sign_in(role):
@@ -238,6 +239,17 @@ def test_public_request_and_bilan_add_one_thing_each(client_as):
     bilan = {"rating": 5, "attendance": 12, "residents": "yes"}
     assert visitor.post("/api/feedback/yoga", json=bilan).status_code == 201
     assert visitor.post("/api/feedback/yoga", json=bilan).status_code == 409
+
+
+def test_only_the_team_makes_qr_codes(client_as):
+    link = "/api/qr.svg?text=https://bilan.chezmarthe.site/?event=yoga"
+    response = client_as("equipe").get(link)
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/svg+xml"
+    assert response.text.startswith("<?xml") and "<svg" in response.text
+    assert client_as(None).get(link).status_code == 401
+    assert client_as("partenaires").get(link).status_code == 403
+    assert client_as("equipe").get("/api/qr.svg?text=").status_code == 422
 
 
 def test_mirrors_match_the_frontend_data():

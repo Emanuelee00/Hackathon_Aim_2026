@@ -8,3 +8,4 @@
 .stars { display: flex; gap: 4px; }
 .stars button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 10px; color: #d7c1db; background: white; cursor: pointer; font-size: 24px; }
 .stars button.on { color: #c0972a; border-color: #e6cf7a; background: #fbf3cf; }
+.feedback-qr { display: block; width: 176px; height: 176px; border: 1px solid var(--line); border-radius: 10px; }

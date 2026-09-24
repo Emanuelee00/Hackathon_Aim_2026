@@ -8,7 +8,7 @@ export OPENAI_API OPENAI_MODEL
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel
+.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
 
 all: install
 	@set -eu; \
@@ -85,3 +85,7 @@ seed:
 
 tunnel:
 	cloudflared tunnel --config cloudflare/tunnel.yml run marthe
+
+# Come `tunnel`, ma lo rilancia da solo se si ferma o perde la connessione.
+tunnel-forever:
+	./cloudflare/tunnel-forever.sh

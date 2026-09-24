@@ -193,6 +193,12 @@ make demo                          # demo senza AI, visibile sulla rete locale
 make qr URL=https://tuo-link.app   # crea qr-demo.png
 ```
 
+`qr-bilan.png` porta a https://bilan.chezmarthe.site: da stampare e mostrare alla fine
+di ogni evento, l'organizzatore sceglie il proprio evento e lascia il bilan (nota,
+presenze, residenti, logistica), che finisce nelle Statistiche e nell'Impatto. Nella
+scheda di un evento l'équipe trova anche un QR con l'evento già scelto
+(`GET /api/qr.svg?text=…`, solo account équipe), scaricabile in SVG.
+
 ## Tunnel Cloudflare (chezmarthe.site)
 
 L'app gira sul portatile ed è pubblicata con un tunnel Cloudflare: il dominio e
@@ -210,7 +216,8 @@ cloudflared tunnel route dns marthe '*.chezmarthe.site'
 ```
 
 Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
-poi `make tunnel`. Il portatile deve restare acceso e sveglio.
+poi `make tunnel` (oppure `make tunnel-forever`, che lo rilancia da solo se si
+ferma o perde la connessione). Il portatile deve restare acceso e sveglio.
 
 ## Vercel (piano B se il tunnel non funziona)
 
