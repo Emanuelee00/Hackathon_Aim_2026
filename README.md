@@ -104,7 +104,8 @@ I testi sono stati abbozzati con `qwen2.5:3b` e poi corretti a mano.
 
 ```sh
 make demo                          # demo senza AI, visibile sulla rete locale
-make qr URL=https://tuo-link.app   # crea qr-demo.png
+make qr                            # QR verso questo computer (rete locale)
+make qr URL=https://tuo-link.app   # QR verso il link pubblico
 ```
 
 ## Vercel

@@ -38,10 +38,11 @@ dev:
 demo: build
 	MARTHE_DEMO=1 uv run uvicorn main:app --host 0.0.0.0 --port 8000
 
+# Without URL, points to this computer on the local network (see make demo).
+qr: URL ?= http://$(shell hostname -I | cut -d' ' -f1):8000
 qr:
-	@test -n "$(URL)" || { echo "Usage : make qr URL=https://..."; exit 1; }
 	uvx --from "qrcode[pil]" qr "$(URL)" > qr-demo.png
-	@echo "QR code créé : qr-demo.png"
+	@echo "QR code créé : qr-demo.png → $(URL)"
 
 front:
 	npm --prefix web run dev
