@@ -59,3 +59,11 @@
 .match-card footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
 .match-final { display: inline-flex; align-items: center; gap: 7px; color: #5f786a; font-size: 9px; font-weight: 700; }
 
+.matching-progress { display: grid; gap: 14px; margin-bottom: 12px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.matching-progress > div { display: flex; align-items: center; gap: 9px; color: #435c4f; }
+.matching-progress strong { font-size: 10px; }
+.matching-progress small { margin-left: auto; color: #8b9690; font-size: 8px; }
+.matching-progress > span { display: block; height: 6px; overflow: hidden; border-radius: 6px; background: #e7ead7; }
+.matching-progress > span > i { display: block; width: 95%; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #d79a7d, #679276); transform-origin: left; animation: matching-progress 9s cubic-bezier(.15, .7, .3, 1) forwards; }
+@keyframes matching-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .matching-progress > span > i { animation: none; } }

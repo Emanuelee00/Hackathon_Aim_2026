@@ -1,6 +1,7 @@
 import asyncio
 import json
 from io import BytesIO
+from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock
 
 import httpx
@@ -14,7 +15,7 @@ from employment.routes import employment_plan
 
 def context() -> EmploymentContext:
     return EmploymentContext(
-        resident_name="Fatou",
+        resident_name="Marie",
         objective="Commis de cuisine",
         acquired_skills=["Cuisine collective"],
     )
@@ -22,7 +23,7 @@ def context() -> EmploymentContext:
 
 def test_extracts_text_from_docx():
     document = Document()
-    document.add_paragraph("Fatou K. — Expérience en cuisine collective")
+    document.add_paragraph("Marie D. — Expérience en cuisine collective")
     document.add_paragraph("Préparation de repas et organisation d'équipe")
     output = BytesIO()
     document.save(output)
@@ -103,8 +104,44 @@ def test_employment_endpoint_accepts_a_real_docx(monkeypatch):
         employment_plan(
             cv=upload,
             objective="Commis de cuisine",
-            resident_name="Fatou",
+            resident_name="Marie",
             acquired_skills='["Cuisine collective"]',
         )
     )
     assert plan.source == "guided"
+
+
+def test_technical_cv_cooking_goal_does_not_invent_cooking_experience(monkeypatch):
+    client = MagicMock(side_effect=AssertionError("Model must not invent a match"))
+    monkeypatch.setattr("employment.planning.httpx.Client", client)
+    plan = generate_plan(
+        EmploymentContext(
+            resident_name="Alex", objective="Commis de cuisine", acquired_skills=[]
+        ),
+        "Développeur web. Python, React, SQL. Documentation et tests logiciels.",
+    )
+    assert plan.source == "guided"
+    assert "Python" in plan.summary
+    assert "ne prouvent ni expérience" in plan.summary
+    assert "reconversion" in plan.cv_suggestions[0]
+    assert "Découvrir le travail en cuisine" == plan.steps[1].title
+    client.assert_not_called()
+
+
+def test_mixed_cv_does_not_deny_existing_cooking_experience():
+    plan = generate_plan(
+        EmploymentContext(
+            resident_name="Alex", objective="Cuisinier", acquired_skills=[]
+        ),
+        "Développeur Python. Ancien commis de cuisine pendant deux ans.",
+    )
+    assert "Si vous avez aussi une expérience en cuisine" in plan.summary
+    assert "aucune expérience" not in plan.summary
+
+
+def test_demo_cv_files_are_readable():
+    for name in ("cv-marie-demo.docx", "cv-tech-demo.docx"):
+        file = Path(__file__).parent / "web" / "public" / "demo" / name
+        text = extract_cv_text(name, file.read_bytes())
+        assert "fictif" in text
+        assert len(text) > 100

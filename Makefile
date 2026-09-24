@@ -17,13 +17,15 @@ all: install
 		sleep 1; \
 	done; \
 	ollama pull qwen2.5:0.5b; \
+	ollama pull qwen2.5:3b; \
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
 ai:
 	ollama serve
 
 model-pull:
-	ollama pull qwen2.5:0.5b
+	ollama pull qwen2.5:0.5b; \
+	ollama pull qwen2.5:3b
 
 install:
 	uv sync --locked

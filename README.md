@@ -17,7 +17,7 @@ Per installare tutto e avviare Ollama e il sito con un solo comando:
 make
 ```
 
-Al primo avvio viene scaricato anche il modello (circa 398 MB). Per fermare
+Al primo avvio vengono scaricati anche i modelli (circa 2,3 GB in totale). Per fermare
 Ollama e il sito insieme usa Ctrl+C.
 
 Ollama usa la porta locale **11435** e salva il modello in `.ollama/models/`,
@@ -49,19 +49,22 @@ esplicitamente riconoscibile e da validare con l'accompagnatrice.
 
 ## Modello
 
-**Qwen2.5 0.5B**, tag Ollama `qwen2.5:0.5b`, quantizzato Q4_K_M: circa 398 MB
-di download. La memoria richiesta durante l'esecuzione è maggiore.
-È adatto a provare il flusso e richieste semplici; la qualità per i compiti
-dell'hackathon dovrà essere valutata prima di usarlo nella demo finale.
+**Qwen2.5 3B** (`qwen2.5:3b`, circa 1,9 GB) per chat e matching; il piano verso
+l'impiego usa ancora **Qwen2.5 0.5B** (`qwen2.5:0.5b`, circa 398 MB). Su GPU
+(RTX 4050 6 GB) il 3B gira interamente in memoria video.
 
-Ogni richiesta è indipendente: massimo 2000 caratteri in ingresso, contesto
-di 4096 token e massimo 256 token generati. Nessun costo o credito API;
-il calcolo viene eseguito sul computer.
+Il matching è ibrido:
 
-Verifica locale effettuata tramite `POST /api/chat`: risposta `4` alla domanda
-`2 + 2`, in circa 0,31 secondi a modello caricato. Il primo avvio ha richiesto
-circa 66 secondi. La prova di scrittura in italiano ha prodotto testo incoerente:
-questo modello serve per collaudare l'integrazione, non valida la qualità della demo.
+1. `ranking.py` sceglie in modo deterministico fino a 3 profili consenzienti i cui
+   obiettivi o competenze compaiono nel testo dell'evento (tutti, se nessuno è legato);
+2. il modello scrive soltanto motivazione, beneficio e punto da verificare;
+3. se il modello non risponde entro 9 secondi o produce dati non validi, ogni
+   profilo riceve una **suggestion guidée** esplicita, così la risposta arriva
+   sempre in meno di 10 secondi.
+
+All'avvio il backend precarica il modello (`keep_alive` illimitato), per evitare
+l'attesa del primo caricamento durante la demo. Misurato sui 6 eventi demo: da 2
+a 5,5 secondi a modello caricato; primo caricamento a freddo circa 38 secondi.
 
 Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 [API chat](https://docs.ollama.com/api/chat).
@@ -69,7 +72,8 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 ## Sviluppo
 
 - `main.py`: app FastAPI e stato del backend.
-- `ai.py`: chat e matching tramite Ollama locale.
+- `ai.py`: chat tramite Ollama locale e precaricamento del modello.
+- `matching.py` e `ranking.py`: matching ibrido con risposta sempre sotto i 10 secondi.
 - `employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `web/src/app/`: composizione dell’app e stato condiviso.
 - `web/src/features/`: funzionalità autonome, compresa la vista `resident`.
@@ -89,3 +93,17 @@ L'entrypoint FastAPI `main:app` rimane predisposto in `pyproject.toml`, ma
 Ollama sul tuo PC tramite `127.0.0.1`. Prima del deploy della demo AI servirà
 un endpoint remoto e la relativa configurazione del backend.
 Il modello scaricato non va incluso nel deploy. Nessun deploy remoto è stato eseguito.
+
+## Démonstration CV et reconversion
+
+La vue résidente de **Marie** contient une proposition, un parcours réalisé,
+un contact fictif, un plan exemple et un CV DOCX préchargé. Les décisions déjà
+sauvegardées restent prioritaires. Les CV fictifs sont téléchargeables dans le
+formulaire, et le bouton **Tester un CV tech → cuisine** prépare un second cas.
+
+Pour un CV contenant des termes techniques reconnus et un objectif cuisine,
+le backend fournit un **plan guidé sans génération IA**, avec les termes repérés,
+les acquis à vérifier et les étapes de reconversion. Cette règle ciblée ne
+constitue pas une évaluation générale de tous les métiers. Les autres cas
+utilisent le modèle local avec un plan guidé en cas d’échec.
+Les compétences du parcours fictif ne sont pas envoyées avec un CV personnel.

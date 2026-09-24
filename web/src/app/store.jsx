@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
+import { demoMatches } from '../features/resident/demo.js';
 
 const Store = createContext(null);
 const KEY = 'marthe-demo-v1';
@@ -17,9 +18,9 @@ function loadEvents() {
 function loadMatches() {
   try {
     const saved = JSON.parse(localStorage.getItem(MATCH_KEY));
-    if (Array.isArray(saved)) return saved;
+    if (Array.isArray(saved)) return [...saved, ...demoMatches.filter(demo => !saved.some(match => match.eventId === demo.eventId && match.resident_id === demo.resident_id))];
   } catch { /* Start without matching history when storage is unavailable. */ }
-  return [];
+  return demoMatches;
 }
 
 export function StoreProvider({ children }) {

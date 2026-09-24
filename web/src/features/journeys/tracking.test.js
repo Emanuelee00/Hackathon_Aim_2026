@@ -17,10 +17,10 @@ test('collects skills and contacts only from the resident’s accepted matches',
   const event = { id: 'cuisine', title: 'Les saveurs qui nous relient' };
   const eventById = { cuisine: event };
   const matches = [
-    { resident_id: 'fatou', eventId: 'cuisine', status: 'accepted', journey: { skills: 'Cuisine collective', contact: 'La Tablée Solidaire' } },
-    { resident_id: 'fatou', eventId: 'cuisine', status: 'proposed', journey: { skills: 'Ignoré', contact: 'Ignoré' } },
-    { resident_id: 'amina', eventId: 'cuisine', status: 'accepted', journey: { skills: 'Pas pour Fatou', contact: 'Pas pour Fatou' } },
+    { resident_id: 'marie', eventId: 'cuisine', status: 'accepted', journey: { skills: 'Cuisine collective', contact: 'La Tablée Solidaire' } },
+    { resident_id: 'marie', eventId: 'cuisine', status: 'proposed', journey: { skills: 'Ignoré', contact: 'Ignoré' } },
+    { resident_id: 'camille', eventId: 'cuisine', status: 'accepted', journey: { skills: 'Pas pour Marie', contact: 'Pas pour Marie' } },
   ];
-  assert.deepEqual(residentSkills(matches, eventById, 'fatou'), [{ skill: 'Cuisine collective', event }]);
-  assert.deepEqual(residentContacts(matches, eventById, 'fatou'), [{ contact: 'La Tablée Solidaire', event }]);
+  assert.deepEqual(residentSkills(matches, eventById, 'marie'), [{ skill: 'Cuisine collective', event }]);
+  assert.deepEqual(residentContacts(matches, eventById, 'marie'), [{ contact: 'La Tablée Solidaire', event }]);
 });

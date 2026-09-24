@@ -26,3 +26,51 @@
 .job-plan-steps p { margin: 3px 0; font-size: 9px; }
 .job-plan-steps small { color: #98705e; font-size: 8px; font-weight: 700; }
 .job-plan-result .plan-source { display: flex; align-items: center; gap: 7px; margin: 0; padding: 10px; border-radius: 8px; background: #e8ecd9; }
+
+/* Guided CV journey */
+.job-plan-intro { padding: 24px; border-radius: 14px; background: linear-gradient(135deg, #edf1df, #faf3e8); }
+.job-plan-symbol { display: inline-flex; padding: 10px; margin-bottom: 12px; border-radius: 12px; color: var(--green); background: white; }
+.job-plan-intro h3 { margin: 0 0 12px; color: var(--green); font-family: "Instrument Serif", serif; font-size: clamp(29px, 3vw, 38px); font-weight: 400; line-height: 1.12; }
+.job-plan-intro > p:last-child { margin: 0; color: #526359; font-size: 14px; line-height: 1.6; }
+.job-input-step h4 { display: flex; align-items: center; gap: 10px; margin: 8px 0 14px; font-size: 16px; }
+.job-input-step h4 > span { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; color: var(--green); background: #e8ecd9; font-size: 13px; }
+.cv-upload { position: relative; display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 25px 15px; border: 2px dashed #9eafa0; border-radius: 12px; color: var(--green); background: #f8faf5; text-align: center; cursor: pointer; }
+.cv-upload:hover, .cv-upload:focus-within { border-color: var(--green); background: #edf2e5; }
+.cv-upload:focus-within { outline: 3px solid #a8be92; outline-offset: 3px; }
+.cv-upload strong { max-width: 100%; overflow-wrap: anywhere; font-size: 16px; }
+.cv-upload span { font-size: 13px; }
+.cv-upload small { color: #607069; font-size: 12px; }
+.cv-upload input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.cv-upload.has-file { border-style: solid; background: #eef3e5; }
+.job-objective .field > span { font-size: 14px; }
+.job-objective .field input { min-height: 48px; font-size: 16px; }
+.job-example-label { display: block; margin: 12px 0 8px; color: #64736b; font-size: 12px; }
+.job-examples { display: flex; flex-wrap: wrap; gap: 7px; }
+.job-examples button { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid #cbd6c6; border-radius: 20px; color: var(--green); background: white; cursor: pointer; font: inherit; font-size: 12px; }
+.job-examples button:hover, .job-examples button[aria-pressed="true"] { background: #e8ecd9; border-color: var(--green); }
+.job-plan-form .job-plan-submit { min-height: 54px; margin-top: 7px; font-size: 16px; }
+.job-plan-form > .ai-caption { margin: 0; font-size: 12px; line-height: 1.6; }
+.job-plan-preview { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; padding: 17px 0 0; border-top: 1px solid var(--line); }
+.job-plan-preview span { display: flex; align-items: center; gap: 6px; color: #526359; font-size: 12px; }
+.job-plan-loading { display: flex; align-items: center; gap: 15px; padding: 22px; border-radius: 12px; color: var(--green); background: #eef3e5; }
+.job-plan-loading > svg { flex-shrink: 0; animation: plan-pulse 1.6s ease-in-out infinite; }
+.job-plan-loading strong { font-size: 15px; }
+.job-plan-loading p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; }
+.job-plan-result .job-result-hero { align-items: center; justify-content: flex-start; padding: 22px; border-radius: 12px; color: white; background: var(--green); }
+.job-result-hero > svg { flex-shrink: 0; }
+.job-result-hero .eyebrow { color: #d8e7bc; }
+.job-plan-result h3 { font-size: 30px; overflow-wrap: anywhere; }
+.job-plan-result h4 { font-size: 15px; }
+.job-plan-result > p, .job-plan-result li, .job-plan-steps p { font-size: 14px; line-height: 1.65; }
+.job-plan-steps small { margin-top: 8px; font-size: 12px; }
+.job-plan-steps li { padding: 16px; }
+.job-plan-analysis section { padding: 17px; }
+.job-plan-result .plan-source { align-items: flex-start; font-size: 12px; }
+.plan-source svg { flex-shrink: 0; margin-top: 2px; }
+@keyframes plan-pulse { 50% { opacity: .35; transform: scale(.9); } }
+@media (prefers-reduced-motion: reduce) { .job-plan-loading > svg { animation: none; } }
+@media (max-width: 620px) { .job-plan-form { padding: 16px; } .job-plan-intro { padding: 20px; } .resident-switch { flex-wrap: wrap; } }
+.cv-demo-tools { display: grid; gap: 10px; padding: 16px; border-radius: 12px; background: #f5f2e9; font-size: 13px; }
+.cv-demo-tools p { margin: 0; line-height: 1.5; }
+.cv-demo-tools a { color: var(--green); text-underline-offset: 3px; }
+.cv-demo-tools small { color: #64736b; line-height: 1.5; }

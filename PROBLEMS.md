@@ -4,7 +4,9 @@ Elenco basato su test reali (codice letto, endpoint chiamati dal vivo, UI naviga
 
 ---
 
-## 1. [CRITICO] Il modello AI produce output di bassa qualità o fallisce
+## 1. [RISOLTO] Il modello AI produce output di bassa qualità o fallisce
+
+> **Risolto il 2026-09-23:** passaggio a `qwen2.5:3b` su GPU, scelta dei profili deterministica (`ranking.py`), l'AI scrive solo le motivazioni, tetto di 9 secondi con suggerimento guidato di riserva e modello precaricato all'avvio. Misurato: da 2 a 5,5 s su tutti gli eventi demo, profili coerenti (Marie→cucina, Camille→imprenditoria, Sofia→foto). Barra di caricamento aggiunta nella UI.
 
 **Dove:** [ai.py](ai.py) — `MODEL = "qwen2.5:0.5b"` (494M parametri, il più piccolo della famiglia Qwen).
 
@@ -32,7 +34,9 @@ Elenco basato su test reali (codice letto, endpoint chiamati dal vivo, UI naviga
 
 ---
 
-## 3. [MEDIO] Nessuna gestione "elegante" del fallimento in demo
+## 3. [RISOLTO] Nessuna gestione "elegante" del fallimento in demo
+
+> **Risolto il 2026-09-23:** se il modello fallisce non compare più il riquadro rosso, ma una card etichettata "Suggestion guidée".
 
 **Dove:** [Opportunities.jsx](web/src/features/opportunities/Opportunities.jsx) — in caso di errore mostra un riquadro rosso generico "Le copilote n'a pas répondu".
 

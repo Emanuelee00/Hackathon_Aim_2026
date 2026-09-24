@@ -25,6 +25,7 @@ export default function ResidentSpace({ navigate }) {
     <div className="resident-switch"><span>Vous consultez l’espace de</span><select value={residentId} onChange={event => setResidentId(event.target.value)}>{consenting.map(item => <option value={item.id} key={item.id}>{item.first_name}</option>)}</select><button className="text-link" onClick={() => navigate('dashboard')}><Icon name="back" size={14} />Retour à l’espace coordination</button></div>
     <PageIntro eyebrow="ESPACE RÉSIDENTE · DÉMONSTRATION" title={`Bonjour, ${resident?.first_name || ''}`} description="Ce que Chez Marthe vous propose. À vous de choisir, sans obligation."><span className="ethical-ai"><Icon name="heart" size={16} />Vous décidez, sans pression</span></PageIntro>
 
+    {residentId === 'marie' && <p className="cv-demo-tools">Profil de démonstration prérempli : proposition, parcours, contact et CV fictifs. Descendez jusqu’à « Mon plan » pour essayer l’analyse.</p>}
     <section className="reports-section"><div className="section-heading"><div><span className="eyebrow">1 · PROPOSITIONS À EXAMINER</span><h2>On a pensé à vous</h2><p>La coordination vous propose une rencontre. Vous pouvez accepter ou décliner librement.</p></div></div>
       <div className="match-list">
         {proposed.map(match => <ProposalCard key={match.id} match={match} event={eventById[match.eventId]} onStatus={updateMatchStatus} />)}
@@ -41,7 +42,7 @@ export default function ResidentSpace({ navigate }) {
 
     <section className="reports-section"><div className="section-heading"><div><span className="eyebrow">3 · VERS L’EMPLOI</span><h2>Mon plan, mes atouts, mon réseau</h2><p>Ce qui peut vous aider concrètement à trouver un emploi.</p></div></div>
       <div className="job-plan-grid">
-        <JobPlanForm resident={resident} skills={skills} />
+        <JobPlanForm key={resident.id} resident={resident} skills={skills} />
         <div className="job-plan-side">
           <p className="small-label">MES COMPÉTENCES POUR MON CV</p>
           <CvSkillsPanel skills={skills} />

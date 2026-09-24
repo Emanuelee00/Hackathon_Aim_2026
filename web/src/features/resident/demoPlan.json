@@ -1,0 +1,36 @@
+{
+  "objective": "Commis de cuisine",
+  "demo": true,
+  "plan": {
+    "summary": "Un plan prudent vers « Commis de cuisine », construit à partir des éléments lisibles du CV et des expériences documentées chez Marthe.",
+    "strengths": [
+      "Accueil des participantes et organisation de la table"
+    ],
+    "gaps": [
+      "Ajouter des résultats concrets aux expériences",
+      "Vérifier avec une conseillère les prérequis des offres visées"
+    ],
+    "cv_suggestions": [
+      "Ajouter un titre clair : « Commis de cuisine »",
+      "Décrire chaque expérience avec une action, une compétence et un résultat"
+    ],
+    "steps": [
+      {
+        "title": "Clarifier le CV",
+        "action": "Adapter le titre et les expériences au métier visé.",
+        "timeframe": "Cette semaine"
+      },
+      {
+        "title": "Choisir trois offres",
+        "action": "Repérer les compétences demandées qui reviennent le plus souvent.",
+        "timeframe": "Sous 10 jours"
+      },
+      {
+        "title": "Préparer une candidature",
+        "action": "Faire relire le CV puis envoyer une candidature adaptée.",
+        "timeframe": "Sous 2 semaines"
+      }
+    ],
+    "source": "guided"
+  }
+}
