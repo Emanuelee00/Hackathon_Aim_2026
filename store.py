@@ -18,7 +18,7 @@ SQLITE_PATH = (
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"
 )
-Key = Literal["events", "matches", "partners", "visitSlots"]
+Key = Literal["events", "matches", "partners", "visitSlots", "laughs"]
 
 
 def execute(sql: str, params: tuple = ()) -> list[tuple]:

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { residentTraces, stageOf, volunteerTraces } from './traces.js';
+import { laughTrace, residentTraces, stageOf, volunteerTraces } from './traces.js';
 
 const past = { id: 'p', status: 'completed', date: '2026-09-20', start: '14:00', end: '17:00', space: 'atelier', participants: 20, volunteerNeeds: [{ id: 'a', role: 'Accueil', needed: 2 }], volunteers: [{ needId: 'a', name: 'Camille' }] };
 const future = { ...past, id: 'f', status: 'confirmed', date: '2026-10-03' };
@@ -21,4 +21,8 @@ test('resident traces come from lived activities only', () => {
   const journey = { participation: 'participated', skills: 'Accueil', contact: '', nextStep: 'training' };
   const matches = [{ resident_id: 'marie', eventId: 'p', status: 'accepted', journey }, { resident_id: 'marie', eventId: 'p', status: 'accepted', journey: { ...journey, participation: 'pending' } }, { resident_id: 'sofia', eventId: 'p', status: 'accepted', journey }];
   assert.deepEqual(residentTraces(matches, { p: past }, 'marie').map(item => [item.id, item.count]), [['moments', 1], ['skills', 1], ['steps', 1], ['faces', 20]]);
+});
+
+test('laughs are counted like any other trace', () => {
+  assert.deepEqual(laughTrace([{ id: 'a' }, { id: 'b' }, { id: 'c' }]), { id: 'laughs', count: 3, label: 'rires partagés', stage: 'Ça pousse', next: 5 });
 });

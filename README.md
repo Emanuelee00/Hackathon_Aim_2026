@@ -46,8 +46,8 @@ tiene solo le modifiche permesse al loro ruolo:
 
 | Spazio | Legge | Può modificare |
 | --- | --- | --- |
-| `residents` | eventi senza contatti né importi, le proprie proposte (non `suggested`/`dismissed`) | le proprie risposte |
-| `benevoles` | eventi senza contatti; gli altri bénévoles senza nome | le proprie iscrizioni, nei posti liberi |
+| `residents` | eventi senza contatti né importi, le proprie proposte (non `suggested`/`dismissed`), le proprie risate | le proprie risposte, le proprie risate (`laughs`) |
+| `benevoles` | eventi senza contatti; gli altri bénévoles senza nome; le proprie risate | le proprie iscrizioni, nei posti liberi; le proprie risate (`laughs`) |
 | `partenaires` | eventi senza contatti, la propria scheda associazione | nuove prenotazioni `pending` a proprio nome, la propria scheda |
 
 Le pagine pubbliche non leggono lo store: il modulo della pagina d'accoglienza usa

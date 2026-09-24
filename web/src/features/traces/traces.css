@@ -7,3 +7,5 @@
 .traces li strong { color: var(--green); font-family: var(--font-display); font-size: 30px; font-weight: 400; line-height: 1; text-align: center; }
 .traces li span { display: grid; font-size: 15px; }
 .traces li small { margin-top: 2px; color: var(--muted); font-size: 13px; }
+.traces-laugh { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.traces-laugh .text-link { font-size: 13px; }

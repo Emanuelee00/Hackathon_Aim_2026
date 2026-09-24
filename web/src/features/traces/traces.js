@@ -33,3 +33,5 @@ export function residentTraces(matches, eventById, residentId) {
     trace('faces', lived.reduce((sum, match) => sum + (eventById[match.eventId].participants || 0), 0), 'visage croisé', 'visages croisés'),
   ].filter(item => item.count > 0);
 }
+
+export const laughTrace = laughs => trace('laughs', laughs.length, 'rire partagé', 'rires partagés');

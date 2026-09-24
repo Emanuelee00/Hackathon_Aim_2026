@@ -10,6 +10,7 @@ from accounts.models import User
 from accounts.sessions import current_user
 
 from .events import merge_bookings, merge_signups, shared_view
+from .laughs import merge_laughs, own_laughs
 from .personal import (
     merge_partner,
     merge_resident_matches,
@@ -25,6 +26,8 @@ WRITERS = {
     ("events", "partenaires"): merge_bookings,
     ("matches", "residents"): merge_resident_matches,
     ("partners", "partenaires"): merge_partner,
+    ("laughs", "residents"): merge_laughs,
+    ("laughs", "benevoles"): merge_laughs,
 }
 
 
@@ -38,6 +41,8 @@ def view(key: str, value: list, user: User) -> list:
         return resident_matches(value, user)
     if key == "partners" and user.role == "partenaires":
         return own_partner(value, user)
+    if key == "laughs":
+        return own_laughs(value, user)
     return []
 
 

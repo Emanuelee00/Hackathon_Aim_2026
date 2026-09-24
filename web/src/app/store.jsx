@@ -45,6 +45,8 @@ export function StoreProvider({ children }) {
   const [matches, setMatches] = useState(demoMatches);
   const [partners, setPartners] = useState([]);
   const [visitSlots, saveVisitSlots] = useState([]);
+  // Each person's own laughs: the server only returns and keeps the signed-in account's.
+  const [laughs, setLaughs] = useState([]);
   const [siteId, setSiteId] = useState(() => {
     try {
       const saved = localStorage.getItem('marthe-site-v1');
@@ -61,7 +63,7 @@ export function StoreProvider({ children }) {
   const [toast, setToast] = useState('');
   const synced = useRef({});
   useEffect(() => {
-    const load = () => Promise.all([fetchStored('events'), fetchStored('matches'), fetchStored('partners'), fetchStored('visitSlots')]).then(([savedEvents, savedMatches, savedPartners, savedVisitSlots]) => {
+    const load = () => Promise.all([fetchStored('events'), fetchStored('matches'), fetchStored('partners'), fetchStored('visitSlots'), fetchStored('laughs')]).then(([savedEvents, savedMatches, savedPartners, savedVisitSlots, savedLaughs]) => {
       const nextEvents = validEvents(savedEvents);
       const nextMatches = withDemoMatches(savedMatches);
       const nextVisitSlots = validVisitSlots(savedVisitSlots);
@@ -69,7 +71,9 @@ export function StoreProvider({ children }) {
       if (savedMatches) synced.current.matches = JSON.stringify(nextMatches);
       if (savedPartners) synced.current.partners = JSON.stringify(savedPartners);
       if (savedVisitSlots) synced.current.visitSlots = JSON.stringify(nextVisitSlots);
+      if (savedLaughs) synced.current.laughs = JSON.stringify(savedLaughs);
       setPartners(savedPartners || []);
+      setLaughs(savedLaughs || []);
       setEvents(nextEvents); setMatches(nextMatches); saveVisitSlots(nextVisitSlots); setStorageError(''); setStatus('ready');
     }).catch(() => {
       setStorageError('Le serveur est injoignable : vos modifications ne seront pas enregistrées.');
@@ -85,6 +89,7 @@ export function StoreProvider({ children }) {
   useSync('matches', matches, status === 'ready', synced, saveFailed);
   useSync('partners', partners, status === 'ready', synced, saveFailed);
   useSync('visitSlots', visitSlots, status === 'ready', synced, saveFailed);
+  useSync('laughs', laughs, status === 'ready', synced, saveFailed);
   useEffect(() => { if (toast) { const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); } }, [toast]);
   function saveEvent(event) {
     if (event.status === 'cancelled') saveVisitSlots(current => current.reduce((slots, slot) => slot.booking?.eventId === event.id && !slot.outcome ? cancelVisit(slots, slot.id, 'Demande refusée ou annulée') : slots, current));
@@ -111,9 +116,11 @@ export function StoreProvider({ children }) {
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
   // Hosted associations: agenda sync and onboarding steps, one entry per association.
   const savePartner = partner => setPartners(current => [...current.filter(item => item.id !== partner.id), partner]);
+  const addLaugh = date => setLaughs(current => [...current, { id: crypto.randomUUID(), date }]);
+  const removeLastLaugh = () => setLaughs(current => current.slice(0, -1));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
   if (status === 'loading') return null;
-  return <Store.Provider value={{ events, saveEvent, partners, savePartner, visitSlots, saveVisitSlots, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
+  return <Store.Provider value={{ events, saveEvent, partners, savePartner, visitSlots, saveVisitSlots, matches, replaceSuggestions, laughs, addLaugh, removeLastLaugh, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 
 export const useStore = () => useContext(Store);

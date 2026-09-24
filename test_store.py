@@ -161,6 +161,24 @@ def test_resident_sees_and_answers_only_her_proposals(client_as):
     assert saved["yoga-camille"]["status"] == "proposed"
 
 
+def test_laughs_stay_with_the_person_who_shared_them(client_as):
+    store.save_document(
+        "laughs", [{"id": "old", "owner": "other", "date": "2026-09-01"}]
+    )
+    volunteer = client_as("benevoles")
+    forged = {"id": "l1", "owner": "other", "date": "2026-09-24"}
+    assert volunteer.put("/api/store/laughs", json=[forged]).status_code == 200
+    assert (
+        volunteer.put("/api/store/laughs", json=[forged, {"id": "x"}]).status_code
+        == 200
+    )
+    [mine] = volunteer.get("/api/store/laughs").json()["value"]
+    assert mine["id"] == "l1" and mine["owner"] != "other"
+    assert client_as("residents").get("/api/store/laughs").json() == {"value": []}
+    assert client_as("partenaires").put("/api/store/laughs", json=[]).status_code == 403
+    assert len(store.load_document("laughs")) == 2
+
+
 def test_association_adds_bookings_only_in_its_name(client_as):
     store.save_document("events", EVENTS)
     partner = client_as("partenaires")
