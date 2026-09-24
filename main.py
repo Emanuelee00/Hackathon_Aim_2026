@@ -3,6 +3,7 @@ from pathlib import Path
 from threading import Thread
 
 from fastapi import FastAPI
+from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from ai import router as ai_router
@@ -30,10 +31,30 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+class Frontend(StaticFiles):
+    """Never answers 304 for HTML pages.
+
+    On Vercel every deploy keeps the same file date, and index.html keeps its
+    size, so its ETag never changes: browsers would reuse an old page that
+    points to deleted bundles and show a blank screen.
+    """
+
+    def file_response(self, *args, **kwargs) -> Response:
+        response = super().file_response(*args, **kwargs)
+        if response.headers.get("content-type", "").startswith("text/html"):
+            response.headers["cache-control"] = "no-store"
+        return response
+
+    def is_not_modified(self, response_headers, request_headers) -> bool:
+        if response_headers.get("content-type", "").startswith("text/html"):
+            return False
+        return super().is_not_modified(response_headers, request_headers)
+
+
 # Use the same build directory locally and in the deployed Python bundle.
 app.mount(
     "/",
-    StaticFiles(
+    Frontend(
         directory=Path(__file__).parent / "web" / "dist", html=True, check_dir=False
     ),
     name="web",
