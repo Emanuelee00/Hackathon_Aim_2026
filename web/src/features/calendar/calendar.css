@@ -57,3 +57,4 @@ button.week-entry { cursor: pointer; }
 .calendar-legend i.week-mark.conflict { background: #d9534f; }
 .week-note { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 12px 20px; border-top: 1px solid var(--line); color: #6e5310; background: #faf4cd; font-size: 14px; }
 .week-note svg { flex-shrink: 0; margin-top: 3px; }
+.calendar-toolbar h2.week-title { text-transform: none; }

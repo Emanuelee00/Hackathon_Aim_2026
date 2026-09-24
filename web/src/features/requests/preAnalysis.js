@@ -10,7 +10,7 @@ function overlapping(event, events) {
 function fitCriterion(event) {
   if (event.requestType === 'programming') return { level: 'ok', label: 'Cohérence avec le projet du lieu', detail: 'Activité ouverte au public, étudiée par le comité.' };
   if (event.privatisation) return { level: 'warn', label: 'Cohérence avec le projet du lieu', detail: 'Événement privé : vérifier son lien avec le projet du lieu.' };
-  if (event.openToResidents) return { level: 'ok', label: 'Cohérence avec le projet du lieu', detail: 'Location avec des places offertes aux résidentes.' };
+  if (event.openToResidents || event.opportunity?.trim()) return { level: 'ok', label: 'Cohérence avec le projet du lieu', detail: 'Une place est prévue pour les résidentes.' };
   return { level: 'warn', label: 'Cohérence avec le projet du lieu', detail: 'Location commerciale, utile au modèle économique.' };
 }
 

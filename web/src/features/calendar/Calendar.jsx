@@ -12,7 +12,7 @@ const weekdays = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];
 const views = [['month', 'Mois'], ['week', 'Semaine par espace']];
 
 function Stepper({ title, onToday, todayLabel, onMove, unit }) {
-  return <><h2>{title}</h2><div><button className="button button-quiet today-button" onClick={onToday}>{todayLabel}</button><button className="icon-button" aria-label={`${unit} précédent${unit === 'Semaine' ? 'e' : ''}`} onClick={() => onMove(-1)}><Icon name="left" /></button><button className="icon-button" aria-label={`${unit} suivant${unit === 'Semaine' ? 'e' : ''}`} onClick={() => onMove(1)}><Icon name="right" /></button></div></>;
+  return <><h2 className={unit === 'Semaine' ? 'week-title' : ''}>{title}</h2><div><button className="button button-quiet today-button" onClick={onToday}>{todayLabel}</button><button className="icon-button" aria-label={`${unit} précédent${unit === 'Semaine' ? 'e' : ''}`} onClick={() => onMove(-1)}><Icon name="left" /></button><button className="icon-button" aria-label={`${unit} suivant${unit === 'Semaine' ? 'e' : ''}`} onClick={() => onMove(1)}><Icon name="right" /></button></div></>;
 }
 
 function MonthGrid({ month, space, onOpen }) {
