@@ -111,3 +111,15 @@ def test_match_requires_active_consent(monkeypatch):
         matching.request_matching(matching.MatchRequest.model_validate(payload))
     assert raised.value.status_code == 422
     local_client.assert_not_called()
+
+
+def test_demo_mode_serves_prewritten_texts_without_model(monkeypatch):
+    local_client = MagicMock()
+    monkeypatch.setattr(matching.httpx, "Client", local_client)
+    monkeypatch.setattr(matching, "DEMO_MODE", True)
+    monkeypatch.setattr(matching, "DEMO_DELAY", 0)
+    request = matching.MatchRequest.model_validate(match_payload())
+    response = matching.request_matching(request)
+    assert [(m.resident_id, m.source) for m in response.matches] == [("camille", "ai")]
+    assert "projet indépendant" in response.matches[0].rationale
+    local_client.assert_not_called()

@@ -1,7 +1,10 @@
 import json
+import time
 
 import httpx
 from pydantic import ValidationError
+
+from demo import DEMO_DELAY, DEMO_MODE, demo_plan
 
 from .models import EmploymentContext, EmploymentPlan, PlanContent, PlanStep
 from .transition import technical_to_kitchen, transition_plan
@@ -64,8 +67,19 @@ def _prompt(context: EmploymentContext, cv_text: str) -> str:
 
 
 def generate_plan(context: EmploymentContext, cv_text: str) -> EmploymentPlan:
+    if DEMO_MODE:
+        time.sleep(DEMO_DELAY)
     if technical_to_kitchen(context, cv_text):
         return transition_plan(context, cv_text)
+    if not DEMO_MODE:
+        return _ai_plan(context, cv_text)
+    plan = demo_plan(context.objective, context.acquired_skills)
+    return (
+        EmploymentPlan(**plan, source="ai") if plan else guided_plan(context, cv_text)
+    )
+
+
+def _ai_plan(context: EmploymentContext, cv_text: str) -> EmploymentPlan:
     try:
         with httpx.Client(timeout=120, trust_env=False) as client:
             response = client.post(

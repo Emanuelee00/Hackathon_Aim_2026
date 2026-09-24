@@ -55,10 +55,12 @@
 .job-plan-loading { display: flex; align-items: center; gap: 15px; padding: 22px; border-radius: 12px; color: var(--green); background: #eef3e5; }
 .job-plan-loading > svg { flex-shrink: 0; animation: plan-pulse 1.6s ease-in-out infinite; }
 .job-plan-loading strong { font-size: 15px; }
-.job-plan-loading p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; }
+.job-plan-loading p { margin: 6px 0 12px; font-size: 13px; line-height: 1.5; }
+.job-plan-loading > div { flex: 1; }
 .job-plan-result .job-result-hero { align-items: center; justify-content: flex-start; padding: 22px; border-radius: 12px; color: white; background: var(--green); }
 .job-result-hero > svg { flex-shrink: 0; }
 .job-result-hero .eyebrow { color: #d8e7bc; }
+.job-result-hero h3 { color: white; }
 .job-plan-result h3 { font-size: 30px; overflow-wrap: anywhere; }
 .job-plan-result h4 { font-size: 15px; }
 .job-plan-result > p, .job-plan-result li, .job-plan-steps p { font-size: 14px; line-height: 1.65; }

@@ -5,7 +5,7 @@ export OLLAMA_NO_CLOUD := 1
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test
+.PHONY: all install dev front build check format test ai model-pull browser-test demo qr
 
 all: install
 	@set -eu; \
@@ -34,6 +34,14 @@ install:
 
 dev:
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
+demo: build
+	MARTHE_DEMO=1 uv run uvicorn main:app --host 0.0.0.0 --port 8000
+
+qr:
+	@test -n "$(URL)" || { echo "Usage : make qr URL=https://..."; exit 1; }
+	uvx --from "qrcode[pil]" qr "$(URL)" > qr-demo.png
+	@echo "QR code créé : qr-demo.png"
 
 front:
 	npm --prefix web run dev

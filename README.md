@@ -86,6 +86,27 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 `make test` esegue solo i test con risposte simulate, senza avviare il modello.
 `make format` formatta Python. Il Makefile forza l'ambiente locale `.venv`.
 
+## Modalità demo (link pubblico)
+
+Quando l'app gira su Vercel (variabile `VERCEL`) oppure con `MARTHE_DEMO=1`,
+**l'AI non viene mai chiamata**. Dopo un'attesa simulata di 6 secondi
+(`DEMO_DELAY` in `demo.py`), durante la quale scorre la barra di caricamento,
+il backend restituisce le risposte scritte in `demo_responses.json`:
+
+- matching: un testo per ogni evento demo e ogni residente consenziente; la scelta
+  dei profili resta quella di `ranking.py`, gli eventi nuovi ricevono una
+  suggestion guidée;
+- piano verso l'impiego: un piano per ciascuno dei tre mestieri di esempio
+  (commis de cuisine, assistante administrative, vente); gli altri obiettivi
+  ricevono il piano guidato, il CV tech → cuisine il piano di reconversion.
+
+I testi sono stati abbozzati con `qwen2.5:3b` e poi corretti a mano.
+
+```sh
+make demo                          # demo senza AI, visibile sulla rete locale
+make qr URL=https://tuo-link.app   # crea qr-demo.png
+```
+
 ## Vercel
 
 L'entrypoint FastAPI `main:app` rimane predisposto in `pyproject.toml`, ma

@@ -1,4 +1,5 @@
 import Icon from '../../../shared/components/Icon.jsx';
+import ProgressBar from '../../../shared/components/ProgressBar.jsx';
 import JobPlanResult from './JobPlanResult.jsx';
 import { useJobPlan } from '../jobPlan.js';
 
@@ -29,7 +30,7 @@ export default function JobPlanForm({ resident, skills }) {
     <section className="job-input-step"><h4><span>{state.objective.trim().length >= 2 ? <Icon name="check" size={16} /> : '2'}</span>Choisissez votre direction</h4><ObjectiveField state={state} /></section>
     <button type="submit" className="button button-dark job-plan-submit" disabled={state.loading}><Icon name="sparkles" size={19} />{state.loading ? 'Préparation de votre plan…' : 'Découvrir mon plan'}{!state.loading && <Icon name="arrow" size={18} />}</button>
     <p className="ai-caption">Votre fichier CV n’est pas conservé. Vous restez libre de choisir les prochaines étapes.</p>
-    {state.loading && <div className="job-plan-loading" role="status"><Icon name="sparkles" size={24} /><div><strong>Votre prochaine étape se prépare</strong><p>Nous analysons votre CV et votre objectif. Cela peut prendre jusqu’à deux minutes.</p></div></div>}
+    {state.loading && <div className="job-plan-loading" role="status"><Icon name="sparkles" size={24} /><div><strong>Votre prochaine étape se prépare</strong><p>Nous analysons votre CV et votre objectif, quelques secondes suffisent.</p><ProgressBar label="Analyse du CV en cours" /></div></div>}
     {state.error && <p className="form-error" role="alert">{state.error}</p>}
     {state.record?.demo && <p className="ai-caption">Exemple prérempli fictif : lancez « Découvrir mon plan » pour analyser le fichier sélectionné.</p>}
     {!state.loading && (state.record ? <JobPlanResult plan={state.record.plan} resident={resident} objective={state.record.objective} /> : <div className="job-plan-preview"><span><Icon name="check" size={17} />Vos atouts</span><span><Icon name="file" size={17} />Un CV plus clair</span><span><Icon name="arrow" size={17} />Des étapes concrètes</span></div>)}

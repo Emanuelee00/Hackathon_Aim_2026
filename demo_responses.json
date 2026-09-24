@@ -1,0 +1,174 @@
+{
+  "matching": {
+    "Un autre regard": {
+      "marie": {
+        "rationale": "Marie veut gagner en confiance en situation professionnelle : un portrait soigné peut l'accompagner dans ses premières candidatures.",
+        "benefit": "Repartir avec une photo professionnelle utilisable sur un CV ou un profil en ligne.",
+        "vigilance": "Vérifier qu'elle est à l'aise avec l'idée d'être photographiée et qu'elle est libre le samedi après-midi."
+      },
+      "camille": {
+        "rationale": "Camille prépare un projet indépendant : une image professionnelle l'aidera à présenter son activité.",
+        "benefit": "Obtenir un portrait pour ses supports de présentation et rencontrer un collectif créatif.",
+        "vigilance": "Ses disponibilités sont plutôt le matin : confirmer qu'elle peut venir samedi après-midi."
+      },
+      "sofia": {
+        "rationale": "Sofia pratique la photographie en amateur et veut créer un portfolio : l'atelier la met au contact de photographes engagées.",
+        "benefit": "Observer une séance de portraits et, avec leur accord, ajouter quelques images à son portfolio.",
+        "vigilance": "Demander au collectif s'il accepte qu'elle participe à la prise de vue et définir l'usage des photos."
+      }
+    },
+    "Une pause pour soi": {
+      "marie": {
+        "rationale": "Une matinée de yoga doux, accessible aux débutantes, pour prendre un temps pour soi dans un cadre bienveillant.",
+        "benefit": "Se ressourcer et rencontrer d'autres habitantes du lieu, sans enjeu professionnel.",
+        "vigilance": "Proposer sans insister : la participation reste entièrement volontaire."
+      },
+      "camille": {
+        "rationale": "Un moment de pause utile pendant la préparation d'un projet indépendant, souvent exigeante.",
+        "benefit": "Prendre soin de soi et élargir son réseau de voisines dans un format détendu.",
+        "vigilance": "Vérifier que l'horaire du matin est compatible avec ses autres engagements."
+      },
+      "sofia": {
+        "rationale": "Sofia peut profiter d'une place offerte pour découvrir une pratique douce, accessible sans expérience.",
+        "benefit": "Un temps pour soi et une première rencontre avec l'association Souffle.",
+        "vigilance": "Ses disponibilités sont l'après-midi et le samedi : confirmer qu'elle peut venir le matin."
+      }
+    },
+    "Les mains à l’œuvre": {
+      "marie": {
+        "rationale": "Marie aime l'organisation collective : un atelier de réparation ouvert à tous lui permet de pratiquer en groupe, sans prérequis.",
+        "benefit": "Apprendre un geste utile au quotidien et prendre confiance dans un collectif.",
+        "vigilance": "Lui rappeler d'apporter un vêtement à réparer et vérifier son intérêt pour la couture."
+      },
+      "camille": {
+        "rationale": "Pour son projet indépendant, Camille peut observer comment une association anime un atelier de quartier.",
+        "benefit": "Échanger avec l'équipe des Fils du Quartier sur l'organisation et l'accueil du public.",
+        "vigilance": "Préciser qu'elle vient en participante, pas en bénévole chargée de l'accueil."
+      },
+      "sofia": {
+        "rationale": "Sofia explore les métiers créatifs : la réparation textile est une pratique manuelle et créative à découvrir.",
+        "benefit": "Découvrir un savoir-faire et, avec l'accord des participantes, documenter l'atelier pour son portfolio.",
+        "vigilance": "Demander l'autorisation avant toute photo et vérifier l'horaire de l'après-midi."
+      }
+    },
+    "Les saveurs qui nous relient": {
+      "marie": {
+        "rationale": "Marie pratique la cuisine familiale et veut découvrir les métiers de la restauration : ce déjeuner partagé est une première immersion en cuisine collective.",
+        "benefit": "Partager une recette, observer l'organisation d'un repas pour un groupe et rencontrer La Tablée Solidaire.",
+        "vigilance": "Confirmer sa disponibilité à midi et rappeler que l'atelier ne vaut pas qualification professionnelle."
+      },
+      "camille": {
+        "rationale": "Camille a le sens de l'accueil : un repas partagé est l'occasion de rencontrer d'autres habitantes et porteuses de projet.",
+        "benefit": "Élargir son réseau local dans un moment convivial.",
+        "vigilance": "Vérifier qu'elle souhaite y participer, le thème cuisine n'étant pas lié à ses objectifs."
+      },
+      "sofia": {
+        "rationale": "Sofia peut participer au déjeuner et, si l'équipe l'accepte, photographier les plats pour son portfolio.",
+        "benefit": "Pratiquer la photographie culinaire dans une situation réelle.",
+        "vigilance": "Obtenir l'accord des participantes avant toute photo et vérifier sa disponibilité à midi."
+      }
+    },
+    "Entreprendre, ensemble": {
+      "marie": {
+        "rationale": "Marie découvre les métiers de la restauration : écouter des entrepreneures peut lui montrer d'autres façons d'exercer ce secteur.",
+        "benefit": "Poser des questions à des femmes qui ont lancé leur activité.",
+        "vigilance": "Vérifier qu'elle se sent à l'aise dans un format de rencontre plus formel."
+      },
+      "camille": {
+        "rationale": "Camille veut développer un projet indépendant et rencontrer des entrepreneures : c'est exactement l'objet de cette matinée.",
+        "benefit": "Profiter du temps de questions pour présenter son idée et recueillir des retours d'expérience.",
+        "vigilance": "L'aider à préparer deux ou trois questions sur son projet avant la rencontre."
+      },
+      "sofia": {
+        "rationale": "Sofia explore les métiers créatifs, souvent exercés en indépendante : les témoignages peuvent l'éclairer.",
+        "benefit": "Comprendre les étapes pour lancer une activité créative.",
+        "vigilance": "Ses disponibilités sont l'après-midi : confirmer qu'elle peut venir le matin."
+      }
+    },
+    "Un peu de vert chez soi": {
+      "marie": {
+        "rationale": "Un atelier convivial pour repartir avec sa plante, en groupe et sans prérequis.",
+        "benefit": "Un moment de détente et d'échange avec d'autres habitantes.",
+        "vigilance": "Proposer sans insister : l'atelier n'est pas lié à ses objectifs professionnels."
+      },
+      "camille": {
+        "rationale": "Camille peut observer comment un collectif local anime un atelier, utile pour son projet indépendant.",
+        "benefit": "Rencontrer Les Pousses de Marseille et échanger sur leur organisation.",
+        "vigilance": "Vérifier son intérêt pour le thème avant de proposer une place."
+      },
+      "sofia": {
+        "rationale": "Sofia explore les métiers créatifs : composer et rempoter des boutures est une pratique créative et manuelle.",
+        "benefit": "Découvrir une activité nouvelle et, avec accord, photographier les créations pour son portfolio.",
+        "vigilance": "Ses disponibilités sont l'après-midi et le samedi : confirmer l'horaire du matin."
+      }
+    }
+  },
+  "employment": {
+    "commis de cuisine": {
+      "summary": "Votre pratique de la cuisine et votre participation aux ateliers chez Marthe sont un bon point de départ vers le métier de commis de cuisine. Le plan ci-dessous vous aide à valoriser ces expériences et à découvrir le travail en cuisine professionnelle.",
+      "strengths": [
+        "Une pratique régulière de la cuisine, à décrire avec des exemples concrets",
+        "Le goût du travail en groupe et de l'organisation"
+      ],
+      "gaps": [
+        "Découvrir le rythme et les règles d'hygiène d'une cuisine professionnelle",
+        "Obtenir une première expérience encadrée : immersion, stage ou bénévolat"
+      ],
+      "cv_suggestions": [
+        "Ajouter un titre clair : « Projet professionnel : commis de cuisine »",
+        "Décrire vos expériences en cuisine avec le nombre de personnes servies et les tâches réalisées",
+        "Mentionner les ateliers suivis chez Marthe dans une rubrique « Expériences collectives »"
+      ],
+      "steps": [
+        { "title": "Mettre à jour le CV", "action": "Ajouter le titre et décrire vos expériences en cuisine avec votre accompagnatrice.", "timeframe": "Cette semaine" },
+        { "title": "Demander une immersion", "action": "Contacter La Tablée Solidaire pour une journée découverte en cuisine.", "timeframe": "Sous 10 jours" },
+        { "title": "Se renseigner sur l'hygiène", "action": "Repérer une formation courte aux règles d'hygiène alimentaire avec une conseillère emploi.", "timeframe": "Sous 3 semaines" },
+        { "title": "Postuler", "action": "Choisir trois offres de commis débutant et envoyer une candidature adaptée.", "timeframe": "Sous 1 mois" }
+      ]
+    },
+    "assistante administrative": {
+      "summary": "Le métier d'assistante administrative valorise l'organisation, l'accueil et la rigueur. Ce plan vous aide à mettre en avant ces qualités et à vous familiariser avec les outils utilisés au bureau.",
+      "strengths": [
+        "Le sens de l'organisation, à illustrer par des exemples précis",
+        "Un contact facile avec le public"
+      ],
+      "gaps": [
+        "Vérifier votre aisance avec les outils bureautiques (traitement de texte, tableur, messagerie)",
+        "Préparer des exemples de tâches administratives déjà réalisées"
+      ],
+      "cv_suggestions": [
+        "Ajouter un titre clair : « Assistante administrative »",
+        "Créer une rubrique « Compétences » avec les outils que vous maîtrisez",
+        "Présenter chaque expérience avec une action, une compétence et un résultat"
+      ],
+      "steps": [
+        { "title": "Faire le point sur les outils", "action": "Tester vos connaissances bureautiques avec votre accompagnatrice.", "timeframe": "Cette semaine" },
+        { "title": "Se former", "action": "Suivre un module gratuit en ligne sur le tableur ou le traitement de texte.", "timeframe": "Sous 2 semaines" },
+        { "title": "Pratiquer", "action": "Proposer votre aide pour l'accueil ou la gestion des inscriptions d'un événement chez Marthe.", "timeframe": "Sous 3 semaines" },
+        { "title": "Postuler", "action": "Sélectionner trois offres et envoyer un CV adapté à chacune.", "timeframe": "Sous 1 mois" }
+      ]
+    },
+    "vente": {
+      "summary": "La vente demande surtout le sens du contact et de l'écoute. Ce plan vous aide à valoriser ces qualités et à découvrir concrètement le travail en magasin.",
+      "strengths": [
+        "Le contact avec les personnes, à illustrer par des situations vécues",
+        "Une capacité à s'adapter à des publics variés"
+      ],
+      "gaps": [
+        "Découvrir le fonctionnement d'un magasin : caisse, mise en rayon, conseil",
+        "Préparer des réponses aux questions fréquentes en entretien de vente"
+      ],
+      "cv_suggestions": [
+        "Ajouter un titre clair : « Conseillère de vente »",
+        "Mettre en avant les expériences où vous avez accueilli ou conseillé des personnes",
+        "Indiquer vos langues parlées, un vrai atout en magasin"
+      ],
+      "steps": [
+        { "title": "Adapter le CV", "action": "Ajouter le titre et vos expériences de contact avec le public.", "timeframe": "Cette semaine" },
+        { "title": "Découvrir le métier", "action": "Demander une immersion d'une journée dans un commerce du quartier.", "timeframe": "Sous 2 semaines" },
+        { "title": "S'entraîner à l'entretien", "action": "Faire une simulation d'entretien avec votre accompagnatrice.", "timeframe": "Sous 3 semaines" },
+        { "title": "Postuler", "action": "Déposer votre CV dans trois magasins et répondre à deux offres en ligne.", "timeframe": "Sous 1 mois" }
+      ]
+    }
+  }
+}

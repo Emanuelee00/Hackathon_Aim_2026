@@ -63,7 +63,3 @@
 .matching-progress > div { display: flex; align-items: center; gap: 9px; color: #435c4f; }
 .matching-progress strong { font-size: 10px; }
 .matching-progress small { margin-left: auto; color: #8b9690; font-size: 8px; }
-.matching-progress > span { display: block; height: 6px; overflow: hidden; border-radius: 6px; background: #e7ead7; }
-.matching-progress > span > i { display: block; width: 95%; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #d79a7d, #679276); transform-origin: left; animation: matching-progress 9s cubic-bezier(.15, .7, .3, 1) forwards; }
-@keyframes matching-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) { .matching-progress > span > i { animation: none; } }

@@ -17,3 +17,8 @@
 .page-description { margin: 0; color: var(--muted); font-size: 13px; }
 .date-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 8px; color: #607069; background: rgba(255,255,255,.55); font-size: 11px; }
 
+/* Progress bar */
+.progress-bar { display: block; height: 6px; overflow: hidden; border-radius: 6px; background: #e7ead7; }
+.progress-bar > i { display: block; width: 95%; height: 100%; border-radius: 6px; background: linear-gradient(90deg, #d79a7d, #679276); transform-origin: left; animation: progress-fill 9s cubic-bezier(.15, .7, .3, 1) forwards; }
+@keyframes progress-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .progress-bar > i { animation: none; } }

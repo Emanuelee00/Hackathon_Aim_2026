@@ -1,4 +1,5 @@
 import json
+import time
 from typing import Literal
 
 import httpx
@@ -6,6 +7,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, ValidationError
 
 from ai import MODEL, OLLAMA_URL
+from demo import DEMO_DELAY, DEMO_MODE, demo_rationales
 from ranking import guided_rationale, rank_profiles
 
 router = APIRouter(prefix="/api")
@@ -93,7 +95,11 @@ def request_matching(request: MatchRequest) -> MatchResponse:
         raise HTTPException(422, "Aucun profil ne dispose d'un consentement actif.")
     event = request.event.model_dump()
     ranked = rank_profiles(" ".join(event.values()), profiles)
-    written = write_rationales(event, ranked)
+    if DEMO_MODE:
+        time.sleep(DEMO_DELAY)
+        written = demo_rationales(event["title"], ranked)
+    else:
+        written = write_rationales(event, ranked)
     matches = []
     for profile, terms in ranked:
         if profile["id"] in written:

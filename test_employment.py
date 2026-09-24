@@ -145,3 +145,16 @@ def test_demo_cv_files_are_readable():
         text = extract_cv_text(name, file.read_bytes())
         assert "fictif" in text
         assert len(text) > 100
+
+
+def test_demo_mode_serves_prewritten_plan_without_model(monkeypatch):
+    client = MagicMock()
+    monkeypatch.setattr("employment.planning.httpx.Client", client)
+    monkeypatch.setattr("employment.planning.DEMO_MODE", True)
+    monkeypatch.setattr("employment.planning.DEMO_DELAY", 0)
+    demo = generate_plan(context(), "Préparation de repas familiaux")
+    unknown = context().model_copy(update={"objective": "Pilote de ligne"})
+    assert demo.source == "ai" and len(demo.steps) == 4
+    assert demo.strengths[0] == context().acquired_skills[0]
+    assert generate_plan(unknown, "Préparation de repas").source == "guided"
+    client.assert_not_called()
