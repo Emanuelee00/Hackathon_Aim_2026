@@ -22,9 +22,3 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.12,<1",
 ]
-
-[tool.vercel]
-entrypoint = "main:app"
-
-[tool.vercel.fastapi.static]
-cdn = false

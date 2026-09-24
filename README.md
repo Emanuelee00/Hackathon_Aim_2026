@@ -21,7 +21,7 @@ Al primo avvio vengono scaricati anche i modelli (circa 2,3 GB in totale). Per f
 Ollama e il sito insieme usa Ctrl+C.
 
 Ollama usa la porta locale **11435** e salva il modello in `.ollama/models/`,
-esclusa da Git e dal deploy Vercel. Le funzioni cloud di Ollama sono disabilitate.
+esclusa da Git. Le funzioni cloud di Ollama sono disabilitate.
 Dopo il download l'inferenza funziona senza Internet, account o chiavi API.
 Per fermare i server usa Ctrl+C nei rispettivi terminali.
 
@@ -122,7 +122,7 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 ## Modalità demo (link pubblico)
 
-Quando l'app gira su Vercel (variabile `VERCEL`) oppure con `MARTHE_DEMO=1`,
+Con `MARTHE_DEMO=1`,
 **l'AI non viene mai chiamata**. Dopo un'attesa simulata di 6 secondi
 (`DEMO_DELAY` in `demo.py`), durante la quale scorre la barra di caricamento,
 il backend restituisce le risposte scritte in `demo_responses.json`:
@@ -143,13 +143,24 @@ make demo                          # demo senza AI, visibile sulla rete locale
 make qr URL=https://tuo-link.app   # crea qr-demo.png
 ```
 
-## Vercel
+## Tunnel Cloudflare (chezmarthe.site)
 
-L'entrypoint FastAPI `main:app` rimane predisposto in `pyproject.toml`, ma
-**questa configurazione AI funziona in locale**: Vercel non può raggiungere
-Ollama sul tuo PC tramite `127.0.0.1`. Prima del deploy della demo AI servirà
-un endpoint remoto e la relativa configurazione del backend.
-Il modello scaricato non va incluso nel deploy. Nessun deploy remoto è stato eseguito.
+L'app gira sul portatile ed è pubblicata con un tunnel Cloudflare: il dominio e
+tutti i sottodomini (`equipe.`, `residents.`, `benevoles.`, `partenaires.`,
+`bilan.`) puntano a `localhost:8000`. Configurazione: `cloudflare/tunnel.yml`.
+
+Una sola volta, dopo aver installato
+[cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/):
+
+```sh
+cloudflared tunnel login                                  # apre il browser, scegli chezmarthe.site
+cloudflared tunnel create marthe
+cloudflared tunnel route dns marthe chezmarthe.site
+cloudflared tunnel route dns marthe '*.chezmarthe.site'
+```
+
+Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
+poi `make tunnel`. Il portatile deve restare acceso e sveglio.
 
 ## Démonstration CV et reconversion
 

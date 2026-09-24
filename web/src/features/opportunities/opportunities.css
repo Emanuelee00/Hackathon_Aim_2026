@@ -3,7 +3,7 @@
 .journey-metrics { display: grid; grid-template-columns: repeat(4, 150px) 1fr; align-items: stretch; margin-bottom: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
 .journey-metrics > div { padding: 15px 18px; border-right: 1px solid var(--line); }
 .journey-metrics strong, .journey-metrics span { display: block; }
-.journey-metrics strong { font-family: "Instrument Serif", serif; font-size: 27px; font-weight: 400; }
+.journey-metrics strong { font-family: var(--font-display); font-size: 27px; font-weight: 400; }
 .journey-metrics span { color: var(--muted); font-size: 12px; }
 .journey-metrics > p { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 0; padding: 15px 20px; color: #725677; background: #edd3f2; font-size: 13px; font-weight: 700; }
 .opportunity-layout { display: grid; grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); gap: 20px; align-items: start; }
@@ -13,7 +13,7 @@
 .opportunity-context select { width: 100%; height: 42px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; outline: 0; color: var(--ink); background: white; font-size: 14px; }
 .selected-opportunity { margin: 17px 0; padding: 14px; border-radius: 9px; color: #6b4573; background: #ecd4f0; }
 .selected-opportunity small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; }
-.selected-opportunity p { margin: 7px 0; font-family: "Instrument Serif", serif; font-size: 17px; line-height: 1.25; }
+.selected-opportunity p { margin: 7px 0; font-family: var(--font-display); font-size: 17px; line-height: 1.25; }
 .selected-opportunity span { color: var(--muted); font-size: 12px; }
 .consent-list { margin-top: 18px; border-top: 1px solid var(--line); }
 .consent-list > div { display: grid; grid-template-columns: 35px minmax(0,1fr) auto; gap: 9px; align-items: center; padding: 10px 0; border-bottom: 1px solid #eae3e4; }
@@ -35,11 +35,11 @@
 .ai-caption { margin: 9px 8px 0; color: var(--muted); font-size: 12px; text-align: center; }
 .matching-results { min-width: 0; }
 .matching-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 15px; margin: 1px 2px 15px; }
-.matching-heading h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 27px; font-weight: 400; }
+.matching-heading h2 { margin: 0; font-family: var(--font-display); font-size: 27px; font-weight: 400; }
 .matching-heading > span { padding: 6px 9px; border-radius: 20px; color: #725a76; background: #e9cfee; font-size: 12px; font-weight: 700; }
 .matching-empty { display: grid; min-height: 220px; place-items: center; align-content: center; padding: 40px; border: 1px dashed #ccc3ce; border-radius: 14px; color: #857588; text-align: center; }
 .matching-empty > span { display: grid; width: 66px; height: 66px; place-items: center; margin-bottom: 15px; border-radius: 50%; color: #775b7c; background: #ebd1f0; }
-.matching-empty h3 { margin-bottom: 7px; font-family: "Instrument Serif", serif; font-size: 22px; font-weight: 400; }
+.matching-empty h3 { margin-bottom: 7px; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
 .matching-empty p { max-width: 350px; margin: 0; font-size: 13px; }
 .matching-error { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 17px; border-radius: 10px; color: #7e3b4c; background: #f6d3dc; }
 .matching-error strong { display: block; font-size: 14px; }
@@ -50,7 +50,7 @@
 .match-card.declined, .match-card.dismissed { border-left-color: #b5acb7; opacity: .72; }
 .match-card header { display: flex; align-items: center; gap: 10px; }
 .match-card header .eyebrow { margin: 0 0 2px; }
-.match-card header h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 21px; font-weight: 400; }
+.match-card header h3 { margin: 0; font-family: var(--font-display); font-size: 21px; font-weight: 400; }
 .fiction-label { margin-left: auto; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
 .match-reason { margin: 15px 0; color: #6a536e; font-size: 14px; }
 .match-points { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }

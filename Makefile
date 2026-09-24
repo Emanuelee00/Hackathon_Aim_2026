@@ -5,7 +5,7 @@ export OLLAMA_NO_CLOUD := 1
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user
+.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user tunnel
 
 all: install
 	@set -eu; \
@@ -76,3 +76,6 @@ migration:
 user:
 	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
 	uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
+
+tunnel:
+	cloudflared tunnel --config cloudflare/tunnel.yml run marthe

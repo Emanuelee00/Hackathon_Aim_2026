@@ -1,7 +1,7 @@
 /* Friday committee board */
 .committee-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: start; }
 .committee-column { display: grid; gap: 10px; padding: 16px; }
-.committee-column h3 { display: flex; align-items: center; justify-content: space-between; margin: 0 0 4px; font-family: "Instrument Serif", serif; font-size: 22px; font-weight: 400; }
+.committee-column h3 { display: flex; align-items: center; justify-content: space-between; margin: 0 0 4px; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
 .committee-card { display: grid; justify-items: start; gap: 4px; width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: white; cursor: pointer; text-align: left; }
 .committee-card:hover { border-color: #c7baca; }
 .committee-card small { color: var(--muted); font-size: 13px; }

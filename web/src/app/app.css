@@ -30,7 +30,7 @@ main { width: min(100%, 1480px); margin: 0 auto; padding: 42px clamp(28px, 4vw, 
 .sidebar-bottom { display: grid; gap: 14px; margin-top: auto; padding-top: 30px; }
 .sidebar-note { position: relative; padding: 16px; overflow: hidden; border-radius: 13px; color: var(--green); background: #e5beed; }
 .sidebar-note .sun-mark { position: absolute; top: 9px; right: 12px; color: #e75176; font-size: 20px; }
-.sidebar-note p { margin-bottom: 8px; font-family: "Instrument Serif", serif; font-size: 19px; line-height: 1.15; }
+.sidebar-note p { margin-bottom: 8px; font-family: var(--font-display); font-size: 19px; line-height: 1.15; }
 .sidebar-note small { color: #77627b; font-size: 13px; }
 .help-link { padding-left: 4px; font-size: 14px; }
 a.nav-item { text-decoration: none; }

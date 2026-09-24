@@ -1,8 +1,8 @@
 /* Buttons & links */
-.button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 14px; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 0 18px; border: 0; border-radius: var(--radius-pill); cursor: pointer; font-weight: 700; font-size: 14px; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
 .button:hover { transform: translateY(-1px); }
-.button-dark { color: white; background: var(--green); box-shadow: 0 7px 18px rgba(100,40,112,.18); }
-.button-dark:hover { background: #551b60; box-shadow: 0 9px 22px rgba(100,40,112,.25); }
+.button-dark { color: white; background: var(--green); box-shadow: 0 7px 18px rgba(102,43,128,.18); }
+.button-dark:hover { background: var(--violet-dark); box-shadow: 0 9px 22px rgba(100,40,112,.25); }
 .button-small { min-height: 40px; padding: 0 14px; font-size: 13px; }
 .button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 .icon-button { display: inline-grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); cursor: pointer; }
@@ -13,7 +13,7 @@
 /* Page intro */
 .eyebrow { margin-bottom: 8px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .1em; }
 .page-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 28px; }
-.page-intro h1 { margin-bottom: 3px; font-family: "Instrument Serif", serif; font-size: clamp(37px, 4vw, 52px); font-weight: 400; line-height: 1; letter-spacing: -.02em; }
+.page-intro h1 { margin-bottom: 3px; font-family: var(--font-display); font-size: clamp(37px, 4vw, 52px); font-weight: 400; line-height: 1; letter-spacing: -.02em; }
 .page-description { margin: 0; color: var(--muted); font-size: 13px; }
 .date-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 8px; color: #705c74; background: rgba(255,255,255,.55); font-size: 14px; }
 

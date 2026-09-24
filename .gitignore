@@ -8,7 +8,6 @@ __pycache__/
 *.pyc
 .ruff_cache/
 .pytest_cache/
-.vercel/
 .env
 .env.*
 qr-demo.png

@@ -5,7 +5,7 @@
 .demo-bar .text-link { font-size: 14px; }
 .resident-hello { display: flex; align-items: center; gap: 16px; }
 .resident-hello .resident-avatar { width: 56px; height: 56px; font-size: 16px; }
-.resident-hello h1 { margin: 0 0 2px; font-family: "Instrument Serif", serif; font-size: clamp(36px, 5vw, 48px); font-weight: 400; line-height: 1.05; }
+.resident-hello h1 { margin: 0 0 2px; font-family: var(--font-display); font-size: clamp(36px, 5vw, 48px); font-weight: 400; line-height: 1.05; }
 .resident-hello p { margin: 0; color: var(--muted); font-size: 16px; }
 
 /* Resident view: tabs */
@@ -22,14 +22,14 @@
 .resident-panel { display: grid; gap: 14px; animation: appear .2s ease-out; }
 .resident-panel[hidden] { display: none; }
 .resident-empty { display: grid; justify-items: start; gap: 10px; padding: 26px; border: 1px dashed #ccc3ce; border-radius: 14px; }
-.resident-empty h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 28px; font-weight: 400; }
+.resident-empty h2 { margin: 0; font-family: var(--font-display); font-size: 28px; font-weight: 400; }
 .resident-empty p { max-width: 520px; margin: 0; color: #654e6a; font-size: 15px; }
 
 /* Resident view: proposals and decisions */
 .proposal { display: grid; gap: 12px; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); }
 .proposal-when { display: flex; align-items: center; gap: 8px; margin: 0; color: #933c52; font-size: 14px; font-weight: 700; }
 .proposal-when::first-letter { text-transform: uppercase; }
-.proposal h3, .activity-card h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 32px; font-weight: 400; line-height: 1.1; }
+.proposal h3, .activity-card h3 { margin: 0; font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1.1; }
 .proposal-referent { display: flex; align-items: center; gap: 7px; margin: 0; color: #736077; font-size: 13px; }
 .proposal-why { margin: 0; color: #674a6d; font-size: 16px; }
 .proposal-benefit { display: flex; gap: 10px; margin: 0; padding: 12px 14px; border-radius: 10px; color: #63326c; background: #edd3f2; font-size: 15px; line-height: 1.5; }
@@ -64,7 +64,7 @@
 
 /* Resident view: employment plan wizard */
 .plan-card { display: grid; gap: 20px; padding: 26px; }
-.plan-card-header h3 { margin: 0 0 4px; font-family: "Instrument Serif", serif; font-size: 32px; font-weight: 400; }
+.plan-card-header h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: 32px; font-weight: 400; }
 .plan-card-header p { margin: 0; color: #654e6a; font-size: 16px; }
 .plan-stepper { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .plan-stepper li { display: flex; flex: 1; align-items: center; gap: 8px; padding-top: 10px; border-top: 4px solid #e4e2d6; color: var(--muted); font-size: 14px; font-weight: 700; }
@@ -105,7 +105,7 @@
 /* Resident view: plan result */
 .plan-result { display: grid; gap: 16px; outline: 0; animation: appear .25s ease-out; }
 .plan-hero { display: grid; gap: 8px; padding: 22px; border-radius: 14px; color: white; background: var(--green); }
-.plan-hero h4 { margin: 0; color: white; font-family: "Instrument Serif", serif; font-size: 32px; font-weight: 400; line-height: 1.1; overflow-wrap: anywhere; }
+.plan-hero h4 { margin: 0; color: white; font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1.1; overflow-wrap: anywhere; }
 .plan-hero p { margin: 0; color: #ebdeee; font-size: 15px; }
 .source-badge { width: max-content; padding: 4px 10px; border-radius: 20px; color: var(--green); background: #e7bdef; font-size: 13px; font-weight: 700; }
 .source-badge.demo { background: #faee9e; }

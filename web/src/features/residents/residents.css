@@ -2,7 +2,7 @@
 .residents-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
 .resident-card { display: grid; gap: 15px; align-content: start; padding: 21px; }
 .resident-card > header { display: flex; gap: 10px; align-items: center; }
-.resident-card header h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 21px; font-weight: 400; }
+.resident-card header h3 { margin: 0; font-family: var(--font-display); font-size: 21px; font-weight: 400; }
 .resident-card header small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
 .resident-infos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .resident-info, .resident-activities { padding: 10px; border: 1px solid #eae3e4; border-radius: 7px; color: #674d6c; font-size: 13px; }

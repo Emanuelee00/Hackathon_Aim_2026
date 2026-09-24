@@ -1,7 +1,7 @@
 /* Organiser feedback (bilan subdomain) */
 .feedback-space { display: grid; gap: 22px; max-width: 720px; }
 .feedback-form { display: grid; gap: 18px; padding: 24px; }
-.feedback-form h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 30px; font-weight: 400; }
+.feedback-form h2 { margin: 0; font-family: var(--font-display); font-size: 30px; font-weight: 400; }
 .feedback-form p { margin: 0; }
 .feedback-form .verdict { justify-self: start; }
 .feedback-pick { padding: 20px; }

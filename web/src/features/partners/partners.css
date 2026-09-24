@@ -3,8 +3,8 @@
 .partner-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
 .partner-column { display: grid; gap: 18px; }
 .partner-panel { display: grid; gap: 12px; padding: 20px; }
-.partner-panel h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 30px; font-weight: 400; }
-.partner-panel h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 22px; font-weight: 400; }
+.partner-panel h2 { margin: 0; font-family: var(--font-display); font-size: 30px; font-weight: 400; }
+.partner-panel h3 { margin: 0; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
 .partner-panel p { margin: 0; color: var(--muted); font-size: 14px; }
 .partner-panel .hint { font-size: 13px; }
 .partner-panel .verdict { margin-right: 6px; }

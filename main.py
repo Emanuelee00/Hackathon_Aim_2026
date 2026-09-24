@@ -40,8 +40,8 @@ def health() -> dict[str, str]:
 class Frontend(StaticFiles):
     """Never answers 304 for HTML pages.
 
-    On Vercel every deploy keeps the same file date, and index.html keeps its
-    size, so its ETag never changes: browsers would reuse an old page that
+    After a rebuild index.html can keep its size and date, so its ETag would not
+    change: browsers (or the Cloudflare edge) would reuse an old page that
     points to deleted bundles and show a blank screen.
     """
 

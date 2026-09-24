@@ -1,20 +1,28 @@
 /* Base & tokens */
+/* Charte chezmarthe.org : violet #662B80, prune #A25889, blanc cassé #F6F5F4, nuit #1B1319, rose du logo #F2A1AB. */
 :root {
-  font-family: "DM Sans", system-ui, sans-serif;
-  color: #4f2557;
-  background: #f3ebec;
+  --font-display: "Amiamie", "Raleway", system-ui, sans-serif;
+  --font-body: "Raleway", system-ui, sans-serif;
+  font-family: var(--font-body);
+  color: #1b1319;
+  background: #f6f5f4;
   font-synthesis: none;
-  --ink: #4f2557;
-  --muted: #6a576e;
-  --green: #672a7f;
-  --line: #e0ded3;
-  --paper: #fef9fa;
-  --cream: #f3ebec;
-  --peach: #f39faa;
+  --ink: #1b1319;
+  --muted: #5e5360;
+  --green: #662b80;
+  --violet-dark: #57256d;
+  --plum: #a25889;
+  --night: #1b1319;
+  --pink: #f2a1ab;
+  --line: #e4dfe2;
+  --paper: #ffffff;
+  --cream: #f6f5f4;
+  --peach: #f2a1ab;
   --sage: #d1b2d7;
   --sand: #f5e88f;
   --lavender: #c8bbdf;
-  --shadow: 0 14px 40px rgba(76,37,84, 0.08);
+  --radius-pill: 2rem;
+  --shadow: 0 14px 40px rgba(27,19,25, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -25,7 +33,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }
 button:focus-visible, a:focus-visible { outline: 3px solid #f47494; outline-offset: 3px; }
 h1, h2, h3, p { margin-top: 0; }
-h1, h2, h3 { color: var(--ink); }
+h1, h2, h3 { color: var(--green); }
+h1, h2 { font-family: var(--font-display); font-weight: 400; }
 p { line-height: 1.6; }
 
 input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex="-1"]:focus-visible { outline: 3px solid #f47494; outline-offset: 2px; }

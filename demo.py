@@ -4,8 +4,8 @@ import json
 import os
 from pathlib import Path
 
-# Vercel sets VERCEL; MARTHE_DEMO=1 simulates the public link locally.
-DEMO_MODE = bool(os.getenv("VERCEL") or os.getenv("MARTHE_DEMO"))
+# MARTHE_DEMO=1 serves the pre-written answers instead of calling the local model.
+DEMO_MODE = bool(os.getenv("MARTHE_DEMO"))
 # Seconds of simulated analysis, so the progress bar plays as with the model.
 DEMO_DELAY = 6
 RESPONSES = json.loads(
