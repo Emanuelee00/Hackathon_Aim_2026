@@ -1,3 +1,4 @@
+import { quoteIsCurrent } from '../quotes.js';
 import { useState } from 'react';
 import { requestTypes, requestQuestions } from '../workflow.js';
 import { bookableSpaces } from '../../../shared/data/spaces.js';
@@ -13,6 +14,7 @@ export default function EventForm({ event, events, onSave, onCancel }) {
   const submit = formEvent => {
     formEvent.preventDefault();
     const next = { ...draft, id: draft.id || `event-${Date.now()}`, status: draft.status === 'confirmed' ? 'pending' : draft.status, reviewStage: null, approval: null };
+    if (next.requestType === 'rental' && quoteIsCurrent(next)) next.revenue = next.quote.total;
     const message = validateEvent(next, events);
     if (message) return setError(message);
     onSave(next);
@@ -30,7 +32,7 @@ export default function EventForm({ event, events, onSave, onCancel }) {
       <label className="field field-wide"><span>Équipe / association du responsable</span><input name="referentTeam" value={draft.referentTeam} onChange={change} placeholder="Équipe ou association de rattachement" aria-describedby="referent-hint" /></label>
       <p id="referent-hint" className="field-full">Ces deux informations sont obligatoires pour confirmer l’événement.</p>
       <label className="field"><span>Date *</span><input type="date" name="date" value={draft.date} onChange={change} required /></label><label className="field"><span>Début *</span><input type="time" name="start" value={draft.start} onChange={change} required /></label><label className="field"><span>Fin *</span><input type="time" name="end" value={draft.end} onChange={change} required /></label><label className="field"><span>Espace *</span><select name="space" value={draft.space} onChange={change}>{bookableSpaces.map(space => <option key={space.id} value={space.id}>{space.name}{space.capacity != null ? ` · ${space.capacity} pers.` : ''}</option>)}</select></label>
-      <label className="field"><span>Participants *</span><input type="number" min="1" name="participants" value={draft.participants} onChange={change} required /></label><label className="field"><span>Recettes prévues (€)</span><input type="number" min="0" name="revenue" value={draft.revenue} onChange={change} /></label><label className="field"><span>Coûts prévus (€)</span><input type="number" min="0" name="costs" value={draft.costs} onChange={change} /></label>
+      <label className="field"><span>Participants *</span><input type="number" min="1" name="participants" value={draft.participants} onChange={change} required /></label><label className="field"><span>Recettes prévues (€){draft.quote ? ' · liées au devis' : ''}</span><input type="number" min="0" step="0.01" name="revenue" value={draft.revenue} onChange={change} /></label><label className="field"><span>Coûts prévus (€)</span><input type="number" min="0" step="0.01" name="costs" value={draft.costs} onChange={change} /></label>
       <label className="field field-full"><span>Description de la demande</span><textarea name="description" rows="4" value={draft.description} onChange={change} /></label><label className="field field-full"><span>Opportunité pour les résidentes</span><textarea name="opportunity" rows="3" value={draft.opportunity} onChange={change} placeholder="Participation volontaire, transmission, rencontre…" /></label></div>
     <RequestOptions draft={draft} setDraft={setDraft} />
     <div className="form-actions"><button type="button" className="button button-quiet" onClick={onCancel}>Annuler</button><button className="button button-dark">Enregistrer la demande</button></div>

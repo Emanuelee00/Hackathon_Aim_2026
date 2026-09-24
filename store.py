@@ -17,7 +17,7 @@ SQLITE_PATH = Path(__file__).parent / "marthe.db"
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"
 )
-Key = Literal["events", "matches", "partners"]
+Key = Literal["events", "matches", "partners", "visitSlots"]
 
 
 def execute(sql: str, params: tuple = ()) -> list[tuple]:

@@ -61,3 +61,10 @@
 .request-options legend { padding: 0 6px; color: #76647a; font-size: 13px; font-weight: 700; }
 .option-list { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; }
 .option-list label { display: inline-flex; align-items: center; gap: 7px; }
+
+/* Quotes and site visits */
+.request-module { display: grid; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.request-module summary { cursor: pointer; padding-block: 8px; font-weight: 600; }
+.visit-slots { display: grid; gap: 12px; padding: 0; list-style: none; }
+.visit-slots li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.visit-slots li > span { flex: 1 1 200px; }

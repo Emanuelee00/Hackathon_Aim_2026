@@ -1,3 +1,4 @@
+import { quoteIsCurrent } from './quotes.js';
 export const requestTypes = { programming: 'Programmation', rental: 'Location d’espace' };
 export const requestQuestions = {
   programming: [
@@ -15,6 +16,7 @@ export const requestQuestions = {
 export function validateRequest(event, approving = false) {
   if (!requestTypes[event.requestType]) return 'Choisissez le type de demande : programmation ou location.';
   if (!approving) return '';
+  if (event.requestType === 'rental' && event.quote && (!quoteIsCurrent(event) || event.quote.status !== 'accepted')) return 'Préparez un devis à jour et consignez l’accord de l’organisateur avant de confirmer.';
   if (requestQuestions[event.requestType].some(([key]) => !event[key]?.trim())) return 'Complétez les questions spécifiques à cette demande avant son approbation.';
   if (event.requestType === 'programming' && event.approval?.authority !== 'committee') return 'La programmation doit être validée par le comité de coordination.';
   if (event.requestType === 'programming' && event.reviewStage !== 'committee') return 'Présentez d’abord la demande au comité de coordination.';

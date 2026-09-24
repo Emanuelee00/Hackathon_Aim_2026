@@ -26,11 +26,11 @@ export default function Sidebar({ page, navigate, mobile, close, help }) {
     <aside className={`sidebar ${mobile ? 'is-open' : ''}`}>
       <a href="#dashboard" className="brand" onClick={close}><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <p className="brand-caption">Le compagnon des lieux vivants</p>
-      <div className="place-switch-wrap">
-        <button type="button" className="place-switch" aria-haspopup="listbox" aria-expanded={siteMenuOpen} onClick={() => setSiteMenuOpen(open => !open)}>
-          <span className="place-mark"><Icon name="space" /></span><div><strong>Chez Marthe</strong><small>{site.city} · {site.neighborhood}</small></div><Icon name={siteMenuOpen ? 'left' : 'right'} size={14} />
+      <div className="place-switch-wrap" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setSiteMenuOpen(false); }} onKeyDown={event => { if (event.key === 'Escape') { setSiteMenuOpen(false); event.currentTarget.querySelector('.place-switch').focus(); } }}>
+        <button type="button" className="place-switch" aria-label={`Changer de siège : ${site.city}`} aria-controls="site-options" aria-expanded={siteMenuOpen} onClick={() => setSiteMenuOpen(open => !open)}>
+          <span className="place-mark"><Icon name="space" /></span><div><strong>Chez Marthe</strong><small>{site.city} · {site.neighborhood}</small><small>Changer de siège</small></div><Icon name={siteMenuOpen ? 'left' : 'right'} size={14} />
         </button>
-        {siteMenuOpen && <ul className="place-menu" role="listbox">{sites.map(candidate => <li key={candidate.id}><button type="button" role="option" aria-selected={candidate.id === siteId} className={candidate.id === siteId ? 'active' : ''} onClick={() => { setSiteId(candidate.id); setSiteMenuOpen(false); }}>{candidate.label}{!candidate.real && <small>exemple</small>}</button></li>)}</ul>}
+        {siteMenuOpen && <ul id="site-options" className="place-menu" aria-label="Choisir un siège">{sites.map(candidate => <li key={candidate.id}><button type="button" aria-pressed={candidate.id === siteId} className={candidate.id === siteId ? 'active' : ''} onClick={() => { setSiteId(candidate.id); setSiteMenuOpen(false); navigate('spaces'); }}>{candidate.city}{!candidate.real && <small>exemple</small>}</button></li>)}</ul>}
       </div>
       <p className="nav-caption">VOTRE QUOTIDIEN</p>
       <nav aria-label="Navigation principale">{navigation.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} aria-current={page === item.id ? 'page' : undefined} onClick={() => navigate(item.id)}><Icon name={item.icon} /><span>{item.label}</span>{item.id === 'requests' && pending > 0 && <b className="nav-count">{pending}</b>}</button>)}</nav>
