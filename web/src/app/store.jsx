@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
+import { sites } from '../shared/data/sites.js';
 import { demoMatches } from '../features/resident/demo.js';
 
 const Store = createContext(null);
@@ -26,6 +27,7 @@ function loadMatches() {
 export function StoreProvider({ children }) {
   const [events, setEvents] = useState(loadEvents);
   const [matches, setMatches] = useState(loadMatches);
+  const [siteId, setSiteId] = useState(sites.find(site => site.real)?.id ?? sites[0].id);
   const [storageError, setStorageError] = useState('');
   const [toast, setToast] = useState('');
   useEffect(() => {
@@ -60,7 +62,7 @@ export function StoreProvider({ children }) {
   }
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
-  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
+  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 
 export const useStore = () => useContext(Store);

@@ -1,3 +1,4 @@
+import { validateRequest } from '../../features/requests/workflow.js';
 import { spaceById } from '../data/spaces.js';
 import { duration } from './format.js';
 
@@ -11,6 +12,9 @@ export function validateEvent(event, events, confirming = false) {
   if (!spaceById[event.space]) return 'Choisissez un espace.';
   if (!Number.isInteger(event.participants) || event.participants < 1) return 'Indiquez un nombre de personnes valide.';
   if (![event.revenue, event.costs].every(value => Number.isFinite(value) && value >= 0)) return 'Les montants doivent être positifs ou nuls.';
+  if ((confirming || event.status === 'confirmed') && (!event.referent?.trim() || !event.referentTeam?.trim())) return 'Renseignez le nom du responsable et son équipe ou association avant de confirmer l’événement.';
+  const requestError = validateRequest(event, confirming || event.status === 'confirmed');
+  if (requestError) return requestError;
   const capacity = spaceById[event.space].capacity;
   if (confirming && capacity != null && event.participants > capacity) return 'La capacité de cet espace est dépassée. Modifiez la demande.';
   if (confirming && conflicts(event, events).length) return 'Cet espace est déjà réservé sur ce créneau. Modifiez la demande.';
@@ -26,6 +30,7 @@ export function validateReport(report) {
   if (![report.attendance, report.residents].every(value => Number.isInteger(value) && value >= 0)) return 'Les présences doivent être des nombres entiers positifs ou nuls.';
   if (report.residents > report.attendance) return 'Les présences de résidentes ne peuvent pas dépasser le total.';
   if (![report.revenue, report.costs].every(value => Number.isFinite(value) && value >= 0)) return 'Vérifiez les recettes et les dépenses.';
+  if (!report.feedbackAuthor?.trim() || !report.feedbackTeam?.trim()) return 'Identifiez la responsable du retour et son équipe ou association.';
   if (!report.feedback.trim()) return 'Ajoutez un retour sur le déroulement de l’événement.';
   return '';
 }

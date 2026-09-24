@@ -9,10 +9,18 @@ main { width: min(100%, 1480px); margin: 0 auto; padding: 42px clamp(28px, 4vw, 
 .brand > span { font-family: "Instrument Serif", serif; font-size: 36px; line-height: 1; }
 .brand-dot { color: var(--peach); }
 .brand-caption { margin: 6px 0 26px 46px; color: #bfcfc7; font-size: 12px; letter-spacing: .04em; }
-.place-switch { display: grid; grid-template-columns: 39px 1fr 8px; gap: 11px; align-items: center; padding: 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 13px; background: rgba(255,255,255,.07); }
+.place-switch-wrap { position: relative; }
+.place-switch { display: grid; width: 100%; grid-template-columns: 39px 1fr 14px; gap: 11px; align-items: center; padding: 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 13px; color: inherit; background: rgba(255,255,255,.07); cursor: pointer; font: inherit; text-align: left; }
+.place-switch:hover { background: rgba(255,255,255,.11); }
+.place-switch > svg:last-child { color: #aebfb6; }
 .place-mark { display: grid; width: 39px; height: 39px; place-items: center; border-radius: 10px; color: var(--green); background: #d9dfc2; }
 .place-switch strong, .profile strong { display: block; color: white; font-size: 13px; }
 .place-switch small, .profile small { display: block; margin-top: 3px; color: #aebfb6; font-size: 14px; }
+.place-menu { position: absolute; z-index: 10; width: 100%; margin: 6px 0 0; padding: 6px; list-style: none; border: 1px solid rgba(255,255,255,.13); border-radius: 13px; background: #1f4033; box-shadow: 0 12px 30px rgba(0,0,0,.28); }
+.place-menu button { display: flex; width: 100%; align-items: center; gap: 8px; padding: 9px 10px; border: 0; border-radius: 9px; color: #dbe4de; background: transparent; cursor: pointer; font-size: 13px; font-weight: 600; text-align: left; }
+.place-menu button:hover { background: rgba(255,255,255,.08); }
+.place-menu button.active { color: white; background: rgba(255,255,255,.14); }
+.place-menu button small { margin: 0; padding: 2px 7px; border-radius: 20px; color: #c6d3cd; background: rgba(255,255,255,.1); font-size: 11px; font-weight: 700; }
 .live-dot { display: inline-block; width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #dd8c67; box-shadow: 0 0 0 3px rgba(221,140,103,.15); }
 .nav-caption { margin: 27px 11px 10px; color: #a9bdb3; font-size: 12px; font-weight: 700; letter-spacing: .12em; }
 .sidebar nav { display: grid; gap: 4px; }

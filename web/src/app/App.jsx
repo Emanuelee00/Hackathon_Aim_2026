@@ -74,7 +74,7 @@ export default function App() {
     />
     <div className="app-content">
       <Header page={page} onMenu={() => setMenuOpen(true)} onNew={openNew} />
-      <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date } })} navigate={navigate} /></main>
+      <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} /></main>
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}
     {toast && <p role="status" className="notice">{toast}</p>}

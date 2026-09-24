@@ -1,5 +1,5 @@
 export function bookingsForDate(events, date) {
-  return events.filter(event => event.date === date && event.status !== 'cancelled');
+  return events.filter(event => event.date === date && ['pending', 'confirmed', 'completed'].includes(event.status));
 }
 
 export function availabilityFor(spaceId, date, events) {

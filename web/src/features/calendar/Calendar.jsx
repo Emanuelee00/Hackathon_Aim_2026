@@ -12,7 +12,7 @@ export default function Calendar({ onOpen }) {
   const [month, setMonth] = useState(TODAY.slice(0, 7));
   const [space, setSpace] = useState('all');
   const days = useMemo(() => calendarDays(month, TODAY), [month]);
-  const visible = useMemo(() => events.filter(event => event.status !== 'cancelled' && (space === 'all' || event.space === space)), [events, space]);
+  const visible = useMemo(() => events.filter(event => ['pending', 'confirmed', 'completed'].includes(event.status) && (space === 'all' || event.space === space)), [events, space]);
   const eventsByDate = useMemo(() => visible.reduce((groups, event) => {
     groups[event.date] = [...(groups[event.date] || []), event];
     return groups;

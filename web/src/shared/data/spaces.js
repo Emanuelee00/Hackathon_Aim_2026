@@ -12,6 +12,9 @@ export const spaces = [
   { id: 'nice-studio', site: 'nice', name: 'Le Studio', capacity: 15, rate: 22, area: 28, color: 'sage', description: 'Un espace clair pour les ateliers créatifs et les petits groupes.', equipment: ['Tables modulables', 'Matériel de peinture', 'Point d’eau'], icon: 'palette' },
   { id: 'nice-verriere', site: 'nice', name: 'La Verrière', capacity: 45, rate: 42, area: 70, color: 'peach', description: 'Une grande salle baignée de lumière, pour les rencontres et les temps collectifs.', equipment: ['45 chaises', 'Sonorisation', 'Accès PMR'], icon: 'sofa' },
   { id: 'nice-terrasse', site: 'nice', name: 'La Terrasse', capacity: 30, rate: 28, area: 50, color: 'lavender', description: 'Un espace extérieur ombragé, pour les événements en plein air.', equipment: ['Mobilier extérieur', 'Point d’eau'], icon: 'leaf' },
+  // Chez Marthe — Avignon (exemple, site fictif pour une autre antenne)
+  { id: 'avignon-cour', site: 'avignon', name: 'La Cour', capacity: 35, rate: 30, area: 55, color: 'sage', description: 'Une cour intérieure pour les temps conviviaux et les petits événements.', equipment: ['Mobilier extérieur', 'Point d’eau'], icon: 'leaf' },
+  { id: 'avignon-bibliotheque', site: 'avignon', name: 'La Bibliothèque', capacity: 18, rate: 24, area: 32, color: 'peach', description: 'Un espace calme pour les ateliers, les réunions et le travail concentré.', equipment: ['Tables', 'Vidéoprojecteur', 'Wifi'], icon: 'file' },
 ];
 export const spaceById = Object.fromEntries(spaces.map(space => [space.id, space]));
 // Les demandes, le calendrier et le matching restent scopés au site réel :
@@ -19,4 +22,4 @@ export const spaceById = Object.fromEntries(spaces.map(space => [space.id, space
 const realSiteId = sites.find(site => site.real)?.id;
 export const bookableSpaces = spaces.filter(space => space.site === realSiteId);
 export const TODAY = '2026-09-24';
-export const statuses = { pending: 'À étudier', confirmed: 'Confirmé', completed: 'Bilan saisi', cancelled: 'Annulé' };
+export const statuses = { pending: 'À étudier', incomplete: 'Incomplète', waitlisted: 'Liste d’attente', confirmed: 'Confirmé', completed: 'Bilan saisi', cancelled: 'Annulé' };

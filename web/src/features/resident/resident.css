@@ -30,6 +30,7 @@
 .proposal-when { display: flex; align-items: center; gap: 8px; margin: 0; color: #8a5a45; font-size: 14px; font-weight: 700; }
 .proposal-when::first-letter { text-transform: uppercase; }
 .proposal h3, .activity-card h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 32px; font-weight: 400; line-height: 1.1; }
+.proposal-referent { display: flex; align-items: center; gap: 7px; margin: 0; color: #64736b; font-size: 13px; }
 .proposal-why { margin: 0; color: #3e4f46; font-size: 16px; }
 .proposal-benefit { display: flex; gap: 10px; margin: 0; padding: 12px 14px; border-radius: 10px; color: #2f4b3d; background: #e8ecd9; font-size: 15px; line-height: 1.5; }
 .proposal-benefit svg { flex-shrink: 0; margin-top: 2px; }
