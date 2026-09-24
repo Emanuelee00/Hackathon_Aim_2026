@@ -33,7 +33,7 @@ function AdvicePanel({ advice }) {
 function OccupancyPanel({ rows, month, setMonth }) {
   return <section className="panel impact-panel stats-occupancy">
     <div className="stats-occupancy-head"><h3>Taux d’occupation par espace</h3><div className="stats-month"><button className="icon-button" aria-label="Mois précédent" onClick={() => setMonth(addMonths(month, -1))}><Icon name="left" size={16} /></button><strong>{monthLabel(month)}</strong><button className="icon-button" aria-label="Mois suivant" onClick={() => setMonth(addMonths(month, 1))}><Icon name="right" size={16} /></button></div></div>
-    <BarList rows={rows.map(row => ({ label: row.space.name, share: row.rate, rate: row.rate }))} value={row => `${row.rate} %`} />
+    <BarList rows={rows.map(row => ({ label: row.space.name, share: row.rate, rate: row.rate, hours: row.hours }))} value={row => `${row.hours} h · ${row.rate} %`} />
     <p className="hint">Heures réservées sur {OPEN_HOURS_PER_DAY} h d’ouverture par jour (événements confirmés et créneaux des associations synchronisées) : {rows.reduce((sum, row) => sum + row.hours, 0)} h réservées au total ce mois-ci.</p>
   </section>;
 }

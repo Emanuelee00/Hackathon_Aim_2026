@@ -12,5 +12,6 @@
 .stats-occupancy-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
 .stats-month { display: flex; align-items: center; gap: 8px; }
 .stats-month strong { min-width: 130px; text-align: center; text-transform: capitalize; font-size: 14px; }
+.stats-occupancy .bar-row { grid-template-columns: 150px 1fr 90px; }
 .impact-panel h4 { margin: 8px 0 0; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-@media (max-width: 900px) { .stats-advice ul { grid-template-columns: 1fr; padding: 0 16px 18px; } }
+@media (max-width: 900px) { .stats-occupancy .bar-row { grid-template-columns: 110px 1fr 80px; } .stats-advice ul { grid-template-columns: 1fr; padding: 0 16px 18px; } }
