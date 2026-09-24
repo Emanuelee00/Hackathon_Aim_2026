@@ -89,10 +89,14 @@ def call_tool(tools: dict[str, Tool], call: dict, context: Context) -> str:
 
 
 def run_agent(agent: Agent, context: Context) -> str:
-    messages = [
-        {"role": "system", "content": agent.instructions()},
-        *context.transcript,
-    ]
+    system = agent.instructions()
+    if context.user:
+        # From the account, so a message claiming to be someone else cannot change it.
+        system += (
+            f"\nPersonne connectée : {context.user.name}. Tes outils ne parlent que "
+            "d’elle (ou de sa structure) : pour quelqu’un d’autre, tu n’as pas accès."
+        )
+    messages = [{"role": "system", "content": system}, *context.transcript]
     tools = {tool.name: tool for tool in agent.tools}
     for round_ in range(MAX_ROUNDS):
         # The last round offers no tools, so the model has to reply.

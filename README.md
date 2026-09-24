@@ -91,10 +91,26 @@ compose; modello `gpt-4.1-mini`, modificabile con `OPENAI_MODEL`).
   `agents/knowledge/renseignements.md` (modificabile dall'équipe, riletto a ogni
   conversazione). Se non sa rispondere chiede nome ed e-mail e trasmette la domanda
   all'équipe (strumento `transmettre_a_equipe`).
-- Le domande trasmesse compaiono in `equipe.` → **Questions reçues**, leggibili solo
-  con un account équipe (`GET/PATCH /api/questions`).
-- Nuovo agente: un file in `agents/` con istruzioni e strumenti, da aggiungere a
-  `AGENTS` in `agents/routes.py`; in React, `<ChatBubble agentId="..." />`.
+- Ogni spazio con account ha il suo agente, riservato a quel ruolo (`audience`):
+  chi non ha il ruolo riceve 401/403. Gli strumenti leggono solo i dati permessi e
+  li filtrano con l'account connesso, mai con gli argomenti del modello:
+
+  | Agente | Vede |
+  | --- | --- |
+  | `equipe` | tutte le demandes (contatti e budget), calendario, domande ricevute, parcours |
+  | `residents` | solo le proprie proposte e il proprio parcours (non `suggested`/`dismissed`), attività aperte senza contatti |
+  | `partenaires` | le prenotazioni della propria associazione; per le altre solo spazio e orario |
+  | `benevoles` | missioni e posti liberi (senza nomi), le proprie iscrizioni |
+
+  L'account è collegato ai dati per nome, come nelle pagine: residente per nome di
+  battesimo, associazione per nome dell'associazione, bénévole per nome.
+  Gli agenti leggono soltanto; tranne quello dell'équipe possono trasmettere una
+  domanda all'équipe con nome ed e-mail dell'account.
+- Le domande trasmesse compaiono in `equipe.` → **Questions reçues**, con la
+  provenienza, leggibili solo con un account équipe (`GET/PATCH /api/questions`).
+- Nuovo agente: un file in `agents/` con istruzioni, strumenti e `audience`, da
+  aggiungere a `AGENTS` in `agents/routes.py`; in React, `<ChatBubble agentId="..." />`
+  oppure una voce in `SpaceAssistant.jsx`.
 
 ## Modello
 

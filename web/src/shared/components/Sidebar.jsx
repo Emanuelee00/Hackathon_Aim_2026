@@ -16,6 +16,7 @@ export const navigation = [
   { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
   { id: 'spaces', label: 'Nos espaces', icon: 'space' },
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
+  { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
 ];
 
 export default function Sidebar({ page, navigate, mobile, close, help, newQuestions, accessRequests }) {

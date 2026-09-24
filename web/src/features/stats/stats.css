@@ -1,0 +1,16 @@
+/* Statistics & advice */
+.stats-advice { margin-bottom: 18px; }
+.stats-advice ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0 24px 22px; list-style: none; }
+.stats-advice li { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; padding: 13px; border-radius: 10px; background: #f3ecf5; }
+.stats-advice li.warn { background: #fdf6d8; }
+.stats-advice-icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 8px; color: #723b7d; background: var(--sage); }
+.stats-advice li.warn .stats-advice-icon { color: #7b712b; background: #f7eb99; }
+.stats-advice strong { display: block; font-size: 14px; }
+.stats-advice li p { margin: 3px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.stats-advice-empty { margin: 0; padding: 0 24px 22px; color: var(--muted); }
+.stats-occupancy { margin-bottom: 0; }
+.stats-occupancy-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.stats-month { display: flex; align-items: center; gap: 8px; }
+.stats-month strong { min-width: 130px; text-align: center; text-transform: capitalize; font-size: 14px; }
+.impact-panel h4 { margin: 8px 0 0; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 900px) { .stats-advice ul { grid-template-columns: 1fr; padding: 0 16px 18px; } }

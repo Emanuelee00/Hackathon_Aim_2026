@@ -10,6 +10,7 @@ import Committee from '../features/committee/Committee.jsx';
 import Calendar from '../features/calendar/Calendar.jsx';
 import Spaces from '../features/spaces/Spaces.jsx';
 import Reports from '../features/reports/Reports.jsx';
+import Stats from '../features/stats/Stats.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
@@ -35,6 +36,7 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'calendar') return <Calendar onOpen={openEvent} />;
   if (page === 'spaces') return <Spaces onBook={openSpaceRequest} onOpen={openEvent} />;
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
+  if (page === 'stats') return <Stats />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 

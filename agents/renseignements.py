@@ -3,6 +3,7 @@
 from .data import RULES
 from .handoff import VISITOR_HAND_OFF
 from .llm import Agent
+from .prompts import today
 
 INSTRUCTIONS = """Tu es l’agent de renseignements de Chez Marthe, sur le site public.
 Des visiteurs, associations et organisateurs te demandent s’ils peuvent faire
@@ -28,7 +29,7 @@ Informations sur le lieu :
 
 
 def instructions() -> str:
-    return INSTRUCTIONS + RULES.read_text(encoding="utf-8")
+    return today() + INSTRUCTIONS + RULES.read_text(encoding="utf-8")
 
 
 AGENT = Agent(id="renseignements", instructions=instructions, tools=(VISITOR_HAND_OFF,))
