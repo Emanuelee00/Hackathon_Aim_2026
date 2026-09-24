@@ -8,3 +8,6 @@ web/test-results/
 web/playwright-report/
 artifacts/
 marthe.db
+docs/
+chezmarthe/
+cloudflare/
