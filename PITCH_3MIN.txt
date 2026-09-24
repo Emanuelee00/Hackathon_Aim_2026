@@ -1,0 +1,95 @@
+PITCH ELEVATOR — MARTHE — 3 MINUTES CHRONO
+============================================
+
+[PARTIE 1 — Le contexte et la demande — ~35 secondes]
+
+Chez Marthe, à Marseille, un ancien couvent de 1500 m² accueille
+trente femmes et une vingtaine d'étudiantes en situation de précarité.
+Six espaces du lieu sont aussi partagés avec le quartier : une chapelle,
+un jardin, une cantine solidaire, des salles de réunion.
+
+On nous a demandé de résoudre un problème très concret : aujourd'hui,
+gérer ce lieu, c'est jongler entre deux mondes séparés. D'un côté, la
+gestion opérationnelle — les demandes de location, le calendrier, les
+tarifs. De l'autre, l'impact social — les opportunités que ces
+événements pourraient offrir aux résidentes : une formation, une
+rencontre, un premier pas vers l'emploi. Sans outil commun, ces
+connexions se perdent, et l'impact reste impossible à prouver.
+
+[PARTIE 2 — Ce qu'on a construit, point par point — ~100 secondes]
+
+On a construit Marthe : une plateforme qui relie tout ce cycle, du
+premier contact jusqu'à l'impact mesuré.
+
+Un. Chaque demande d'espace suit un parcours complet : qualification,
+créneau de visite du lieu, devis automatique avec les vrais tarifs —
+de 40 euros les deux heures à 200 euros la journée pour la chapelle —
+puis décision de la coordinatrice ou du comité selon le type de
+demande.
+
+Deux. Une intelligence artificielle hybride analyse chaque événement
+et propose, en moins de dix secondes, jusqu'à trois résidentes dont
+les objectifs ou les compétences correspondent. La décision reste
+toujours humaine : l'IA suggère, elle ne décide jamais seule.
+
+Trois. Chaque résidente a son espace personnel : elle peut déposer son
+CV, recevoir un plan vers l'emploi généré sur mesure par l'IA, suivre
+son parcours, et candidater librement à n'importe quelle activité.
+
+Quatre. Le site a maintenant quatre portes d'entrée séparées et
+sécurisées — équipe, résidentes, bénévoles, partenaires — chacune avec
+son propre compte et son propre assistant IA, disponible jour et nuit,
+qui répond aux questions et transmet à l'équipe ce qu'il ne sait pas.
+
+Cinq. Tout repose sur une vraie base de données partagée, avec
+authentification par rôle, questionnaires de satisfaction et suivi
+d'impact. Ce n'est plus une simulation : c'est un outil de
+démonstration qui fonctionne réellement, en ligne.
+
+[PARTIE 3 — Ce que ça rapporte, ce que ça fait économiser — ~35 secondes]
+
+Concrètement, quel est le gain ? La location des espaces mixtes reste
+la seule vraie rentrée d'argent du lieu : chapelle, salon collectif,
+coworking. Le devis automatique fait gagner un temps précieux à la
+coordination, qui aujourd'hui passe des heures au téléphone à négocier
+chaque location une par une. Un meilleur taux d'occupation des salles,
+c'est plus de revenus locatifs. Et surtout : pouvoir prouver l'impact
+réel — combien de femmes ont trouvé une opportunité, un contact, un
+premier emploi — c'est ce qui ouvre l'accès aux financements des
+fondations et des collectivités.
+
+[CLÔTURE — ~10 secondes]
+
+Marthe ne compte pas seulement les personnes qui entrent dans une
+pièce. Elle montre quelles portes s'ouvrent quand elles en sortent.
+Merci.
+
+============================================
+AIDE-MÉMOIRE / SCHÉMA À POINTS (pour la présentation)
+============================================
+
+ACCROCHE
+- Chez Marthe, Marseille : couvent 1500 m², 30 femmes + ~20 étudiantes,
+  6 espaces partagés avec le quartier
+
+PROBLÈME DEMANDÉ
+- Gestion opérationnelle ≠ impact social → connexions perdues,
+  impact impossible à prouver
+
+CE QU'ON A FAIT (5 points)
+1. Cycle complet : demande → visite → devis auto → décision
+2. IA hybride : matching résidentes/événements en <10s, décision humaine
+3. Espace résidente : CV → plan emploi IA, parcours, candidature libre
+4. 4 sous-domaines (équipe/résidentes/bénévoles/partenaires)
+   + assistant IA par espace, dispo 24/7
+5. Vraie base de données, satisfaction, tableau de bord d'impact
+
+ÉCONOMIE / GAINS
+- Location espaces = seule vraie rentrée d'argent (40€/2h → 200€/jour)
+- Devis auto = fini les heures au téléphone à négocier
+- Meilleur taux d'occupation = plus de revenus
+- Impact prouvé = accès aux financements fondations/collectivités
+
+PHRASE DE CLÔTURE
+- "Marthe ne compte pas les personnes qui entrent. Elle montre les
+  portes qui s'ouvrent quand elles sortent."
