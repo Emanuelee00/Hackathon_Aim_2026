@@ -3,9 +3,21 @@ export OLLAMA_HOST := 127.0.0.1:11435
 export OLLAMA_MODELS := $(CURDIR)/.ollama/models
 export OLLAMA_NO_CLOUD := 1
 
-.DEFAULT_GOAL := install
+.DEFAULT_GOAL := all
 
-.PHONY: install dev front build check format test ai model-pull browser-test
+.PHONY: all install dev front build check format test ai model-pull browser-test
+
+all: install
+	@set -eu; \
+	ollama serve & \
+	OLLAMA_PID=$$!; \
+	trap 'kill $$OLLAMA_PID 2>/dev/null || true' EXIT INT TERM; \
+	until ollama list >/dev/null 2>&1; do \
+		kill -0 $$OLLAMA_PID 2>/dev/null || { echo "Ollama non si è avviato."; exit 1; }; \
+		sleep 1; \
+	done; \
+	ollama pull qwen2.5:0.5b; \
+	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
 ai:
 	ollama serve

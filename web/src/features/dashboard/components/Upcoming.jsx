@@ -1,7 +1,7 @@
-import Icon from './Icon.jsx';
-import { EmptyState } from './Primitives.jsx';
-import { spaceById, TODAY } from '../data/spaces.js';
-import { dateLabel } from '../lib/format.js';
+import Icon from '../../../shared/components/Icon.jsx';
+import { EmptyState } from '../../../shared/components/Primitives.jsx';
+import { spaceById, TODAY } from '../../../shared/data/spaces.js';
+import { dateLabel } from '../../../shared/lib/format.js';
 
 export default function Upcoming({ events, onOpen, navigate }) {
   const upcoming = events.filter(event => event.status === 'confirmed' && event.date >= TODAY).sort((a, b) => `${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`)).slice(0, 3);

@@ -1,4 +1,4 @@
-import Icon from './Icon.jsx';
+import Icon from '../../../shared/components/Icon.jsx';
 
 export default function Hero({ onNew, navigate }) {
   return <section className="hero">

@@ -1,12 +1,12 @@
-import { useStore } from '../lib/store.jsx';
-import { money } from '../lib/format.js';
-import { totals } from '../lib/planning.js';
-import { PageIntro, Metric, EmptyState } from '../components/Primitives.jsx';
-import Icon from '../components/Icon.jsx';
-import Hero from '../components/Hero.jsx';
-import EventRow from '../components/EventRow.jsx';
-import Upcoming from '../components/Upcoming.jsx';
-import ImpactCard from '../components/ImpactCard.jsx';
+import { useStore } from '../../app/store.jsx';
+import { money } from '../../shared/lib/format.js';
+import { totals } from '../../shared/lib/planning.js';
+import { PageIntro, Metric, EmptyState } from '../../shared/components/Primitives.jsx';
+import Icon from '../../shared/components/Icon.jsx';
+import EventRow from '../../shared/components/EventRow.jsx';
+import Hero from './components/Hero.jsx';
+import Upcoming from './components/Upcoming.jsx';
+import ImpactCard from './components/ImpactCard.jsx';
 
 export default function Dashboard({ onNew, onOpen, navigate }) {
   const { events } = useStore();

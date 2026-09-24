@@ -1,9 +1,11 @@
 import Icon from './Icon.jsx';
-import { useStore } from '../lib/store.jsx';
+import { useStore } from '../../app/store.jsx';
 
 export const navigation = [
   { id: 'dashboard', label: 'Vue d’ensemble', icon: 'dashboard' },
   { id: 'requests', label: 'Les demandes', icon: 'inbox' },
+  { id: 'opportunities', label: 'Opportunités & parcours', icon: 'sparkles' },
+  { id: 'journeys', label: 'Suivi des parcours', icon: 'leaf' },
   { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
   { id: 'spaces', label: 'Nos espaces', icon: 'space' },
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },

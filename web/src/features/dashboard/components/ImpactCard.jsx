@@ -1,5 +1,5 @@
-import Icon from './Icon.jsx';
-import { totals } from '../lib/planning.js';
+import Icon from '../../../shared/components/Icon.jsx';
+import { totals } from '../../../shared/lib/planning.js';
 
 export default function ImpactCard({ events, navigate }) {
   const impact = totals(events);

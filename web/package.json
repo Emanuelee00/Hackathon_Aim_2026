@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "test": "node --test src/lib/*.test.js",
+    "test": "node --test src/shared/lib/*.test.js src/features/*/*.test.js",
     "test:e2e": "playwright test"
   },
   "dependencies": {
