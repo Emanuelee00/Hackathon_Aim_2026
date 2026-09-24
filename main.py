@@ -1,4 +1,3 @@
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from threading import Thread
@@ -31,10 +30,11 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-# Vercel serves public/ from its CDN; mounting it here intercepts those requests.
-ROOT = Path(__file__).parent
-FRONTEND = next(
-    (d for d in (ROOT / "web" / "dist", ROOT / "public") if d.is_dir()), None
+# Use the same build directory locally and in the deployed Python bundle.
+app.mount(
+    "/",
+    StaticFiles(
+        directory=Path(__file__).parent / "web" / "dist", html=True, check_dir=False
+    ),
+    name="web",
 )
-if FRONTEND and not os.getenv("VERCEL"):
-    app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="web")
