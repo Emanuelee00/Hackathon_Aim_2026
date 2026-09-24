@@ -77,13 +77,18 @@ Il principio centrale è semplice:
 
 ### Fase 1 — Arriva una richiesta
 
-Un'organizzazione chiede uno spazio tramite un link di qualificazione: descrive attività, data, pubblico, bisogni e budget e risponde a criteri minimi di coerenza con la missione del luogo. La coordinatrice trova tutte le informazioni nello stesso punto, senza doverle ricostruire per telefono.
+Ogni richiesta passa da un questionario dedicato, secondo il tipo:
 
-**Utilità:** riduce email, messaggi, dati mancanti e le telefonate fatte solo per raccogliere informazioni di base.
+- una **proposition de programmation** (un'attività organizzata dentro il luogo) passa dal questionario di programmazione ed è validata — o no — dal **comitato di coordinamento**, che riunisce tutte le squadre una volta a settimana, sulla base di una carta interna condivisa;
+- una **location d'espace** (l'affitto di una sala da parte di terzi) passa da un questionario dedicato diverso ed è trattata **caso per caso**, senza attendere la riunione settimanale.
+
+In entrambi i casi la coordinatrice trova attività, data, pubblico, bisogni e budget nello stesso punto, senza doverli ricostruire per telefono.
+
+**Utilità:** riduce email, messaggi, dati mancanti e le telefonate fatte solo per raccogliere informazioni di base; separa ciò che richiede una decisione collettiva da ciò che si tratta individualmente.
 
 ### Fase 2 — La richiesta viene valutata
 
-Il sistema mostra disponibilità, compatibilità con la missione, possibili conflitti e condizioni economiche. Per le richieste che superano la soglia di qualificazione, la coordinatrice propone un créneau per far visitare il luogo a chi lo richiede: la visita conferma la coerenza pratica e permette all'associazione ospitante di esprimere un accordo esplicito prima della conferma. La decisione finale appartiene sempre alla coordinatrice.
+Il sistema mostra disponibilità, compatibilità con la missione, possibili conflitti e condizioni economiche. Per le richieste di locazione più consistenti, la coordinatrice può proporre un créneau per far visitare il luogo a chi lo richiede: la visita conferma la coerenza pratica prima della conferma. La decisione finale appartiene sempre alle persone — il comitato per la programmazione, la coordinatrice per la locazione — mai a un automatismo.
 
 **Utilità:** rende le decisioni più rapide, coerenti e tracciabili, e filtra a monte le richieste incompatibili senza doverle discutere una per una.
 
@@ -447,6 +452,8 @@ Intervistare coordinatrici, residenti e organizzatori. Correggere il flusso dove
 ### Passo 3 — Replica in tre luoghi diversi
 
 Provare il modello in contesti con dimensioni e missioni differenti. Identificare ciò che è comune e ciò che deve restare configurabile.
+
+Un esempio concreto: oggi le salles de soin (permanenze di psicologhe, non riservate solo alle residenti) sono gestite da un'associazione partner esterna, non dal luogo stesso. Sui prossimi luoghi l'obiettivo è gestire anche questa parte direttamente — un caso tipico di funzione da rendere configurabile invece che presupposta uguale ovunque.
 
 ### Passo 4 — Accordo con una rete o un territorio
 
