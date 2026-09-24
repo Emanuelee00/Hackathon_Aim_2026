@@ -1,0 +1,88 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chez Marthe | Bénévoles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>:root{--ink:#1E1A2B;--ink2:#5A566B;--paper:#F5F6F8;--card:#FFFFFF;--line:#D9DAE0;--vitrail:#4B32C3;--vitrail-l:#ECE8FB;--jardin:#1F7A55;--jardin-l:#E3F2EA;--soleil:#B7801A;--soleil-l:#FCF1D8;--brique:#B93A32;--brique-l:#FBE7E5;--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:var(--vitrail)}
+:focus-visible{outline:3px solid var(--vitrail);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:10}
+header.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.5px;color:var(--ink);text-decoration:none;line-height:1}
+.brand small{display:block;font-family:var(--body);font-size:12px;letter-spacing:0;color:var(--ink2);margin-top:3px}
+nav.sites{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.sites a{padding:7px 12px;border-radius:999px;color:var(--ink2);text-decoration:none;font-size:14px}
+nav.sites a:hover{background:var(--paper);color:var(--ink)}
+nav.sites a[aria-current]{background:var(--ink);color:#fff}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.3px;line-height:1.05;margin:0 0 .4em}
+h1{font-size:clamp(40px,7vw,76px)}
+h2{font-size:clamp(26px,3.4vw,36px)}
+h3{font-size:18px;margin:0 0 .3em}
+p{margin:0 0 1em;max-width:68ch}
+.muted{color:var(--ink2)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.btn{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--ink);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--vitrail);border-color:var(--vitrail)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.sm{font-size:13px;padding:6px 12px}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px}
+.ok{background:var(--jardin-l);color:var(--jardin)}
+.warn{background:var(--soleil-l);color:#7A5510}
+.no{background:var(--brique-l);color:var(--brique)}
+.vio{background:var(--vitrail-l);color:var(--vitrail)}
+label{font-weight:700;font-size:14px;display:block;margin-bottom:5px}
+input,select,textarea{font:inherit;width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--vitrail);outline:none}
+.field{margin-bottom:16px}
+.err{color:var(--brique);font-size:13px;margin-top:4px;min-height:1em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.demo-note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 12px}
+table{width:100%;border-collapse:collapse}
+.scroll{overflow-x:auto}
+.toast{position:sticky;bottom:16px;margin:16px auto 0;max-width:520px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;display:none}
+.toast.show{display:block}
+footer{padding:40px 0;color:var(--ink2);font-size:14px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}nav.sites{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.mis{display:grid;grid-template-columns:1fr;gap:14px}
+.m{display:grid;grid-template-columns:110px 1fr;gap:18px}
+.date{background:var(--ink);color:#fff;border-radius:10px;padding:12px;text-align:center;align-self:start}
+.date b{display:block;font-family:var(--display);font-size:34px;font-weight:400;line-height:1}
+.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:10px}
+.role{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
+.role .gauge{display:flex;gap:3px;margin:6px 0}.role .gauge i{flex:1;height:6px;border-radius:3px;background:#ebecef}.role .gauge i.f{background:var(--jardin)}
+.side{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.side{grid-template-columns:1fr}.m{grid-template-columns:1fr}}
+</style></head><body>
+<div class="demo-note">Démonstration hackathon, données fictives</div>
+<header class="top"><div class="wrap"><a class="brand" data-link="accueil">CHEZ MARTHE<small>Espace bénévoles</small></a><nav class="sites" aria-label="Espaces de la plateforme"></nav></div></header>
+
+<main class="wrap">
+<div style="padding-top:36px"><h1>Bonjour Camille</h1><p class="muted">Voici les coups de main dont le lieu a besoin dans les prochaines semaines. Inscrivez-vous en un clic, l'équipe vous confirme la veille.</p></div>
+<div class="side"><div class="mis" id="mis"></div>
+<div><div class="panel"><h3>Mes engagements</h3><div id="mine"><p class="muted">Aucun pour l'instant.</p></div></div>
+<div class="panel" style="margin-top:20px"><h3>Se former</h3><p style="font-size:15px"><b>Régie son et lumière de la chapelle</b><br><span class="muted">Sam. 10 oct., 10 h. Ouvert aux bénévoles et aux résidentes.</span></p><button class="btn ghost sm" onclick="cmToast('Inscription à la formation enregistrée')">M'inscrire à la formation</button></div></div></div>
+</main>
+<footer class="wrap">Merci de faire vivre Chez Marthe.</footer>
+<script>
+const M=[{d:'3',mo:'oct.',t:'La rue a un incroyable talent',w:'Samedi, 14 h – 19 h, jardin, 150 personnes attendues',r:[['Accueil du public',4,2],['Buvette',3,1],['Rangement',3,0]]},
+{d:'2',mo:'oct.',t:'Concert de la chorale Voix de femmes',w:'Vendredi, 18 h 30 – 22 h, chapelle',r:[['Régie son (formation requise)',1,0],['Accueil',2,1]]},
+{d:'8',mo:'oct.',t:'Buvette du jeudi',w:'Jeudi, 18 h – 21 h, jardin',r:[['Bar',2,1]]},
+{d:'16',mo:'oct.',t:'Projection et débat (sous réserve)',w:'Vendredi, 19 h, lieu à confirmer',r:[['Accueil',2,0],['Buvette',1,0]]}];
+const mine=new Set();const $=id=>document.getElementById(id);
+function render(){$('mis').innerHTML=M.map((m,i)=>`<div class="panel m"><div class="date"><b>${m.d}</b>${m.mo}</div><div><h3>${m.t}</h3><span class="muted">${m.w}</span><div class="roles">${m.r.map((r,j)=>{const k=i+'-'+j,on=mine.has(k),f=r[2]+(on?1:0);return `<div class="role"><b>${r[0]}</b><div class="gauge">${Array.from({length:r[1]},(_,x)=>`<i class="${x<f?'f':''}"></i>`).join('')}</div><span class="muted" style="font-size:13px">${f} / ${r[1]} inscrits</span><br><button class="btn sm ${on?'':'ghost'}" style="margin-top:6px" ${!on&&f>=r[1]?'disabled':''} onclick="tog('${k}')">${on?'Inscrit·e, se désinscrire':f>=r[1]?'Complet':'Je m\u2019inscris'}</button></div>`}).join('')}</div></div></div>`).join('');
+$('mine').innerHTML=mine.size?[...mine].map(k=>{const [i,j]=k.split('-');return `<p style="font-size:15px;margin:0 0 8px"><b>${M[i].r[j][0]}</b><br><span class="muted">${M[i].t}, ${M[i].d} ${M[i].mo}</span></p>`}).join(''):'<p class="muted">Aucun pour l\u2019instant.</p>'}
+function tog(k){if(mine.has(k)){mine.delete(k);cmToast('Désinscription enregistrée')}else{mine.add(k);cmToast('Merci ! Inscription enregistrée')}render()}
+render();
+</script>
+
+<div class="toast" id="toast" role="status"></div>
+<script>const CM_SITES=[['accueil','Accueil',''],['equipe','Équipe','equipe'],['partenaire','Associations','partenaire'],['benevole','Bénévoles','benevole'],['retour','Bilan','retour']];
+function cmLink(k){const s=CM_SITES.find(x=>x[0]===k);const h=location.hostname;if(h.endsWith('chezmarthe.ovh'))return 'https://'+(s[2]?s[2]+'.':'')+'chezmarthe.ovh/';return '../'+k+'/index.html';}
+function cmNav(cur){const n=document.querySelector('nav.sites');n.innerHTML=CM_SITES.map(([k,l])=>`<a href="${cmLink(k)}"${k===cur?' aria-current="page"':''}>${l}</a>`).join('');document.querySelectorAll('[data-link]').forEach(a=>a.href=cmLink(a.dataset.link));}
+function cmToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3200);}
+</script><script>cmNav("benevole");</script>
+</body></html>

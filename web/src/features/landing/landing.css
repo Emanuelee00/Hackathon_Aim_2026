@@ -1,4 +1,4 @@
-/* Landing page and spaces not yet available */
+/* Landing page */
 .landing { display: grid; gap: 40px; width: min(100%, 1080px); margin: 0 auto; padding: 36px 16px 56px; }
 .landing-brand { display: block; width: max-content; padding: 14px 20px; border-radius: 18px; background: var(--green); }
 .landing-brand img { display: block; width: 180px; height: auto; }

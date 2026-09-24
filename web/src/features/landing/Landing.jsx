@@ -1,5 +1,7 @@
 import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
+import { StoreProvider } from '../../app/store.jsx';
+import PublicRequest from '../public-request/PublicRequest.jsx';
 
 export function Brand() {
   return <a href={spaceUrl(null)} className="landing-brand"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>;
@@ -14,12 +16,13 @@ export default function Landing() {
       <p>Chaque rencontre ouvre des possibles. Choisissez votre espace pour commencer.</p>
     </header>
     <nav className="landing-spaces" aria-label="Espaces">
-      {spaces.map(space => <a key={space.id} href={spaceUrl(space.id)} className="landing-card">
+      {spaces.filter(space => !space.hidden).map(space => <a key={space.id} href={spaceUrl(space.id)} className="landing-card">
         <span className="landing-icon"><Icon name={space.icon} size={22} /></span>
         <strong>{space.label}{space.soon && <small>Bientôt</small>}</strong>
         <p>{space.text}</p>
         <Icon name="arrow" size={18} className="landing-arrow" />
       </a>)}
     </nav>
+    <StoreProvider><PublicRequest /></StoreProvider>
   </div>;
 }

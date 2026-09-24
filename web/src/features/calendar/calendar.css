@@ -34,3 +34,26 @@
 .calendar-legend i.sand { background: #f5e88f; }
 .calendar-legend i.pending-mark { border: 1px dashed #806d84; background: transparent; }
 
+
+/* Calendar: week by space */
+.view-tabs { display: inline-flex; gap: 4px; }
+.calendar-toolbar { flex-wrap: wrap; }
+.week-grid { display: grid; min-width: 900px; grid-template-columns: 150px repeat(7, 1fr); }
+.week-head { padding: 10px 12px; border-right: 1px solid #eae3e4; color: var(--muted); background: #f7f1f2; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.week-space { padding: 10px 12px; border-top: 1px solid #eae3e4; border-right: 1px solid #eae3e4; background: #f9f3f4; font-size: 13px; font-weight: 700; }
+.week-cell { display: grid; align-content: start; gap: 4px; min-height: 64px; padding: 6px; border-top: 1px solid #eae3e4; border-right: 1px solid #eae3e4; background: #fef9fa; }
+.week-entry { display: grid; gap: 2px; width: 100%; padding: 5px 6px; border: 0; border-left: 3px solid #9561a0; border-radius: 5px; color: #6e4078; background: #ede0f0; font-size: 12px; text-align: left; }
+button.week-entry { cursor: pointer; }
+.week-entry span { font-weight: 700; }
+.week-entry strong { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.week-entry.rental { border-left-color: #dc4d71; background: #fcd7e0; }
+.week-entry.asso { border-left-color: #8973b0; background: #ece6f6; }
+.week-entry.pending { border-left-style: dashed; opacity: .8; }
+.week-entry.conflict { border-left-color: #b93a32; color: #7c2530; background: #f9d2d0; }
+.calendar-legend i.week-mark.programming { background: #d1b2d7; }
+.calendar-legend i.week-mark.rental { background: #f589a4; }
+.calendar-legend i.week-mark.asso { background: #c8bbdf; }
+.calendar-legend i.week-mark.pending { border: 1px dashed #806d84; background: transparent; }
+.calendar-legend i.week-mark.conflict { background: #d9534f; }
+.week-note { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 12px 20px; border-top: 1px solid var(--line); color: #6e5310; background: #faf4cd; font-size: 14px; }
+.week-note svg { flex-shrink: 0; margin-top: 3px; }

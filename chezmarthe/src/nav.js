@@ -1,0 +1,4 @@
+const CM_SITES=[['accueil','Accueil',''],['equipe','Équipe','equipe'],['partenaire','Associations','partenaire'],['benevole','Bénévoles','benevole'],['retour','Bilan','retour']];
+function cmLink(k){const s=CM_SITES.find(x=>x[0]===k);const h=location.hostname;if(h.endsWith('chezmarthe.ovh'))return 'https://'+(s[2]?s[2]+'.':'')+'chezmarthe.ovh/';return '../'+k+'/index.html';}
+function cmNav(cur){const n=document.querySelector('nav.sites');n.innerHTML=CM_SITES.map(([k,l])=>`<a href="${cmLink(k)}"${k===cur?' aria-current="page"':''}>${l}</a>`).join('');document.querySelectorAll('[data-link]').forEach(a=>a.href=cmLink(a.dataset.link));}
+function cmToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3200);}

@@ -12,6 +12,7 @@
   .journey-metrics { grid-template-columns: repeat(2, 1fr); }
   .journey-metrics > p { grid-column: 1 / -1; justify-content: center; }
   .journeys-grid { grid-template-columns: 1fr; }
+  .residents-grid { grid-template-columns: 1fr; }
 }
 
 /* Responsive: mobile nav breakpoint */

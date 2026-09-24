@@ -1,0 +1,54 @@
+.assos{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.assos button{font:inherit;font-weight:700;border:2px solid var(--ink);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer}
+.assos button[aria-pressed=true]{background:var(--ink);color:#fff}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.slot{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.src{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.src label{border:2px solid var(--line);border-radius:10px;padding:10px;font-weight:700;cursor:pointer;font-size:14px}
+.src label:has(input:checked){border-color:var(--vitrail);background:var(--vitrail-l)}
+.src input{width:auto;margin-right:6px}
+.prog{height:8px;background:#ebecef;border-radius:4px;overflow:hidden;margin:12px 0}.prog i{display:block;height:100%;width:0;background:var(--jardin);transition:width 1.4s ease}
+.check{list-style:none;padding:0;margin:0}.check li{padding:8px 0 8px 30px;position:relative;border-top:1px solid var(--line)}
+.check li:before{content:"";position:absolute;left:0;top:10px;width:18px;height:18px;border:2px solid var(--line);border-radius:4px}
+.check li.d:before{background:var(--jardin);border-color:var(--jardin)}
+.check li.d:after{content:"✓";position:absolute;left:4px;top:8px;color:#fff;font-size:13px;font-weight:700}
+@media (max-width:860px){.two{grid-template-columns:1fr}.src{grid-template-columns:1fr}}
+<!--/css-->
+<main class="wrap">
+<div style="padding-top:36px"><h1>Espace associations</h1><p class="muted">Un seul agenda pour toutes les structures du lieu. Gardez vos outils : l'outil commun se synchronise avec eux.</p></div>
+<div class="assos" id="assos"></div>
+<div class="two">
+<div>
+<div class="panel"><h2 id="a-name"></h2><p id="a-role" class="muted"></p><h3>Vos créneaux Chez Marthe</h3><div id="slots"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Réserver un espace</h3>
+<form id="bk" novalidate><div class="grid2">
+<div class="field"><label for="bk-sp">Espace</label><select id="bk-sp"><option>Salle de réunion</option><option>La chapelle</option><option>Le salon collectif</option><option>Le jardin</option></select></div>
+<div class="field"><label for="bk-d">Date</label><input type="date" id="bk-d"><div class="err" id="bk-e"></div></div></div>
+<button class="btn" type="submit">Réserver</button></form></div>
+</div>
+<div>
+<div class="panel"><h3>Synchroniser votre agenda</h3><p class="muted" style="font-size:14px" id="tool"></p>
+<div class="src"><label><input type="radio" name="src" value="Google Agenda" checked>Google Agenda</label><label><input type="radio" name="src" value="Excel">Fichier Excel</label><label><input type="radio" name="src" value="Lien iCal">Lien iCal</label></div>
+<button class="btn" id="sync">Synchroniser</button><div class="prog" aria-hidden="true"><i id="bar"></i></div><div id="res" aria-live="polite"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Votre arrivée sur l'outil commun</h3><ul class="check" id="onb"></ul></div>
+</div></div>
+</main>
+<footer class="wrap">Une question ? Votre référente Chez Marthe répond à coordination@chezmarthe.ovh.</footer>
+<script>
+const A={benenova:{n:'Benenova',role:'Bénévolat de proximité. Permanence hebdomadaire dans le coworking.',tool:'Outil actuel (à confirmer) : leur propre plateforme de missions.',slots:[['Permanence Benenova','Mercredis, 14 h – 18 h, coworking','ok','Confirmé']],imp:[5,0],onb:[1,1,1,0]},
+sista4good:{n:'Sista4good',role:'Gestion du coworking et des salles de soin.',tool:'Outil actuel (à confirmer) : Google Agenda partagé.',slots:[['Coworking','Lun., mar., jeu., ven.','ok','Confirmé'],['Salle de soin, psychologue','Mardis, 18 h – 20 h, chapelle (annexe)','no','Conflit : cours de yoga demandé'],['Salle de soin, sophrologie','Jeudis, 10 h – 12 h','ok','Confirmé']],imp:[12,1],onb:[1,1,0,0]},
+cantines:{n:'Les Petites Cantines',role:'Cantine solidaire à prix libre, du lundi au vendredi midi.',tool:'Outil actuel (à confirmer) : outil de réservation du réseau national.',slots:[['Déjeuners à prix libre','Lun. – ven., 12 h – 14 h','ok','Confirmé'],['Privatisation du soir','Sam. 3 oct., 19 h','warn','En attente du comité']],imp:[22,0],onb:[1,0,0,0]}};
+const ONB=['Outils et besoins cartographiés','Référente désignée','Agenda synchronisé','Formation de l\u2019équipe'];
+let cur='benenova';const $=id=>document.getElementById(id);
+$('assos').innerHTML=Object.entries(A).map(([k,a])=>`<button data-k="${k}" aria-pressed="${k===cur}">${a.n}</button>`).join('');
+document.querySelectorAll('#assos button').forEach(b=>b.onclick=()=>{cur=b.dataset.k;document.querySelectorAll('#assos button').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+function render(){const a=A[cur];$('a-name').textContent=a.n;$('a-role').textContent=a.role;$('tool').textContent=a.tool;
+$('slots').innerHTML=a.slots.map(s=>`<div class="slot"><span><b>${s[0]}</b><br><span class="muted">${s[1]}</span></span><span class="pill ${s[2]}" style="align-self:center">${s[3]}</span></div>`).join('');
+$('onb').innerHTML=ONB.map((o,i)=>`<li class="${a.onb[i]?'d':''}">${o}</li>`).join('');$('res').innerHTML='';$('bar').style.transition='none';$('bar').style.width='0'}
+$('sync').onclick=()=>{const a=A[cur];const b=$('bar');b.style.transition='width 1.4s ease';requestAnimationFrame(()=>b.style.width='100%');$('res').innerHTML='<p class="muted" style="font-size:14px">Lecture de votre agenda…</p>';
+setTimeout(()=>{a.onb[2]=1;$('onb').innerHTML=ONB.map((o,i)=>`<li class="${a.onb[i]?'d':''}">${o}</li>`).join('');$('res').innerHTML=`<p><span class="pill ok">${a.imp[0]} créneaux importés</span> ${a.imp[1]?`<span class="pill no">${a.imp[1]} conflit à arbitrer</span>`:''}</p><p class="muted" style="font-size:14px">Depuis ${document.querySelector('[name=src]:checked').value}. Vos prochains créneaux apparaissent maintenant dans l'agenda commun de l'équipe.</p>`},1500)};
+$('bk').onsubmit=e=>{e.preventDefault();if(!$('bk-d').value){$('bk-e').textContent='Choisissez une date.';$('bk-d').focus();return}$('bk-e').textContent='';
+const sp=$('bk-sp').value;if(sp==='Salle de réunion')cmToast(sp+' réservée pour '+A[cur].n+'. Confirmation immédiate.');else cmToast('Demande envoyée pour '+sp.toLowerCase()+'. Réponse après le comité de vendredi.')};
+$('bk-d').oninput=()=>$('bk-e').textContent='';
+render();
+</script>

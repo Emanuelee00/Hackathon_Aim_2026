@@ -1,0 +1,114 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chez Marthe | Associations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>:root{--ink:#1E1A2B;--ink2:#5A566B;--paper:#F5F6F8;--card:#FFFFFF;--line:#D9DAE0;--vitrail:#4B32C3;--vitrail-l:#ECE8FB;--jardin:#1F7A55;--jardin-l:#E3F2EA;--soleil:#B7801A;--soleil-l:#FCF1D8;--brique:#B93A32;--brique-l:#FBE7E5;--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:var(--vitrail)}
+:focus-visible{outline:3px solid var(--vitrail);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:10}
+header.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.5px;color:var(--ink);text-decoration:none;line-height:1}
+.brand small{display:block;font-family:var(--body);font-size:12px;letter-spacing:0;color:var(--ink2);margin-top:3px}
+nav.sites{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.sites a{padding:7px 12px;border-radius:999px;color:var(--ink2);text-decoration:none;font-size:14px}
+nav.sites a:hover{background:var(--paper);color:var(--ink)}
+nav.sites a[aria-current]{background:var(--ink);color:#fff}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.3px;line-height:1.05;margin:0 0 .4em}
+h1{font-size:clamp(40px,7vw,76px)}
+h2{font-size:clamp(26px,3.4vw,36px)}
+h3{font-size:18px;margin:0 0 .3em}
+p{margin:0 0 1em;max-width:68ch}
+.muted{color:var(--ink2)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.btn{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--ink);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--vitrail);border-color:var(--vitrail)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.sm{font-size:13px;padding:6px 12px}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px}
+.ok{background:var(--jardin-l);color:var(--jardin)}
+.warn{background:var(--soleil-l);color:#7A5510}
+.no{background:var(--brique-l);color:var(--brique)}
+.vio{background:var(--vitrail-l);color:var(--vitrail)}
+label{font-weight:700;font-size:14px;display:block;margin-bottom:5px}
+input,select,textarea{font:inherit;width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--vitrail);outline:none}
+.field{margin-bottom:16px}
+.err{color:var(--brique);font-size:13px;margin-top:4px;min-height:1em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.demo-note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 12px}
+table{width:100%;border-collapse:collapse}
+.scroll{overflow-x:auto}
+.toast{position:sticky;bottom:16px;margin:16px auto 0;max-width:520px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;display:none}
+.toast.show{display:block}
+footer{padding:40px 0;color:var(--ink2);font-size:14px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}nav.sites{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.assos{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.assos button{font:inherit;font-weight:700;border:2px solid var(--ink);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer}
+.assos button[aria-pressed=true]{background:var(--ink);color:#fff}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.slot{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.src{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.src label{border:2px solid var(--line);border-radius:10px;padding:10px;font-weight:700;cursor:pointer;font-size:14px}
+.src label:has(input:checked){border-color:var(--vitrail);background:var(--vitrail-l)}
+.src input{width:auto;margin-right:6px}
+.prog{height:8px;background:#ebecef;border-radius:4px;overflow:hidden;margin:12px 0}.prog i{display:block;height:100%;width:0;background:var(--jardin);transition:width 1.4s ease}
+.check{list-style:none;padding:0;margin:0}.check li{padding:8px 0 8px 30px;position:relative;border-top:1px solid var(--line)}
+.check li:before{content:"";position:absolute;left:0;top:10px;width:18px;height:18px;border:2px solid var(--line);border-radius:4px}
+.check li.d:before{background:var(--jardin);border-color:var(--jardin)}
+.check li.d:after{content:"✓";position:absolute;left:4px;top:8px;color:#fff;font-size:13px;font-weight:700}
+@media (max-width:860px){.two{grid-template-columns:1fr}.src{grid-template-columns:1fr}}
+</style></head><body>
+<div class="demo-note">Démonstration hackathon, données fictives</div>
+<header class="top"><div class="wrap"><a class="brand" data-link="accueil">CHEZ MARTHE<small>Associations hébergées</small></a><nav class="sites" aria-label="Espaces de la plateforme"></nav></div></header>
+
+<main class="wrap">
+<div style="padding-top:36px"><h1>Espace associations</h1><p class="muted">Un seul agenda pour toutes les structures du lieu. Gardez vos outils : l'outil commun se synchronise avec eux.</p></div>
+<div class="assos" id="assos"></div>
+<div class="two">
+<div>
+<div class="panel"><h2 id="a-name"></h2><p id="a-role" class="muted"></p><h3>Vos créneaux Chez Marthe</h3><div id="slots"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Réserver un espace</h3>
+<form id="bk" novalidate><div class="grid2">
+<div class="field"><label for="bk-sp">Espace</label><select id="bk-sp"><option>Salle de réunion</option><option>La chapelle</option><option>Le salon collectif</option><option>Le jardin</option></select></div>
+<div class="field"><label for="bk-d">Date</label><input type="date" id="bk-d"><div class="err" id="bk-e"></div></div></div>
+<button class="btn" type="submit">Réserver</button></form></div>
+</div>
+<div>
+<div class="panel"><h3>Synchroniser votre agenda</h3><p class="muted" style="font-size:14px" id="tool"></p>
+<div class="src"><label><input type="radio" name="src" value="Google Agenda" checked>Google Agenda</label><label><input type="radio" name="src" value="Excel">Fichier Excel</label><label><input type="radio" name="src" value="Lien iCal">Lien iCal</label></div>
+<button class="btn" id="sync">Synchroniser</button><div class="prog" aria-hidden="true"><i id="bar"></i></div><div id="res" aria-live="polite"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Votre arrivée sur l'outil commun</h3><ul class="check" id="onb"></ul></div>
+</div></div>
+</main>
+<footer class="wrap">Une question ? Votre référente Chez Marthe répond à coordination@chezmarthe.ovh.</footer>
+<script>
+const A={benenova:{n:'Benenova',role:'Bénévolat de proximité. Permanence hebdomadaire dans le coworking.',tool:'Outil actuel (à confirmer) : leur propre plateforme de missions.',slots:[['Permanence Benenova','Mercredis, 14 h – 18 h, coworking','ok','Confirmé']],imp:[5,0],onb:[1,1,1,0]},
+sista4good:{n:'Sista4good',role:'Gestion du coworking et des salles de soin.',tool:'Outil actuel (à confirmer) : Google Agenda partagé.',slots:[['Coworking','Lun., mar., jeu., ven.','ok','Confirmé'],['Salle de soin, psychologue','Mardis, 18 h – 20 h, chapelle (annexe)','no','Conflit : cours de yoga demandé'],['Salle de soin, sophrologie','Jeudis, 10 h – 12 h','ok','Confirmé']],imp:[12,1],onb:[1,1,0,0]},
+cantines:{n:'Les Petites Cantines',role:'Cantine solidaire à prix libre, du lundi au vendredi midi.',tool:'Outil actuel (à confirmer) : outil de réservation du réseau national.',slots:[['Déjeuners à prix libre','Lun. – ven., 12 h – 14 h','ok','Confirmé'],['Privatisation du soir','Sam. 3 oct., 19 h','warn','En attente du comité']],imp:[22,0],onb:[1,0,0,0]}};
+const ONB=['Outils et besoins cartographiés','Référente désignée','Agenda synchronisé','Formation de l\u2019équipe'];
+let cur='benenova';const $=id=>document.getElementById(id);
+$('assos').innerHTML=Object.entries(A).map(([k,a])=>`<button data-k="${k}" aria-pressed="${k===cur}">${a.n}</button>`).join('');
+document.querySelectorAll('#assos button').forEach(b=>b.onclick=()=>{cur=b.dataset.k;document.querySelectorAll('#assos button').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+function render(){const a=A[cur];$('a-name').textContent=a.n;$('a-role').textContent=a.role;$('tool').textContent=a.tool;
+$('slots').innerHTML=a.slots.map(s=>`<div class="slot"><span><b>${s[0]}</b><br><span class="muted">${s[1]}</span></span><span class="pill ${s[2]}" style="align-self:center">${s[3]}</span></div>`).join('');
+$('onb').innerHTML=ONB.map((o,i)=>`<li class="${a.onb[i]?'d':''}">${o}</li>`).join('');$('res').innerHTML='';$('bar').style.transition='none';$('bar').style.width='0'}
+$('sync').onclick=()=>{const a=A[cur];const b=$('bar');b.style.transition='width 1.4s ease';requestAnimationFrame(()=>b.style.width='100%');$('res').innerHTML='<p class="muted" style="font-size:14px">Lecture de votre agenda…</p>';
+setTimeout(()=>{a.onb[2]=1;$('onb').innerHTML=ONB.map((o,i)=>`<li class="${a.onb[i]?'d':''}">${o}</li>`).join('');$('res').innerHTML=`<p><span class="pill ok">${a.imp[0]} créneaux importés</span> ${a.imp[1]?`<span class="pill no">${a.imp[1]} conflit à arbitrer</span>`:''}</p><p class="muted" style="font-size:14px">Depuis ${document.querySelector('[name=src]:checked').value}. Vos prochains créneaux apparaissent maintenant dans l'agenda commun de l'équipe.</p>`},1500)};
+$('bk').onsubmit=e=>{e.preventDefault();if(!$('bk-d').value){$('bk-e').textContent='Choisissez une date.';$('bk-d').focus();return}$('bk-e').textContent='';
+const sp=$('bk-sp').value;if(sp==='Salle de réunion')cmToast(sp+' réservée pour '+A[cur].n+'. Confirmation immédiate.');else cmToast('Demande envoyée pour '+sp.toLowerCase()+'. Réponse après le comité de vendredi.')};
+$('bk-d').oninput=()=>$('bk-e').textContent='';
+render();
+</script>
+
+<div class="toast" id="toast" role="status"></div>
+<script>const CM_SITES=[['accueil','Accueil',''],['equipe','Équipe','equipe'],['partenaire','Associations','partenaire'],['benevole','Bénévoles','benevole'],['retour','Bilan','retour']];
+function cmLink(k){const s=CM_SITES.find(x=>x[0]===k);const h=location.hostname;if(h.endsWith('chezmarthe.ovh'))return 'https://'+(s[2]?s[2]+'.':'')+'chezmarthe.ovh/';return '../'+k+'/index.html';}
+function cmNav(cur){const n=document.querySelector('nav.sites');n.innerHTML=CM_SITES.map(([k,l])=>`<a href="${cmLink(k)}"${k===cur?' aria-current="page"':''}>${l}</a>`).join('');document.querySelectorAll('[data-link]').forEach(a=>a.href=cmLink(a.dataset.link));}
+function cmToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3200);}
+</script><script>cmNav("partenaire");</script>
+</body></html>

@@ -2,8 +2,10 @@
 export const spaces = [
   { id: 'residents', label: 'Résidentes', icon: 'leaf', text: 'Vos propositions d’activités, votre parcours et votre plan emploi.' },
   { id: 'equipe', label: 'Équipe', icon: 'dashboard', text: 'Coordonner les demandes, le calendrier, les espaces et les bilans.' },
-  { id: 'benevoles', label: 'Bénévoles', icon: 'heart', text: 'Donner un coup de main aux événements du lieu.', soon: true },
-  { id: 'partenaires', label: 'Partenaires', icon: 'users', text: 'Proposer une activité ou une opportunité aux résidentes.', soon: true },
+  { id: 'benevoles', label: 'Bénévoles', icon: 'heart', text: 'Donner un coup de main aux événements du lieu.' },
+  { id: 'partenaires', label: 'Associations', icon: 'users', text: 'Associations hébergées : vos créneaux, votre agenda synchronisé, vos réservations.' },
+  // Reached through the link sent to organisers after their event, not listed on the landing page.
+  { id: 'bilan', label: 'Bilan', icon: 'checks', text: 'Le bilan de votre événement, en deux minutes.', hidden: true },
 ];
 
 // "equipe.marthe.fr" → "equipe"; "marthe.fr" → null. Works locally with equipe.localhost.

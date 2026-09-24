@@ -9,6 +9,12 @@
 @import '../features/reports/reports.css';
 @import '../features/opportunities/opportunities.css';
 @import '../features/journeys/journeys.css';
+@import '../features/residents/residents.css';
+@import '../features/committee/committee.css';
+@import '../features/volunteers/volunteers.css';
+@import '../features/partners/partners.css';
+@import '../features/feedback/feedback.css';
+@import '../features/public-request/public-request.css';
 @import '../features/resident/resident.css';
 @import '../features/landing/landing.css';
 @import '../features/auth/auth.css';

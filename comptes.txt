@@ -1,0 +1,4 @@
+
+Space	URL	Email	Password
+Équipe	http://equipe.localhost:8000	equipe@marthe.fr	marthe2026
+Résidentes	http://residents.localhost:8000	marie@marthe.fr	marthe2026

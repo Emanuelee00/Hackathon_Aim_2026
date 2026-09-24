@@ -38,17 +38,20 @@ function useSync(key, value, ready, synced, onError) {
 export function StoreProvider({ children }) {
   const [events, setEvents] = useState(initialEvents);
   const [matches, setMatches] = useState(demoMatches);
+  const [partners, setPartners] = useState([]);
   const [siteId, setSiteId] = useState(sites.find(site => site.real)?.id ?? sites[0].id);
   const [status, setStatus] = useState('loading');
   const [storageError, setStorageError] = useState('');
   const [toast, setToast] = useState('');
   const synced = useRef({});
   useEffect(() => {
-    const load = () => Promise.all([fetchStored('events'), fetchStored('matches')]).then(([savedEvents, savedMatches]) => {
+    const load = () => Promise.all([fetchStored('events'), fetchStored('matches'), fetchStored('partners')]).then(([savedEvents, savedMatches, savedPartners]) => {
       const nextEvents = validEvents(savedEvents);
       const nextMatches = withDemoMatches(savedMatches);
       if (savedEvents) synced.current.events = JSON.stringify(nextEvents);
       if (savedMatches) synced.current.matches = JSON.stringify(nextMatches);
+      if (savedPartners) synced.current.partners = JSON.stringify(savedPartners);
+      setPartners(savedPartners || []);
       setEvents(nextEvents); setMatches(nextMatches); setStorageError(''); setStatus('ready');
     }).catch(() => {
       setStorageError('Le serveur est injoignable : vos modifications ne seront pas enregistrées.');
@@ -62,6 +65,7 @@ export function StoreProvider({ children }) {
   const saveFailed = () => setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.');
   useSync('events', events, status === 'ready', synced, saveFailed);
   useSync('matches', matches, status === 'ready', synced, saveFailed);
+  useSync('partners', partners, status === 'ready', synced, saveFailed);
   useEffect(() => { if (toast) { const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); } }, [toast]);
   function saveEvent(event) {
     setEvents(current => current.some(item => item.id === event.id) ? current.map(item => item.id === event.id ? event : item) : [...current, event]);
@@ -85,9 +89,11 @@ export function StoreProvider({ children }) {
     }, current));
   }
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
+  // Hosted associations: agenda sync and onboarding steps, one entry per association.
+  const savePartner = partner => setPartners(current => [...current.filter(item => item.id !== partner.id), partner]);
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
   if (status === 'loading') return null;
-  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
+  return <Store.Provider value={{ events, saveEvent, partners, savePartner, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 
 export const useStore = () => useContext(Store);

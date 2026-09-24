@@ -1,0 +1,188 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chez Marthe | Proposer un projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>:root{--ink:#1E1A2B;--ink2:#5A566B;--paper:#F5F6F8;--card:#FFFFFF;--line:#D9DAE0;--vitrail:#4B32C3;--vitrail-l:#ECE8FB;--jardin:#1F7A55;--jardin-l:#E3F2EA;--soleil:#B7801A;--soleil-l:#FCF1D8;--brique:#B93A32;--brique-l:#FBE7E5;--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+a{color:var(--vitrail)}
+:focus-visible{outline:3px solid var(--vitrail);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:10}
+header.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.5px;color:var(--ink);text-decoration:none;line-height:1}
+.brand small{display:block;font-family:var(--body);font-size:12px;letter-spacing:0;color:var(--ink2);margin-top:3px}
+nav.sites{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.sites a{padding:7px 12px;border-radius:999px;color:var(--ink2);text-decoration:none;font-size:14px}
+nav.sites a:hover{background:var(--paper);color:var(--ink)}
+nav.sites a[aria-current]{background:var(--ink);color:#fff}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.3px;line-height:1.05;margin:0 0 .4em}
+h1{font-size:clamp(40px,7vw,76px)}
+h2{font-size:clamp(26px,3.4vw,36px)}
+h3{font-size:18px;margin:0 0 .3em}
+p{margin:0 0 1em;max-width:68ch}
+.muted{color:var(--ink2)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.btn{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--ink);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;cursor:pointer}
+.btn:hover{background:var(--vitrail);border-color:var(--vitrail)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.sm{font-size:13px;padding:6px 12px}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px}
+.ok{background:var(--jardin-l);color:var(--jardin)}
+.warn{background:var(--soleil-l);color:#7A5510}
+.no{background:var(--brique-l);color:var(--brique)}
+.vio{background:var(--vitrail-l);color:var(--vitrail)}
+label{font-weight:700;font-size:14px;display:block;margin-bottom:5px}
+input,select,textarea{font:inherit;width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--vitrail);outline:none}
+.field{margin-bottom:16px}
+.err{color:var(--brique);font-size:13px;margin-top:4px;min-height:1em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.demo-note{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 12px}
+table{width:100%;border-collapse:collapse}
+.scroll{overflow-x:auto}
+.toast{position:sticky;bottom:16px;margin:16px auto 0;max-width:520px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;display:none}
+.toast.show{display:block}
+footer{padding:40px 0;color:var(--ink2);font-size:14px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}nav.sites{margin-left:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.hero{padding:56px 0 28px}
+.hero p{font-size:19px}
+.plan{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:auto auto auto;gap:0;border:4px solid var(--ink);border-radius:4px;background:var(--card)}
+.room{display:flex;flex-direction:column;justify-content:flex-start;border:2px solid var(--ink);padding:16px 18px;cursor:pointer;background:var(--card);text-align:left;font:inherit;color:inherit;position:relative;min-height:150px}
+.room:hover,.room[aria-pressed=true]{background:var(--vitrail-l)}
+.room[aria-pressed=true]{box-shadow:inset 0 0 0 3px var(--vitrail)}
+.room .nm{font-family:var(--display);font-size:24px;line-height:1.05;display:block;margin-bottom:4px}
+.room .meta{font-size:14px;color:var(--ink2);display:block}
+.room .price{font-weight:700;font-size:14px;display:block;margin-top:8px}
+.room .note{font-size:13px;display:block;margin-top:6px}
+.r-chap{grid-row:1/4}
+.r-jard{grid-column:2/4;background:var(--jardin-l)}
+.r-jard:hover,.r-jard[aria-pressed=true]{background:#cfe9da}
+.r-res{grid-column:1/4;grid-row:4;background:repeating-linear-gradient(45deg,var(--paper),var(--paper) 8px,#ebecef 8px,#ebecef 16px);cursor:default;min-height:70px}
+.r-res:hover{background:repeating-linear-gradient(45deg,var(--paper),var(--paper) 8px,#ebecef 8px,#ebecef 16px)}
+.types{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.type{border:2px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;background:#fff}
+.type input{width:auto;margin-right:6px}
+.type:has(input:checked){border-color:var(--vitrail);background:var(--vitrail-l)}
+.type b{display:block}
+.type span{display:block;font-weight:400;font-size:13px;color:var(--ink2)}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px}
+.checks label{font-weight:400;display:flex;gap:6px;align-items:center}
+.checks input{width:auto}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.aside{position:sticky;top:90px}
+.alert{border-left:4px solid var(--soleil);background:var(--soleil-l);padding:10px 12px;font-size:14px;margin-top:10px;border-radius:0}
+.alert.bad{border-color:var(--brique);background:var(--brique-l)}
+.steps{list-style:none;padding:0;margin:16px 0 0;counter-reset:s}
+.steps li{counter-increment:s;padding:10px 0 10px 44px;position:relative;border-top:1px solid var(--line)}
+.steps li:before{content:counter(s);position:absolute;left:0;top:10px;width:30px;height:30px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-weight:700}
+.steps li.done:before{background:var(--jardin);color:#fff;content:"✓"}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.aside{position:static}.types{grid-template-columns:1fr 1fr}.plan{grid-template-columns:1fr 1fr}.r-chap{grid-row:auto;grid-column:1/3}.r-jard{grid-column:1/3}.r-res{grid-column:1/3;grid-row:auto}.room[style]{grid-column:auto!important}}
+</style></head><body>
+<div class="demo-note">Démonstration hackathon, données fictives</div>
+<header class="top"><div class="wrap"><a class="brand" data-link="accueil">CHEZ MARTHE<small>Tiers-lieu solidaire</small></a><nav class="sites" aria-label="Espaces de la plateforme"></nav></div></header>
+
+<main class="wrap">
+<section class="hero">
+<h1>Un lieu à partager</h1>
+<p>Chez Marthe accueille des femmes et leurs enfants, et ouvre ses espaces au quartier. Proposez une activité, louez une salle ou rejoignez le coworking : l'équipe étudie chaque demande en comité, chaque vendredi.</p>
+</section>
+<section aria-labelledby="plan-t">
+<h2 id="plan-t">Les espaces</h2>
+<p class="muted">Choisissez un espace sur le plan pour l'ajouter à votre demande.</p>
+<div class="plan" id="plan">
+<button class="room r-chap" data-s="chapelle" aria-pressed="false"><span class="nm">La chapelle</span><span class="meta">Chapelle désacralisée, 114 m²</span><span class="note">Concerts, spectacles, danse, yoga. L'acoustique ne permet pas les projections.</span><span class="price">2 h 40 €, ½ journée 100 €, journée 200 €</span></button>
+<button class="room r-jard" data-s="jardin" aria-pressed="false"><span class="nm">Le jardin</span><span class="meta">Espace partagé, buvette le jeudi soir</span><span class="note">Lieu de passage et de rencontre. Accès calme préservé pour les résidentes.</span><span class="price">2 h 40 €, ½ journée 100 €, journée 200 €</span></button>
+<button class="room" data-s="salon" aria-pressed="false"><span class="nm">Le salon collectif</span><span class="meta">28 m²</span><span class="note">Espace de vie des résidentes le soir et le week-end.</span><span class="price">½ journée 80 €, journée 150 €</span></button>
+<button class="room" data-s="cantine" aria-pressed="false"><span class="nm">Les Petites Cantines</span><span class="meta">Réfectoire 32 m² + terrasse 30 m²</span><span class="note">Cantine solidaire à prix libre, privatisable.</span><span class="price">Tarif sur devis</span></button>
+<button class="room" style="grid-column:2" data-s="reunion" aria-pressed="false"><span class="nm">Salle de réunion</span><span class="meta">16 m²</span><span class="note">Réunions en petit comité.</span><span class="price">Tarif sur devis</span></button>
+<button class="room" style="grid-column:3" data-s="coworking" aria-pressed="false"><span class="nm">Le coworking</span><span class="meta">Places à l'année ou au mois</span><span class="note">Une communauté de travail solidaire.</span><span class="price">Tarif sur demande</span></button>
+<div class="room r-res"><span class="nm">Hébergement</span><span class="meta">Espaces privés des résidentes, non accessibles</span></div>
+</div>
+</section>
+<section style="margin-top:48px" aria-labelledby="form-t">
+<h2 id="form-t">Votre demande</h2>
+<div class="layout">
+<form class="panel" id="f" novalidate>
+<div class="field"><label>Vous souhaitez</label>
+<div class="types">
+<label class="type"><input type="radio" name="type" value="programmation" checked><b>Proposer une activité</b><span>Ouverte au public, gratuite ou à prix libre</span></label>
+<label class="type"><input type="radio" name="type" value="location"><b>Louer un espace</b><span>Cours, atelier, réunion</span></label>
+<label class="type"><input type="radio" name="type" value="privatisation"><b>Privatiser</b><span>Événement privé</span></label>
+<label class="type"><input type="radio" name="type" value="coworking"><b>Coworker</b><span>Réserver une place</span></label>
+</div></div>
+<div class="grid2">
+<div class="field"><label for="titre">Nom de l'activité</label><input id="titre" placeholder="Ex. Cours de yoga doux"><div class="err" id="e-titre"></div></div>
+<div class="field"><label for="espace">Espace</label><select id="espace"><option value="">Choisir un espace</option><option value="chapelle">La chapelle</option><option value="jardin">Le jardin</option><option value="salon">Le salon collectif</option><option value="cantine">Les Petites Cantines</option><option value="reunion">Salle de réunion</option><option value="coworking">Le coworking</option></select><div class="err" id="e-espace"></div></div>
+<div class="field"><label for="date">Date souhaitée</label><input type="date" id="date"><div class="err" id="e-date"></div></div>
+<div class="field"><label for="duree">Durée</label><select id="duree"><option value="2h">2 heures</option><option value="demi">Une demi-journée</option><option value="jour">Une journée</option><option value="hebdo">Créneau hebdomadaire d'1 heure</option></select></div>
+<div class="field"><label for="heure">Heure de début</label><input type="time" id="heure" value="18:00"></div>
+<div class="field"><label for="jauge">Nombre de personnes attendues</label><input type="number" id="jauge" min="1" value="15"></div>
+</div>
+<div class="field"><label for="desc">Décrivez votre projet</label><textarea id="desc" rows="4" placeholder="Ce que vous proposez, pour qui, et pourquoi Chez Marthe"></textarea><div class="err" id="e-desc"></div></div>
+<div class="field"><label>Besoins techniques</label><div class="checks">
+<label><input type="checkbox" value="son"> Sonorisation</label><label><input type="checkbox" value="lumiere"> Éclairage de la chapelle</label><label><input type="checkbox" value="video"> Vidéoprojecteur</label><label><input type="checkbox" value="dej"> Petit-déjeuner</label></div></div>
+<div class="field"><label><input type="checkbox" id="resid" style="width:auto" checked> J'accepte d'ouvrir l'activité gratuitement aux femmes hébergées</label></div>
+<div class="grid2">
+<div class="field"><label for="nom">Votre nom ou structure</label><input id="nom"><div class="err" id="e-nom"></div></div>
+<div class="field"><label for="mail">E-mail</label><input id="mail" type="email"><div class="err" id="e-mail"></div></div>
+</div>
+<button class="btn" type="submit">Envoyer ma demande</button>
+</form>
+<aside class="aside panel" id="aside" aria-live="polite">
+<h3>Estimation</h3>
+<div id="est" style="font-family:var(--display);font-size:40px;line-height:1">Gratuit</div>
+<p class="muted" id="est-d" style="font-size:14px;margin-top:6px">Les activités ouvertes au public sont étudiées par le comité de programmation.</p>
+<div id="alerts"></div>
+</aside>
+</div>
+<div class="panel" id="done" hidden style="margin-top:0">
+<span class="pill ok">Demande reçue</span>
+<h2 style="margin-top:10px" id="done-t">Merci</h2>
+<p id="done-p"></p>
+<ol class="steps"><li class="done">Demande reçue et enregistrée</li><li class="done">Pré-analyse par l'équipe</li><li>Passage au comité de coordination, vendredi</li><li>Réponse par e-mail et proposition de visite</li></ol>
+<button class="btn ghost" id="again" style="margin-top:16px">Faire une autre demande</button>
+</div>
+</section>
+</main>
+<footer class="wrap">Chez Marthe, tiers-lieu solidaire. Vous êtes une association hébergée ? <a data-link="partenaire">Accédez à votre espace</a>. Envie d'aider ? <a data-link="benevole">Devenez bénévole</a>.</footer>
+<script>
+const PRICES={chapelle:{'2h':40,demi:100,jour:200,hebdo:30},jardin:{'2h':40,demi:100,jour:200,hebdo:30},salon:{'2h':80,demi:80,jour:150,hebdo:30}};
+const JAUGE={chapelle:90,jardin:150,salon:15,cantine:30,reunion:8,coworking:12};
+const NAMES={chapelle:'la chapelle',jardin:'le jardin',salon:'le salon collectif',cantine:'Les Petites Cantines',reunion:'la salle de réunion',coworking:'le coworking'};
+const $=id=>document.getElementById(id);const f=$('f');
+function sel(s){document.querySelectorAll('.room[data-s]').forEach(r=>r.setAttribute('aria-pressed',r.dataset.s===s));$('espace').value=s;upd();}
+document.querySelectorAll('.room[data-s]').forEach(r=>r.onclick=()=>{sel(r.dataset.s);$('form-t').scrollIntoView({behavior:'smooth'})});
+$('espace').onchange=()=>sel($('espace').value);
+function upd(){const t=f.type.value,s=$('espace').value,d=$('duree').value,j=+$('jauge').value||0,h=$('heure').value;
+const tech=[...f.querySelectorAll('.checks input:checked')].map(i=>i.value);let est='Gratuit',ed='Les activités ouvertes au public sont étudiées par le comité de programmation.';
+if(t!=='programmation'){if(t==='coworking'){est='Sur demande';ed='Nous vous recontactons avec les formules disponibles.'}else if(PRICES[s]){est=PRICES[s][d]+' €';ed=d==='hebdo'?'Par séance, pour un créneau régulier.':'Tarif indicatif, confirmé après étude.';if(t==='privatisation'){est=Math.round(PRICES[s][d]*1.5)+' €';ed='Majoration privatisation, confirmée après étude.'}}else if(s){est='Sur devis';ed='Tarif à définir avec l\u2019équipe.'}}
+$('est').textContent=est;$('est-d').textContent=ed;const al=[];
+if(s&&j>JAUGE[s])al.push(['bad',`La jauge indicative de ${NAMES[s]} est de ${JAUGE[s]} personnes.`]);
+if(s==='chapelle'&&tech.includes('video'))al.push(['bad','L\u2019acoustique de la chapelle ne permet pas les projections. La cantine peut convenir.']);
+if(s==='salon'&&(+h.split(':')[0]>=18))al.push(['','Le salon est l\u2019espace de vie des résidentes le soir. Un créneau en journée sera plus simple.']);
+if(s==='jardin')al.push(['','Le jardin reste un lieu de passage : il ne peut pas être entièrement fermé au public.']);
+if(s==='jardin'&&(+h.split(':')[0]>=21))al.push(['bad','Après 21 h, le calme des résidentes est prioritaire au jardin.']);
+if(tech.includes('son')||tech.includes('lumiere'))al.push(['','Une personne formée à la régie devra être présente. Nous vous aiderons à l\u2019organiser.']);
+$('alerts').innerHTML=al.map(a=>`<div class="alert ${a[0]}">${a[1]}</div>`).join('');}
+f.addEventListener('input',upd);f.addEventListener('change',upd);
+f.onsubmit=e=>{e.preventDefault();let ok=true;const req=[['titre','Donnez un nom à votre activité.'],['espace','Choisissez un espace.'],['date','Indiquez une date.'],['desc','Décrivez votre projet en quelques lignes.'],['nom','Indiquez votre nom ou votre structure.']];
+req.forEach(([id,m])=>{const v=$(id).value.trim();$('e-'+id).textContent=v?'':m;if(!v)ok=false});
+const m=$('mail').value.trim();const mv=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);$('e-mail').textContent=mv?'':'Indiquez une adresse e-mail valide.';if(!mv)ok=false;
+if(!ok){f.querySelector('.err:not(:empty)').previousElementSibling.focus();return}
+$('done-t').textContent='Merci, '+$('nom').value.trim();$('done-p').textContent=`Votre demande « ${$('titre').value.trim()} » dans ${NAMES[$('espace').value]} porte la référence CM-2026-${Math.floor(40+Math.random()*50)}. Vous recevrez une réponse après le comité de vendredi.`;
+f.parentElement.hidden=true;$('done').hidden=false;$('done').scrollIntoView({behavior:'smooth'})};
+f.querySelectorAll('input,textarea,select').forEach(i=>i.addEventListener('input',()=>{const e=$('e-'+i.id);if(e)e.textContent=''}));
+$('again').onclick=()=>{f.reset();f.parentElement.hidden=false;$('done').hidden=true;upd()};
+upd();
+</script>
+
+<div class="toast" id="toast" role="status"></div>
+<script>const CM_SITES=[['accueil','Accueil',''],['equipe','Équipe','equipe'],['partenaire','Associations','partenaire'],['benevole','Bénévoles','benevole'],['retour','Bilan','retour']];
+function cmLink(k){const s=CM_SITES.find(x=>x[0]===k);const h=location.hostname;if(h.endsWith('chezmarthe.ovh'))return 'https://'+(s[2]?s[2]+'.':'')+'chezmarthe.ovh/';return '../'+k+'/index.html';}
+function cmNav(cur){const n=document.querySelector('nav.sites');n.innerHTML=CM_SITES.map(([k,l])=>`<a href="${cmLink(k)}"${k===cur?' aria-current="page"':''}>${l}</a>`).join('');document.querySelectorAll('[data-link]').forEach(a=>a.href=cmLink(a.dataset.link));}
+function cmToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3200);}
+</script><script>cmNav("accueil");</script>
+</body></html>

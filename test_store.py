@@ -29,3 +29,10 @@ def test_saved_document_is_read_back_and_replaced(client):
 def test_unknown_keys_and_non_lists_are_refused(client):
     assert client.put("/api/store/secrets", json=[]).status_code == 422
     assert client.put("/api/store/events", json={"id": "a"}).status_code == 422
+
+
+def test_partner_associations_are_shared(client):
+    client.put("/api/store/partners", json=[{"id": "benenova", "synced": True}])
+    assert client.get("/api/store/partners").json() == {
+        "value": [{"id": "benenova", "synced": True}]
+    }

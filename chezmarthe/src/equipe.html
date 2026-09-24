@@ -1,0 +1,117 @@
+.tabs{display:flex;gap:6px;margin:28px 0 20px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+.tabs button{font:inherit;font-weight:700;background:none;border:0;padding:10px 14px;cursor:pointer;color:var(--ink2);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--vitrail)}
+.tabs .count{background:var(--brique);color:#fff;border-radius:999px;font-size:12px;padding:1px 7px;margin-left:6px}
+.inbox{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+.req{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.req[aria-current=true]{border-color:var(--vitrail);box-shadow:inset 4px 0 0 var(--vitrail)}
+.req .src{font-size:12px;color:var(--ink2)}
+.req b{display:block;margin:2px 0}
+.crit{list-style:none;padding:0;margin:0}
+.crit li{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.crit .ic{font-weight:700;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px}
+.ai{background:var(--vitrail-l);border-radius:10px;padding:14px 16px;margin:14px 0}
+.ai h3{font-size:15px;color:var(--vitrail)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.col{background:#ebecef;border-radius:12px;padding:12px;min-height:200px}
+.col h3{font-size:15px;display:flex;justify-content:space-between}
+.card{background:#fff;border-radius:8px;padding:10px 12px;margin-top:10px;border:1px solid var(--line);font-size:14px}
+.card .btns{display:flex;gap:6px;margin-top:8px}
+.cal{min-width:760px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.cal .row{display:grid;grid-template-columns:150px repeat(7,1fr)}
+.cal .row>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;min-height:62px;font-size:12px}
+.cal .hd>div{min-height:auto;font-weight:700;background:var(--paper);font-size:13px}
+.cal .sp{font-weight:700;font-size:14px}
+.ev{border-radius:5px;padding:3px 6px;margin-bottom:3px;line-height:1.3}
+.ev.prog{background:var(--vitrail-l);color:var(--vitrail)}.ev.loc{background:var(--soleil-l);color:#7A5510}.ev.asso{background:var(--jardin-l);color:var(--jardin)}.ev.resid{background:#ebecef;color:var(--ink2)}.ev.conf{background:var(--brique-l);color:var(--brique);outline:2px solid var(--brique)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:12px 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi .n{font-family:var(--display);font-size:44px;line-height:1}
+.kpi .l{font-size:14px;color:var(--ink2)}
+.bars .b{display:grid;grid-template-columns:150px 1fr 48px;gap:10px;align-items:center;margin:8px 0;font-size:14px}
+.bars .t{background:#ebecef;border-radius:4px;height:14px;overflow:hidden}.bars .t i{display:block;height:100%;background:var(--vitrail)}
+textarea.mail{min-height:220px;font-size:14px}
+@media (max-width:900px){.inbox{grid-template-columns:1fr}.board{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}}
+<!--/css-->
+<main class="wrap">
+<div style="padding-top:36px"><h1>Bonjour l'équipe</h1><p class="muted">4 nouvelles demandes depuis lundi, pré-analysées selon la charte de programmation. Comité de coordination vendredi à 10 h.</p></div>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="demandes">Demandes<span class="count" id="cnt">4</span></button>
+<button role="tab" aria-selected="false" data-t="comite">Comité de vendredi</button>
+<button role="tab" aria-selected="false" data-t="agenda">Agenda des espaces</button>
+<button role="tab" aria-selected="false" data-t="impact">Impact</button>
+</div>
+<section id="demandes" role="tabpanel"><div class="inbox"><div id="list"></div><div class="panel" id="detail"></div></div></section>
+<section id="comite" role="tabpanel" hidden><p class="muted">Les demandes sont triées par la pré-analyse. La décision revient au comité.</p><div class="board" id="board"></div></section>
+<section id="agenda" role="tabpanel" hidden>
+<div class="legend"><span class="ev prog">Programmation</span><span class="ev loc">Location</span><span class="ev asso">Association hébergée</span><span class="ev resid">Vie des résidentes</span><span class="ev conf">Conflit à arbitrer</span></div>
+<div class="scroll"><div class="cal" id="cal"></div></div>
+<div class="alert" style="border-left:4px solid var(--soleil);background:var(--soleil-l);padding:10px 12px;margin-top:14px">La salle de réunion n'a aucune réservation cette semaine. Elle pourrait être proposée en location à la demi-journée.</div>
+</section>
+<section id="impact" role="tabpanel" hidden>
+<div class="kpis">
+<div class="panel kpi"><div class="n">14</div><div class="l">événements en septembre</div></div>
+<div class="panel kpi"><div class="n">1 840 €</div><div class="l">de recettes de location</div></div>
+<div class="panel kpi"><div class="n">6 / 14</div><div class="l">événements avec des résidentes présentes</div></div>
+<div class="panel kpi"><div class="n">5 j</div><div class="l">délai moyen de réponse, contre 3 semaines</div></div>
+</div>
+<div class="grid2" style="margin-top:16px">
+<div class="panel"><h3>Occupation des espaces</h3><div class="bars" id="occ"></div></div>
+<div class="panel"><h3>Qui fréquente le lieu</h3><div class="bars" id="mix"></div><p class="muted" style="font-size:14px;margin-top:10px">Satisfaction moyenne des organisateurs : 4,6 / 5 sur 11 bilans.</p></div>
+</div>
+<div class="actions"><button class="btn" onclick="cmToast('Rapport d\u2019impact de septembre exporté (PDF)')">Exporter le rapport pour les financeurs</button></div>
+</section>
+</main>
+<footer class="wrap">Pré-analyse automatique : une aide à la décision, jamais une décision.</footer>
+<script>
+const R=[
+{id:'CM-2026-041',src:'Formulaire, lun. 21 sept.',t:'Cours de yoga doux hebdomadaire',who:'Association Souffle Commun',type:'Location',sp:'La chapelle',when:'Mardis, 18 h – 19 h',n:12,v:'ok',vl:'Aligné avec la charte',
+sum:'Cours régulier porté par une association de quartier, déjà active auprès de publics précaires. Créneau compatible avec la vie du lieu. L\u2019association propose deux places gratuites par séance pour les résidentes.',
+who2:'Association loi 1901 créée en 2019, trois partenariats avec des structures sociales du secteur, avis positifs.',
+c:[['ok','Cohérence avec le projet du lieu','Bien-être et mixité des publics'],['ok','Vie des résidentes','Chapelle éloignée des espaces privés, fin à 19 h'],['ok','Jauge','12 personnes pour 90 possibles'],['ok','Technique','Aucun besoin particulier'],['warn','Créneau','Le mardi 18 h est aussi demandé par Sista4good une semaine sur deux']],price:'30 € par séance, soit environ 120 € par mois'},
+{id:'CM-2026-042',src:'E-mail, mar. 22 sept.',t:'Séminaire d\u2019équipe',who:'Cabinet Arcane Conseil',type:'Location',sp:'Le salon collectif',when:'Jeu. 8 oct., journée',n:25,v:'warn',vl:'À discuter',
+sum:'Demande à fort potentiel de recettes, mais le salon est trop petit et reste l\u2019espace de vie des résidentes. La cantine en dehors du service, ou la chapelle, conviendrait mieux.',
+who2:'Cabinet de conseil RH de 40 salariés, basé à 2 km. Aucun lien connu avec le monde associatif.',
+c:[['warn','Cohérence avec le projet du lieu','Location commerciale, utile au modèle économique'],['no','Vie des résidentes','Le salon est occupé par les résidentes en journée pendant les vacances scolaires'],['no','Jauge','25 personnes pour 15 possibles'],['ok','Technique','Vidéoprojecteur et petit-déjeuner demandés'],['ok','Bénévoles','Aucun bénévole nécessaire']],price:'150 € pour le salon, ou 200 € pour la chapelle'},
+{id:'CM-2026-043',src:'Instagram, mer. 23 sept.',t:'Projection du documentaire « Elles tiennent debout »',who:'Collectif Regards Croisés',type:'Programmation',sp:'La chapelle',when:'Ven. 16 oct., 19 h',n:60,v:'warn',vl:'À discuter',
+sum:'Projet très aligné sur les valeurs du lieu, suivi d\u2019un débat. Mais l\u2019acoustique de la chapelle ne permet pas les projections. Proposer Les Petites Cantines, avec une jauge réduite, ou le jardin si la météo le permet.',
+who2:'Collectif de réalisatrices marseillaises, deux projections récentes dans des centres sociaux.',
+c:[['ok','Cohérence avec le projet du lieu','Parcours de femmes, débat ouvert au quartier'],['ok','Vie des résidentes','Invitation des résidentes proposée'],['warn','Jauge','60 personnes : possible en chapelle, trop pour la cantine'],['no','Technique','Projection impossible dans la chapelle'],['warn','Bénévoles','3 bénévoles pour l\u2019accueil et la buvette']],price:'Gratuit (programmation)'},
+{id:'CM-2026-044',src:'Téléphone, jeu. 24 sept.',t:'Soirée d\u2019anniversaire avec DJ',who:'Particulier',type:'Privatisation',sp:'Le jardin',when:'Sam. 17 oct., 20 h – 1 h',n:80,v:'no',vl:'Hors charte',
+sum:'Événement privé et festif tard le soir dans le jardin, qui ne peut pas être fermé. Incompatible avec le calme et l\u2019intimité des résidentes. Réponse suggérée : refus bienveillant.',
+who2:'Aucune information publique. Demande reçue par téléphone, redirigée vers le formulaire.',
+c:[['no','Cohérence avec le projet du lieu','Événement privé sans lien avec le projet'],['no','Vie des résidentes','Musique amplifiée jusqu\u2019à 1 h à proximité des chambres'],['ok','Jauge','80 personnes pour 150 possibles'],['warn','Technique','Sonorisation extérieure'],['no','Horaires','Au-delà de 21 h, le calme est prioritaire']],price:'300 € (privatisation, journée)'}];
+const ICON={ok:['✓','ok'],warn:['!','warn'],no:['×','no']};
+const PILL={ok:'ok',warn:'warn',no:'no'};
+let cur=0,status={};
+const $=id=>document.getElementById(id);
+function list(){$('list').innerHTML=R.map((r,i)=>`<button class="req" aria-current="${i===cur}" onclick="show(${i})"><span class="src">${r.src}</span><b>${r.t}</b><span class="pill ${PILL[r.v]}">${r.vl}</span> ${status[r.id]?'<span class="pill vio">'+status[r.id]+'</span>':''}</button>`).join('')}
+function show(i){cur=i;list();const r=R[i];$('detail').innerHTML=`<span class="muted" style="font-size:13px">${r.id}, ${r.src}</span><h2 style="margin-top:6px">${r.t}</h2>
+<p><b>${r.who}</b><br>${r.type}, ${r.sp}, ${r.when}, ${r.n} personnes</p>
+<div class="ai"><h3>Pré-analyse</h3><span class="pill ${PILL[r.v]}">${r.vl}</span><p style="margin-top:8px">${r.sum}</p><p style="font-size:14px;margin:0"><b>Sur le demandeur :</b> ${r.who2}</p></div>
+<h3>Critères de la charte</h3><ul class="crit">${r.c.map(c=>`<li><span class="ic ${ICON[c[0]][1]}">${ICON[c[0]][0]}</span><span><b>${c[1]}</b><br><span class="muted">${c[2]}</span></span></li>`).join('')}</ul>
+<p style="margin-top:12px"><b>Tarif suggéré :</b> ${r.price}</p>
+<div class="actions"><button class="btn" onclick="act('Inscrite au comité')">Inscrire au comité de vendredi</button><button class="btn ghost" onclick="act('Visite proposée')">Proposer une visite</button><button class="btn ghost" onclick="draft()">Préparer une réponse</button></div><div id="mailbox"></div>`}
+function act(s){status[R[cur].id]=s;list();cmToast(s+' : '+R[cur].t);if(s==='Inscrite au comité'){board()}}
+function draft(){const r=R[cur];const first={ok:`Bonjour,\n\nMerci pour votre proposition « ${r.t} ». Elle correspond bien à l\u2019esprit de Chez Marthe et sera présentée au comité de coordination de vendredi.\n\nPour préparer la suite, nous vous proposons une visite du lieu mardi ou jeudi prochain, entre 14 h et 17 h. Quel créneau vous conviendrait ?`,
+warn:`Bonjour,\n\nMerci pour votre proposition « ${r.t} », qui nous intéresse beaucoup.\n\nAvant de la présenter au comité de vendredi, nous aimerions en discuter avec vous : ${r.v==='warn'&&r.sp==='La chapelle'?'la chapelle ne permet malheureusement pas les projections, mais la cantine ou le jardin pourraient convenir':'le salon collectif accueille au maximum 15 personnes, mais la chapelle ou la cantine pourraient convenir'}.\n\nSeriez-vous disponible pour une visite la semaine prochaine ?`,
+no:`Bonjour,\n\nMerci d\u2019avoir pensé à Chez Marthe pour votre événement.\n\nNotre lieu est avant tout un centre d\u2019hébergement, et nous veillons au calme des femmes que nous accueillons, en particulier le soir. Nous ne pouvons donc pas donner suite à votre demande.\n\nNous vous souhaitons une très belle fête.`}[r.v];
+$('mailbox').innerHTML=`<div style="margin-top:16px"><label for="mailtxt">Réponse proposée, à relire avant envoi</label><textarea class="mail" id="mailtxt">${first}\n\nBien à vous,\nL\u2019équipe Chez Marthe</textarea><div class="actions"><button class="btn" onclick="act('Réponse envoyée')">Envoyer la réponse</button></div></div>`;$('mailtxt').focus()}
+const COLS=[['ok','Alignées'],['warn','À discuter'],['no','Hors charte'],['dec','Décidées']];let dec={};
+function board(){$('board').innerHTML=COLS.map(([k,l])=>{const items=R.filter(r=>k==='dec'?dec[r.id]:(!dec[r.id]&&r.v===k));return `<div class="col"><h3>${l}<span>${items.length}</span></h3>${items.map(r=>`<div class="card"><b>${r.t}</b><br><span class="muted">${r.sp}, ${r.when}</span>${k==='dec'?`<div style="margin-top:6px"><span class="pill ${dec[r.id]==='Validée'?'ok':'no'}">${dec[r.id]}</span></div>`:`<div class="btns"><button class="btn sm" onclick="decide('${r.id}','Validée')">Valider</button><button class="btn sm ghost" onclick="decide('${r.id}','Refusée')">Refuser</button></div>`}</div>`).join('')}</div>`}).join('')}
+function decide(id,d){dec[id]=d;board();cmToast(`Décision enregistrée : ${d.toLowerCase()}. Le demandeur sera prévenu par e-mail.`)}
+const DAYS=['Lun. 28','Mar. 29','Mer. 30','Jeu. 1','Ven. 2','Sam. 3','Dim. 4'];
+const CAL={'La chapelle':[[],[['conf','18 h Yoga (Souffle Commun) / Sista4good']],[['loc','10 h Danse africaine']],[],[['prog','19 h Concert chorale']],[['loc','14 h Stage théâtre']],[]],
+'Le jardin':[[],[],[['prog','15 h Atelier jardin']],[['prog','18 h Buvette']],[],[['prog','10 h Atelier jardin'],['prog','14 h La rue a un incroyable talent']],[['prog','10 h Atelier jardin']]],
+'Salon collectif':[[['resid','Soirée résidentes']],[['loc','9 h Réunion Arcane (option)']],[['resid','Soirée résidentes']],[['resid','Soirée résidentes']],[['asso','10 h Comité de coordination']],[['resid','Journée résidentes']],[['resid','Journée résidentes']]],
+'Petites Cantines':[[['asso','12 h Déjeuner prix libre']],[['asso','12 h Déjeuner prix libre']],[['asso','12 h Déjeuner prix libre']],[['asso','12 h Déjeuner prix libre']],[['asso','12 h Déjeuner prix libre']],[['loc','19 h Privatisation (option)']],[]],
+'Salle de réunion':[[],[],[],[],[],[],[]],
+'Coworking':[[['asso','Sista4good']],[['asso','Sista4good']],[['asso','Benenova, permanence']],[['asso','Sista4good']],[['asso','Sista4good']],[],[]]};
+$('cal').innerHTML=`<div class="row hd"><div>Espace</div>${DAYS.map(d=>`<div>${d}</div>`).join('')}</div>`+Object.entries(CAL).map(([s,days])=>`<div class="row"><div class="sp">${s}</div>${days.map(d=>`<div>${d.map(e=>`<div class="ev ${e[0]}">${e[1]}</div>`).join('')}</div>`).join('')}</div>`).join('');
+const bars=(id,d)=>$(id).innerHTML=d.map(([l,v,s])=>`<div class="b"><span>${l}</span><span class="t"><i style="width:${v}%"></i></span><span>${s||v+' %'}</span></div>`).join('');
+bars('occ',[['La chapelle',64],['Le jardin',48],['Salon collectif',71],['Petites Cantines',82],['Salle de réunion',0],['Coworking',75]]);
+bars('mix',[['Habitants du quartier',38],['Associations',24],['Femmes hébergées',18],['Coworkers',12],['Entreprises',8]]);
+document.querySelectorAll('[role=tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute('aria-selected',x===b));document.querySelectorAll('[role=tabpanel]').forEach(p=>p.hidden=p.id!==b.dataset.t)});
+show(0);board();
+</script>

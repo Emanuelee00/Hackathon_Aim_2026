@@ -1,0 +1,18 @@
+/* Hosted associations space */
+.partner-space { display: grid; gap: 22px; }
+.partner-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.partner-column { display: grid; gap: 18px; }
+.partner-panel { display: grid; gap: 12px; padding: 20px; }
+.partner-panel h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 30px; font-weight: 400; }
+.partner-panel h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 22px; font-weight: 400; }
+.partner-panel p { margin: 0; color: var(--muted); font-size: 14px; }
+.partner-panel .hint { font-size: 13px; }
+.partner-panel .verdict { margin-right: 6px; }
+.partner-slots, .partner-steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.partner-slots li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.partner-slots li > span:first-child { display: grid; gap: 2px; }
+.partner-slots small { color: var(--muted); font-size: 13px; }
+.partner-slots small.partner-clash { color: #8d3d51; font-weight: 700; }
+.partner-steps label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.volunteer-mission .date-tile { width: 58px; height: 62px; }
+@media (max-width: 860px) { .partner-layout { grid-template-columns: 1fr; } }

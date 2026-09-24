@@ -1,0 +1,25 @@
+.stars{display:flex;gap:6px}.stars button{font:inherit;font-size:28px;background:none;border:0;cursor:pointer;color:#c9cad2;padding:0 2px}.stars button.on{color:var(--soleil)}
+.opts{display:flex;gap:8px;flex-wrap:wrap}.opts label{border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;cursor:pointer}.opts label:has(input:checked){border-color:var(--vitrail);background:var(--vitrail-l)}.opts input{width:auto;margin-right:6px}
+<!--/css-->
+<main class="wrap" style="max-width:720px">
+<div style="padding-top:36px"><h1>Comment ça s'est passé ?</h1><p class="muted">Concert de la chorale Voix de femmes, vendredi 2 octobre, chapelle. Deux minutes suffisent, et vos réponses nous aident à défendre le lieu auprès de nos financeurs.</p></div>
+<form class="panel" id="fb" novalidate>
+<div class="field"><label>Votre satisfaction globale</label><div class="stars" id="stars" role="radiogroup" aria-label="Note sur 5"></div><div class="err" id="e-n"></div></div>
+<div class="field"><label>Combien de personnes sont venues ?</label><input type="number" id="nb" min="0" placeholder="Ex. 70"><div class="err" id="e-nb"></div></div>
+<div class="field"><label>Des femmes hébergées ont-elles participé ?</label><div class="opts"><label><input type="radio" name="res" value="oui">Oui</label><label><input type="radio" name="res" value="non">Non</label><label><input type="radio" name="res" value="nsp">Je ne sais pas</label></div><div class="err" id="e-res"></div></div>
+<div class="field"><label>L'accueil et la logistique</label><div class="opts"><label><input type="radio" name="log" value="1">Tout était prêt</label><label><input type="radio" name="log" value="2">Quelques ajustements</label><label><input type="radio" name="log" value="3">Des difficultés</label></div></div>
+<div class="field"><label for="com">Un mot pour l'équipe</label><textarea id="com" rows="4" placeholder="Ce qui a bien marché, ce qu'on pourrait améliorer"></textarea></div>
+<button class="btn" type="submit">Envoyer mon bilan</button>
+</form>
+<div class="panel" id="ok" hidden><span class="pill ok">Bilan envoyé</span><h2 style="margin-top:10px">Merci</h2><p>Votre bilan est ajouté au tableau de bord d'impact de Chez Marthe. À bientôt dans le lieu.</p></div>
+</main>
+<script>
+let note=0;const $=id=>document.getElementById(id);
+$('stars').innerHTML=[1,2,3,4,5].map(i=>`<button type="button" role="radio" aria-checked="false" aria-label="${i} sur 5" data-i="${i}">★</button>`).join('');
+$('stars').querySelectorAll('button').forEach(b=>b.onclick=()=>{note=+b.dataset.i;$('e-n').textContent='';$('stars').querySelectorAll('button').forEach(x=>{x.classList.toggle('on',+x.dataset.i<=note);x.setAttribute('aria-checked',+x.dataset.i===note)})});
+$('fb').onsubmit=e=>{e.preventDefault();let ok=true;if(!note){$('e-n').textContent='Choisissez une note.';ok=false}
+if($('nb').value===''){$('e-nb').textContent='Indiquez un nombre, même approximatif.';ok=false}else $('e-nb').textContent='';
+if(!document.querySelector('[name=res]:checked')){$('e-res').textContent='Choisissez une réponse.';ok=false}else $('e-res').textContent='';
+if(!ok)return;$('fb').hidden=true;$('ok').hidden=false};
+$('nb').oninput=()=>$('e-nb').textContent='';document.querySelectorAll('[name=res]').forEach(r=>r.onchange=()=>$('e-res').textContent='');
+</script>

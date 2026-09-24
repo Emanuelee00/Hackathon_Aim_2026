@@ -1,0 +1,20 @@
+/* Volunteers space */
+.public-space { display: grid; gap: 28px; max-width: 1080px; }
+.volunteer-space { display: grid; gap: 24px; }
+.volunteer-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
+.volunteer-list { display: grid; gap: 14px; }
+.volunteer-mission { display: grid; grid-template-columns: 58px 1fr; gap: 16px; padding: 20px; }
+.volunteer-mission h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 4px; font-family: "Instrument Serif", serif; font-size: 23px; font-weight: 400; }
+.volunteer-mission p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+.volunteer-roles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.volunteer-role { display: grid; justify-items: start; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: white; }
+.volunteer-role small { color: var(--muted); font-size: 13px; }
+.gauge { display: flex; gap: 4px; }
+.gauge i { width: 18px; height: 8px; border-radius: 4px; background: #ebd1f0; }
+.gauge i.filled { background: var(--green); }
+.volunteer-aside { display: grid; gap: 12px; padding: 20px; }
+.volunteer-aside h3 { margin: 6px 0 0; font-family: "Instrument Serif", serif; font-size: 21px; font-weight: 400; }
+.volunteer-aside ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.volunteer-aside li { display: grid; font-size: 14px; }
+.volunteer-aside small, .volunteer-aside p { margin: 0; color: var(--muted); font-size: 13px; }
+@media (max-width: 860px) { .volunteer-layout { grid-template-columns: 1fr; } .volunteer-aside { order: -1; } }

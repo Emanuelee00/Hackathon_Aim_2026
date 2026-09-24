@@ -7,7 +7,9 @@ import { spaceUrl } from '../lib/spaces.js';
 export const navigation = [
   { id: 'dashboard', label: 'Vue d’ensemble', icon: 'dashboard' },
   { id: 'requests', label: 'Les demandes', icon: 'inbox' },
+  { id: 'committee', label: 'Comité du vendredi', icon: 'checks' },
   { id: 'opportunities', label: 'Opportunités & parcours', icon: 'sparkles' },
+  { id: 'residents', label: 'Nos résidentes', icon: 'users' },
   { id: 'journeys', label: 'Suivi des parcours', icon: 'leaf' },
   { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
   { id: 'spaces', label: 'Nos espaces', icon: 'space' },

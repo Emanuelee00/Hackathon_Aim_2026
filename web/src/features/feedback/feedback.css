@@ -1,0 +1,10 @@
+/* Organiser feedback (bilan subdomain) */
+.feedback-space { display: grid; gap: 22px; max-width: 720px; }
+.feedback-form { display: grid; gap: 18px; padding: 24px; }
+.feedback-form h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 30px; font-weight: 400; }
+.feedback-form p { margin: 0; }
+.feedback-form .verdict { justify-self: start; }
+.feedback-pick { padding: 20px; }
+.stars { display: flex; gap: 4px; }
+.stars button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 10px; color: #d7c1db; background: white; cursor: pointer; font-size: 24px; }
+.stars button.on { color: #c0972a; border-color: #e6cf7a; background: #fbf3cf; }

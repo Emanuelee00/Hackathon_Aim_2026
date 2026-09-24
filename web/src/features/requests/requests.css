@@ -40,3 +40,24 @@
 .opportunity-box small { display: block; margin-bottom: 4px; font-size: 12px; font-weight: 700; letter-spacing: .1em; }
 .opportunity-box p { margin: 0; font-size: 14px; }
 
+
+/* Requests: automatic pre-analysis */
+.pre-analysis { display: grid; gap: 12px; }
+.pre-analysis .hint { font-size: 13px; color: var(--muted); }
+.verdict { display: inline-flex; align-items: center; margin-right: 6px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.verdict.ok { color: #2f5f3a; background: #d6ecd9; }
+.verdict.warn { color: #6e5310; background: #f7e8a8; }
+.verdict.no { color: #8d3d51; background: #f6d3dc; }
+.criteria { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.criteria li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; font-size: 14px; }
+.criteria li > svg { margin-top: 3px; padding: 2px; border-radius: 50%; }
+.criteria li.ok > svg { color: #2f5f3a; background: #d6ecd9; }
+.criteria li.warn > svg { color: #6e5310; background: #f7e8a8; }
+.criteria li.no > svg { color: #8d3d51; background: #f6d3dc; }
+.criteria small { display: block; color: var(--muted); font-size: 13px; }
+.reply-draft { display: grid; gap: 10px; }
+.reply-draft a.button { text-decoration: none; }
+.request-options { display: grid; gap: 10px; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+.request-options legend { padding: 0 6px; color: #76647a; font-size: 13px; font-weight: 700; }
+.option-list { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; }
+.option-list label { display: inline-flex; align-items: center; gap: 7px; }

@@ -1,13 +1,13 @@
 import Icon from '../../../shared/components/Icon.jsx';
 import MatchReasons from '../../../shared/components/MatchReasons.jsx';
 
-const labels = { suggested: 'Suggestion IA', proposed: 'Proposée par l’équipe', applied: 'Candidature de la résidente', accepted: 'Accord donné', declined: 'Déclinée', dismissed: 'Écartée', not_selected: 'Candidature non retenue' };
+export const statusLabels = { suggested: 'Suggestion IA', proposed: 'Proposée par l’équipe', applied: 'Candidature de la résidente', accepted: 'Accord donné', declined: 'Déclinée', dismissed: 'Écartée', not_selected: 'Candidature non retenue' };
 
 function label(match) {
   if (match.status === 'suggested' && match.source === 'guided') return 'Suggestion guidée';
   if (match.status === 'proposed' && match.source === 'cv') return 'Proposée grâce au CV';
   if (match.status === 'accepted' && ['open', 'cv'].includes(match.source)) return 'Candidature retenue';
-  return labels[match.status];
+  return statusLabels[match.status];
 }
 
 export default function SuggestionCard({ match, resident, event, onStatus }) {

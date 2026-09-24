@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { requestTypes, requestQuestions } from '../workflow.js';
 import { bookableSpaces } from '../../../shared/data/spaces.js';
 import { validateEvent } from '../../../shared/lib/planning.js';
+import RequestOptions from './RequestOptions.jsx';
 
-const emptyEvent = { requestType: '', audience: '', missionFit: '', supportNeeds: '', rentalUse: '', equipmentNeeds: '', budgetDetails: '', title: '', category: '', organizer: '', email: '', referent: '', referentTeam: '', date: '', start: '09:00', end: '10:00', space: 'atelier', participants: 1, revenue: 0, costs: 0, description: '', opportunity: '', tasks: [], report: null, status: 'pending' };
+const emptyEvent = { requestType: '', audience: '', missionFit: '', supportNeeds: '', rentalUse: '', equipmentNeeds: '', budgetDetails: '', title: '', category: '', organizer: '', email: '', referent: '', referentTeam: '', date: '', start: '09:00', end: '10:00', space: 'atelier', participants: 1, revenue: 0, costs: 0, description: '', opportunity: '', technical: [], privatisation: false, openToResidents: true, tasks: [], report: null, status: 'pending' };
 
 export default function EventForm({ event, events, onSave, onCancel }) {
   const [draft, setDraft] = useState({ ...emptyEvent, ...event });
@@ -31,6 +32,7 @@ export default function EventForm({ event, events, onSave, onCancel }) {
       <label className="field"><span>Date *</span><input type="date" name="date" value={draft.date} onChange={change} required /></label><label className="field"><span>Début *</span><input type="time" name="start" value={draft.start} onChange={change} required /></label><label className="field"><span>Fin *</span><input type="time" name="end" value={draft.end} onChange={change} required /></label><label className="field"><span>Espace *</span><select name="space" value={draft.space} onChange={change}>{bookableSpaces.map(space => <option key={space.id} value={space.id}>{space.name}{space.capacity != null ? ` · ${space.capacity} pers.` : ''}</option>)}</select></label>
       <label className="field"><span>Participants *</span><input type="number" min="1" name="participants" value={draft.participants} onChange={change} required /></label><label className="field"><span>Recettes prévues (€)</span><input type="number" min="0" name="revenue" value={draft.revenue} onChange={change} /></label><label className="field"><span>Coûts prévus (€)</span><input type="number" min="0" name="costs" value={draft.costs} onChange={change} /></label>
       <label className="field field-full"><span>Description de la demande</span><textarea name="description" rows="4" value={draft.description} onChange={change} /></label><label className="field field-full"><span>Opportunité pour les résidentes</span><textarea name="opportunity" rows="3" value={draft.opportunity} onChange={change} placeholder="Participation volontaire, transmission, rencontre…" /></label></div>
+    <RequestOptions draft={draft} setDraft={setDraft} />
     <div className="form-actions"><button type="button" className="button button-quiet" onClick={onCancel}>Annuler</button><button className="button button-dark">Enregistrer la demande</button></div>
   </form>;
 }
