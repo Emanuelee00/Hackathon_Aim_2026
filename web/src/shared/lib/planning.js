@@ -11,7 +11,8 @@ export function validateEvent(event, events, confirming = false) {
   if (!spaceById[event.space]) return 'Choisissez un espace.';
   if (!Number.isInteger(event.participants) || event.participants < 1) return 'Indiquez un nombre de personnes valide.';
   if (![event.revenue, event.costs].every(value => Number.isFinite(value) && value >= 0)) return 'Les montants doivent être positifs ou nuls.';
-  if (confirming && event.participants > spaceById[event.space].capacity) return 'La capacité de cet espace est dépassée. Modifiez la demande.';
+  const capacity = spaceById[event.space].capacity;
+  if (confirming && capacity != null && event.participants > capacity) return 'La capacité de cet espace est dépassée. Modifiez la demande.';
   if (confirming && conflicts(event, events).length) return 'Cet espace est déjà réservé sur ce créneau. Modifiez la demande.';
   return '';
 }

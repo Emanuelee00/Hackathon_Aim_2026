@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { spaces } from '../../../shared/data/spaces.js';
+import { bookableSpaces } from '../../../shared/data/spaces.js';
 import { validateEvent } from '../../../shared/lib/planning.js';
 
 const emptyEvent = { title: '', category: '', organizer: '', email: '', date: '', start: '09:00', end: '10:00', space: 'atelier', participants: 1, revenue: 0, costs: 0, description: '', opportunity: '', tasks: [], report: null, status: 'pending' };

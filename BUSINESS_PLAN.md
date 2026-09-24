@@ -9,6 +9,8 @@ Marthe è una piattaforma per spazi sociali, associazioni, case di quartiere e l
 1. gestire bene sale, richieste, calendario, costi e ricavi;
 2. creare un impatto reale per le persone accompagnate dal luogo, in particolare donne che cercano autonomia economica, competenze, rete e opportunità.
 
+Il caso di riferimento usato in questo documento è un luogo di hébergement per donne e bambini in situazione di fragilità, che condivide i propri spazi — sale, aree di coworking, una sala spettacoli ricavata ad esempio da una cappella riconvertita — con associazioni e imprese esterne. Due mondi che oggi convivono nello stesso edificio senza un processo comune.
+
 Oggi questi due lavori vengono spesso gestiti separatamente. Le prenotazioni vivono in un calendario, le informazioni sulle persone in fogli o appunti, le opportunità nelle email e il bilancio sociale viene ricostruito a fine anno. Di conseguenza, molte connessioni utili non vengono viste e l'impatto rimane difficile da dimostrare.
 
 Marthe collega l'intero ciclo. Una richiesta di utilizzo dello spazio può diventare un evento; l'evento può contenere opportunità; l'intelligenza artificiale può suggerire quali profili potrebbero beneficiarne; una coordinatrice decide se proporle; la persona sceglie liberamente se partecipare; il percorso viene seguito nel tempo; i risultati alimentano il bilancio d'impatto.
@@ -46,6 +48,12 @@ Affittare uno spazio produce ricavi. Accompagnare persone richiede tempo e risor
 
 Dire “100 partecipanti” non spiega se una persona ha acquisito una competenza, creato un contatto utile o compiuto un passo verso l'occupazione. Senza follow-up, il bilancio sociale misura attività, non cambiamenti.
 
+### 2.5 Il luogo riceve più domande di quante ne possa accettare
+
+Uno spazio ibrido come questo riceve più richieste di locazione di quante ne possa onorare. Ogni domanda solleva le stesse questioni operative: è coerente con la missione del luogo? Le associazioni già ospitate sono d'accordo? Chi si assume la responsabilità dell'evento? Le persone accolte, spesso in situazione di fragilità, devono sempre poter sapere chi organizza e chi risponde di ciascun evento che si svolge accanto a loro.
+
+Senza criteri espliciti, la selezione delle richieste diventa un lavoro invisibile e ripetuto: telefonate, negoziazioni sul prezzo, verifiche fatte a memoria.
+
 ---
 
 ## 3. La soluzione
@@ -69,27 +77,27 @@ Il principio centrale è semplice:
 
 ### Fase 1 — Arriva una richiesta
 
-Un'organizzazione chiede uno spazio e descrive attività, data, pubblico, bisogni e budget. La coordinatrice trova tutte le informazioni nello stesso punto.
+Un'organizzazione chiede uno spazio tramite un link di qualificazione: descrive attività, data, pubblico, bisogni e budget e risponde a criteri minimi di coerenza con la missione del luogo. La coordinatrice trova tutte le informazioni nello stesso punto, senza doverle ricostruire per telefono.
 
-**Utilità:** riduce email, messaggi e dati mancanti.
+**Utilità:** riduce email, messaggi, dati mancanti e le telefonate fatte solo per raccogliere informazioni di base.
 
 ### Fase 2 — La richiesta viene valutata
 
-Il sistema mostra disponibilità, compatibilità con la missione, possibili conflitti e condizioni economiche. La decisione finale appartiene alla coordinatrice.
+Il sistema mostra disponibilità, compatibilità con la missione, possibili conflitti e condizioni economiche. Per le richieste che superano la soglia di qualificazione, la coordinatrice propone un créneau per far visitare il luogo a chi lo richiede: la visita conferma la coerenza pratica e permette all'associazione ospitante di esprimere un accordo esplicito prima della conferma. La decisione finale appartiene sempre alla coordinatrice.
 
-**Utilità:** rende le decisioni più rapide, coerenti e tracciabili.
+**Utilità:** rende le decisioni più rapide, coerenti e tracciabili, e filtra a monte le richieste incompatibili senza doverle discutere una per una.
 
 ### Fase 3 — Lo spazio viene organizzato
 
-L'evento approvato entra nel calendario e viene associato a una sala. La sezione “Nos espaces” permette di vedere capacità, dotazioni, stato e uso degli ambienti.
+L'evento approvato entra nel calendario e viene associato a una sala. La sezione “Nos espaces” permette di vedere capacità, dotazioni, stato e uso degli ambienti — molto diversi tra loro nella pratica: aree riservate all'hébergement (sempre gratuite), spazi misti come coworking o sale eventi (locabili), ciascuno con propri costi di gestione, sicurezza e, per gli spazi riconvertiti da altri usi come una cappella, di insonorizzazione.
 
-**Utilità:** migliora il tasso di occupazione ed evita sovrapposizioni.
+**Utilità:** migliora il tasso di occupazione, evita sovrapposizioni e rende visibile quali spazi generano ricavo e quali restano dedicati alla missione.
 
 ### Fase 4 — L'evento diventa un'opportunità
 
-La coordinatrice identifica ciò che l'evento può offrire: apprendimento, esperienza, contatti professionali, mentorship, visibilità o un primo accesso a un settore.
+Ogni evento riceve un referente chiaramente identificato — chi lo organizza e chi ne risponde — visibile a chi partecipa: un'informazione minima ma non negoziabile quando le persone coinvolte sono in situazione di fragilità. La coordinatrice identifica poi ciò che l'evento può offrire: apprendimento, esperienza, contatti professionali, mentorship, visibilità o un primo accesso a un settore. Quando più associazioni sono coinvolte nello stesso evento, Marthe le mette in relazione invece di farle lavorare in parallelo senza saperlo.
 
-**Utilità:** rende intenzionale un valore che altrimenti sarebbe occasionale.
+**Utilità:** rende intenzionale un valore che altrimenti sarebbe occasionale, e dà a ogni persona accolta un punto di riferimento umano per ogni evento a cui partecipa.
 
 ### Fase 5 — L'AI propone possibili connessioni
 
@@ -99,7 +107,9 @@ L'intelligenza artificiale confronta la descrizione dell'opportunità con intere
 - beneficio possibile;
 - elemento da verificare o punto di attenzione.
 
-**Utilità:** aiuta la coordinatrice a non perdere connessioni utili quando eventi e persone aumentano.
+Le connessioni proposte non collegano soltanto una residente a un evento esterno: possono anche mettere in relazione due residenti tra loro, quando le loro competenze o i loro obiettivi si completano — ad esempio una persona che avvia un'impresa e una che sa programmare. L'obiettivo primario resta il beneficio delle persone accolte, non il ricavo del luogo.
+
+**Utilità:** aiuta la coordinatrice a non perdere connessioni utili quando eventi e persone aumentano, comprese quelle che nascono tra le residenti stesse.
 
 ### Fase 6 — Una persona decide, non l'algoritmo
 
@@ -115,9 +125,11 @@ Dopo l'evento si registrano solo le informazioni utili:
 - competenza acquisita o esercitata;
 - contatto significativo;
 - prossimo passo concordato;
+- risposta a un breve questionario di soddisfazione, per chi partecipa;
+- un riscontro qualitativo “a caldo” della responsabile del luogo: chi tra le persone accolte era presente e come ha vissuto l'evento;
 - follow-up a 30 e 90 giorni.
 
-**Utilità:** distingue una presenza occasionale da un percorso verso maggiore autonomia.
+**Utilità:** distingue una presenza occasionale da un percorso verso maggiore autonomia, e raccoglie il punto di vista di chi conosce le persone accolte, non solo i dati del sistema.
 
 ### Fase 8 — L'impatto alimenta il bilancio
 
@@ -128,9 +140,9 @@ La sezione “Bilan & Impact” aggrega dati economici, operativi e sociali. I d
 ### Il ciclo completo
 
 ```text
-Richiesta → Valutazione → Calendario e spazio → Evento
+Richiesta e qualificazione → Visita → Valutazione → Calendario e spazio → Evento e referente
     → Opportunità → Suggerimento AI → Decisione umana
-    → Consenso → Partecipazione → Percorso → Impatto
+    → Consenso → Partecipazione → Questionario e feedback → Percorso → Impatto
     → Apprendimento per le attività successive
 ```
 
@@ -170,6 +182,17 @@ Il cliente che paga può essere il gestore del luogo, una rete associativa, un c
 - possibilità di distinguere attività commerciali, sociali e ibride;
 - maggiore capacità di dimostrare risultati a finanziatori;
 - relazione più forte con partner che cercano un impatto locale concreto.
+
+### Come il luogo genera ricavi
+
+Nel caso di un hébergement per donne e bambini, gli spazi dedicati alla missione — alloggi, sale per le residenti, attività per loro — restano gratuiti: non è lì che si cerca un ricavo. L'unica vera entrata è la locazione degli spazi misti (coworking, sale eventi, una cappella riconvertita in sala spettacoli) a soggetti esterni: aziende, professionisti, altre associazioni.
+
+Perché questa parte funzioni, il luogo deve poter essere rentabile, altrimenti non c'è interesse a mantenerla aperta ad altri. Due leve aiutano:
+
+- un **devis automatizzato** per la locazione delle sale, con criteri di prezzo chiari, così la maggior parte delle richieste si chiude senza dover trattare al telefono ogni volta;
+- una **relazione con piattaforme o siti professionali** di ricerca spazi, interessati a dare visibilità al luogo in cambio di portare clienti paganti — un modo di farsi conoscere senza che il team debba fare marketing attivo.
+
+Per eventi più informali e non commerciali (ad esempio una colazione aperta), un contributo minimo e volontario — dell'ordine di 3€ a persona — copre parte dei costi senza trasformare l'accoglienza in un servizio a pagamento.
 
 ### Valore sociale
 
@@ -341,10 +364,11 @@ Marthe rende questa ipotesi misurabile. Non presume che ogni partecipazione gene
 
 ### Operazioni
 
+- numero di eventi realizzati nel periodo, la cifra più semplice da mostrare a finanziatori e partner;
 - tempo medio per valutare una richiesta;
 - tasso di occupazione per sala e fascia oraria;
 - numero di conflitti di calendario;
-- richieste ricevute, accettate, rifiutate e incomplete;
+- richieste ricevute, accettate, rifiutate e incomplete, per misurare quanto la domanda supera la capacità reale del luogo;
 - tempo richiesto per preparare un report.
 
 ### Economia
@@ -363,6 +387,7 @@ Marthe rende questa ipotesi misurabile. Non presume che ogni partecipazione gene
 - partecipazioni effettive;
 - competenze o contatti registrati;
 - prossimi passi completati;
+- livello di soddisfazione dichiarato nei questionari post-evento;
 - esiti a 30 e 90 giorni;
 - passaggio da partecipazione a formazione, collaborazione o lavoro.
 
@@ -380,6 +405,8 @@ Un indicatore utile deve aiutare una decisione. Se un dato non cambia il modo di
 ---
 
 ## 14. Modello economico possibile
+
+Questo è il modello con cui **Marthe genera ricavo come prodotto software** — distinto dal modo in cui il luogo stesso genera ricavo affittando i propri spazi (vedi “Come il luogo genera ricavi”, sezione 6).
 
 Il modello più coerente è **B2B/B2G SaaS con accompagnamento**:
 
@@ -441,6 +468,7 @@ La promessa replicabile è un metodo “Marthe in a box”: flusso, modello dati
 | Bassa adozione delle residenti | Poche opportunità accettate | Co-progettazione, spiegazioni chiare e canali scelti dalle persone |
 | Dipendenza tecnica dal modello | Costi, lentezza o indisponibilità | Modello intercambiabile, fallback operativo e monitoraggio |
 | Uso dei dati per controllo | Incentivi contrari alla missione | Governance, accessi per ruolo e limiti alle analisi aggregate |
+| Domanda supera la capacità del luogo | Richieste rifiutate, associazioni frustrate | Criteri di qualificazione pubblici, lista d'attesa trasparente, motivazione chiara dei rifiuti |
 
 ---
 
@@ -492,7 +520,9 @@ I dati dimostrativi e la persistenza locale rendono il flusso visibile, ma non c
 - co-progettare con un luogo e alcune beneficiarie;
 - misurare tempo risparmiato e qualità delle opportunità;
 - testare consenso, follow-up e carico operativo;
-- definire una baseline prima dell'adozione.
+- definire una baseline prima dell'adozione;
+- definire insieme criteri di qualificazione delle richieste, referente per evento e questionario di soddisfazione;
+- testare il devis automatizzato per la locazione degli spazi.
 
 ### Produzione — Dimostrare affidabilità
 
@@ -622,3 +652,21 @@ Lo scheletro descritto nella sezione precedente è stato completato. Nella vista
 - scaricare il piano come documento di lavoro da discutere con l'accompagnatrice.
 
 Il risultato distingue sempre una proposta generata dall'AI da un piano guidato di emergenza. Se Ollama è assente, lento o restituisce dati non validi, il flusso rimane utilizzabile e dichiara chiaramente che il piano deve essere personalizzato con una professionista. Le competenze inviate al modello provengono soltanto dai percorsi già accettati e documentati; il prompt vieta di inventare diplomi, esperienze, durate o risultati.
+
+---
+
+## 25. Governance del luogo e modello economico dettagliato (sessione del 2026-09-24)
+
+Questa sezione riassume solo ciò che è stato integrato in questa sessione, a partire da appunti dell'utente sul caso concreto: un hébergement per donne e bambini con spazi misti in locazione (coworking, sale eventi, una cappella riconvertita). Nessun codice è stato modificato, solo il piano business.
+
+**Aggiunto:**
+
+- caso di riferimento esplicito nell'executive summary (sezione 1) e nuova sezione **2.5** sull'eccesso di domanda rispetto alla capacità del luogo;
+- nel ciclo operativo (sezione 4): qualificazione della richiesta tramite link con criteri minimi, créneau di visita del luogo prima della conferma, tipologie di spazio eterogenee (hébergement gratuito vs spazi misti a pagamento) in Fase 3, referente obbligatorio per ogni evento e coordinamento tra associazioni in Fase 4, connessioni possibili anche **tra residenti** (non solo con eventi esterni) in Fase 5, questionario di soddisfazione e riscontro qualitativo della responsabile in Fase 7;
+- nuova sottosezione **“Come il luogo genera ricavi”** (sezione 6): distinzione tra spazi gratuiti per missione e locazione a pagamento come unica vera entrata, devis automatizzato, partnership con piattaforme professionali per visibilità, contributo volontario tipo per eventi informali;
+- chiarimento in apertura della sezione 14 che il modello SaaS lì descritto è il ricavo di **Marthe come prodotto**, distinto dal ricavo del **luogo stesso**;
+- indicatori aggiuntivi (sezione 13): numero di eventi realizzati come cifra chiave, rapporto richieste ricevute/accettate, esito dei questionari di soddisfazione;
+- nuovo rischio in tabella (sezione 16): domanda che supera la capacità del luogo;
+- bullet aggiuntivi nella fase Pilot della roadmap (sezione 18): criteri di qualificazione, referente evento, questionario di soddisfazione, test del devis automatizzato.
+
+**Non incluso (volutamente):** le note sull'insonorizzazione della cappella e sulle economie di sicurezza del sito sono state riprese solo come contesto in Fase 3 (spazi eterogenei con costi diversi), perché sono decisioni architettoniche del luogo fisico, non funzionalità del prodotto software.

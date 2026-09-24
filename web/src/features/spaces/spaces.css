@@ -1,4 +1,7 @@
 /* Spaces */
+.space-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.site-tabs { display: flex; gap: 8px; }
+.site-gauge { width: max-content; margin-bottom: 20px; }
 .space-date { display: flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: #64736b; background: var(--paper); }
 .space-date input { height: 38px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 14px; }
 .space-overview { display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
