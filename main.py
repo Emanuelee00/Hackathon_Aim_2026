@@ -7,13 +7,15 @@ from fastapi.staticfiles import StaticFiles
 
 from ai import router as ai_router
 from ai import warm_up
+from demo import DEMO_MODE
 from employment.routes import router as employment_router
 from matching import router as matching_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Thread(target=warm_up, daemon=True).start()
+    if not DEMO_MODE:
+        Thread(target=warm_up, daemon=True).start()
     yield
 
 

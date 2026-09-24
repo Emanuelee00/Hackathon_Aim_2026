@@ -1,0 +1,3 @@
+{
+  "buildCommand": "npm --prefix web ci && npm --prefix web run build -- --outDir ../public --emptyOutDir"
+}
