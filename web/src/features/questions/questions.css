@@ -1,0 +1,16 @@
+/* Questions handed off by the chatbot agents */
+.question-filters { margin-bottom: 16px; }
+.question-list { display: grid; gap: 14px; }
+.question-card { display: grid; gap: 10px; padding: 20px 22px; }
+.question-card.done { opacity: .75; }
+.question-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.question-head .eyebrow { margin: 0; }
+.question-summary { margin: 0; color: var(--ink); font-size: 16px; font-weight: 700; }
+.question-from { margin: 0; color: var(--muted); font-size: 14px; }
+.question-from a { color: var(--green); }
+.question-card details summary { color: var(--green); cursor: pointer; font-size: 14px; font-weight: 700; }
+.question-transcript { display: grid; gap: 8px; margin: 12px 0 0; padding: 14px; border-radius: 10px; list-style: none; background: var(--cream); }
+.question-transcript li { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.question-transcript small { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
+.question-transcript li.user small { color: var(--plum); }
+.question-card .form-actions { padding-top: 12px; }

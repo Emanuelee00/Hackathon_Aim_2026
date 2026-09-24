@@ -17,6 +17,10 @@ services:
 
   backend:
     build: .
+    # OPENAI_API for the chatbot agents.
+    env_file:
+      - path: .env
+        required: false
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-marthe}:${POSTGRES_PASSWORD:-marthe}@db:5432/${POSTGRES_DB:-marthe}
       # Ollama runs on the host (make ai / make model-pull).

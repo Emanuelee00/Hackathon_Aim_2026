@@ -2,6 +2,9 @@ export UV_PROJECT_ENVIRONMENT := $(CURDIR)/.venv
 export OLLAMA_HOST := 127.0.0.1:11435
 export OLLAMA_MODELS := $(CURDIR)/.ollama/models
 export OLLAMA_NO_CLOUD := 1
+# OpenAI key of the chatbot agents (OPENAI_API=...), kept out of Git.
+-include .env
+export OPENAI_API OPENAI_MODEL
 
 .DEFAULT_GOAL := all
 

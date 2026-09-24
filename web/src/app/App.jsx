@@ -15,13 +15,16 @@ import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
 import Residents from '../features/residents/Residents.jsx';
 import JourneyForm from '../features/journeys/components/JourneyForm.jsx';
+import Questions from '../features/questions/Questions.jsx';
+import useQuestions from '../features/questions/useQuestions.js';
 import { residentById } from '../features/opportunities/data/residents.js';
 import { TODAY } from '../shared/data/spaces.js';
 import { useStore } from './store.jsx';
 
-function PageContent({ page, openEvent, openJourney, openNew, openReport, openSpaceRequest, navigate }) {
+function PageContent({ page, openEvent, openJourney, openNew, openReport, openSpaceRequest, navigate, questions }) {
   if (page === 'dashboard') return <Dashboard onNew={openNew} onOpen={openEvent} navigate={navigate} />;
   if (page === 'requests') return <Requests onNew={openNew} onOpen={openEvent} />;
+  if (page === 'questions') return <Questions {...questions} />;
   if (page === 'committee') return <Committee onOpen={openEvent} />;
   if (page === 'opportunities') return <Opportunities />;
   if (page === 'residents') return <Residents navigate={navigate} />;
@@ -37,6 +40,7 @@ export default function App() {
   const [page, setPage] = useState('dashboard');
   const [menuOpen, setMenuOpen] = useState(false);
   const [modal, setModal] = useState(null);
+  const questions = useQuestions();
 
   const selectedEvent = events.find(event => event.id === modal?.eventId);
   const selectedMatch = matches.find(match => match.id === modal?.matchId);
@@ -73,10 +77,11 @@ export default function App() {
       mobile={menuOpen}
       close={() => setMenuOpen(false)}
       help={() => setModal({ type: 'help' })}
+      newQuestions={questions.questions.filter(question => question.status === 'new').length}
     />
     <div className="app-content">
       <Header page={page} onMenu={() => setMenuOpen(true)} onNew={openNew} />
-      <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} /></main>
+      <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} questions={questions} /></main>
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}
     {toast && <p role="status" className="notice">{toast}</p>}

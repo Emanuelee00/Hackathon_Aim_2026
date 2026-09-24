@@ -21,7 +21,11 @@ export default function AuthGate({ spaceId, children }) {
   return <Auth.Provider value={{ user, logout }}>{children}</Auth.Provider>;
 }
 
+// The signed-in user, or null outside an AuthGate.
+export const useAuth = () => useContext(Auth);
+
 export function AccountMenu() {
-  const { user, logout } = useContext(Auth);
-  return <span className="account-menu"><span>{user.name}</span><button className="text-link" onClick={logout}>Se déconnecter</button></span>;
+  const auth = useAuth();
+  if (!auth) return null;
+  return <span className="account-menu"><strong>{auth.user.name}</strong><button className="text-link" onClick={auth.logout}>Se déconnecter</button></span>;
 }

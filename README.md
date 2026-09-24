@@ -79,6 +79,21 @@ il file. L'AI propone punti di forza, miglioramenti del CV e passi concreti; se
 il modello locale non risponde correttamente, viene mostrato un piano guidato
 esplicitamente riconoscibile e da validare con l'accompagnatrice.
 
+## Agenti chatbot
+
+Gli agenti usano l'API OpenAI (`OPENAI_API` in `.env`, letta da Make e da docker
+compose; modello `gpt-4.1-mini`, modificabile con `OPENAI_MODEL`).
+
+- **Renseignements** (`agents/renseignements.py`): bolla in basso a destra nella
+  pagina d'accoglienza. Risponde solo con le regole del lieu scritte in
+  `agents/knowledge/renseignements.md` (modificabile dall'équipe, riletto a ogni
+  conversazione). Se non sa rispondere chiede nome ed e-mail e trasmette la domanda
+  all'équipe (strumento `transmettre_a_equipe`).
+- Le domande trasmesse compaiono in `equipe.` → **Questions reçues**, leggibili solo
+  con un account équipe (`GET/PATCH /api/questions`).
+- Nuovo agente: un file in `agents/` con istruzioni e strumenti, da aggiungere a
+  `AGENTS` in `agents/routes.py`; in React, `<ChatBubble agentId="..." />`.
+
 ## Modello
 
 **Qwen2.5 3B** (`qwen2.5:3b`, circa 1,9 GB) per chat e matching; il piano verso
@@ -107,6 +122,7 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 - `ai.py`: chat tramite Ollama locale e precaricamento del modello.
 - `matching.py` e `ranking.py`: matching ibrido con risposta sempre sotto i 10 secondi.
 - `accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
+- `agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
 - `db.py` e `migrations/`: SQLAlchemy e migrazioni Alembic.
 - `employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `web/src/app/`: composizione dell’app e stato condiviso.

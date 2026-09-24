@@ -3,6 +3,7 @@ from logging.config import fileConfig
 from alembic import context
 
 import accounts.models  # noqa: F401  (registers the tables on Base.metadata)
+import agents.models  # noqa: F401
 import db
 
 config = context.config

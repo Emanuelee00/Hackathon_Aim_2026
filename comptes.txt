@@ -2,3 +2,5 @@
 Space	URL	Email	Password
 Équipe	http://equipe.localhost:8000	equipe@marthe.fr	marthe2026
 Résidentes	http://residents.localhost:8000	marie@marthe.fr	marthe2026
+Bénévoles	http://benevoles.localhost:8000	camille@marthe.fr	marthe2026
+Associations	http://partenaires.localhost:8000	benenova@marthe.fr	marthe2026

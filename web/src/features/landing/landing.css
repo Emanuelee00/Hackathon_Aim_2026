@@ -99,7 +99,9 @@ a.button { text-decoration: none; }
   .landing-cover { padding-top: 80px; }
 }
 
-/* Resident subdomain shell */
-.resident-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px clamp(16px, 4vw, 66px); border-bottom: 1px solid var(--line); background: rgba(254,249,250,.78); }
-.resident-topbar .landing-brand { padding: 8px 12px; border-radius: 12px; }
-.resident-topbar .landing-brand img { width: 110px; }
+/* Header of the audience subdomains, same violet bar as the landing page */
+.resident-topbar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px clamp(16px, 4vw, 48px); background: var(--green); box-shadow: 0 6px 24px rgba(27,19,25,.18); }
+.resident-topbar .landing-brand { padding: 4px 0; border-radius: 0; }
+.resident-topbar .landing-brand img { width: 118px; }
+.resident-topbar .demo-label { color: #e3cfe8; font-size: 12px; }
+.resident-topbar .demo-label > span { background: var(--pink); }

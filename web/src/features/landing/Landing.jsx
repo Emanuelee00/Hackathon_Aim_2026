@@ -3,6 +3,7 @@ import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
 import { StoreProvider } from '../../app/store.jsx';
 import PublicRequest from '../public-request/PublicRequest.jsx';
+import ChatBubble from '../chatbot/ChatBubble.jsx';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers'];
 
@@ -145,5 +146,6 @@ export default function Landing() {
         <a href="https://www.chezmarthe.org/" target="_blank" rel="noreferrer">chezmarthe.org</a>
       </div>
     </footer>
+    <ChatBubble agentId="renseignements" title="Une question sur le lieu ?" subtitle="Réponses selon les règles du lieu, sinon transmises à l’équipe" greeting="Bonjour ! Vous voulez savoir si une activité est possible Chez Marthe ? Posez votre question : je réponds avec les règles du lieu, et je transmets à l’équipe ce que je ne sais pas." />
   </div>;
 }

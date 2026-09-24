@@ -71,6 +71,8 @@ def test_sign_in_checks_password_and_space(client):
 def test_team_accounts_and_duplicates_are_refused(client):
     team = client.post("/api/auth/register", json={**RESIDENT, "space": "equipe"})
     assert team.status_code == 403
+    association = {**RESIDENT, "email": "asso@example.org", "space": "partenaires"}
+    assert client.post("/api/auth/register", json=association).status_code == 403
     client.post("/api/auth/register", json=RESIDENT)
     again = client.post(
         "/api/auth/register", json={**RESIDENT, "email": "marie@example.org"}
@@ -78,3 +80,10 @@ def test_team_accounts_and_duplicates_are_refused(client):
     assert again.status_code == 409
     short = client.post("/api/auth/register", json={**RESIDENT, "password": "court"})
     assert short.status_code == 422
+
+
+def test_volunteers_can_sign_up(client):
+    volunteer = {**RESIDENT, "email": "camille@example.org", "space": "benevoles"}
+    created = client.post("/api/auth/register", json=volunteer)
+    assert created.status_code == 201
+    assert created.json()["role"] == "benevoles"

@@ -9,8 +9,8 @@ from db import Base
 
 # One role per subdomain; a user signs in on the space of their role.
 Role = Literal["equipe", "residents", "benevoles", "partenaires"]
-# Team accounts see residents' data, so they are created from the command line only.
-OPEN_SIGNUP = {"residents"}
+# Team and association accounts are created from the command line only (the team sees residents' data).
+OPEN_SIGNUP = {"residents", "benevoles"}
 
 
 class User(Base):

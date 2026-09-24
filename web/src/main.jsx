@@ -15,8 +15,8 @@ import './styles/index.css';
 const pages = {
   equipe: <AuthGate spaceId="equipe"><StoreProvider><App /></StoreProvider></AuthGate>,
   residents: <AuthGate spaceId="residents"><StoreProvider><ResidentApp /></StoreProvider></AuthGate>,
-  benevoles: <StoreProvider><PublicShell><VolunteerSpace /></PublicShell></StoreProvider>,
-  partenaires: <StoreProvider><PublicShell><PartnerSpace /></PublicShell></StoreProvider>,
+  benevoles: <AuthGate spaceId="benevoles"><StoreProvider><PublicShell><VolunteerSpace /></PublicShell></StoreProvider></AuthGate>,
+  partenaires: <AuthGate spaceId="partenaires"><StoreProvider><PublicShell><PartnerSpace /></PublicShell></StoreProvider></AuthGate>,
   bilan: <StoreProvider><PublicShell><OrganizerFeedback /></PublicShell></StoreProvider>,
 };
 

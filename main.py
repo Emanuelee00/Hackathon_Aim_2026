@@ -7,6 +7,7 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from accounts.routes import router as accounts_router
+from agents.routes import router as agents_router
 from ai import router as ai_router
 from ai import warm_up
 from db import migrate
@@ -30,6 +31,7 @@ app.include_router(matching_router)
 app.include_router(employment_router)
 app.include_router(store_router)
 app.include_router(accounts_router)
+app.include_router(agents_router)
 
 
 @app.get("/api/health")

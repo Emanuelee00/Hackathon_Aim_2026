@@ -19,4 +19,6 @@
 @import '../features/resident/resident.css';
 @import '../features/landing/landing.css';
 @import '../features/auth/auth.css';
+@import '../features/chatbot/chatbot.css';
+@import '../features/questions/questions.css';
 @import './responsive.css';

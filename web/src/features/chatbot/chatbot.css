@@ -1,0 +1,26 @@
+/* Chatbot: floating bubble */
+.chat-bubble { position: fixed; right: 20px; bottom: 20px; z-index: 40; display: grid; justify-items: end; gap: 12px; }
+.chat-launcher { gap: 8px; padding-inline: 18px; }
+.chat-panel { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; width: min(380px, calc(100vw - 32px)); height: min(560px, calc(100svh - 110px)); overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); }
+.chat-panel header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; color: white; background: var(--green); }
+.chat-panel header strong, .chat-panel header small { display: block; }
+.chat-panel header small { color: #eadcef; font-size: 12px; }
+.chat-panel header .icon-button { width: 32px; height: 32px; border-color: transparent; color: var(--green); }
+.chat-messages { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 16px; overflow-y: auto; list-style: none; background: var(--cream); }
+.chat-message { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.chat-message.assistant { align-self: flex-start; border-bottom-left-radius: 4px; background: white; box-shadow: 0 1px 2px rgba(27,19,25,.06); }
+.chat-message.user { align-self: flex-end; border-bottom-right-radius: 4px; color: white; background: var(--plum); }
+.chat-handoff { display: flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 9px; border-radius: 8px; color: var(--green); background: #ead6ee; font-size: 12px; font-weight: 700; }
+.chat-typing { display: flex; gap: 4px; }
+.chat-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); animation: chat-dot 1s infinite ease-in-out; }
+.chat-typing i:nth-child(2) { animation-delay: .15s; }
+.chat-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes chat-dot { 50% { transform: translateY(-4px); background: var(--plum); } }
+@media (prefers-reduced-motion: reduce) { .chat-typing i { animation: none; } }
+.chat-panel .form-error { margin: 0 12px 10px; }
+.chat-panel form { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+.chat-panel input { flex: 1; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; outline: 0; font-size: 14px; }
+.chat-panel input:focus { border-color: #926b9a; box-shadow: 0 0 0 3px rgba(111,63,121,.1); }
+.chat-panel form .button { width: 40px; height: 40px; padding: 0; justify-content: center; }
+.chat-panel form .button:disabled { opacity: .5; cursor: default; }
+@media (max-width: 480px) { .chat-bubble { right: 12px; bottom: 12px; } }
