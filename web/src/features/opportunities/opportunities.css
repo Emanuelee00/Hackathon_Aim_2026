@@ -1,6 +1,6 @@
 /* Opportunities & matching */
 .ethical-ai { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid #cdd5ce; border-radius: 20px; color: #51675b; background: #edf0e4; font-size: 13px; font-weight: 700; }
-.journey-metrics { display: grid; grid-template-columns: repeat(3, 150px) 1fr; align-items: stretch; margin-bottom: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+.journey-metrics { display: grid; grid-template-columns: repeat(4, 150px) 1fr; align-items: stretch; margin-bottom: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
 .journey-metrics > div { padding: 15px 18px; border-right: 1px solid var(--line); }
 .journey-metrics strong, .journey-metrics span { display: block; }
 .journey-metrics strong { font-family: "Instrument Serif", serif; font-size: 27px; font-weight: 400; }
@@ -63,3 +63,12 @@
 .matching-progress > div { display: flex; align-items: center; gap: 9px; color: #435c4f; }
 .matching-progress strong { font-size: 14px; }
 .matching-progress small { margin-left: auto; color: var(--muted); font-size: 12px; }
+.match-reasons { display: grid; gap: 8px; margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: #eef1e4; }
+.match-reasons strong { color: var(--green); font-size: 13px; }
+.match-reasons ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.match-reasons li { display: grid; padding: 6px 10px; border-radius: 8px; color: var(--ink); background: white; font-size: 14px; font-weight: 600; }
+.match-reasons li small { color: var(--muted); font-size: 12px; font-weight: 400; }
+.match-reasons p { margin: 0; color: #4d5d55; font-size: 14px; }
+.match-card.applied { border-left-color: #8f7cc4; }
+.application-note { display: flex; gap: 8px; margin: 14px 0 0; padding: 10px 12px; border-radius: 8px; color: #3f3566; background: #ece7f6; font-size: 14px; line-height: 1.5; }
+.application-note svg { flex-shrink: 0; margin-top: 2px; }

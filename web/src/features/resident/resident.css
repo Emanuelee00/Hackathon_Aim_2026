@@ -166,3 +166,16 @@
 .plan-cv-proposals p { flex: 1; min-width: 200px; margin: 0; font-size: 15px; }
 .plan-cv-proposals strong { display: block; font-size: 16px; }
 @media (prefers-reduced-motion: reduce) { .plan-cv-proposals { animation: none; } }
+
+/* Resident view: applications */
+.decision.applied { color: #3f3566; background: #ece7f6; }
+.application-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.application-list li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.application-list strong, .application-list small { display: block; }
+.application-list strong { font-size: 16px; }
+.application-list small { color: var(--muted); font-size: 14px; }
+.application-list small::first-letter { text-transform: uppercase; }
+.application-status { padding: 5px 10px; border-radius: 20px; color: #3f3566; background: #ece7f6; font-size: 13px; font-weight: 700; }
+.application-list .not_selected .application-status { color: #4d5d55; background: #ebe8dd; }
+.application-list .text-link, .application-list p { grid-column: 1 / -1; justify-self: start; margin: 0; font-size: 14px; }
+.application-list p { color: #4d5d55; }

@@ -44,7 +44,9 @@ la decisione alla coordinatrice e alla residente.
 Le proposte della residente sono divise in tre gruppi: proposte dall'équipe, trovate
 grazie al CV (dopo l'analisi, gli eventi in programma che condividono parole con CV e
 mestiere cercato, senza AI) e attività aperte a tutte, sempre visibili finché lei non
-sceglie.
+sceglie. Ogni residente può candidarsi a tutte le attività (nessuna esclusione a monte):
+la candidatura arriva alla coordinatrice, che la accetta o no secondo posti e budget. Ogni
+suggerimento del matching mostra il perché: obiettivi e competenze in comune con l'evento.
 
 Nella vista residente è possibile caricare un CV PDF o DOCX fino a 4 MB e
 indicare il lavoro cercato. Il testo viene elaborato in memoria, senza conservare

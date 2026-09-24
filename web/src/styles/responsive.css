@@ -9,7 +9,7 @@
   .impact-card h3 { margin-bottom: 20px; }
   .impact-number { border-bottom: 0; }
   .spaces-grid { grid-template-columns: 1fr 1fr; }
-  .journey-metrics { grid-template-columns: repeat(3, 1fr); }
+  .journey-metrics { grid-template-columns: repeat(2, 1fr); }
   .journey-metrics > p { grid-column: 1 / -1; justify-content: center; }
   .journeys-grid { grid-template-columns: 1fr; }
 }
@@ -89,7 +89,7 @@
   .report-todo-list > div { grid-template-columns: 40px minmax(0,1fr); padding: 12px 14px; }
   .report-todo-list .button { grid-column: 1 / -1; width: 100%; }
   .ethical-ai { display: none; }
-  .journey-metrics { grid-template-columns: repeat(3, 1fr); }
+  .journey-metrics { grid-template-columns: repeat(2, 1fr); }
   .journey-metrics > div { padding: 12px; }
   .journey-metrics > p { padding: 11px; }
   .match-points { grid-template-columns: 1fr; }

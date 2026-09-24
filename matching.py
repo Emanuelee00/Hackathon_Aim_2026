@@ -48,8 +48,15 @@ class ModelOutput(BaseModel):
     matches: list[Rationale] = Field(max_length=3)
 
 
+class Reason(BaseModel):
+    kind: Literal["goal", "skill"]
+    text: str
+
+
 class MatchSuggestion(Rationale):
     source: Literal["ai", "guided"]
+    # Profile items shared with the event: the factual "why" behind the match.
+    reasons: list[Reason] = []
 
 
 class MatchResponse(BaseModel):
@@ -102,13 +109,19 @@ def request_matching(request: MatchRequest) -> MatchResponse:
         written = write_rationales(event, ranked)
     matches = []
     for profile, terms in ranked:
+        reasons = [
+            Reason(kind="goal" if term in profile["goals"] else "skill", text=term)
+            for term in terms
+        ]
         if profile["id"] in written:
-            matches.append(MatchSuggestion(**written[profile["id"]], source="ai"))
+            text, source = written[profile["id"]], "ai"
         else:
-            text = guided_rationale(profile["first_name"], terms)
-            matches.append(
-                MatchSuggestion(resident_id=profile["id"], **text, source="guided")
-            )
+            text = {
+                "resident_id": profile["id"],
+                **guided_rationale(profile["first_name"], terms),
+            }
+            source = "guided"
+        matches.append(MatchSuggestion(**text, source=source, reasons=reasons))
     return MatchResponse(matches=matches)
 
 

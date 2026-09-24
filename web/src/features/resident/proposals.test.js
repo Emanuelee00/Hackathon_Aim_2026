@@ -21,5 +21,17 @@ test('decided events leave the open list', () => {
 });
 
 test('turns API proposals into CV matches', () => {
-  assert.deepEqual(cvMatches([{ event_id: 'photo', rationale: 'r', benefit: 'b', vigilance: 'v' }]), [{ eventId: 'photo', source: 'cv', status: 'proposed', rationale: 'r', benefit: 'b', vigilance: 'v' }]);
+  assert.deepEqual(cvMatches([{ event_id: 'photo', reasons: ['photo'], rationale: 'r', benefit: 'b', vigilance: 'v' }]), [{ eventId: 'photo', source: 'cv', status: 'proposed', reasons: [{ kind: 'cv', text: 'photo' }], rationale: 'r', benefit: 'b', vigilance: 'v' }]);
+});
+
+test('applications wait apart from new proposals', () => {
+  const mine = [{ id: 'yoga-marie', eventId: 'yoga', status: 'applied', source: 'open' }, { id: 'photo-marie', eventId: 'photo', status: 'not_selected', source: 'cv' }];
+  const groups = groupProposals(mine, available, 'marie');
+  assert.deepEqual(groups.applications.map(item => item.id), ['yoga-marie', 'photo-marie']);
+  assert.deepEqual(groups.open.map(item => item.eventId), ['cuisine']);
+});
+
+test('internal team suggestions do not hide open activities', () => {
+  const mine = [{ id: 'yoga-marie', eventId: 'yoga', status: 'suggested' }];
+  assert.ok(groupProposals(mine, available, 'marie').open.some(item => item.eventId === 'yoga'));
 });

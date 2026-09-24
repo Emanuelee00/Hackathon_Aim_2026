@@ -123,3 +123,15 @@ def test_demo_mode_serves_prewritten_texts_without_model(monkeypatch):
     assert [(m.resident_id, m.source) for m in response.matches] == [("camille", "ai")]
     assert "projet indépendant" in response.matches[0].rationale
     local_client.assert_not_called()
+
+
+def test_match_explains_which_goals_and_skills_are_shared(monkeypatch):
+    mock_ollama(monkeypatch, lambda request: httpx.Response(500))
+    payload = match_payload()
+    payload["residents"][0]["skills"] = ["Accueil", "Gestion de projet"]
+    response = matching.request_matching(matching.MatchRequest.model_validate(payload))
+    reasons = [(item.kind, item.text) for item in response.matches[0].reasons]
+    assert reasons == [
+        ("goal", "Rencontrer des entrepreneures"),
+        ("skill", "Gestion de projet"),
+    ]

@@ -33,6 +33,7 @@ class CvEvent(BaseModel):
 
 class CvProposal(BaseModel):
     event_id: str
+    reasons: list[str] = []
     rationale: str
     benefit: str
     vigilance: str

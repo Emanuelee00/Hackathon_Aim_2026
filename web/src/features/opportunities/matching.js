@@ -3,5 +3,8 @@ export const eligibleResidents = residents => residents.filter(resident => resid
 export const eligibleEvents = events => events.filter(event => ['pending', 'confirmed'].includes(event.status) && event.opportunity?.trim()).sort((a, b) => a.date.localeCompare(b.date));
 
 export function workflowCounts(matches) {
-  return matches.reduce((counts, match) => ({ ...counts, [match.status]: (counts[match.status] || 0) + 1 }), { suggested: 0, proposed: 0, accepted: 0, declined: 0, dismissed: 0 });
+  return matches.reduce((counts, match) => ({ ...counts, [match.status]: (counts[match.status] || 0) + 1 }), { suggested: 0, proposed: 0, applied: 0, accepted: 0, declined: 0, dismissed: 0, not_selected: 0 });
 }
+
+// Resident applications first: they wait for a human answer.
+export const sortForReview = matches => [...matches].sort((a, b) => (b.status === 'applied') - (a.status === 'applied'));

@@ -64,6 +64,7 @@ def cv_proposals(events: list[CvEvent], profile_text: str) -> list[CvProposal]:
     return [
         CvProposal(
             event_id=event.id,
+            reasons=links[:3],
             rationale=f"Votre CV et le métier que vous visez parlent de {', '.join(links[:3])} : cet événement est en lien direct.",
             benefit=event.opportunity or event.description,
             vigilance="Vérifiez vos disponibilités avec l’équipe avant de vous inscrire.",
