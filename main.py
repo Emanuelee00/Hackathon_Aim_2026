@@ -43,6 +43,9 @@ class Frontend(StaticFiles):
         response = super().file_response(*args, **kwargs)
         if response.headers.get("content-type", "").startswith("text/html"):
             response.headers["cache-control"] = "no-store"
+            # Without validators no proxy can answer 304 with a stale page.
+            del response.headers["etag"]
+            del response.headers["last-modified"]
         return response
 
     def is_not_modified(self, response_headers, request_headers) -> bool:

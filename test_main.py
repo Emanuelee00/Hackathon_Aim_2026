@@ -6,8 +6,15 @@ import main
 def test_html_page_is_never_served_from_browser_cache():
     client = TestClient(main.app)
     first = client.get("/")
-    again = client.get("/", headers={"If-None-Match": first.headers["etag"]})
+    again = client.get(
+        "/",
+        headers={
+            "If-None-Match": '"any"',
+            "If-Modified-Since": "Sat, 20 Oct 2018 01:46:40 GMT",
+        },
+    )
     assert first.headers["cache-control"] == "no-store"
+    assert "etag" not in first.headers and "last-modified" not in first.headers
     assert again.status_code == 200
 
 
