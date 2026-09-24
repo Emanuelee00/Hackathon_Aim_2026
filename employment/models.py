@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class EmploymentContext(BaseModel):
@@ -24,4 +24,30 @@ class PlanContent(BaseModel):
 
 
 class EmploymentPlan(PlanContent):
+    source: Literal["ai", "guided"]
+
+
+class CvSkill(BaseModel):
+    skill: str = Field(min_length=1, max_length=200)
+    event: str = Field(min_length=1, max_length=120)
+    date: str = Field(min_length=1, max_length=40)
+
+
+class CvLinesRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    objective: str = Field(min_length=2, max_length=160)
+    skills: list[CvSkill] = Field(min_length=1, max_length=8)
+
+
+class CvLine(BaseModel):
+    skill: str
+    line: str = Field(min_length=1, max_length=300)
+
+
+class CvLinesContent(BaseModel):
+    lines: list[CvLine] = Field(min_length=1, max_length=8)
+    advice: str = Field(min_length=1, max_length=400)
+
+
+class CvLines(CvLinesContent):
     source: Literal["ai", "guided"]

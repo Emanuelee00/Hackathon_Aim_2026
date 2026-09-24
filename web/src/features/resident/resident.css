@@ -142,3 +142,14 @@
   .plan-step > .button-large, .plan-actions .button { width: 100%; }
   .activity-card dl > div { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* Resident view: AI help to write CV lines */
+.cv-ai { display: grid; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.cv-ai > label { font-size: 14px; font-weight: 700; }
+.cv-ai .plan-input { min-height: 46px; font-size: 16px; }
+.cv-ai-answer { display: grid; gap: 10px; animation: appear .25s ease-out; }
+.cv-ai-answer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cv-ai-answer li { display: grid; gap: 8px; padding: 12px; border: 1px solid #cbd6c6; border-radius: 10px; background: white; }
+.cv-ai-answer li p { margin: 0; color: var(--ink); font-size: 15px; line-height: 1.5; }
+.cv-ai-answer .chip { justify-self: start; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { .cv-ai-answer { animation: none; } }

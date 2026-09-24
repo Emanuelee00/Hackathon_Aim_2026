@@ -99,6 +99,8 @@ il backend restituisce le risposte scritte in `demo_responses.json`:
 - piano verso l'impiego: un piano per ciascuno dei tre mestieri di esempio
   (commis de cuisine, assistante administrative, vente); gli altri obiettivi
   ricevono il piano guidato, il CV tech → cuisine il piano di reconversion.
+- frasi per il CV (« Comment l’écrire sur un CV ? ») : una versione per ciascuno dei tre
+  mestieri di esempio; gli altri mestieri ricevono una frase guidata.
 
 I testi sono stati abbozzati con `qwen2.5:3b` e poi corretti a mano.
 

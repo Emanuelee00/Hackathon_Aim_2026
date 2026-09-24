@@ -27,3 +27,11 @@ def demo_plan(objective: str, acquired_skills: list[str]) -> dict | None:
     if not plan:
         return None
     return {**plan, "strengths": [*acquired_skills[:2], *plan["strengths"]][:5]}
+
+
+def demo_cv_lines(objective: str, skills: list[str]) -> dict | None:
+    entry = RESPONSES["cv_lines"].get(objective.strip().casefold())
+    if not entry or not all(skill in entry["lines"] for skill in skills):
+        return None
+    lines = [{"skill": skill, "line": entry["lines"][skill]} for skill in skills]
+    return {"lines": lines, "advice": entry["advice"]}

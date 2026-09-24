@@ -4,8 +4,9 @@ from typing import Annotated
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from pydantic import ValidationError
 
+from .cv_lines import generate_lines
 from .extraction import MAX_FILE_SIZE, extract_cv_text
-from .models import EmploymentContext, EmploymentPlan
+from .models import CvLines, CvLinesRequest, EmploymentContext, EmploymentPlan
 from .planning import generate_plan
 
 router = APIRouter(prefix="/api")
@@ -29,3 +30,8 @@ async def employment_plan(
         ) from exc
     text = extract_cv_text(cv.filename or "", await cv.read(MAX_FILE_SIZE + 1))
     return generate_plan(context, text)
+
+
+@router.post("/cv-lines", response_model=CvLines)
+def cv_lines(request: CvLinesRequest) -> CvLines:
+    return generate_lines(request)

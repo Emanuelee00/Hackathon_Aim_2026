@@ -7,8 +7,9 @@ from unittest.mock import AsyncMock, MagicMock
 import httpx
 from docx import Document
 
+from employment.cv_lines import generate_lines
 from employment.extraction import extract_cv_text
-from employment.models import EmploymentContext
+from employment.models import CvLinesRequest, EmploymentContext
 from employment.planning import generate_plan
 from employment.routes import employment_plan
 
@@ -157,4 +158,62 @@ def test_demo_mode_serves_prewritten_plan_without_model(monkeypatch):
     assert demo.source == "ai" and len(demo.steps) == 4
     assert demo.strengths[0] == context().acquired_skills[0]
     assert generate_plan(unknown, "Préparation de repas").source == "guided"
+    client.assert_not_called()
+
+
+def cv_request(objective="Vente"):
+    skill = {
+        "skill": "Accueil des participantes et organisation de la table",
+        "event": "Le brunch des voisines",
+        "date": "19 septembre 2026",
+    }
+    return CvLinesRequest(objective=objective, skills=[skill])
+
+
+def test_cv_lines_keep_journey_skills_and_model_wording(monkeypatch):
+    content = {
+        "lines": [{"skill": "Inventée", "line": "Accueilli les participantes."}],
+        "advice": "Placez-la dans « Expériences bénévoles ».",
+    }
+    transport = httpx.MockTransport(
+        lambda request: httpx.Response(
+            200, json={"message": {"content": json.dumps(content)}}
+        )
+    )
+    monkeypatch.setattr(
+        "employment.cv_lines.httpx.Client",
+        MagicMock(return_value=httpx.Client(transport=transport)),
+    )
+    result = generate_lines(cv_request())
+    assert result.source == "ai"
+    assert result.lines[0].skill == cv_request().skills[0].skill
+    assert result.lines[0].line == "Accueilli les participantes."
+
+
+def test_cv_lines_fall_back_when_model_fails_or_miscounts(monkeypatch):
+    real_client = httpx.Client
+    for response in (
+        httpx.Response(500),
+        httpx.Response(
+            200,
+            json={"message": {"content": json.dumps({"lines": [], "advice": "x"})}},
+        ),
+    ):
+        transport = httpx.MockTransport(lambda request, response=response: response)
+        monkeypatch.setattr(
+            "employment.cv_lines.httpx.Client",
+            MagicMock(return_value=real_client(transport=transport)),
+        )
+        result = generate_lines(cv_request())
+        assert result.source == "guided"
+        assert "Vente" in result.advice
+
+
+def test_cv_lines_demo_mode_uses_prewritten_answers(monkeypatch):
+    client = MagicMock()
+    monkeypatch.setattr("employment.cv_lines.httpx.Client", client)
+    monkeypatch.setattr("employment.cv_lines.DEMO_MODE", True)
+    monkeypatch.setattr("employment.cv_lines.DEMO_DELAY", 0)
+    assert generate_lines(cv_request()).source == "ai"
+    assert generate_lines(cv_request("Pilote de ligne")).source == "guided"
     client.assert_not_called()

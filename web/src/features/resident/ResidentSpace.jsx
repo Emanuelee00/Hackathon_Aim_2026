@@ -50,7 +50,7 @@ export default function ResidentSpace({ navigate }) {
         {accepted.map(match => <MyJourneyCard key={match.id} match={match} resident={resident} event={eventById[match.eventId]} />)}
         {!accepted.length && <div className="resident-empty"><h2>Votre parcours commence ici</h2><p>Acceptez une proposition : l’activité et ce qu’elle vous apporte apparaîtront ici.</p><button className="button button-dark" onClick={() => setTab('proposals')}>Voir les propositions</button></div>}
       </div>
-      <aside className="side-lists"><CvSkillsPanel skills={skills} /><ContactsPanel contacts={residentContacts(matches, eventById, residentId)} /></aside>
+      <aside className="side-lists"><CvSkillsPanel key={residentId} skills={skills} residentId={residentId} /><ContactsPanel contacts={residentContacts(matches, eventById, residentId)} /></aside>
     </section>
 
     <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden={tab !== 'plan'} className="resident-panel">

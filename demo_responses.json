@@ -120,10 +120,26 @@
         "Mentionner les ateliers suivis chez Marthe dans une rubrique « Expériences collectives »"
       ],
       "steps": [
-        { "title": "Mettre à jour le CV", "action": "Ajouter le titre et décrire vos expériences en cuisine avec votre accompagnatrice.", "timeframe": "Cette semaine" },
-        { "title": "Demander une immersion", "action": "Contacter La Tablée Solidaire pour une journée découverte en cuisine.", "timeframe": "Sous 10 jours" },
-        { "title": "Se renseigner sur l'hygiène", "action": "Repérer une formation courte aux règles d'hygiène alimentaire avec une conseillère emploi.", "timeframe": "Sous 3 semaines" },
-        { "title": "Postuler", "action": "Choisir trois offres de commis débutant et envoyer une candidature adaptée.", "timeframe": "Sous 1 mois" }
+        {
+          "title": "Mettre à jour le CV",
+          "action": "Ajouter le titre et décrire vos expériences en cuisine avec votre accompagnatrice.",
+          "timeframe": "Cette semaine"
+        },
+        {
+          "title": "Demander une immersion",
+          "action": "Contacter La Tablée Solidaire pour une journée découverte en cuisine.",
+          "timeframe": "Sous 10 jours"
+        },
+        {
+          "title": "Se renseigner sur l'hygiène",
+          "action": "Repérer une formation courte aux règles d'hygiène alimentaire avec une conseillère emploi.",
+          "timeframe": "Sous 3 semaines"
+        },
+        {
+          "title": "Postuler",
+          "action": "Choisir trois offres de commis débutant et envoyer une candidature adaptée.",
+          "timeframe": "Sous 1 mois"
+        }
       ]
     },
     "assistante administrative": {
@@ -142,10 +158,26 @@
         "Présenter chaque expérience avec une action, une compétence et un résultat"
       ],
       "steps": [
-        { "title": "Faire le point sur les outils", "action": "Tester vos connaissances bureautiques avec votre accompagnatrice.", "timeframe": "Cette semaine" },
-        { "title": "Se former", "action": "Suivre un module gratuit en ligne sur le tableur ou le traitement de texte.", "timeframe": "Sous 2 semaines" },
-        { "title": "Pratiquer", "action": "Proposer votre aide pour l'accueil ou la gestion des inscriptions d'un événement chez Marthe.", "timeframe": "Sous 3 semaines" },
-        { "title": "Postuler", "action": "Sélectionner trois offres et envoyer un CV adapté à chacune.", "timeframe": "Sous 1 mois" }
+        {
+          "title": "Faire le point sur les outils",
+          "action": "Tester vos connaissances bureautiques avec votre accompagnatrice.",
+          "timeframe": "Cette semaine"
+        },
+        {
+          "title": "Se former",
+          "action": "Suivre un module gratuit en ligne sur le tableur ou le traitement de texte.",
+          "timeframe": "Sous 2 semaines"
+        },
+        {
+          "title": "Pratiquer",
+          "action": "Proposer votre aide pour l'accueil ou la gestion des inscriptions d'un événement chez Marthe.",
+          "timeframe": "Sous 3 semaines"
+        },
+        {
+          "title": "Postuler",
+          "action": "Sélectionner trois offres et envoyer un CV adapté à chacune.",
+          "timeframe": "Sous 1 mois"
+        }
       ]
     },
     "vente": {
@@ -164,11 +196,47 @@
         "Indiquer vos langues parlées, un vrai atout en magasin"
       ],
       "steps": [
-        { "title": "Adapter le CV", "action": "Ajouter le titre et vos expériences de contact avec le public.", "timeframe": "Cette semaine" },
-        { "title": "Découvrir le métier", "action": "Demander une immersion d'une journée dans un commerce du quartier.", "timeframe": "Sous 2 semaines" },
-        { "title": "S'entraîner à l'entretien", "action": "Faire une simulation d'entretien avec votre accompagnatrice.", "timeframe": "Sous 3 semaines" },
-        { "title": "Postuler", "action": "Déposer votre CV dans trois magasins et répondre à deux offres en ligne.", "timeframe": "Sous 1 mois" }
+        {
+          "title": "Adapter le CV",
+          "action": "Ajouter le titre et vos expériences de contact avec le public.",
+          "timeframe": "Cette semaine"
+        },
+        {
+          "title": "Découvrir le métier",
+          "action": "Demander une immersion d'une journée dans un commerce du quartier.",
+          "timeframe": "Sous 2 semaines"
+        },
+        {
+          "title": "S'entraîner à l'entretien",
+          "action": "Faire une simulation d'entretien avec votre accompagnatrice.",
+          "timeframe": "Sous 3 semaines"
+        },
+        {
+          "title": "Postuler",
+          "action": "Déposer votre CV dans trois magasins et répondre à deux offres en ligne.",
+          "timeframe": "Sous 1 mois"
+        }
       ]
+    }
+  },
+  "cv_lines": {
+    "commis de cuisine": {
+      "lines": {
+        "Accueil des participantes et organisation de la table": "Accueilli les participantes et organisé la mise en place de la table lors du brunch des voisines chez Marthe (Marseille, septembre 2026)."
+      },
+      "advice": "Placez-la dans « Expériences bénévoles » et racontez en entretien comment vous avez préparé la salle avant l'arrivée des invitées : la mise en place compte aussi en cuisine."
+    },
+    "assistante administrative": {
+      "lines": {
+        "Accueil des participantes et organisation de la table": "Accueilli les participantes et coordonné l'organisation de la table lors du brunch des voisines chez Marthe (Marseille, septembre 2026)."
+      },
+      "advice": "Placez-la dans « Activités et engagements » et racontez en entretien comment vous avez accueilli et orienté les personnes : c'est le cœur de l'accueil en entreprise."
+    },
+    "vente": {
+      "lines": {
+        "Accueil des participantes et organisation de la table": "Accueilli et orienté les participantes du brunch des voisines chez Marthe (Marseille, septembre 2026), en veillant à une table soignée et accueillante."
+      },
+      "advice": "Placez-la dans « Expériences bénévoles » et racontez en entretien comment vous avez mis les personnes à l'aise : c'est ce qu'on attend d'une conseillère de vente."
     }
   }
 }
