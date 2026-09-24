@@ -1,4 +1,5 @@
 import json
+import os
 import time
 
 import httpx
@@ -10,7 +11,7 @@ from .models import EmploymentContext, EmploymentPlan, PlanContent, PlanStep
 from .transition import technical_to_kitchen, transition_plan
 
 MODEL = "qwen2.5:0.5b"
-OLLAMA_URL = "http://127.0.0.1:11435/api/chat"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11435/api/chat")
 
 
 def _guided_steps() -> list[PlanStep]:

@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-marthe}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-marthe}
+      POSTGRES_DB: ${POSTGRES_DB:-marthe}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-marthe}:${POSTGRES_PASSWORD:-marthe}@db:5432/${POSTGRES_DB:-marthe}
+      # Ollama runs on the host (make ai / make model-pull).
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11435/api/chat}
+      # Fallback in case file events don't reach the container.
+      WATCHFILES_FORCE_POLLING: ${WATCHFILES_FORCE_POLLING:-false}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./web
+    environment:
+      API_PROXY_TARGET: http://backend:8000
+      # Set to true if HMR misses changes (e.g. project on a Windows drive).
+      VITE_USE_POLLING: ${VITE_USE_POLLING:-false}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web:/app
+      # Keep the container's node_modules instead of the host's.
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

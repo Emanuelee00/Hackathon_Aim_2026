@@ -1,0 +1,11 @@
+.git
+.venv
+.ollama
+web
+__pycache__
+*.pyc
+.ruff_cache
+.pytest_cache
+.vercel
+.env
+.env.*

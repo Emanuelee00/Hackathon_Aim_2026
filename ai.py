@@ -1,10 +1,12 @@
+import os
+
 import httpx
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 router = APIRouter(prefix="/api")
 MODEL = "qwen2.5:3b"
-OLLAMA_URL = "http://127.0.0.1:11435/api/chat"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11435/api/chat")
 
 
 class ChatRequest(BaseModel):
