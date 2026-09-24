@@ -1,4 +1,5 @@
 import { spaceById, statuses } from '../data/spaces.js';
+import { nextStepLabels } from '../../features/journeys/tracking.js';
 import { dateLabel, money } from './format.js';
 
 export function download(name, text, type = 'text/plain;charset=utf-8') {
@@ -12,6 +13,12 @@ export function exportEvent(event) {
   const lines = ['MARTHE — FICHE ÉVÉNEMENT', 'Données de démonstration · Document de travail', '', event.title, `Organisateur : ${event.organizer}`, `Contact : ${event.email || 'Non renseigné'}`, `Date : ${dateLabel(event.date)} · ${event.start}–${event.end}`, `Espace : ${spaceById[event.space].name}`, `Statut : ${statuses[event.status]}`, `Personnes prévues : ${event.participants}`, `Recettes prévues : ${money(event.revenue)} · Coûts prévus : ${money(event.costs)}`, '', 'Proposition de participation volontaire', event.opportunity || 'À définir avec l’équipe.'];
   if (event.report) lines.push('', 'BILAN SAISI', `Présences : ${event.report.attendance}, dont résidentes : ${event.report.residents}`, `Recettes : ${money(event.report.revenue)} · Coûts : ${money(event.report.costs)}`, event.report.feedback, event.report.outcomes);
   download(`marthe-${event.id}.txt`, lines.join('\n'));
+}
+
+export function exportAttestation(match, resident, event) {
+  const journey = match.journey || {};
+  const lines = ['MARTHE — ATTESTATION DE PARTICIPATION', 'Données de démonstration · Document fictif, sans valeur officielle', '', `Résidente : ${resident.first_name}`, `Événement : ${event.title}`, `Organisé par : ${event.organizer}`, `Date : ${dateLabel(event.date)} · ${spaceById[event.space].name}`, '', `Compétence exercée : ${journey.skills || 'Non renseignée'}`, `Contact établi : ${journey.contact || 'Non renseigné'}`, `Prochaine étape engagée : ${nextStepLabels[journey.nextStep] || nextStepLabels.none}`, '', 'Fait à Marseille, avec l’équipe Chez Marthe.'];
+  download(`marthe-attestation-${resident.id}-${event.id}.txt`, lines.join('\n'));
 }
 
 export function exportReports(events) {

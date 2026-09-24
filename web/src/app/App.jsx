@@ -12,6 +12,7 @@ import Reports from '../features/reports/Reports.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
+import ResidentSpace from '../features/resident/ResidentSpace.jsx';
 import JourneyForm from '../features/journeys/components/JourneyForm.jsx';
 import { residentById } from '../features/opportunities/data/residents.js';
 import { TODAY } from '../shared/data/spaces.js';
@@ -25,6 +26,7 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'calendar') return <Calendar onOpen={openEvent} />;
   if (page === 'spaces') return <Spaces onBook={openSpaceRequest} onOpen={openEvent} />;
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
+  if (page === 'resident') return <ResidentSpace navigate={navigate} />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 

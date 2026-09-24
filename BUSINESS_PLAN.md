@@ -579,3 +579,30 @@ Questa precisione rafforza il pitch: mostra che il team comprende sia il potenzi
 - [Nazioni Unite — Agenda 2030 e Sustainable Development Goals](https://sdgs.un.org/2030agenda)
 
 Le fonti servono a motivare l'allineamento strategico. Un futuro dossier di finanziamento dovrà aggiungere dati del territorio, bisogni misurati, partner, budget, baseline e risultati del pilot.
+
+---
+
+## 23. Modifiche apportate da Claude (sessione del 2026-09-23)
+
+Questa sezione elenca solo ciò che è stato aggiunto o modificato da Claude in questa sessione di lavoro, per distinguerlo chiaramente da quanto già esisteva nel prototipo. Dettaglio tecnico completo dei problemi trovati in [PROBLEMS.md](PROBLEMS.md).
+
+**Analisi e audit**
+- Testato dal vivo l'endpoint `/api/match` (chiamata reale a Ollama/qwen2.5:0.5b): individuati output incoerenti, un errore fattuale tra profili e un fallimento (502) su un secondo scenario di test.
+- Creato [PROBLEMS.md](PROBLEMS.md) con l'elenco dei problemi trovati, ordinati per gravità rispetto alla demo.
+
+**Nuova funzionalità: Vue résidente (`web/src/features/resident/`)**
+- Nuova pagina raggiungibile da "Vue résidente (démo)" in fondo alla sidebar, che mostra l'app dal punto di vista della beneficiaria invece che della coordinatrice.
+- Sezione 1 "Propositions à examiner": la residente vede le proposte di matching e può accettarle o rifiutarle (`ProposalCard.jsx`).
+- Sezione 2 "Mon parcours": i percorsi accettati, con un bottone reale per **scaricare un'attestazione di partecipazione** (nome, evento, competenza esercitata, contatto, prossima tappa) — file generato e scaricabile per davvero, non un mockup (`MyJourneyCard.jsx`, funzione `exportAttestation` in `shared/lib/exports.js`).
+- Sezione 3 "Vers l'emploi" (scheletro, da completare):
+  - "Mes compétences pour mon CV" e "Mes contacts" — **già funzionanti**, costruiti aggregando i dati reali già raccolti nei parcours (nessuna IA necessaria) (`CvSkillsPanel.jsx`, `ContactsPanel.jsx`, funzioni `residentSkills`/`residentContacts` in `journeys/tracking.js`, con test).
+  - Upload CV + obiettivo professionale + generazione di un piano verso l'impiego — **solo interfaccia per ora**, bottone volutamente disattivato con nota "fonctionnalité à venir": l'analisi AI del CV è stata rimandata di proposito perché il modello locale attuale (qwen2.5:0.5b) ha già mostrato limiti su un compito più semplice (vedi PROBLEMS.md); da costruire nella prossima iterazione.
+
+**Pulizia del codice**
+- Estratto in `journeys/tracking.js` la mappa `nextStepLabels` che era duplicata; rimossa la duplicazione in `JourneyCard.jsx`.
+- Riorganizzato `web/src/styles/index.css` con intestazioni di sezione (nessuna regola spostata di significato, solo commenti + una regola CSS che era finita fuori posto rimessa vicino alla sua coppia).
+- Struttura della nuova feature allineata alle convenzioni già in uso nel resto del progetto (pagina + `components/` con sotto-componenti), seguendo [CODEX.md](CODEX.md).
+
+**Verifica**
+- Build (`npm run build`), lint e l'intera suite di test (backend `pytest` + frontend, 15 test) eseguiti dopo ogni modifica: tutti verdi.
+- Interfaccia verificata con Chromium/Playwright, incluso il download reale dell'attestazione e la vista con dati di parcours simulati.

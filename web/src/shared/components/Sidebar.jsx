@@ -23,6 +23,7 @@ export default function Sidebar({ page, navigate, mobile, close, help }) {
       <p className="nav-caption">VOTRE QUOTIDIEN</p>
       <nav aria-label="Navigation principale">{navigation.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} aria-current={page === item.id ? 'page' : undefined} onClick={() => navigate(item.id)}><Icon name={item.icon} /><span>{item.label}</span>{item.id === 'requests' && pending > 0 && <b className="nav-count">{pending}</b>}</button>)}</nav>
       <div className="sidebar-bottom"><div className="sidebar-note"><span className="sun-mark">✳</span><p>Chaque rencontre<br />ouvre des possibles.</p><small>Et si on les faisait grandir ?</small></div>
+        <button className="nav-item help-link" onClick={() => navigate('resident')}><Icon name="users" />Vue résidente (démo)</button>
         <button className="nav-item help-link" onClick={help}><Icon name="help" />À propos de cette démo</button>
         <div className="profile"><span className="avatar">CM</span><div><strong>L’équipe Chez Marthe</strong><small>Espace coordination</small></div><span className="live-dot" /></div>
       </div>
