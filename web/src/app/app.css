@@ -1,0 +1,42 @@
+/* App shell & sidebar */
+.app-shell { min-height: 100svh; }
+.app-content { min-height: 100svh; margin-left: 270px; }
+main { width: min(100%, 1480px); margin: 0 auto; padding: 42px clamp(28px, 4vw, 66px) 32px; }
+
+.sidebar { position: fixed; inset: 0 auto 0 0; z-index: 30; display: flex; width: 270px; flex-direction: column; padding: 28px 20px 20px; overflow-y: auto; color: #eaf0ec; background: var(--green); }
+.brand { display: flex; align-items: center; gap: 11px; width: max-content; color: white; text-decoration: none; }
+.brand img { width: 35px; height: 35px; filter: brightness(0) invert(1); }
+.brand > span { font-family: "Instrument Serif", serif; font-size: 36px; line-height: 1; }
+.brand-dot { color: var(--peach); }
+.brand-caption { margin: 6px 0 26px 46px; color: #bfcfc7; font-size: 10px; letter-spacing: .08em; }
+.place-switch { display: grid; grid-template-columns: 39px 1fr 8px; gap: 11px; align-items: center; padding: 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 13px; background: rgba(255,255,255,.07); }
+.place-mark { display: grid; width: 39px; height: 39px; place-items: center; border-radius: 10px; color: var(--green); background: #d9dfc2; }
+.place-switch strong, .profile strong { display: block; color: white; font-size: 13px; }
+.place-switch small, .profile small { display: block; margin-top: 3px; color: #aebfb6; font-size: 10px; }
+.live-dot { display: inline-block; width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #dd8c67; box-shadow: 0 0 0 3px rgba(221,140,103,.15); }
+.nav-caption { margin: 27px 11px 10px; color: #839c90; font-size: 9px; font-weight: 700; letter-spacing: .17em; }
+.sidebar nav { display: grid; gap: 4px; }
+.nav-item { display: flex; width: 100%; align-items: center; gap: 12px; padding: 11px 13px; border: 0; border-radius: 10px; color: #c6d3cd; background: transparent; cursor: pointer; text-align: left; transition: .18s ease; }
+.nav-item:hover { color: white; background: rgba(255,255,255,.07); }
+.nav-item.active { color: white; background: rgba(255,255,255,.12); box-shadow: inset 3px 0 #e9a180; }
+.nav-item span { font-size: 13px; font-weight: 600; }
+.nav-count { margin-left: auto; padding: 2px 7px; border-radius: 20px; color: #633f31; background: #f1b397; font-size: 10px; }
+.sidebar-bottom { display: grid; gap: 14px; margin-top: auto; padding-top: 30px; }
+.sidebar-note { position: relative; padding: 16px; overflow: hidden; border-radius: 13px; color: var(--green); background: #dce4c7; }
+.sidebar-note .sun-mark { position: absolute; top: 9px; right: 12px; color: #d88460; font-size: 20px; }
+.sidebar-note p { margin-bottom: 8px; font-family: "Instrument Serif", serif; font-size: 19px; line-height: 1.15; }
+.sidebar-note small { color: #66776b; font-size: 9px; }
+.help-link { padding-left: 4px; font-size: 11px; }
+.profile { display: grid; grid-template-columns: 37px 1fr 7px; gap: 10px; align-items: center; padding-top: 15px; border-top: 1px solid rgba(255,255,255,.12); }
+.avatar { display: grid; width: 37px; height: 37px; place-items: center; border-radius: 50%; color: var(--green); background: #efb193; font-size: 11px; font-weight: 700; }
+
+/* Topbar */
+.topbar { display: flex; min-height: 69px; align-items: center; justify-content: space-between; gap: 22px; padding: 0 clamp(28px, 4vw, 66px); border-bottom: 1px solid var(--line); background: rgba(255,253,248,.78); backdrop-filter: blur(12px); }
+.breadcrumbs { display: flex; align-items: center; gap: 9px; color: #89938e; font-size: 12px; }
+.breadcrumbs strong { color: var(--ink); }
+.breadcrumb-slash { color: #c6c9c5; }
+.header-actions { display: flex; align-items: center; gap: 20px; }
+.demo-label { display: flex; align-items: center; gap: 8px; color: #78867f; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.demo-label > span { width: 6px; height: 6px; border-radius: 50%; background: #72a980; }
+.mobile-menu { display: none !important; }
+

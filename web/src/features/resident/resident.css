@@ -1,0 +1,14 @@
+/* Resident view */
+.resident-switch { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding: 12px 16px; border: 1px dashed #c9ccc5; border-radius: 10px; color: #6f7c75; background: #f3f2eb; font-size: 10px; }
+.resident-switch select { height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: white; font-size: 10px; font-weight: 700; }
+.resident-switch .text-link { margin-left: auto; }
+.job-plan-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: start; }
+.job-plan-form { padding: 23px; display: grid; gap: 14px; }
+.job-plan-form .button { width: 100%; }
+.job-plan-side { display: grid; gap: 8px; align-content: start; }
+.job-plan-side .panel { padding: 18px; }
+.cv-skills-list { display: grid; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.cv-skills-list li { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; }
+.cv-skills-list strong { display: block; font-size: 10px; }
+.cv-skills-list small { display: block; margin-top: 3px; color: #8b9690; font-size: 8px; }
+
