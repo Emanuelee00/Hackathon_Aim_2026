@@ -102,6 +102,7 @@
   .journey-summary > div:nth-last-child(-n+2) { border-bottom: 0; }
   .consent-pending { grid-template-columns: 25px 1fr; }
   .consent-pending .text-link { grid-column: 1 / -1; }
+  .job-plan-analysis { grid-template-columns: 1fr; }
 }
 
 /* Accessibility */

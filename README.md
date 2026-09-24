@@ -29,6 +29,7 @@ Per fermare i server usa Ctrl+C nei rispettivi terminali.
 - Stato backend: http://127.0.0.1:8000/api/health
 - Prova AI: http://127.0.0.1:8000/docs → `POST /api/chat`
 - Matching responsabile: sezione `Opportunités & parcours` oppure `POST /api/match`
+- Piano verso l'impiego: `Vue résidente` oppure `POST /api/employment-plan`
 
 ```sh
 curl http://127.0.0.1:8000/api/chat \
@@ -39,6 +40,12 @@ curl http://127.0.0.1:8000/api/chat \
 La risposta della chat ha la forma `{"reply":"..."}`. Il matching usa soltanto
 profili dimostrativi con consenso attivo, produce suggerimenti motivati e lascia
 la decisione alla coordinatrice e alla residente.
+
+Nella vista residente è possibile caricare un CV PDF o DOCX fino a 4 MB e
+indicare il lavoro cercato. Il testo viene elaborato in memoria, senza conservare
+il file. L'AI propone punti di forza, miglioramenti del CV e passi concreti; se
+il modello locale non risponde correttamente, viene mostrato un piano guidato
+esplicitamente riconoscibile e da validare con l'accompagnatrice.
 
 ## Modello
 
@@ -62,9 +69,10 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 ## Sviluppo
 
 - `main.py`: app FastAPI e stato del backend.
-- `ai.py`: `POST /api/chat` e chiamata HTTP a Ollama locale.
+- `ai.py`: chat e matching tramite Ollama locale.
+- `employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `web/src/app/`: composizione dell’app e stato condiviso.
-- `web/src/features/`: funzionalità autonome (`dashboard`, `requests`, `opportunities`, `journeys`, `calendar`, `spaces`, `reports`).
+- `web/src/features/`: funzionalità autonome, compresa la vista `resident`.
 - `web/src/shared/`: componenti, dati demo e funzioni riutilizzabili.
 - `web/src/styles/`: stile globale e responsive.
 - `pyproject.toml` e `uv.lock`: dipendenze Python.

@@ -11,4 +11,18 @@
 .cv-skills-list li { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; }
 .cv-skills-list strong { display: block; font-size: 10px; }
 .cv-skills-list small { display: block; margin-top: 3px; color: #8b9690; font-size: 8px; }
-
+.job-plan-result { display: grid; gap: 17px; padding-top: 19px; border-top: 1px solid var(--line); }
+.job-plan-result > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; }
+.job-plan-result h3 { margin: 0; font-family: "Instrument Serif", serif; font-size: 25px; font-weight: 400; }
+.job-plan-result h4 { margin: 0 0 8px; color: var(--ink); font-size: 10px; }
+.job-plan-result > p, .job-plan-result li { color: #64736b; font-size: 9px; line-height: 1.55; }
+.job-plan-result ul { display: grid; gap: 5px; margin: 0; padding-left: 17px; }
+.job-plan-analysis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.job-plan-analysis section { padding: 13px; border-radius: 9px; background: #f2f1e9; }
+.job-plan-steps { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.job-plan-steps li { display: grid; grid-template-columns: 27px 1fr; gap: 9px; padding: 11px; border: 1px solid var(--line); border-radius: 8px; }
+.job-plan-steps li > span { display: grid; width: 27px; height: 27px; place-items: center; border-radius: 50%; color: var(--green); background: #dfe7d5; font-weight: 700; }
+.job-plan-steps strong, .job-plan-steps small { display: block; }
+.job-plan-steps p { margin: 3px 0; font-size: 9px; }
+.job-plan-steps small { color: #98705e; font-size: 8px; font-weight: 700; }
+.job-plan-result .plan-source { display: flex; align-items: center; gap: 7px; margin: 0; padding: 10px; border-radius: 8px; background: #e8ecd9; }

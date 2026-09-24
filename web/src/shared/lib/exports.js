@@ -21,6 +21,12 @@ export function exportAttestation(match, resident, event) {
   download(`marthe-attestation-${resident.id}-${event.id}.txt`, lines.join('\n'));
 }
 
+export function exportEmploymentPlan(plan, resident, objective) {
+  const lines = ['MARTHE — MON PLAN VERS L’EMPLOI', 'Document de travail à valider avec une accompagnatrice', '', `Prénom : ${resident.first_name}`, `Objectif : ${objective}`, '', 'SYNTHÈSE', plan.summary, '', 'POINTS D’APPUI', ...plan.strengths.map(item => `• ${item}`), '', 'POINTS À RENFORCER', ...plan.gaps.map(item => `• ${item}`), '', 'MON CV', ...plan.cv_suggestions.map(item => `• ${item}`), '', 'MES PROCHAINES ÉTAPES'];
+  plan.steps.forEach((step, index) => lines.push(`${index + 1}. ${step.title} — ${step.timeframe}`, step.action));
+  download(`marthe-plan-emploi-${resident.id}.txt`, lines.join('\n'));
+}
+
 export function exportReports(events) {
   const rows = [['Événement', 'Date', 'Présences', 'Présences résidentes', 'Recettes EUR', 'Coûts EUR', 'Résultats observés']];
   events.filter(event => event.status === 'completed' && event.report).forEach(event => rows.push([event.title, event.date, event.report.attendance, event.report.residents, event.report.revenue, event.report.costs, event.report.outcomes]));

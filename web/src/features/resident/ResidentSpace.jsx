@@ -41,7 +41,7 @@ export default function ResidentSpace({ navigate }) {
 
     <section className="reports-section"><div className="section-heading"><div><span className="eyebrow">3 · VERS L’EMPLOI</span><h2>Mon plan, mes atouts, mon réseau</h2><p>Ce qui peut vous aider concrètement à trouver un emploi.</p></div></div>
       <div className="job-plan-grid">
-        <JobPlanForm />
+        <JobPlanForm resident={resident} skills={skills} />
         <div className="job-plan-side">
           <p className="small-label">MES COMPÉTENCES POUR MON CV</p>
           <CvSkillsPanel skills={skills} />

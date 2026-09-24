@@ -606,3 +606,19 @@ Questa sezione elenca solo ciò che è stato aggiunto o modificato da Claude in 
 **Verifica**
 - Build (`npm run build`), lint e l'intera suite di test (backend `pytest` + frontend, 15 test) eseguiti dopo ogni modifica: tutti verdi.
 - Interfaccia verificata con Chromium/Playwright, incluso il download reale dell'attestazione e la vista con dati di parcours simulati.
+
+---
+
+## 24. Piano verso l'impiego implementato
+
+Lo scheletro descritto nella sezione precedente è stato completato. Nella vista residente la persona può ora:
+
+- indicare il mestiere o settore cercato;
+- caricare un CV in formato PDF o DOCX, fino a 4 MB;
+- far estrarre e analizzare il testo senza conservare il documento;
+- vedere punti di forza già dimostrati, aspetti da rafforzare e suggerimenti concreti per il CV;
+- ricevere da tre a cinque prossimi passi con una scadenza comprensibile;
+- ritrovare il piano salvato localmente tornando nell'app;
+- scaricare il piano come documento di lavoro da discutere con l'accompagnatrice.
+
+Il risultato distingue sempre una proposta generata dall'AI da un piano guidato di emergenza. Se Ollama è assente, lento o restituisce dati non validi, il flusso rimane utilizzabile e dichiara chiaramente che il piano deve essere personalizzato con una professionista. Le competenze inviate al modello provengono soltanto dai percorsi già accettati e documentati; il prompt vieta di inventare diplomi, esperienze, durate o risultati.
