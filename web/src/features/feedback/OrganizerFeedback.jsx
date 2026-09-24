@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useStore } from '../../app/store.jsx';
+import { useEffect, useState } from 'react';
 import { EmptyState } from '../../shared/components/Primitives.jsx';
 import { spaceById, TODAY } from '../../shared/data/spaces.js';
 import { dateLabel } from '../../shared/lib/format.js';
+import { fetchFeedbackEvents, submitFeedback } from '../../shared/lib/publicForms.js';
 import { feedbackErrors, feedbackEvents, logisticsAnswers, residentAnswers } from './organizerFeedback.js';
 
 const empty = { rating: 0, attendance: '', residents: '', logistics: '', comment: '' };
@@ -16,17 +16,24 @@ function Stars({ value, onChange }) {
 }
 
 function FeedbackForm({ event, onSent }) {
-  const { saveEvent } = useStore();
   const [draft, setDraft] = useState(empty);
   const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
   const set = key => value => { setDraft(current => ({ ...current, [key]: value })); setErrors(current => ({ ...current, [key]: '' })); };
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
     const feedback = { ...draft, attendance: draft.attendance === '' ? Number.NaN : Number(draft.attendance) };
     const found = feedbackErrors(feedback);
     if (Object.keys(found).length) return setErrors(found);
-    saveEvent({ ...event, organizerFeedback: { ...feedback, comment: draft.comment.trim(), recordedAt: new Date().toISOString() } });
-    onSent();
+    setSending(true);
+    try {
+      await submitFeedback(event.id, { ...feedback, comment: draft.comment.trim() });
+      onSent();
+    } catch (failure) {
+      setErrors({ send: failure.message });
+    } finally {
+      setSending(false);
+    }
   };
   return <form className="panel feedback-form" onSubmit={submit} noValidate>
     <div className="field"><span>Votre satisfaction globale</span><Stars value={draft.rating} onChange={set('rating')} />{errors.rating && <p className="form-error">{errors.rating}</p>}</div>
@@ -34,18 +41,22 @@ function FeedbackForm({ event, onSent }) {
     <div className="field"><span>Des femmes hébergées ont-elles participé ?</span><Choices name="residents" options={residentAnswers} value={draft.residents} onChange={set('residents')} />{errors.residents && <p className="form-error">{errors.residents}</p>}</div>
     <div className="field"><span>L’accueil et la logistique</span><Choices name="logistics" options={logisticsAnswers} value={draft.logistics} onChange={set('logistics')} /></div>
     <label className="field"><span>Un mot pour l’équipe</span><textarea rows="4" maxLength={1000} value={draft.comment} onChange={e => set('comment')(e.target.value)} placeholder="Ce qui a bien marché, ce qu’on pourrait améliorer" /></label>
-    <button className="button button-dark">Envoyer mon bilan</button>
+    {errors.send && <p className="form-error" role="alert">{errors.send}</p>}
+    <button className="button button-dark" disabled={sending}>{sending ? 'Envoi…' : 'Envoyer mon bilan'}</button>
   </form>;
 }
 
 export default function OrganizerFeedback() {
-  const { events } = useStore();
+  const [events, setEvents] = useState([]);
+  const [loadError, setLoadError] = useState('');
+  useEffect(() => { fetchFeedbackEvents().then(setEvents).catch(failure => setLoadError(failure.message)); }, []);
   const [eventId, setEventId] = useState(() => new URLSearchParams(window.location.search).get('event') || '');
   const [sent, setSent] = useState(false);
   const choices = feedbackEvents(events, TODAY);
   const event = events.find(item => item.id === eventId);
   return <div className="feedback-space">
     <header className="landing-hero"><p className="eyebrow">BILAN DE VOTRE ÉVÉNEMENT</p><h1>Comment ça s’est passé ?</h1><p>{event ? `${event.title}, ${dateLabel(event.date, { weekday: 'long', day: 'numeric', month: 'long' })}, ${spaceById[event.space].name}. ` : ''}Deux minutes suffisent, et vos réponses nous aident à défendre le lieu auprès de nos financeurs.</p></header>
+    {loadError && <p className="form-error" role="alert">{loadError}</p>}
     {!event && <label className="field panel feedback-pick"><span>Votre événement</span><select value={eventId} onChange={e => setEventId(e.target.value)}><option value="">Choisir</option>{choices.map(item => <option key={item.id} value={item.id}>{item.title} · {dateLabel(item.date)}</option>)}</select></label>}
     {event && (sent || event.organizerFeedback ? <div className="panel feedback-form"><span className="verdict ok">Bilan envoyé</span><h2>Merci</h2><p>Votre bilan est ajouté au tableau de bord d’impact de Chez Marthe. À bientôt dans le lieu.</p></div> : <FeedbackForm event={event} onSent={() => setSent(true)} />)}
     {!event && !choices.length && <EmptyState title="Aucun événement à évaluer" text="Le lien de bilan vous est envoyé après votre événement." />}

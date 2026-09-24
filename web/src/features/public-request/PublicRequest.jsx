@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { useStore } from '../../app/store.jsx';
 import Icon from '../../shared/components/Icon.jsx';
 import { TODAY } from '../../shared/data/spaces.js';
+import { submitRequest } from '../../shared/lib/publicForms.js';
 import { estimatePrice, requestAlerts } from '../../shared/lib/requestRules.js';
 import { buildRequest, emptyForm, formErrors } from './publicRequest.js';
 import RequestFields from './RequestFields.jsx';
@@ -26,8 +26,9 @@ function Done({ request, onAgain }) {
 
 // Single desk for every request: programming, rental, privatisation or coworking.
 export default function PublicRequest() {
-  const { saveEvent, storageError } = useStore();
   const [form, setForm] = useState(emptyForm);
+  const [sendError, setSendError] = useState('');
+  const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(null);
   const formRef = useRef(null);
@@ -38,20 +39,27 @@ export default function PublicRequest() {
     else if (form.kind === 'coworking') set('kind', 'rental');
     formRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
     const found = formErrors(form, TODAY);
     if (Object.keys(found).length) { setErrors(found); return formRef.current?.querySelector(`#pr-${Object.keys(found)[0]}`)?.focus(); }
     const request = buildRequest(form);
-    saveEvent(request);
-    setSent(request);
+    setSending(true); setSendError('');
+    try {
+      const { id } = await submitRequest(request);
+      setSent({ ...request, id });
+    } catch (failure) {
+      setSendError(failure.message);
+    } finally {
+      setSending(false);
+    }
   };
   return <section className="public-request" aria-labelledby="public-request-title">
     <div className="landing-hero"><p className="eyebrow">UN LIEU À PARTAGER</p><h2 id="public-request-title">Proposer une activité ou louer un espace</h2><p>L’équipe étudie chaque demande en comité, chaque vendredi.</p></div>
     <SpacePicker value={form.space} onPick={pick} />
-    {storageError && <p className="form-error" role="alert">{storageError}</p>}
+    {sendError && <p className="form-error" role="alert">{sendError}</p>}
     {sent ? <Done request={sent} onAgain={() => { setForm(emptyForm); setSent(null); }} /> : <div className="request-layout">
-      <form className="panel event-form" ref={formRef} onSubmit={submit} noValidate><RequestFields form={form} errors={errors} set={set} /><div className="form-actions"><button className="button button-dark">Envoyer ma demande</button></div></form>
+      <form className="panel event-form" ref={formRef} onSubmit={submit} noValidate><RequestFields form={form} errors={errors} set={set} /><div className="form-actions"><button className="button button-dark" disabled={sending}>{sending ? 'Envoi…' : 'Envoyer ma demande'}</button></div></form>
       <Estimate request={buildRequest(form)} />
     </div>}
   </section>;

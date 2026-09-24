@@ -51,7 +51,7 @@ MATCHES = [
 ]
 ACCOUNTS = [
     ("coord@marthe.fr", "Coordinatrice", "equipe"),
-    ("lea@x.fr", "Léa Martin", "residents"),
+    ("lea@marthe.fr", "Léa Martin", "residents"),
     ("asso@x.fr", "Sista4good", "partenaires"),
     ("paul@x.fr", "Paul", "benevoles"),
 ]
@@ -63,8 +63,8 @@ def users(tmp_path, monkeypatch):
     monkeypatch.setattr(store, "DATABASE_URL", None)
     monkeypatch.setattr(store, "SQLITE_PATH", tmp_path / "test.db")
     db.migrate()
-    store.write_document("events", EVENTS)
-    store.write_document("matches", MATCHES)
+    store.save_document("events", EVENTS)
+    store.save_document("matches", MATCHES)
     session = Session(db.engine, expire_on_commit=False)
     accounts = {
         role: User(
@@ -158,4 +158,4 @@ def test_signed_in_hand_off_uses_the_account_contact(users):
     session.expire_all()
     team = client_as("equipe")
     [question] = team.get("/api/questions").json()
-    assert (question["email"], question["agent"]) == ("lea@x.fr", "residents")
+    assert (question["email"], question["agent"]) == ("lea@marthe.fr", "residents")

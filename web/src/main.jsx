@@ -18,7 +18,7 @@ const pages = {
   residents: <AuthGate spaceId="residents"><StoreProvider><ResidentApp /></StoreProvider><SpaceAssistant spaceId="residents" /></AuthGate>,
   benevoles: <AuthGate spaceId="benevoles"><StoreProvider><PublicShell><VolunteerSpace /></PublicShell></StoreProvider><SpaceAssistant spaceId="benevoles" /></AuthGate>,
   partenaires: <AuthGate spaceId="partenaires"><StoreProvider><PublicShell><PartnerSpace /></PublicShell></StoreProvider><SpaceAssistant spaceId="partenaires" /></AuthGate>,
-  bilan: <StoreProvider><PublicShell><OrganizerFeedback /></PublicShell></StoreProvider>,
+  bilan: <PublicShell><OrganizerFeedback /></PublicShell>,
 };
 
 createRoot(document.getElementById('root')).render(<React.StrictMode>{pages[spaceFromHost(window.location.hostname)] || <Landing />}</React.StrictMode>);

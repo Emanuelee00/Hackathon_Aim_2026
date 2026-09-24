@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
-import { StoreProvider } from '../../app/store.jsx';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import ChatBubble from '../chatbot/ChatBubble.jsx';
 
@@ -122,7 +121,7 @@ export default function Landing() {
       </div>
     </section>
 
-    <div id="demande" className="landing-section landing-wrap"><StoreProvider><PublicRequest /></StoreProvider></div>
+    <div id="demande" className="landing-section landing-wrap"><PublicRequest /></div>
 
     <section id="partenaires" className="landing-section landing-wrap">
       <div className="section-title"><p className="eyebrow">ILS FONT VIVRE LE LIEU</p><h2>Nos partenaires</h2></div>

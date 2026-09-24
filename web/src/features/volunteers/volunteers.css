@@ -17,4 +17,5 @@
 .volunteer-aside ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .volunteer-aside li { display: grid; font-size: 14px; }
 .volunteer-aside small, .volunteer-aside p { margin: 0; color: var(--muted); font-size: 13px; }
-@media (max-width: 860px) { .volunteer-layout { grid-template-columns: 1fr; } .volunteer-aside { order: -1; } }
+.volunteer-side { display: grid; gap: 14px; }
+@media (max-width: 860px) { .volunteer-layout { grid-template-columns: 1fr; } .volunteer-side { order: -1; } }

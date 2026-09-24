@@ -1,0 +1,9 @@
+/* Traces: what each person lived here, never compared to others */
+.traces { display: grid; gap: 10px; padding: 20px; }
+.traces h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-family: var(--font-display); font-size: 21px; font-weight: 400; }
+.traces > p { margin: 0; color: var(--muted); font-size: 14px; font-style: italic; }
+.traces ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.traces li { display: grid; grid-template-columns: 52px 1fr; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #f4eef7; }
+.traces li strong { color: var(--green); font-family: var(--font-display); font-size: 30px; font-weight: 400; line-height: 1; text-align: center; }
+.traces li span { display: grid; font-size: 15px; }
+.traces li small { margin-top: 2px; color: var(--muted); font-size: 13px; }

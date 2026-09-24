@@ -1,6 +1,8 @@
 """Resident assistant: only her own proposals and journey, plus activities open to all."""
 
-from .data import PUBLIC_FIELDS, as_text, pick, same_name, stored, upcoming
+from sharing.identity import resident_id
+
+from .data import PUBLIC_FIELDS, as_text, pick, stored, upcoming
 from .handoff import account_hand_off
 from .llm import Agent, Context, Tool, params
 from .prompts import instructions
@@ -16,8 +18,8 @@ STATUSES = {
 
 
 def my_activities(arguments: dict, context: Context) -> str:
-    # Accounts are linked to resident profiles by first name, as on the resident page.
-    first_name = context.user.name.split()[0]
+    # Same link as the resident page and the store: demo profile by e-mail, or the account.
+    mine_id = resident_id(context.user)
     events = {event["id"]: event for event in stored("events")}
     mine = [
         {
@@ -26,7 +28,7 @@ def my_activities(arguments: dict, context: Context) -> str:
             **pick(m, ("rationale", "benefit")),
         }
         for m in stored("matches")
-        if same_name(str(m.get("resident_id")), first_name)
+        if m.get("resident_id") == mine_id
         and m.get("status") in STATUSES
         and m.get("eventId") in events
     ]

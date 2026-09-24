@@ -18,6 +18,7 @@
 @import '../features/feedback/feedback.css';
 @import '../features/public-request/public-request.css';
 @import '../features/resident/resident.css';
+@import '../features/traces/traces.css';
 @import '../features/landing/landing.css';
 @import '../features/auth/auth.css';
 @import '../features/chatbot/chatbot.css';

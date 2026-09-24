@@ -25,8 +25,7 @@ PUBLIC_FIELDS = (
 
 def stored(key: str) -> list[dict]:
     """A store document, empty until a browser has saved it once."""
-    rows = store.execute("SELECT value FROM documents WHERE key = ?", (key,))
-    return json.loads(rows[0][0]) if rows else []
+    return store.load_document(key) or []
 
 
 def pick(item: dict, fields: tuple[str, ...]) -> dict:

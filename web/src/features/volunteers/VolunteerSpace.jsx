@@ -4,6 +4,8 @@ import { EmptyState } from '../../shared/components/Primitives.jsx';
 import { spaceById, TODAY } from '../../shared/data/spaces.js';
 import { dateLabel } from '../../shared/lib/format.js';
 import { commitments, missions, signedUp, toggleSignup } from './volunteering.js';
+import Traces from '../traces/Traces.jsx';
+import { volunteerTraces } from '../traces/traces.js';
 
 function Role({ event, need, name, onToggle }) {
   const count = signedUp(event, need.id).length;
@@ -38,7 +40,8 @@ export default function VolunteerSpace() {
     <header className="landing-hero"><p className="eyebrow">ESPACE BÉNÉVOLES</p><h1>Bonjour {name}</h1><p>Voici les coups de main dont le lieu a besoin. Inscrivez-vous en un clic, l’équipe vous confirme la veille.</p></header>
     <div className="volunteer-layout">
       <section className="volunteer-list">{list.map(event => <Mission key={event.id} event={event} name={name} onToggle={onToggle} />)}{!list.length && <EmptyState title="Aucune mission pour l’instant" text="Les prochains besoins apparaîtront ici." />}</section>
-      <aside className="panel volunteer-aside"><h3>Mes engagements</h3>{mine.length ? <ul>{mine.map(({ event, need }) => <li key={`${event.id}-${need.id}`}><strong>{need.role}</strong><small>{event.title}, {dateLabel(event.date)}</small></li>)}</ul> : <p>Aucun pour l’instant.</p>}</aside>
+      <div className="volunteer-side"><aside className="panel volunteer-aside"><h3>Mes engagements</h3>{mine.length ? <ul>{mine.map(({ event, need }) => <li key={`${event.id}-${need.id}`}><strong>{need.role}</strong><small>{event.title}, {dateLabel(event.date)}</small></li>)}</ul> : <p>Aucun pour l’instant.</p>}</aside>
+        <Traces traces={volunteerTraces(events, name, TODAY)} /></div>
     </div>
   </div>;
 }

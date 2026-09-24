@@ -8,7 +8,7 @@ export OPENAI_API OPENAI_MODEL
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user tunnel
+.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel
 
 all: install
 	@set -eu; \
@@ -79,6 +79,9 @@ migration:
 user:
 	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
 	uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
+
+seed:
+	uv run python -m accounts.seed_demo
 
 tunnel:
 	cloudflared tunnel --config cloudflare/tunnel.yml run marthe

@@ -40,6 +40,22 @@ http://equipe.localhost:8000. Eventi e percorsi sono salvati dal backend
 (`/api/store/…`), così tutti i sottodomini condividono gli stessi dati: Postgres se
 `DATABASE_URL` è definita (docker compose), altrimenti il file SQLite `marthe.db`.
 
+`/api/store/…` richiede un account (`sharing/`): l'équipe legge e sostituisce
+tutto; gli altri spazi ricevono solo ciò che serve alla loro pagina e il server
+tiene solo le modifiche permesse al loro ruolo:
+
+| Spazio | Legge | Può modificare |
+| --- | --- | --- |
+| `residents` | eventi senza contatti né importi, le proprie proposte (non `suggested`/`dismissed`) | le proprie risposte |
+| `benevoles` | eventi senza contatti; gli altri bénévoles senza nome | le proprie iscrizioni, nei posti liberi |
+| `partenaires` | eventi senza contatti, la propria scheda associazione | nuove prenotazioni `pending` a proprio nome, la propria scheda |
+
+Le pagine pubbliche non leggono lo store: il modulo della pagina d'accoglienza usa
+`POST /api/requests`, la pagina `bilan.` `GET /api/feedback/events` (solo titolo e
+data) e `POST /api/feedback/{id}` (un bilan per evento). Profili demo, associazioni
+e spazi sono copiati in `sharing/identity.py`; `test_store.py` verifica che restino
+uguali ai file del frontend.
+
 ### Account e accesso
 
 Gli spazi `equipe.` e `residents.` mostrano prima la pagina di accesso. Residenti e

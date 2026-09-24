@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useStore } from '../../app/store.jsx';
 import Icon from '../../shared/components/Icon.jsx';
-import { spaceUrl } from '../../shared/lib/spaces.js';
-import { residents, residentById } from '../opportunities/data/residents.js';
+import { useAuth } from '../auth/AuthGate.jsx';
+import { residentForUser } from '../opportunities/data/residents.js';
 import { residentContacts, residentSkills } from '../journeys/tracking.js';
 import { eligibleEvents } from '../opportunities/matching.js';
 import { cvMatches, groupProposals } from './proposals.js';
@@ -12,6 +12,8 @@ import MyJourneyCard from './components/MyJourneyCard.jsx';
 import CvSkillsPanel from './components/CvSkillsPanel.jsx';
 import ContactsPanel from './components/ContactsPanel.jsx';
 import JobPlanForm from './components/JobPlanForm.jsx';
+import Traces from '../traces/Traces.jsx';
+import { residentTraces } from '../traces/traces.js';
 
 function Tabs({ tab, setTab, counts }) {
   const items = [['proposals', 'Propositions', counts.proposals ? `${counts.proposals} à examiner` : 'Rien de nouveau', 'inbox'], ['journey', 'Mon parcours', `${counts.journey} activité${counts.journey > 1 ? 's' : ''}`, 'leaf'], ['plan', 'Mon plan emploi', 'CV + métier = étapes', 'file']];
@@ -36,10 +38,9 @@ function Decision({ decision, onUndo }) {
 
 export default function ResidentSpace() {
   const { events, matches, addResidentMatches, updateMatchStatus } = useStore();
-  const consenting = residents.filter(item => item.consent);
-  const [residentId, setResidentId] = useState(consenting[0]?.id || '');
+  const resident = residentForUser(useAuth().user);
+  const residentId = resident.id;
   const [decisions, setDecisions] = useState([]);
-  const resident = residentById[residentId];
   const eventById = Object.fromEntries(events.map(event => [event.id, event]));
   const mine = matches.filter(match => match.resident_id === residentId && eventById[match.eventId]);
   const accepted = mine.filter(match => match.status === 'accepted');
@@ -54,10 +55,8 @@ export default function ResidentSpace() {
   };
   const undo = decision => { updateMatchStatus(decision.id, 'proposed'); setDecisions(current => current.filter(item => item !== decision)); };
   const addCvProposals = items => addResidentMatches(residentId, cvMatches(items));
-  const switchResident = id => { setResidentId(id); setDecisions([]); setTab('proposals'); };
 
   return <div className="resident-space">
-    <div className="demo-bar"><label>Démonstration · espace de <select value={residentId} onChange={event => switchResident(event.target.value)}>{consenting.map(item => <option value={item.id} key={item.id}>{item.first_name}</option>)}</select></label><a className="text-link" href={spaceUrl('equipe')}><Icon name="back" size={15} />Espace coordination</a></div>
     <header className="resident-hello"><span className={`resident-avatar ${resident.color}`}>{resident.initials}</span><div><h1>Bonjour {resident.first_name}</h1><p>Ici, vous choisissez librement. Rien n’est obligatoire.</p></div></header>
     <Tabs tab={tab} setTab={setTab} counts={{ proposals: fromTeam.length + fromCv.length + open.length, news: fromTeam.length + fromCv.length, journey: accepted.length }} />
 
@@ -75,7 +74,7 @@ export default function ResidentSpace() {
         {accepted.map(match => <MyJourneyCard key={match.id} match={match} resident={resident} event={eventById[match.eventId]} />)}
         {!accepted.length && <div className="resident-empty"><h2>Votre parcours commence ici</h2><p>Acceptez une proposition : l’activité et ce qu’elle vous apporte apparaîtront ici.</p><button className="button button-dark" onClick={() => setTab('proposals')}>Voir les propositions</button></div>}
       </div>
-      <aside className="side-lists"><CvSkillsPanel key={residentId} skills={skills} residentId={residentId} /><ContactsPanel contacts={residentContacts(matches, eventById, residentId)} /></aside>
+      <aside className="side-lists"><Traces traces={residentTraces(matches, eventById, residentId)} /><CvSkillsPanel key={residentId} skills={skills} residentId={residentId} /><ContactsPanel contacts={residentContacts(matches, eventById, residentId)} /></aside>
     </section>
 
     <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden={tab !== 'plan'} className="resident-panel">
