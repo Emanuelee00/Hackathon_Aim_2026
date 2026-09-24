@@ -30,10 +30,10 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-app.mount(
-    "/",
-    StaticFiles(
-        directory=Path(__file__).parent / "web" / "dist", html=True, check_dir=False
-    ),
-    name="web",
+# Local build in web/dist; on Vercel the build lands in public/.
+ROOT = Path(__file__).parent
+FRONTEND = next(
+    (d for d in (ROOT / "web" / "dist", ROOT / "public") if d.is_dir()), None
 )
+if FRONTEND:
+    app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="web")
