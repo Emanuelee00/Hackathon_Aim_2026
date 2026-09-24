@@ -87,6 +87,8 @@ a.button { text-decoration: none; }
 @media (max-width: 820px) {
   .site-header nav { display: none; }
   .site-header .button { margin-left: auto; }
+  /* The global mobile rule turns .button-small into an icon circle; this one has a text label. */
+  .site-header .button-small { width: auto; padding: 0 14px; white-space: nowrap; }
   .place { grid-template-columns: 1fr; padding-top: 110px; }
   .place > img { max-height: 380px; }
 }

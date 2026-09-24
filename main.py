@@ -15,6 +15,7 @@ from demo import DEMO_MODE
 from employment.routes import router as employment_router
 from matching import router as matching_router
 from sharing.forms import router as forms_router
+from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
 
 
@@ -32,6 +33,7 @@ app.include_router(matching_router)
 app.include_router(employment_router)
 app.include_router(sharing_router)
 app.include_router(forms_router)
+app.include_router(qr_router)
 app.include_router(accounts_router)
 app.include_router(agents_router)
 

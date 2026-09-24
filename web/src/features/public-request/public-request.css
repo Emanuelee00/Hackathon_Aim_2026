@@ -27,5 +27,34 @@
 .request-done p { margin: 0; }
 .request-steps { display: grid; gap: 6px; margin: 0; padding-left: 20px; font-size: 14px; }
 .request-steps li.done { color: #2f5f3a; font-weight: 700; }
-@media (max-width: 900px) { .request-layout { grid-template-columns: 1fr; } .request-estimate { position: static; } .kind-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px) { .public-request .form-grid { grid-template-columns: 1fr; } .public-request .field-wide { grid-column: auto; } }
+/* Keep the form clear of the sticky site header when a space pick scrolls to it. */
+.request-layout > form { scroll-margin-top: 90px; }
+/* Single column: show the estimate before the form so the price is seen before sending. */
+@media (max-width: 900px) { .request-layout { grid-template-columns: 1fr; } .request-estimate { position: static; order: -1; } .kind-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .public-request { gap: 16px; }
+  .public-request .landing-hero > p:not(.eyebrow) { margin: 6px 0 0; font-size: 16px; }
+  /* Compact two-column picker: name, size and price only. */
+  .space-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .space-pick { gap: 4px; padding: 12px; border-radius: 12px; font-size: 13px; }
+  .space-pick > span:not(.event-symbol) { display: none; }
+  .space-pick .event-symbol { width: 32px; height: 32px; border-radius: 8px; }
+  .space-pick small { font-size: 12px; }
+  .request-layout { gap: 12px; }
+  .request-layout > form { padding: 16px; }
+  .request-estimate { gap: 6px; padding: 16px; }
+  .request-estimate > strong { font-size: 32px; }
+  .kind-picker label { padding: 10px; }
+  .public-request .form-grid { grid-template-columns: 1fr; gap: 12px; }
+  .public-request .field-wide { grid-column: auto; }
+  /* 16px stops iOS Safari from zooming in on focus. */
+  .public-request .field input, .public-request .field select, .public-request .field textarea { font-size: 16px; }
+  .public-request .field input, .public-request .field select { height: 44px; }
+  .public-request .option-list { flex-direction: column; gap: 4px; }
+  .public-request .option-list label { align-items: flex-start; min-height: 36px; padding: 6px 0; }
+  .public-request .option-list input { flex-shrink: 0; width: 18px; height: 18px; margin: 1px 0 0; }
+  .public-request .form-actions .button { width: 100%; }
+  .request-done { padding: 18px; }
+  .request-done h2 { font-size: 26px; }
+  .request-done .button { width: 100%; }
+}
