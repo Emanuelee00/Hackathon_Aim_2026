@@ -6,37 +6,53 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from accounts.models import User
-from accounts.sessions import current_user
+from accounts.sessions import optional_user, team_member
 from db import get_session
 
-from . import renseignements
-from .llm import Context, run_agent
+from . import benevoles, equipe, partenaires, renseignements, residents
+from .llm import Agent, Context, run_agent
 from .models import ChatReply, ChatRequest, Question, QuestionOut, QuestionUpdate
 
 router = APIRouter(prefix="/api")
 Db = Annotated[Session, Depends(get_session)]
 # Each chatbot of the platform: add new agents here.
-AGENTS = {agent.id: agent for agent in (renseignements.AGENT,)}
-
-
-def team_member(user: Annotated[User, Depends(current_user)]) -> User:
-    if user.role != "equipe":
-        raise HTTPException(403, "Réservé à l’équipe.")
-    return user
-
-
+AGENTS = {
+    agent.id: agent
+    for agent in (
+        renseignements.AGENT,
+        equipe.AGENT,
+        residents.AGENT,
+        partenaires.AGENT,
+        benevoles.AGENT,
+    )
+}
 Team = Annotated[User, Depends(team_member)]
 
 
-@router.post("/agents/{agent_id}/chat")
-def chat(agent_id: str, request: ChatRequest, db: Db) -> ChatReply:
-    if agent_id not in AGENTS:
+def allowed_agent(agent_id: str, user: User | None) -> Agent:
+    """Only people signed in with the agent's role may talk to it."""
+    agent = AGENTS.get(agent_id)
+    if not agent:
         raise HTTPException(404, "Agent inconnu.")
-    context = Context(db, [turn.model_dump() for turn in request.messages])
+    if agent.audience and not user:
+        raise HTTPException(401, "Veuillez vous connecter.")
+    if agent.audience and user.role != agent.audience:
+        raise HTTPException(403, "Cet assistant est réservé à un autre espace.")
+    return agent
+
+
+@router.post("/agents/{agent_id}/chat")
+def chat(
+    agent_id: str,
+    request: ChatRequest,
+    db: Db,
+    user: Annotated[User | None, Depends(optional_user)],
+) -> ChatReply:
+    agent = allowed_agent(agent_id, user)
+    transcript = [turn.model_dump() for turn in request.messages]
+    context = Context(db, transcript, user=user)
     try:
-        return ChatReply(
-            reply=run_agent(AGENTS[agent_id], context), handoff=context.handoff
-        )
+        return ChatReply(reply=run_agent(agent, context), handoff=context.handoff)
     except httpx.HTTPError as exc:
         # The question is saved: confirm it even if the final answer failed.
         if context.handoff:

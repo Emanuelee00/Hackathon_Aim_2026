@@ -42,9 +42,11 @@ http://equipe.localhost:8000. Eventi e percorsi sono salvati dal backend
 
 ### Account e accesso
 
-Gli spazi `equipe.` e `residents.` mostrano prima la pagina di accesso. Le residenti
-possono creare il proprio account; gli account dell'équipe si creano solo da terminale,
-perché vedono i dati delle residenti:
+Gli spazi `equipe.` e `residents.` mostrano prima la pagina di accesso. Residenti e
+associazioni (`partenaires.`) possono solo depositare una richiesta d'accesso: l'account
+funziona dopo la convalida da parte dell'équipe (pagina « Demandes d’accès »). I volontari
+creano il proprio account direttamente. Gli account dell'équipe si creano solo da
+terminale, perché vedono i dati delle residenti:
 
 ```sh
 make user EMAIL=coord@marthe.fr NAME="Coordinatrice" ROLE=equipe

@@ -1,13 +1,8 @@
 """Information desk: answers from the knowledge file, hands everything else to the team."""
 
-import re
-from pathlib import Path
-
-from .llm import Agent, Context, Tool
-from .models import Question
-
-KNOWLEDGE = Path(__file__).parent / "knowledge" / "renseignements.md"
-EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+from .data import RULES
+from .handoff import VISITOR_HAND_OFF
+from .llm import Agent
 
 INSTRUCTIONS = """Tu es l’agent de renseignements de Chez Marthe, sur le site public.
 Des visiteurs, associations et organisateurs te demandent s’ils peuvent faire
@@ -33,47 +28,7 @@ Informations sur le lieu :
 
 
 def instructions() -> str:
-    return INSTRUCTIONS + KNOWLEDGE.read_text(encoding="utf-8")
+    return INSTRUCTIONS + RULES.read_text(encoding="utf-8")
 
 
-def hand_off(arguments: dict, context: Context) -> str:
-    name = str(arguments.get("nom", "")).strip()[:120]
-    email = str(arguments.get("email", "")).strip()[:254]
-    summary = str(arguments.get("resume", "")).strip()[:2000]
-    if context.handoff:
-        return f"Déjà transmis sous la référence Q-{context.handoff}."
-    if not (name and summary and EMAIL.match(email)):
-        return "Il manque le nom, un e-mail valide ou le résumé : demande-les."
-    question = Question(
-        agent="renseignements",
-        name=name,
-        email=email,
-        summary=summary,
-        transcript=context.transcript,
-    )
-    context.db.add(question)
-    context.db.commit()
-    context.handoff = question.id
-    return f"Transmis à l’équipe sous la référence Q-{question.id}."
-
-
-HAND_OFF = Tool(
-    name="transmettre_a_equipe",
-    description="Transmet la question à l’équipe de Chez Marthe, qui répondra par e-mail.",
-    parameters={
-        "type": "object",
-        "properties": {
-            "nom": {"type": "string", "description": "Nom ou structure."},
-            "email": {"type": "string", "description": "Adresse pour la réponse."},
-            "resume": {
-                "type": "string",
-                "description": "La demande, compréhensible sans la conversation : "
-                "quoi, quel espace, quand, combien de personnes.",
-            },
-        },
-        "required": ["nom", "email", "resume"],
-    },
-    run=hand_off,
-)
-
-AGENT = Agent(id="renseignements", instructions=instructions, tools=(HAND_OFF,))
+AGENT = Agent(id="renseignements", instructions=instructions, tools=(VISITOR_HAND_OFF,))

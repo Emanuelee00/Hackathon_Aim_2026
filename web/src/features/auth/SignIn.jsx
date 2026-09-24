@@ -4,8 +4,9 @@ import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
 import { Brand } from '../landing/Landing.jsx';
 import { signIn, signUp } from './api.js';
 
-// Same rule as OPEN_SIGNUP in accounts/models.py: team and association accounts are created by the team.
-const openSignUp = ['residents', 'benevoles'];
+// Same rules as accounts/models.py: team accounts are created by the team, residents and associations request one.
+const openSignUp = ['benevoles'];
+const requestSignUp = ['residents', 'partenaires'];
 
 // Left panel of the page: a photo of the place and a word for each audience.
 const welcome = {
@@ -15,9 +16,10 @@ const welcome = {
   partenaires: { photo: '/chezmarthe/cantine.webp', title: 'Un seul agenda pour tout le lieu', text: 'Vos créneaux, votre agenda synchronisé et vos réservations d’espaces.' },
 };
 
-function Fields({ signingUp, form, change }) {
+function Fields({ spaceId, signingUp, form, change }) {
+  const association = spaceId === 'partenaires';
   return <>
-    {signingUp && <label className="field"><span>Prénom</span><input name="name" value={form.name} onChange={change} autoComplete="given-name" required maxLength={120} /></label>}
+    {signingUp && <label className="field"><span>{association ? 'Nom de l’association' : 'Prénom'}</span><input name="name" value={form.name} onChange={change} autoComplete={association ? 'organization' : 'given-name'} required maxLength={120} /></label>}
     <label className="field"><span>Adresse e-mail</span><input name="email" type="email" value={form.email} onChange={change} autoComplete="email" required /></label>
     <label className="field"><span>Mot de passe</span><input name="password" type="password" value={form.password} onChange={change} autoComplete={signingUp ? 'new-password' : 'current-password'} required minLength={8} />{signingUp && <small>8 caractères minimum.</small>}</label>
   </>;
@@ -30,14 +32,20 @@ export default function SignIn({ spaceId, onSignedIn }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [requested, setRequested] = useState(false);
+  const requesting = requestSignUp.includes(spaceId);
   const change = ({ target }) => setForm(current => ({ ...current, [target.name]: target.value }));
   const submit = async formEvent => {
     formEvent.preventDefault();
     setBusy(true); setError('');
-    try { onSignedIn(await (signingUp ? signUp : signIn)(spaceId, form)); }
+    try {
+      const result = await (signingUp ? signUp : signIn)(spaceId, form);
+      if (result.pending) { setRequested(true); setSigningUp(false); setBusy(false); setForm(current => ({ ...current, password: '' })); }
+      else onSignedIn(result);
+    }
     catch (failure) { setError(failure.message); setBusy(false); }
   };
-  const switchMode = () => { setSigningUp(!signingUp); setError(''); };
+  const switchMode = () => { setSigningUp(!signingUp); setError(''); setRequested(false); };
 
   return <div className="auth-page">
     <aside className="auth-intro" style={{ '--auth-photo': `url(${intro.photo})` }}>
@@ -51,13 +59,14 @@ export default function SignIn({ spaceId, onSignedIn }) {
     </aside>
     <main className="auth-main">
       <form className="auth-card" onSubmit={submit}>
-        <h1>{signingUp ? 'Créer mon compte' : 'Bon retour parmi nous'}</h1>
-        <p className="auth-lead">{signingUp ? 'Quelques secondes suffisent.' : 'Connectez-vous pour retrouver votre espace.'}</p>
-        <Fields signingUp={signingUp} form={form} change={change} />
+        <h1>{signingUp ? (requesting ? 'Demander un accès' : 'Créer mon compte') : 'Bon retour parmi nous'}</h1>
+        <p className="auth-lead">{signingUp ? (requesting ? 'L’équipe de Chez Marthe valide chaque demande avant d’ouvrir l’accès.' : 'Quelques secondes suffisent.') : 'Connectez-vous pour retrouver votre espace.'}</p>
+        {requested && <p role="status" className="auth-success">Votre demande est bien déposée. Vous pourrez vous connecter dès que l’équipe l’aura validée.</p>}
+        <Fields spaceId={spaceId} signingUp={signingUp} form={form} change={change} />
         {error && <p role="alert" className="field-error">{error}</p>}
-        <button className="button button-dark button-large" disabled={busy}>{busy ? 'Un instant…' : signingUp ? 'Créer mon compte' : 'Se connecter'}</button>
-        {openSignUp.includes(spaceId)
-          ? <p className="auth-note">{signingUp ? 'Vous avez déjà un compte ?' : 'Pas encore de compte ?'} <button type="button" className="text-link" onClick={switchMode}>{signingUp ? 'Se connecter' : 'En créer un'}</button></p>
+        <button className="button button-dark button-large" disabled={busy}>{busy ? 'Un instant…' : signingUp ? (requesting ? 'Déposer ma demande' : 'Créer mon compte') : 'Se connecter'}</button>
+        {openSignUp.includes(spaceId) || requesting
+          ? <p className="auth-note">{signingUp ? 'Vous avez déjà un compte ?' : 'Pas encore de compte ?'} <button type="button" className="text-link" onClick={switchMode}>{signingUp ? 'Se connecter' : requesting ? 'Déposer une demande' : 'En créer un'}</button></p>
           : <p className="auth-note">Les comptes de cet espace sont créés par l’équipe de Chez Marthe. Besoin d’un accès ? Écrivez-nous sur <a className="text-link" href="https://www.chezmarthe.org/" target="_blank" rel="noreferrer">chezmarthe.org</a>.</p>}
       </form>
     </main>

@@ -8,6 +8,7 @@ export const navigation = [
   { id: 'dashboard', label: 'Vue d’ensemble', icon: 'dashboard' },
   { id: 'requests', label: 'Les demandes', icon: 'inbox' },
   { id: 'questions', label: 'Questions reçues', icon: 'chat' },
+  { id: 'access', label: 'Demandes d’accès', icon: 'users' },
   { id: 'committee', label: 'Comité du vendredi', icon: 'checks' },
   { id: 'opportunities', label: 'Opportunités & parcours', icon: 'sparkles' },
   { id: 'residents', label: 'Nos résidentes', icon: 'users' },
@@ -17,7 +18,7 @@ export const navigation = [
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
 ];
 
-export default function Sidebar({ page, navigate, mobile, close, help, newQuestions }) {
+export default function Sidebar({ page, navigate, mobile, close, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();
   const pending = events.filter(event => event.status === 'pending').length;
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Sidebar({ page, navigate, mobile, close, help, newQuesti
         {siteMenuOpen && <ul id="site-options" className="place-menu" aria-label="Choisir un siège">{sites.map(candidate => <li key={candidate.id}><button type="button" aria-pressed={candidate.id === siteId} className={candidate.id === siteId ? 'active' : ''} onClick={() => { setSiteId(candidate.id); setSiteMenuOpen(false); navigate('spaces'); }}>{candidate.city}{!candidate.real && <small>exemple</small>}</button></li>)}</ul>}
       </div>
       <p className="nav-caption">VOTRE QUOTIDIEN</p>
-      <nav aria-label="Navigation principale">{navigation.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} aria-current={page === item.id ? 'page' : undefined} onClick={() => navigate(item.id)}><Icon name={item.icon} /><span>{item.label}</span>{item.id === 'requests' && pending > 0 && <b className="nav-count">{pending}</b>}{item.id === 'questions' && newQuestions > 0 && <b className="nav-count">{newQuestions}</b>}</button>)}</nav>
+      <nav aria-label="Navigation principale">{navigation.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} aria-current={page === item.id ? 'page' : undefined} onClick={() => navigate(item.id)}><Icon name={item.icon} /><span>{item.label}</span>{item.id === 'requests' && pending > 0 && <b className="nav-count">{pending}</b>}{item.id === 'questions' && newQuestions > 0 && <b className="nav-count">{newQuestions}</b>}{item.id === 'access' && accessRequests > 0 && <b className="nav-count">{accessRequests}</b>}</button>)}</nav>
       <div className="sidebar-bottom"><div className="sidebar-note"><span className="sun-mark">✳</span><p>Chaque rencontre<br />ouvre des possibles.</p><small>Et si on les faisait grandir ?</small></div>
         <a className="nav-item help-link" href={spaceUrl('residents')}><Icon name="users" />Vue résidente (démo)</a>
         <button className="nav-item help-link" onClick={help}><Icon name="help" />À propos de cette démo</button>

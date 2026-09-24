@@ -9,6 +9,8 @@ import httpx
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from accounts.models import User
+
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 # Tool calls allowed before the model must answer in plain text.
@@ -21,6 +23,8 @@ class Context:
 
     db: Session
     transcript: list[dict]
+    # Signed-in account: tools scope their data with it, never with the model's arguments.
+    user: User | None = None
     handoff: int | None = None
 
 
@@ -39,6 +43,13 @@ class Agent:
     # Called on every conversation, so edits to knowledge files apply at once.
     instructions: Callable[[], str]
     tools: tuple[Tool, ...] = ()
+    # Role allowed to talk to the agent (see accounts.models.Role); None = public.
+    audience: str | None = None
+
+
+def params(**properties) -> dict:
+    """JSON schema of a tool whose arguments are all optional."""
+    return {"type": "object", "properties": properties}
 
 
 def complete(messages: list[dict], tools: tuple[Tool, ...]) -> dict:

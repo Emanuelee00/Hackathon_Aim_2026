@@ -9,8 +9,11 @@ from db import Base
 
 # One role per subdomain; a user signs in on the space of their role.
 Role = Literal["equipe", "residents", "benevoles", "partenaires"]
-# Team and association accounts are created from the command line only (the team sees residents' data).
-OPEN_SIGNUP = {"residents", "benevoles"}
+# Team accounts are created from the command line only (the team sees residents' data).
+OPEN_SIGNUP = {"benevoles"}
+# Residents and associations submit a request that a team member validates.
+REQUEST_SIGNUP = {"residents", "partenaires"}
+Status = Literal["pending", "active"]
 
 
 class User(Base):
@@ -21,6 +24,7 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(120))
     role: Mapped[str] = mapped_column(String(20))
     password_hash: Mapped[str] = mapped_column(String(255))
+    status: Mapped[str] = mapped_column(String(10), default="active")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -54,3 +58,7 @@ class UserOut(BaseModel):
     email: str
     name: str
     role: Role
+
+
+class AccountRequest(UserOut):
+    created_at: datetime

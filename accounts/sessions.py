@@ -58,6 +58,24 @@ def current_user(
     expires = session and session.expires_at.replace(
         tzinfo=session.expires_at.tzinfo or UTC
     )
-    if not session or expires < datetime.now(UTC):
+    user = session and expires >= datetime.now(UTC) and db.get(User, session.user_id)
+    if not user or user.status != "active":
         raise HTTPException(401, "Veuillez vous connecter.")
-    return db.get(User, session.user_id)
+    return user
+
+
+def team_member(user: Annotated[User, Depends(current_user)]) -> User:
+    if user.role != "equipe":
+        raise HTTPException(403, "Réservé à l’équipe.")
+    return user
+
+
+def optional_user(
+    db: Annotated[Session, Depends(get_session)],
+    token: Annotated[str | None, Cookie(alias=COOKIE)] = None,
+) -> User | None:
+    """The signed-in user, or None: for routes open to visitors too."""
+    try:
+        return current_user(db, token)
+    except HTTPException:
+        return None
