@@ -12,7 +12,7 @@ function Block({ icon, title, items }) {
   return <section className="plan-block"><h5><Icon name={icon} size={18} />{title}</h5><ul>{items.map((item, index) => <li key={index}>{item}</li>)}</ul></section>;
 }
 
-export default function JobPlanResult({ record, resident, warning, onEdit }) {
+export default function JobPlanResult({ record, resident, warning, onEdit, onShowProposals }) {
   const { plan, objective } = record;
   const source = sources[record.demo ? 'demo' : plan.source] || sources.guided;
   const [first, ...later] = plan.steps;
@@ -26,7 +26,8 @@ export default function JobPlanResult({ record, resident, warning, onEdit }) {
     <section className="plan-now"><p className="eyebrow">À FAIRE MAINTENANT · {first.timeframe}</p><h5>{first.title}</h5><p>{first.action}</p></section>
     <div className="plan-columns"><Block icon="check" title="Ce que vous avez déjà" items={plan.strengths} /><Block icon="sparkles" title="Ce que vous allez apprendre" items={plan.gaps} /></div>
     {later.length > 0 && <section className="plan-block"><h5><Icon name="calendar" size={18} />Ensuite</h5><ol className="plan-later">{later.map((step, index) => <li key={index}><strong>{step.title}</strong><span>{step.action}</span><small>{step.timeframe}</small></li>)}</ol></section>}
-    <details className="plan-details"><summary>Conseils pour votre CV ({plan.cv_suggestions.length})</summary><ul>{plan.cv_suggestions.map((item, index) => <li key={index}>{item}</li>)}</ul></details>
+    <Block icon="file" title="Conseils pour votre CV" items={plan.cv_suggestions} />
+    {plan.proposals?.length > 0 && <div className="plan-cv-proposals"><Icon name="sparkles" size={20} /><p><strong>{plan.proposals.length} activité{plan.proposals.length > 1 ? 's' : ''} liée{plan.proposals.length > 1 ? 's' : ''} à votre CV</strong>Retrouvez-les dans vos propositions, marquées « Grâce à votre CV ».</p><button type="button" className="button button-dark" onClick={onShowProposals}>Voir les propositions</button></div>}
     <div className="plan-actions"><button type="button" className="button button-dark button-large" onClick={() => { exportEmploymentPlan(plan, resident, objective); setDownloaded(true); }}><Icon name="download" size={18} />Télécharger mon plan</button><button type="button" className="button button-quiet" onClick={onEdit}>Modifier mon CV ou mon métier</button></div>
     {downloaded && <p className="confirm" role="status"><Icon name="check" size={16} />Plan téléchargé : retrouvez-le dans vos téléchargements.</p>}
   </div>;

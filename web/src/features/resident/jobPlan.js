@@ -26,18 +26,19 @@ async function fetchExample(name) {
   return new File([blob], name, { type: blob.type });
 }
 
-async function requestPlan(cv, objective, resident, skills) {
+async function requestPlan(cv, objective, resident, skills, events) {
   const data = new FormData();
   data.append('cv', cv); data.append('objective', objective);
   data.append('resident_name', resident.first_name);
   data.append('acquired_skills', JSON.stringify(skills.map(item => item.skill)));
+  data.append('events', JSON.stringify(events.map(({ id, title, category, description, opportunity }) => ({ id, title, category, description, opportunity }))));
   const response = await fetch('/api/employment-plan', { method: 'POST', body: data });
   const plan = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(plan.detail || 'Le service n’a pas répondu.');
   return plan;
 }
 
-export function useJobPlan(resident, skills) {
+export function useJobPlan(resident, skills, events, onProposals) {
   const isMarie = resident.id === 'marie';
   const [cv, setCv] = useState(null);
   const [fileError, setFileError] = useState('');
@@ -63,7 +64,8 @@ export function useJobPlan(resident, skills) {
   async function analyze() {
     setLoading(true); setError('');
     try {
-      const next = { objective: objective.trim(), plan: await requestPlan(cv, objective.trim(), resident, cv?.isMarieExample ? skills : []) };
+      const next = { objective: objective.trim(), plan: await requestPlan(cv, objective.trim(), resident, cv?.isMarieExample ? skills : [], events) };
+      onProposals(next.plan.proposals || []);
       setRecord(next);
       if (!saveJobPlan(resident.id, next)) setError('Votre plan est affiché, mais il ne pourra pas être retrouvé plus tard sur cet appareil.');
       return true;

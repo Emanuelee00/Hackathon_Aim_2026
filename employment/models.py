@@ -23,8 +23,24 @@ class PlanContent(BaseModel):
     steps: list[PlanStep] = Field(min_length=3, max_length=5)
 
 
+class CvEvent(BaseModel):
+    id: str = Field(pattern=r"^[a-z0-9-]+$", max_length=40)
+    title: str = Field(min_length=1, max_length=120)
+    category: str = Field(default="", max_length=60)
+    description: str = Field(default="", max_length=1200)
+    opportunity: str = Field(default="", max_length=600)
+
+
+class CvProposal(BaseModel):
+    event_id: str
+    rationale: str
+    benefit: str
+    vigilance: str
+
+
 class EmploymentPlan(PlanContent):
     source: Literal["ai", "guided"]
+    proposals: list[CvProposal] = []
 
 
 class CvSkill(BaseModel):

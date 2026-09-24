@@ -9,8 +9,9 @@ from docx import Document
 
 from employment.cv_lines import generate_lines
 from employment.extraction import extract_cv_text
-from employment.models import CvLinesRequest, EmploymentContext
+from employment.models import CvEvent, CvLinesRequest, EmploymentContext
 from employment.planning import generate_plan
+from employment.proposals import cv_proposals
 from employment.routes import employment_plan
 
 
@@ -217,3 +218,26 @@ def test_cv_lines_demo_mode_uses_prewritten_answers(monkeypatch):
     assert generate_lines(cv_request()).source == "ai"
     assert generate_lines(cv_request("Pilote de ligne")).source == "guided"
     client.assert_not_called()
+
+
+def test_cv_proposals_link_only_events_the_cv_talks_about():
+    events = [
+        CvEvent(
+            id="cuisine",
+            title="Les saveurs",
+            category="Cuisine",
+            description="Préparation d'un déjeuner",
+        ),
+        CvEvent(
+            id="yoga",
+            title="Une pause",
+            category="Bien-être",
+            description="Yoga doux en équipe",
+        ),
+    ]
+    proposals = cv_proposals(
+        events, "Préparation de repas familiaux en équipe. Commis de cuisine"
+    )
+    assert [item.event_id for item in proposals] == ["cuisine"]
+    assert "cuisine" in proposals[0].rationale
+    assert cv_proposals(events, "Développeur React et SQL") == []

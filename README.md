@@ -41,6 +41,11 @@ La risposta della chat ha la forma `{"reply":"..."}`. Il matching usa soltanto
 profili dimostrativi con consenso attivo, produce suggerimenti motivati e lascia
 la decisione alla coordinatrice e alla residente.
 
+Le proposte della residente sono divise in tre gruppi: proposte dall'équipe, trovate
+grazie al CV (dopo l'analisi, gli eventi in programma che condividono parole con CV e
+mestiere cercato, senza AI) e attività aperte a tutte, sempre visibili finché lei non
+sceglie.
+
 Nella vista residente è possibile caricare un CV PDF o DOCX fino a 4 MB e
 indicare il lavoro cercato. Il testo viene elaborato in memoria, senza conservare
 il file. L'AI propone punti di forza, miglioramenti del CV e passi concreti; se

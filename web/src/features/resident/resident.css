@@ -153,3 +153,16 @@
 .cv-ai-answer li p { margin: 0; color: var(--ink); font-size: 15px; line-height: 1.5; }
 .cv-ai-answer .chip { justify-self: start; gap: 6px; }
 @media (prefers-reduced-motion: reduce) { .cv-ai-answer { animation: none; } }
+
+/* Resident view: proposal groups and CV-based proposals */
+.proposal-group { display: grid; gap: 12px; }
+.proposal-group + .proposal-group { margin-top: 10px; }
+.proposal-group h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-size: 18px; }
+.proposal-group h2 small { width: 100%; margin-left: 27px; color: var(--muted); font-size: 14px; font-weight: 400; }
+.proposal-group > .button { justify-self: start; }
+.cv-link-badge { display: inline-flex; width: max-content; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; color: var(--green); background: #dcd5ee; font-size: 13px; font-weight: 700; }
+.plan-cv-proposals { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 18px; border-radius: 14px; color: var(--green); background: #ece7f6; animation: appear .25s ease-out; }
+.plan-cv-proposals svg { flex-shrink: 0; }
+.plan-cv-proposals p { flex: 1; min-width: 200px; margin: 0; font-size: 15px; }
+.plan-cv-proposals strong { display: block; font-size: 16px; }
+@media (prefers-reduced-motion: reduce) { .plan-cv-proposals { animation: none; } }

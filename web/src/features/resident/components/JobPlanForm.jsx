@@ -42,8 +42,8 @@ function ObjectiveStep({ state, onBack, missing }) {
   </div>;
 }
 
-export default function JobPlanForm({ resident, skills }) {
-  const state = useJobPlan(resident, skills);
+export default function JobPlanForm({ resident, skills, events, onProposals, onShowProposals }) {
+  const state = useJobPlan(resident, skills, events, onProposals);
   const [step, setStep] = useState(state.record ? 'result' : 'cv');
   const [missing, setMissing] = useState('');
   const next = () => { setMissing(state.cv ? '' : 'cv'); if (state.cv) setStep('objective'); };
@@ -61,6 +61,6 @@ export default function JobPlanForm({ resident, skills }) {
     {!state.loading && state.error && step === 'objective' && <div className="plan-error" role="alert"><Icon name="help" size={20} /><div><strong>{state.error}</strong><p>Votre CV et votre métier sont gardés.</p><div className="plan-actions"><button type="submit" className="button button-dark">Réessayer</button><button type="button" className="button button-quiet" onClick={() => setStep('cv')}>Choisir un autre CV</button></div></div></div>}
     {!state.loading && step === 'cv' && <CvStep state={state} onNext={next} onExample={() => { setMissing(''); setStep('objective'); }} missing={missing === 'cv'} />}
     {!state.loading && step === 'objective' && <ObjectiveStep state={state} onBack={() => setStep('cv')} missing={missing === 'objective'} />}
-    {!state.loading && step === 'result' && state.record && <JobPlanResult record={state.record} resident={resident} warning={state.error} onEdit={() => setStep(state.cv ? 'objective' : 'cv')} />}
+    {!state.loading && step === 'result' && state.record && <JobPlanResult record={state.record} resident={resident} warning={state.error} onShowProposals={onShowProposals} onEdit={() => setStep(state.cv ? 'objective' : 'cv')} />}
   </form>;
 }

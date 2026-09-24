@@ -48,9 +48,19 @@ export function StoreProvider({ children }) {
       return [...preserved, ...fresh];
     });
   }
+  // Adds CV-based proposals or activities a resident chose; an existing proposal only gets the CV link.
+  function addResidentMatches(residentId, items) {
+    setMatches(current => items.reduce((list, item) => {
+      const id = `${item.eventId}-${residentId}`;
+      const existing = list.find(match => match.id === id);
+      if (!existing) return [...list, { ...item, id, resident_id: residentId }];
+      if (['suggested', 'dismissed'].includes(existing.status)) return list.map(match => match.id === id ? { ...match, ...item } : match);
+      return list.map(match => match.id === id ? { ...match, cv: match.cv || item.source === 'cv' } : match);
+    }, current));
+  }
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
-  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, updateMatchStatus, saveJourney, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
+  return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 
 export const useStore = () => useContext(Store);

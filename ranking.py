@@ -3,17 +3,17 @@ import re
 STOPWORDS = {"avec", "pour", "dans", "entre", "nous", "notre", "vous", "leur", "autour"}
 
 
-def _stems(text: str) -> set[str]:
+def stems(text: str) -> set[str]:
     words = re.findall(r"\w{4,}", text.casefold())
     return {word[:6] for word in words if word not in STOPWORDS}
 
 
 def shared_terms(event_text: str, profile: dict) -> list[str]:
     """Terms of the resident's goals and skills that also appear in the event."""
-    event = _stems(event_text)
+    event = stems(event_text)
     terms = []
     for item in profile["goals"] + profile["skills"]:
-        if any(a.startswith(b) or b.startswith(a) for a in _stems(item) for b in event):
+        if any(a.startswith(b) or b.startswith(a) for a in stems(item) for b in event):
             terms.append(item)
     return terms
 
