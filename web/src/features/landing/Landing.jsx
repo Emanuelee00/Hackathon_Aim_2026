@@ -4,7 +4,7 @@ import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import ChatBubble from '../chatbot/ChatBubble.jsx';
 
-const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers'];
+const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
 
 // Types out each city, pauses, erases it, then moves to the next — skipped for reduced motion.
 function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 } = {}) {
@@ -74,7 +74,7 @@ export default function Landing() {
         <p className="cover-kicker">
           Chez Marthe ·{' '}
           <span aria-hidden="true">{city}<span className="cover-kicker-cursor">|</span></span>
-          <span className="sr-only">Marseille, Nice, Avignon, Paris, Angers</span>
+          <span className="sr-only">{cities.join(', ')}</span>
         </p>
         <h1>Des lieux tremplins pour les femmes</h1>
         <p>Habiter, travailler, vivre ensemble, créer du lien et rayonner.</p>
