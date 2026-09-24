@@ -11,4 +11,5 @@
 @import '../features/journeys/journeys.css';
 @import '../features/resident/resident.css';
 @import '../features/landing/landing.css';
+@import '../features/auth/auth.css';
 @import './responsive.css';

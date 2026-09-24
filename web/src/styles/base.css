@@ -1,20 +1,20 @@
 /* Base & tokens */
 :root {
   font-family: "DM Sans", system-ui, sans-serif;
-  color: #243c32;
-  background: #f4f1ea;
+  color: #4f2557;
+  background: #f3ebec;
   font-synthesis: none;
-  --ink: #243c32;
-  --muted: #5b6a62;
-  --green: #294c3d;
-  --line: #deddd5;
-  --paper: #fffdf8;
-  --cream: #f4f1ea;
-  --peach: #efad8f;
-  --sage: #b9d0bd;
-  --sand: #e8cf9c;
-  --lavender: #c7bfdb;
-  --shadow: 0 14px 40px rgba(35, 58, 48, 0.08);
+  --ink: #4f2557;
+  --muted: #6a576e;
+  --green: #672a7f;
+  --line: #e0ded3;
+  --paper: #fef9fa;
+  --cream: #f3ebec;
+  --peach: #f39faa;
+  --sage: #d1b2d7;
+  --sand: #f5e88f;
+  --lavender: #c8bbdf;
+  --shadow: 0 14px 40px rgba(76,37,84, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -23,9 +23,9 @@ body { margin: 0; min-width: 320px; min-height: 100svh; background: var(--cream)
 button, input, textarea, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }
-button:focus-visible, a:focus-visible { outline: 3px solid #e8a480; outline-offset: 3px; }
+button:focus-visible, a:focus-visible { outline: 3px solid #f47494; outline-offset: 3px; }
 h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { color: var(--ink); }
 p { line-height: 1.6; }
 
-input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex="-1"]:focus-visible { outline: 3px solid #e8a480; outline-offset: 2px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex="-1"]:focus-visible { outline: 3px solid #f47494; outline-offset: 2px; }

@@ -22,7 +22,7 @@ export default function Sidebar({ page, navigate, mobile, close, help }) {
   return <>
     {mobile && <button className="nav-scrim" aria-label="Fermer le menu" onClick={close} />}
     <aside className={`sidebar ${mobile ? 'is-open' : ''}`}>
-      <a href="#dashboard" className="brand" onClick={close}><img src="/favicon.svg" alt="" /><span>marthe<span className="brand-dot">.</span></span></a>
+      <a href="#dashboard" className="brand" onClick={close}><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <p className="brand-caption">Le compagnon des lieux vivants</p>
       <div className="place-switch-wrap">
         <button type="button" className="place-switch" aria-haspopup="listbox" aria-expanded={siteMenuOpen} onClick={() => setSiteMenuOpen(open => !open)}>

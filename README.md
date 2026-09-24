@@ -40,6 +40,22 @@ http://equipe.localhost:8000. Eventi e percorsi sono salvati dal backend
 (`/api/store/…`), così tutti i sottodomini condividono gli stessi dati: Postgres se
 `DATABASE_URL` è definita (docker compose), altrimenti il file SQLite `marthe.db`.
 
+### Account e accesso
+
+Gli spazi `equipe.` e `residents.` mostrano prima la pagina di accesso. Le residenti
+possono creare il proprio account; gli account dell'équipe si creano solo da terminale,
+perché vedono i dati delle residenti:
+
+```sh
+make user EMAIL=coord@marthe.fr NAME="Coordinatrice" ROLE=equipe
+```
+
+Utenti e sessioni sono gestiti con SQLAlchemy e migrazioni **Alembic** (`migrations/`),
+sullo stesso database di `store.py`. L'app applica le migrazioni all'avvio; a mano:
+`make migrate`. Dopo una modifica a `accounts/models.py`:
+`make migration NAME="descrizione"`. La sessione è un cookie httpOnly valido 30 giorni,
+separato per ogni sottodominio; le password sono salvate con scrypt.
+
 ```sh
 curl http://127.0.0.1:8000/api/chat \
   -H 'Content-Type: application/json' \
@@ -90,6 +106,8 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 - `main.py`: app FastAPI e stato del backend.
 - `ai.py`: chat tramite Ollama locale e precaricamento del modello.
 - `matching.py` e `ranking.py`: matching ibrido con risposta sempre sotto i 10 secondi.
+- `accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
+- `db.py` e `migrations/`: SQLAlchemy e migrazioni Alembic.
 - `employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `web/src/app/`: composizione dell’app e stato condiviso.
 - `web/src/features/`: funzionalità autonome, compresa la vista `resident`.

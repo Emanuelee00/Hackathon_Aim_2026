@@ -5,7 +5,7 @@ export OLLAMA_NO_CLOUD := 1
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr
+.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user
 
 all: install
 	@set -eu; \
@@ -65,3 +65,14 @@ test:
 
 format:
 	uv run ruff format .
+
+migrate:
+	uv run alembic upgrade head
+
+migration:
+	@test -n "$(NAME)" || { echo "Usage : make migration NAME=\"add something\""; exit 1; }
+	uv run alembic revision --autogenerate -m "$(NAME)"
+
+user:
+	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
+	uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"

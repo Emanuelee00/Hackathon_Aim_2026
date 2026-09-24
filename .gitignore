@@ -12,5 +12,5 @@ __pycache__/
 .env
 .env.*
 qr-demo.png
-public/
+/public/
 marthe.db

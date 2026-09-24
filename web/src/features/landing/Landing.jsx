@@ -2,7 +2,7 @@ import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
 
 export function Brand() {
-  return <a href={spaceUrl(null)} className="landing-brand"><img src="/favicon.svg" alt="" /><span>marthe<span className="brand-dot">.</span></span></a>;
+  return <a href={spaceUrl(null)} className="landing-brand"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>;
 }
 
 export default function Landing() {

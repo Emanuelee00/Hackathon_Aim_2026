@@ -2,13 +2,13 @@
 .page-footnote { display: flex; align-items: center; gap: 9px; margin: 23px 2px 0; color: var(--muted); font-size: 13px; }
 .page-footnote > span:last-child { margin-left: auto; font-size: 12px; font-weight: 700; letter-spacing: .13em; }
 .empty-state { padding: 35px 20px; text-align: center; }
-.empty-icon { display: grid; width: 52px; height: 52px; place-items: center; margin: 0 auto 13px; border-radius: 50%; color: var(--green); background: #e6ead7; }
+.empty-icon { display: grid; width: 52px; height: 52px; place-items: center; margin: 0 auto 13px; border-radius: 50%; color: var(--green); background: #ebd1f0; }
 .empty-state h3 { margin-bottom: 5px; font-family: "Instrument Serif", serif; font-size: 20px; font-weight: 400; }
 .empty-state p { margin: 0; color: var(--muted); font-size: 14px; }
 
-.modal { width: min(92vw, 510px); padding: 0; border: 0; border-radius: 16px; color: var(--ink); background: var(--paper); box-shadow: 0 25px 90px rgba(24,45,36,.35); }
+.modal { width: min(92vw, 510px); padding: 0; border: 0; border-radius: 16px; color: var(--ink); background: var(--paper); box-shadow: 0 25px 90px rgba(59,23,67,.35); }
 .modal.modal-wide { width: min(92vw, 850px); }
-.modal::backdrop { background: rgba(27,47,39,.55); backdrop-filter: blur(4px); }
+.modal::backdrop { background: rgba(62,27,69,.55); backdrop-filter: blur(4px); }
 .modal-inner { padding: 27px; }
 .modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
 .modal-header h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 30px; font-weight: 400; }

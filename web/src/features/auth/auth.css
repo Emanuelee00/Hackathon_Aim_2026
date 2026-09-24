@@ -1,0 +1,9 @@
+/* Sign-in and sign-up pages, account menu */
+.auth-page { width: min(100%, 480px); gap: 28px; }
+.auth-card { display: grid; gap: 16px; padding: clamp(22px, 5vw, 34px); border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); }
+.auth-card .eyebrow { margin: 0; }
+.auth-card h1 { margin: 0 0 4px; font-family: "Instrument Serif", serif; font-size: clamp(36px, 8vw, 46px); font-weight: 400; line-height: 1; }
+.auth-card .field input { height: 46px; font-size: 16px; }
+.auth-card .text-link { justify-self: center; }
+.auth-note { margin: 0; color: var(--muted); font-size: 14px; text-align: center; }
+.account-menu { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; }

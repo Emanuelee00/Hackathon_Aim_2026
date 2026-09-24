@@ -6,8 +6,10 @@ from fastapi import FastAPI
 from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
+from accounts.routes import router as accounts_router
 from ai import router as ai_router
 from ai import warm_up
+from db import migrate
 from demo import DEMO_MODE
 from employment.routes import router as employment_router
 from matching import router as matching_router
@@ -16,6 +18,7 @@ from store import router as store_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    migrate()
     if not DEMO_MODE:
         Thread(target=warm_up, daemon=True).start()
     yield
@@ -26,6 +29,7 @@ app.include_router(ai_router)
 app.include_router(matching_router)
 app.include_router(employment_router)
 app.include_router(store_router)
+app.include_router(accounts_router)
 
 
 @app.get("/api/health")
