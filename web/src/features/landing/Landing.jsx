@@ -1,7 +1,34 @@
+import { useEffect, useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
 import { StoreProvider } from '../../app/store.jsx';
 import PublicRequest from '../public-request/PublicRequest.jsx';
+
+const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers'];
+
+// Types out each city, pauses, erases it, then moves to the next — skipped for reduced motion.
+function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 } = {}) {
+  const [text, setText] = useState(words[0]);
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let index = 0;
+    let current = '';
+    let deleting = false;
+    let timerId;
+    function step() {
+      const word = words[index];
+      current = deleting ? current.slice(0, -1) : word.slice(0, current.length + 1);
+      setText(current);
+      let delay = deleting ? deletingMs : typingMs;
+      if (!deleting && current === word) { delay = pauseMs; deleting = true; }
+      else if (deleting && current === '') { deleting = false; index = (index + 1) % words.length; }
+      timerId = setTimeout(step, delay);
+    }
+    timerId = setTimeout(step, typingMs);
+    return () => clearTimeout(timerId);
+  }, []);
+  return text;
+}
 
 // Pages, photos and partners mirror the association's site (chezmarthe.org) so the demo feels like its next version.
 const pillars = [
@@ -34,6 +61,7 @@ function Wave({ className }) {
 }
 
 export default function Landing() {
+  const city = useTypewriter(cities);
   return <div className="landing">
     <header className="site-header">
       <Brand />
@@ -43,7 +71,11 @@ export default function Landing() {
 
     <section className="landing-cover">
       <div className="landing-cover-inner">
-        <p className="cover-kicker">Chez Marthe · Marseille</p>
+        <p className="cover-kicker">
+          Chez Marthe ·{' '}
+          <span aria-hidden="true">{city}<span className="cover-kicker-cursor">|</span></span>
+          <span className="sr-only">Marseille, Nice, Avignon, Paris, Angers</span>
+        </p>
         <h1>Des lieux tremplins pour les femmes</h1>
         <p>Habiter, travailler, vivre ensemble, créer du lien et rayonner.</p>
         <div className="cover-actions"><a className="button button-dark button-large" href="#espaces">Choisir mon espace</a><a className="button button-light button-large" href="#demande">Proposer une activité</a></div>

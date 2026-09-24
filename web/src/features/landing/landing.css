@@ -28,6 +28,9 @@ a.button { text-decoration: none; }
 .landing-cover h1 { max-width: 12ch; margin: 0 0 14px; color: white; font-size: clamp(44px, 8vw, 92px); line-height: .98; text-transform: uppercase; }
 .landing-cover p { max-width: 36rem; margin: 0; font-size: clamp(18px, 2.2vw, 22px); }
 .cover-kicker { margin-bottom: 14px !important; color: var(--pink); font-size: 14px !important; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.cover-kicker-cursor { margin-left: 1px; font-weight: 400; animation: cover-kicker-blink 1s step-end infinite; }
+@keyframes cover-kicker-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cover-kicker-cursor { animation: none; } }
 .cover-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 
 /* Space cards */
