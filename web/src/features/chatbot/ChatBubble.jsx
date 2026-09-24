@@ -8,7 +8,7 @@ function Message({ message }) {
 }
 
 // Floating chat with one of the platform's agents; the conversation lives in the page only.
-export default function ChatBubble({ agentId, title, subtitle, greeting }) {
+export default function ChatBubble({ agentId, label, title, subtitle, greeting }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
@@ -51,8 +51,11 @@ export default function ChatBubble({ agentId, title, subtitle, greeting }) {
         <input id={`chat-input-${agentId}`} ref={inputRef} value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} placeholder="Écrivez votre question…" autoComplete="off" />
         <button className="button button-dark" aria-label="Envoyer" disabled={pending || !draft.trim()}><Icon name="send" size={16} /></button></form>
     </section>}
-    <button className="chat-launcher" aria-expanded={open} onClick={() => setOpen(current => !current)}>
-      {open ? <Icon name="close" size={22} /> : <span className="chat-avatar chat-avatar-lg"><Icon name="sparkles" size={24} /></span>}
-    </button>
+    <div className="chat-launcher-row">
+      {!open && <span className="chat-hint" aria-hidden="true"><strong>{label || 'Une question ?'}</strong><small>Assistant IA</small></span>}
+      <button className="chat-launcher" aria-expanded={open} aria-label={open ? 'Fermer la discussion' : 'Ouvrir l’assistant IA'} onClick={() => setOpen(current => !current)}>
+        {open ? <Icon name="close" size={22} /> : <span className="chat-avatar chat-avatar-lg"><Icon name="sparkles" size={24} /></span>}
+      </button>
+    </div>
   </div>;
 }
