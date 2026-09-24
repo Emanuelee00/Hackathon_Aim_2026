@@ -35,7 +35,11 @@ export default function ChatBubble({ agentId, title, subtitle, greeting }) {
   };
   return <div className="chat-bubble" onKeyDown={event => { if (event.key === 'Escape') setOpen(false); }}>
     {open && <section className="chat-panel" role="dialog" aria-labelledby={`chat-${agentId}`}>
-      <header><div><strong id={`chat-${agentId}`}>{title}</strong><small>{subtitle}</small></div><button className="icon-button" aria-label="Fermer la discussion" onClick={() => setOpen(false)}><Icon name="close" size={16} /></button></header>
+      <header>
+        <span className="chat-avatar"><Icon name="sparkles" size={19} /></span>
+        <div><strong id={`chat-${agentId}`}>{title}</strong><small>{subtitle}</small></div>
+        <button className="icon-button" aria-label="Fermer la discussion" onClick={() => setOpen(false)}><Icon name="close" size={16} /></button>
+      </header>
       <ol className="chat-messages" aria-live="polite">
         <Message message={{ role: 'assistant', content: greeting }} />
         {messages.map((message, index) => <Message key={index} message={message} />)}
@@ -47,6 +51,8 @@ export default function ChatBubble({ agentId, title, subtitle, greeting }) {
         <input id={`chat-input-${agentId}`} ref={inputRef} value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} placeholder="Écrivez votre question…" autoComplete="off" />
         <button className="button button-dark" aria-label="Envoyer" disabled={pending || !draft.trim()}><Icon name="send" size={16} /></button></form>
     </section>}
-    <button className="button button-dark chat-launcher" aria-expanded={open} onClick={() => setOpen(current => !current)}><Icon name={open ? 'close' : 'chat'} />{!open && <span>Une question ?</span>}</button>
+    <button className="chat-launcher" aria-expanded={open} onClick={() => setOpen(current => !current)}>
+      {open ? <Icon name="close" size={22} /> : <span className="chat-avatar chat-avatar-lg"><Icon name="sparkles" size={24} /></span>}
+    </button>
   </div>;
 }

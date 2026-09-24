@@ -1,0 +1,10 @@
+.ollama/
+.venv/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+web/node_modules/
+web/test-results/
+web/playwright-report/
+artifacts/
+marthe.db

@@ -178,6 +178,21 @@ cloudflared tunnel route dns marthe '*.chezmarthe.site'
 Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
 poi `make tunnel`. Il portatile deve restare acceso e sveglio.
 
+## Vercel (piano B se il tunnel non funziona)
+
+Il tunnel Cloudflare resta la via principale (AI e dati veri, persistenti). Vercel
+è tenuto pronto come riserva, nel caso il portatile o il tunnel non siano
+disponibili il giorno della demo: basta collegare il repository su
+[vercel.com](https://vercel.com), la build usa `vercel.json`.
+
+Su Vercel la variabile `VERCEL` è già impostata dalla piattaforma: l'app passa
+automaticamente in **modalità demo** (risposte precompilate, nessuna chiamata AI,
+vedi sopra) e i dati vengono salvati in SQLite su `/tmp`, quindi persistono solo
+finché l'istanza resta calda. Configura `DATABASE_URL` (Postgres) nelle variabili
+d'ambiente del progetto Vercel se vuoi dati persistenti anche lì. I sottodomini
+(`equipe.`, `residents.`...) richiedono un dominio personalizzato configurato nel
+progetto Vercel: l'URL `*.vercel.app` di default non li supporta.
+
 ## Démonstration CV et reconversion
 
 La vue résidente de **Marie** contient une proposition, un parcours réalisé,

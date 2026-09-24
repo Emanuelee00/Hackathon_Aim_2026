@@ -25,9 +25,9 @@ a.button { text-decoration: none; }
 /* Cover */
 .landing-cover { display: grid; min-height: min(88svh, 760px); align-items: end; padding: 120px 16px 72px; background: linear-gradient(90deg, rgba(27,19,25,.62), rgba(27,19,25,.1) 70%), linear-gradient(180deg, rgba(27,19,25,.25), rgba(27,19,25,.7)), url(/chezmarthe/cour.jpg) center 35% / cover; }
 .landing-cover-inner { width: min(100%, 1120px); margin: 0 auto; color: white; }
-.landing-cover h1 { max-width: 12ch; margin: 0 0 14px; color: white; font-size: clamp(44px, 8vw, 92px); line-height: .98; text-transform: uppercase; }
+.landing-cover h1 { max-width: 12ch; margin: 0 0 14px; color: white; font-size: clamp(36px, 6.4vw, 72px); line-height: .98; text-transform: uppercase; }
 .landing-cover p { max-width: 36rem; margin: 0; font-size: clamp(18px, 2.2vw, 22px); }
-.cover-kicker { margin-bottom: 14px !important; color: var(--pink); font-size: 14px !important; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.cover-kicker { margin-bottom: 16px !important; color: var(--pink); font-size: clamp(17px, 2vw, 22px) !important; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .cover-kicker-cursor { margin-left: 1px; font-weight: 400; animation: cover-kicker-blink 1s step-end infinite; }
 @keyframes cover-kicker-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cover-kicker-cursor { animation: none; } }
