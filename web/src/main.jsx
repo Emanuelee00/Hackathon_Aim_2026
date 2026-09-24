@@ -8,6 +8,17 @@ import '@fontsource/instrument-serif/400.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import { StoreProvider } from './app/store.jsx';
 import App from './app/App.jsx';
+import ResidentApp from './app/ResidentApp.jsx';
+import Landing from './features/landing/Landing.jsx';
+import ComingSoon from './features/landing/ComingSoon.jsx';
+import { spaceFromHost } from './shared/lib/spaces.js';
 import './styles/index.css';
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><StoreProvider><App /></StoreProvider></React.StrictMode>);
+const pages = {
+  equipe: <StoreProvider><App /></StoreProvider>,
+  residents: <StoreProvider><ResidentApp /></StoreProvider>,
+  benevoles: <ComingSoon spaceId="benevoles" />,
+  partenaires: <ComingSoon spaceId="partenaires" />,
+};
+
+createRoot(document.getElementById('root')).render(<React.StrictMode>{pages[spaceFromHost(window.location.hostname)] || <Landing />}</React.StrictMode>);

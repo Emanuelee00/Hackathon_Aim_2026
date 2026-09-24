@@ -31,6 +31,15 @@ Per fermare i server usa Ctrl+C nei rispettivi terminali.
 - Matching responsabile: sezione `Opportunités & parcours` oppure `POST /api/match`
 - Piano verso l'impiego: `Vue résidente` oppure `POST /api/employment-plan`
 
+### Sottodomini
+
+Il dominio principale mostra la pagina d'accoglienza; ogni pubblico ha il suo
+sottodominio: `equipe.`, `residents.`, `benevoles.` e `partenaires.` (questi ultimi
+due in preparazione). In locale usa `localhost` invece di `127.0.0.1`, per esempio
+http://equipe.localhost:8000. Eventi e percorsi sono salvati dal backend
+(`/api/store/…`), così tutti i sottodomini condividono gli stessi dati: Postgres se
+`DATABASE_URL` è definita (docker compose), altrimenti il file SQLite `marthe.db`.
+
 ```sh
 curl http://127.0.0.1:8000/api/chat \
   -H 'Content-Type: application/json' \

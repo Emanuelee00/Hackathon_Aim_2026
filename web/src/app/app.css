@@ -35,6 +35,7 @@ main { width: min(100%, 1480px); margin: 0 auto; padding: 42px clamp(28px, 4vw, 
 .sidebar-note p { margin-bottom: 8px; font-family: "Instrument Serif", serif; font-size: 19px; line-height: 1.15; }
 .sidebar-note small { color: #66776b; font-size: 13px; }
 .help-link { padding-left: 4px; font-size: 14px; }
+a.nav-item { text-decoration: none; }
 .profile { display: grid; grid-template-columns: 37px 1fr 7px; gap: 10px; align-items: center; padding-top: 15px; border-top: 1px solid rgba(255,255,255,.12); }
 .avatar { display: grid; width: 37px; height: 37px; place-items: center; border-radius: 50%; color: var(--green); background: #efb193; font-size: 14px; font-weight: 700; }
 

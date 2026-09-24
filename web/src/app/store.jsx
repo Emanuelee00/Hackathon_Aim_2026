@@ -1,43 +1,67 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
 import { sites } from '../shared/data/sites.js';
 import { demoMatches } from '../features/resident/demo.js';
 
 const Store = createContext(null);
-const KEY = 'marthe-demo-v1';
-const MATCH_KEY = 'marthe-match-history-v1';
 
-function loadEvents() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(KEY));
-    if (Array.isArray(saved) && saved.every(event => event.id && typeof event.title === 'string' && spaceById[event.space] && statuses[event.status] && Array.isArray(event.tasks))) return saved;
-  } catch { /* Start with the demonstration when storage is unavailable. */ }
-  return initialEvents;
+// Shared through the backend: every subdomain (équipe, résidentes) sees the same data.
+async function fetchStored(key) {
+  const response = await fetch(`/api/store/${key}`);
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(key);
+  return (await response.json()).value;
 }
 
-function loadMatches() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(MATCH_KEY));
-    if (Array.isArray(saved)) return [...saved, ...demoMatches.filter(demo => !saved.some(match => match.eventId === demo.eventId && match.resident_id === demo.resident_id))];
-  } catch { /* Start without matching history when storage is unavailable. */ }
-  return demoMatches;
+function validEvents(saved) {
+  return Array.isArray(saved) && saved.every(event => event.id && typeof event.title === 'string' && spaceById[event.space] && statuses[event.status] && Array.isArray(event.tasks)) ? saved : initialEvents;
+}
+
+function withDemoMatches(saved) {
+  if (!Array.isArray(saved)) return demoMatches;
+  return [...saved, ...demoMatches.filter(demo => !saved.some(match => match.eventId === demo.eventId && match.resident_id === demo.resident_id))];
+}
+
+// Saves only what changed since the last load or save, so reloading never writes back.
+function useSync(key, value, ready, synced, onError) {
+  useEffect(() => {
+    const body = JSON.stringify(value);
+    if (!ready || synced.current[key] === body) return;
+    synced.current[key] = body;
+    fetch(`/api/store/${key}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body })
+      .then(response => { if (!response.ok) throw new Error(key); })
+      .catch(onError);
+  }, [key, value, ready]);
 }
 
 export function StoreProvider({ children }) {
-  const [events, setEvents] = useState(loadEvents);
-  const [matches, setMatches] = useState(loadMatches);
+  const [events, setEvents] = useState(initialEvents);
+  const [matches, setMatches] = useState(demoMatches);
   const [siteId, setSiteId] = useState(sites.find(site => site.real)?.id ?? sites[0].id);
+  const [status, setStatus] = useState('loading');
   const [storageError, setStorageError] = useState('');
   const [toast, setToast] = useState('');
+  const synced = useRef({});
   useEffect(() => {
-    try { localStorage.setItem(KEY, JSON.stringify(events)); }
-    catch { setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.'); }
-  }, [events]);
-  useEffect(() => {
-    try { localStorage.setItem(MATCH_KEY, JSON.stringify(matches)); }
-    catch { setStorageError('La sauvegarde des parcours est indisponible pour cette session.'); }
-  }, [matches]);
+    const load = () => Promise.all([fetchStored('events'), fetchStored('matches')]).then(([savedEvents, savedMatches]) => {
+      const nextEvents = validEvents(savedEvents);
+      const nextMatches = withDemoMatches(savedMatches);
+      if (savedEvents) synced.current.events = JSON.stringify(nextEvents);
+      if (savedMatches) synced.current.matches = JSON.stringify(nextMatches);
+      setEvents(nextEvents); setMatches(nextMatches); setStorageError(''); setStatus('ready');
+    }).catch(() => {
+      setStorageError('Le serveur est injoignable : vos modifications ne seront pas enregistrées.');
+      setStatus(current => current === 'loading' ? 'offline' : current);
+    });
+    load();
+    // Picks up what was changed on another subdomain when coming back to this tab.
+    window.addEventListener('focus', load);
+    return () => window.removeEventListener('focus', load);
+  }, []);
+  const saveFailed = () => setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.');
+  useSync('events', events, status === 'ready', synced, saveFailed);
+  useSync('matches', matches, status === 'ready', synced, saveFailed);
   useEffect(() => { if (toast) { const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); } }, [toast]);
   function saveEvent(event) {
     setEvents(current => current.some(item => item.id === event.id) ? current.map(item => item.id === event.id ? event : item) : [...current, event]);
@@ -62,6 +86,7 @@ export function StoreProvider({ children }) {
   }
   const updateMatchStatus = (id, status) => setMatches(current => current.map(match => match.id === id ? { ...match, status } : match));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));
+  if (status === 'loading') return null;
   return <Store.Provider value={{ events, saveEvent, matches, replaceSuggestions, addResidentMatches, updateMatchStatus, saveJourney, siteId, setSiteId, toast, notify: setToast, storageError }}>{children}</Store.Provider>;
 }
 

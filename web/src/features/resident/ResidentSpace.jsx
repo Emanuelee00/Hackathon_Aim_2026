@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../../app/store.jsx';
 import Icon from '../../shared/components/Icon.jsx';
+import { spaceUrl } from '../../shared/lib/spaces.js';
 import { residents, residentById } from '../opportunities/data/residents.js';
 import { residentContacts, residentSkills } from '../journeys/tracking.js';
 import { eligibleEvents } from '../opportunities/matching.js';
@@ -33,7 +34,7 @@ function Decision({ decision, onUndo }) {
   return <div className={`decision ${decision.status}`} role="status"><Icon name={decision.status === 'declined' ? 'close' : 'check'} size={20} /><p><strong>{title}</strong>{text}</p><button className="text-link" onClick={onUndo}>Annuler</button></div>;
 }
 
-export default function ResidentSpace({ navigate }) {
+export default function ResidentSpace() {
   const { events, matches, addResidentMatches, updateMatchStatus } = useStore();
   const consenting = residents.filter(item => item.consent);
   const [residentId, setResidentId] = useState(consenting[0]?.id || '');
@@ -56,7 +57,7 @@ export default function ResidentSpace({ navigate }) {
   const switchResident = id => { setResidentId(id); setDecisions([]); setTab('proposals'); };
 
   return <div className="resident-space">
-    <div className="demo-bar"><label>Démonstration · espace de <select value={residentId} onChange={event => switchResident(event.target.value)}>{consenting.map(item => <option value={item.id} key={item.id}>{item.first_name}</option>)}</select></label><button className="text-link" onClick={() => navigate('dashboard')}><Icon name="back" size={15} />Espace coordination</button></div>
+    <div className="demo-bar"><label>Démonstration · espace de <select value={residentId} onChange={event => switchResident(event.target.value)}>{consenting.map(item => <option value={item.id} key={item.id}>{item.first_name}</option>)}</select></label><a className="text-link" href={spaceUrl('equipe')}><Icon name="back" size={15} />Espace coordination</a></div>
     <header className="resident-hello"><span className={`resident-avatar ${resident.color}`}>{resident.initials}</span><div><h1>Bonjour {resident.first_name}</h1><p>Ici, vous choisissez librement. Rien n’est obligatoire.</p></div></header>
     <Tabs tab={tab} setTab={setTab} counts={{ proposals: fromTeam.length + fromCv.length + open.length, news: fromTeam.length + fromCv.length, journey: accepted.length }} />
 

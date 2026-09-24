@@ -10,4 +10,5 @@
 @import '../features/opportunities/opportunities.css';
 @import '../features/journeys/journeys.css';
 @import '../features/resident/resident.css';
+@import '../features/landing/landing.css';
 @import './responsive.css';
