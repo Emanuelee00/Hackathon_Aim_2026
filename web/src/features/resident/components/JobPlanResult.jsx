@@ -1,21 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Icon from '../../../shared/components/Icon.jsx';
 import { exportEmploymentPlan } from '../../../shared/lib/exports.js';
 
-function List({ title, items }) {
-  return <section><h4>{title}</h4><ul>{items.map((item, index) => <li key={index}>{item}</li>)}</ul></section>;
+const sources = {
+  demo: { label: 'Exemple prérempli', text: 'Exemple fictif. Touchez « Modifier » puis « Voir mon plan » pour analyser un CV.' },
+  ai: { label: 'Proposition de l’IA', text: 'Générée par l’IA à partir de votre CV : relisez-la avec votre accompagnatrice.' },
+  guided: { label: 'Plan guidé, sans IA', text: 'Des repères prudents, à personnaliser avec votre accompagnatrice.' },
+};
+
+function Block({ icon, title, items }) {
+  return <section className="plan-block"><h5><Icon name={icon} size={18} />{title}</h5><ul>{items.map((item, index) => <li key={index}>{item}</li>)}</ul></section>;
 }
 
-export default function JobPlanResult({ plan, resident, objective }) {
+export default function JobPlanResult({ record, resident, warning, onEdit }) {
+  const { plan, objective } = record;
+  const source = sources[record.demo ? 'demo' : plan.source] || sources.guided;
+  const [first, ...later] = plan.steps;
+  const [downloaded, setDownloaded] = useState(false);
   const result = useRef(null);
-  useEffect(() => { result.current?.focus(); }, [plan]);
-  return <div className="job-plan-result" ref={result} tabIndex={-1} aria-label="Votre plan vers l’emploi">
-    <header className="job-result-hero"><Icon name={plan.source === 'ai' ? 'sparkles' : 'leaf'} size={28} /><div><p className="eyebrow">{plan.source === 'ai' ? 'VOTRE PLAN EST PRÊT' : 'VOTRE POINT DE DÉPART'}</p><h3>Cap sur : {objective}</h3></div></header>
-    <p className="plan-source"><Icon name={plan.source === 'ai' ? 'sparkles' : 'help'} size={16} />{plan.source === 'ai' ? 'Analyse IA à discuter avec votre accompagnatrice.' : 'Plan guidé, sans génération IA : des repères à vérifier et à personnaliser avec votre accompagnatrice.'}</p>
-    <p>{plan.summary}</p>
-    <div className="job-plan-analysis"><List title="Vos points d’appui" items={plan.strengths} /><List title="Points à renforcer" items={plan.gaps} /></div>
-    <List title="À améliorer dans votre CV" items={plan.cv_suggestions} />
-    <section><h4>Les prochaines étapes</h4><ol className="job-plan-steps">{plan.steps.map((step, index) => <li key={index}><span>{index + 1}</span><div><strong>{step.title}</strong><p>{step.action}</p><small>{step.timeframe}</small></div></li>)}</ol></section>
-    <button type="button" className="button button-dark" onClick={() => exportEmploymentPlan(plan, resident, objective)}><Icon name="download" size={18} />Télécharger mon plan</button>
+  useEffect(() => { result.current?.focus(); setDownloaded(false); }, [plan]);
+  return <div className="plan-result" ref={result} tabIndex={-1} aria-label="Votre plan vers l’emploi">
+    <header className="plan-hero"><span className={`source-badge ${record.demo ? 'demo' : plan.source}`}>{source.label}</span><h4>Cap sur : {objective}</h4><p>{plan.summary}</p></header>
+    <p className="plan-note"><Icon name="help" size={15} />{source.text}</p>
+    {warning && <p className="field-error" role="status">{warning}</p>}
+    <section className="plan-now"><p className="eyebrow">À FAIRE MAINTENANT · {first.timeframe}</p><h5>{first.title}</h5><p>{first.action}</p></section>
+    <div className="plan-columns"><Block icon="check" title="Ce que vous avez déjà" items={plan.strengths} /><Block icon="sparkles" title="Ce que vous allez apprendre" items={plan.gaps} /></div>
+    {later.length > 0 && <section className="plan-block"><h5><Icon name="calendar" size={18} />Ensuite</h5><ol className="plan-later">{later.map((step, index) => <li key={index}><strong>{step.title}</strong><span>{step.action}</span><small>{step.timeframe}</small></li>)}</ol></section>}
+    <details className="plan-details"><summary>Conseils pour votre CV ({plan.cv_suggestions.length})</summary><ul>{plan.cv_suggestions.map((item, index) => <li key={index}>{item}</li>)}</ul></details>
+    <div className="plan-actions"><button type="button" className="button button-dark button-large" onClick={() => { exportEmploymentPlan(plan, resident, objective); setDownloaded(true); }}><Icon name="download" size={18} />Télécharger mon plan</button><button type="button" className="button button-quiet" onClick={onEdit}>Modifier mon CV ou mon métier</button></div>
+    {downloaded && <p className="confirm" role="status"><Icon name="check" size={16} />Plan téléchargé : retrouvez-le dans vos téléchargements.</p>}
   </div>;
 }

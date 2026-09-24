@@ -1,11 +1,11 @@
 /* Spaces */
 .space-date { display: flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: #64736b; background: var(--paper); }
-.space-date input { height: 38px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 10px; }
+.space-date input { height: 38px; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 14px; }
 .space-overview { display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
 .space-overview > div { display: flex; align-items: center; gap: 10px; padding: 16px 19px; border-right: 1px solid var(--line); }
 .space-overview > div:last-child { border-right: 0; }
 .space-overview strong { font-family: "Instrument Serif", serif; font-size: 27px; font-weight: 400; }
-.space-overview span { color: #79857f; font-size: 9px; line-height: 1.3; }
+.space-overview span { color: #79857f; font-size: 13px; line-height: 1.3; }
 .spaces-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 19px; align-items: start; }
 .space-card { overflow: hidden; }
 .space-visual { position: relative; min-height: 150px; overflow: hidden; color: var(--green); background: #cbdcc9; }
@@ -16,29 +16,29 @@
 .space-visual.lavender { background: #c9c1dc; }
 .space-icon { position: absolute; left: 20px; bottom: 20px; display: grid; width: 55px; height: 55px; place-items: center; border: 1px solid rgba(41,76,61,.18); border-radius: 15px; background: rgba(255,255,255,.5); backdrop-filter: blur(5px); }
 .space-visual > strong { position: absolute; right: 18px; bottom: 17px; font-family: "Instrument Serif", serif; font-size: 36px; font-weight: 400; }
-.space-visual > strong small { margin-left: 2px; font-family: "DM Sans", sans-serif; font-size: 9px; }
-.availability { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: 20px; color: #355445; background: rgba(255,255,255,.72); font-size: 8px; font-weight: 700; backdrop-filter: blur(5px); }
+.space-visual > strong small { margin-left: 2px; font-family: "DM Sans", sans-serif; font-size: 13px; }
+.availability { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: 20px; color: #355445; background: rgba(255,255,255,.72); font-size: 12px; font-weight: 700; backdrop-filter: blur(5px); }
 .availability i { width: 6px; height: 6px; border-radius: 50%; background: #61916d; }
 .availability.occupied i { background: #c26f52; }
 .space-body { padding: 20px; }
 .space-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .space-heading h2 { margin: 0; font-family: "Instrument Serif", serif; font-size: 25px; font-weight: 400; }
 .space-heading > span { color: var(--green); font-family: "Instrument Serif", serif; font-size: 22px; white-space: nowrap; }
-.space-heading > span small { display: block; color: #8b9690; font-family: "DM Sans", sans-serif; font-size: 7px; text-align: right; }
-.space-body > p { min-height: 43px; margin: 12px 0 15px; color: #77847d; font-size: 10px; }
+.space-heading > span small { display: block; color: var(--muted); font-family: "DM Sans", sans-serif; font-size: 12px; text-align: right; }
+.space-body > p { min-height: 43px; margin: 12px 0 15px; color: #77847d; font-size: 14px; }
 .space-capacity { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 17px; }
-.space-capacity span { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; border-radius: 6px; color: #64736b; background: #f1f0e9; font-size: 8px; }
+.space-capacity span { display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px; border-radius: 6px; color: #64736b; background: #f1f0e9; font-size: 12px; }
 .space-capacity strong { color: var(--ink); }
 .space-schedule { min-height: 112px; padding: 14px 0; border-top: 1px solid var(--line); }
 .space-schedule > div { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-.space-schedule > div strong { font-size: 10px; }
-.space-schedule > div small { color: #a0725f; font-size: 8px; }
+.space-schedule > div strong { font-size: 14px; }
+.space-schedule > div small { color: #a0725f; font-size: 12px; }
 .space-schedule > button { display: grid; width: 100%; grid-template-columns: 65px minmax(0,1fr) auto; gap: 7px; align-items: center; padding: 7px; border: 0; border-radius: 6px; background: #f6f3ec; cursor: pointer; text-align: left; }
 .space-schedule > button + button { margin-top: 5px; }
 .space-schedule > button:hover { background: #edece3; }
-.space-schedule > button span { color: #75827b; font-size: 8px; }
-.space-schedule > button strong { overflow: hidden; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
-.space-schedule > button i { color: #976852; font-size: 7px; font-style: normal; }
-.space-schedule > p { margin: 19px 0 0; color: #929b96; font-size: 9px; text-align: center; }
+.space-schedule > button span { color: #75827b; font-size: 12px; }
+.space-schedule > button strong { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.space-schedule > button i { color: #976852; font-size: 12px; font-style: normal; }
+.space-schedule > p { margin: 19px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
 .space-book { width: 100%; }
 

@@ -5,7 +5,7 @@
   background: #f4f1ea;
   font-synthesis: none;
   --ink: #243c32;
-  --muted: #718078;
+  --muted: #5b6a62;
   --green: #294c3d;
   --line: #deddd5;
   --paper: #fffdf8;
@@ -28,3 +28,4 @@ h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { color: var(--ink); }
 p { line-height: 1.6; }
 
+input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex="-1"]:focus-visible { outline: 3px solid #e8a480; outline-offset: 2px; }

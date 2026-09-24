@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import demoPlan from './demoPlan.json';
+import { validateCv } from './cvFile.js';
 
 const KEY = 'marthe-employment-plans-v1';
 
@@ -18,53 +19,58 @@ export function saveJobPlan(residentId, plan) {
   } catch { return false; }
 }
 
+async function fetchExample(name) {
+  const response = await fetch(`/demo/${name}`);
+  if (!response.ok) throw new Error('Le CV d’exemple est indisponible. Choisissez votre propre fichier.');
+  const blob = await response.blob();
+  return new File([blob], name, { type: blob.type });
+}
+
+async function requestPlan(cv, objective, resident, skills) {
+  const data = new FormData();
+  data.append('cv', cv); data.append('objective', objective);
+  data.append('resident_name', resident.first_name);
+  data.append('acquired_skills', JSON.stringify(skills.map(item => item.skill)));
+  const response = await fetch('/api/employment-plan', { method: 'POST', body: data });
+  const plan = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(plan.detail || 'Le service n’a pas répondu.');
+  return plan;
+}
+
 export function useJobPlan(resident, skills) {
+  const isMarie = resident.id === 'marie';
   const [cv, setCv] = useState(null);
-  const [objective, setObjective] = useState('');
-  const [record, setRecord] = useState(null);
+  const [fileError, setFileError] = useState('');
+  const [objective, setObjective] = useState(() => loadJobPlan(resident.id)?.objective || (isMarie ? demoPlan.objective : ''));
+  const [record, setRecord] = useState(() => loadJobPlan(resident.id) || (isMarie ? demoPlan : null));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const saved = loadJobPlan(resident.id);
-    setRecord(saved || (resident.id === 'marie' ? demoPlan : null)); setObjective(saved?.objective || (resident.id === 'marie' ? 'Commis de cuisine' : ''));
-    setCv(null); setError('');
-    let active = true;
-    if (resident.id === 'marie') fetch('/demo/cv-marie-demo.docx').then(response => {
-      if (!response.ok) throw new Error('CV indisponible');
-      return response.blob();
-    }).then(blob => {
-      const file = new File([blob], 'cv-marie-demo.docx', { type: blob.type });
-      file.isMarieExample = true;
-      if (active) setCv(current => current || file);
-    })
-      .catch(() => { if (active) setError('Le CV exemple est indisponible. Vous pouvez choisir votre propre fichier.'); });
-    return () => { active = false; };
-  }, [resident.id]);
-  async function useTechExample() {
-    setError('');
+  async function loadExample(name, marieExample = false) {
+    setFileError('');
     try {
-      const response = await fetch('/demo/cv-tech-demo.docx');
-      if (!response.ok) throw new Error('Le CV exemple est indisponible.');
-      const blob = await response.blob();
-      setCv(new File([blob], 'cv-tech-demo.docx', { type: blob.type }));
-      setObjective('Commis de cuisine'); setRecord(null);
-    } catch (reason) { setError(reason.message); }
+      const file = await fetchExample(name);
+      file.isMarieExample = marieExample;
+      setCv(file);
+      return true;
+    } catch (reason) { setFileError(reason.message); return false; }
   }
-  async function submit(event) {
-    event.preventDefault(); setLoading(true); setError('');
-    const data = new FormData();
-    data.append('cv', cv); data.append('objective', objective.trim());
-    data.append('resident_name', resident.first_name);
-    data.append('acquired_skills', JSON.stringify(cv?.isMarieExample ? skills.map(item => item.skill) : []));
+  useEffect(() => { if (isMarie) loadExample('cv-marie-demo.docx', true); }, [isMarie]); // eslint-disable-line react-hooks/exhaustive-deps
+  function chooseCv(file) {
+    const problem = validateCv(file);
+    setFileError(problem);
+    if (!problem) setCv(file);
+  }
+  async function analyze() {
+    setLoading(true); setError('');
     try {
-      const response = await fetch('/api/employment-plan', { method: 'POST', body: data });
-      const plan = await response.json();
-      if (!response.ok) throw new Error(plan.detail || 'Le CV n’a pas pu être analysé.');
-      const next = { objective: objective.trim(), plan };
+      const next = { objective: objective.trim(), plan: await requestPlan(cv, objective.trim(), resident, cv?.isMarieExample ? skills : []) };
       setRecord(next);
-      if (!saveJobPlan(resident.id, next)) setError('Le plan est affiché, mais sa sauvegarde locale est indisponible.');
-    } catch (reason) { setError(reason.message || 'Le service est momentanément indisponible.'); }
-    finally { setLoading(false); }
+      if (!saveJobPlan(resident.id, next)) setError('Votre plan est affiché, mais il ne pourra pas être retrouvé plus tard sur cet appareil.');
+      return true;
+    } catch (reason) {
+      setError(reason instanceof TypeError ? 'Connexion impossible. Vérifiez votre accès à Internet puis réessayez.' : reason.message);
+      return false;
+    } finally { setLoading(false); }
   }
-  return { cv, setCv: file => { setCv(file); setRecord(null); }, objective, setObjective: value => { setObjective(value); setRecord(null); }, record, error, loading, submit, useTechExample };
+  return { cv, chooseCv, fileError, objective, setObjective, record, error, loading, analyze, isMarie, pickMarieExample: () => loadExample('cv-marie-demo.docx', true), pickTechExample: async () => { const ok = await loadExample('cv-tech-demo.docx'); if (ok) setObjective('Commis de cuisine'); return ok; } };
 }

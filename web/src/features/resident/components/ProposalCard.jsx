@@ -1,7 +1,14 @@
 import Icon from '../../../shared/components/Icon.jsx';
+import { spaceById } from '../../../shared/data/spaces.js';
 import { dateLabel } from '../../../shared/lib/format.js';
 
-export default function ProposalCard({ match, event, onStatus }) {
-  return <article className="match-card"><header><span className="eyebrow">{event.title}</span><h3>{dateLabel(event.date)}</h3></header><p className="match-reason">{match.rationale}</p><div className="match-points"><p><Icon name="sparkles" size={15} /><span><strong>Ce que ça peut vous apporter</strong>{match.benefit}</span></p><p><Icon name="help" size={15} /><span><strong>À vérifier ensemble</strong>{match.vigilance}</span></p></div>
-    <footer><button className="button button-quiet" onClick={() => onStatus(match.id, 'declined')}>Je décline</button><button className="button button-dark" onClick={() => onStatus(match.id, 'accepted')}><Icon name="check" size={16} />J’accepte</button></footer></article>;
+export default function ProposalCard({ match, event, onDecide }) {
+  return <article className="proposal">
+    <p className="proposal-when"><Icon name="calendar" size={16} />{dateLabel(event.date, { weekday: 'long', day: 'numeric', month: 'long' })} · {event.start}–{event.end} · {spaceById[event.space]?.name}</p>
+    <h3>{event.title}</h3>
+    <p className="proposal-why">{match.rationale}</p>
+    <p className="proposal-benefit"><Icon name="sparkles" size={17} /><span><strong>Pour vous : </strong>{match.benefit}</span></p>
+    <details className="plan-details"><summary>À vérifier avant de venir</summary><p>{match.vigilance}</p></details>
+    <footer><button className="button button-quiet" onClick={() => onDecide(match, 'declined')}>Refuser</button><button className="button button-dark" onClick={() => onDecide(match, 'accepted')}><Icon name="check" size={17} />Accepter</button></footer>
+  </article>;
 }
