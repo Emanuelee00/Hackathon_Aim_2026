@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../../../shared/components/Icon.jsx';
 import { rowColors } from '../funding.js';
 import { sortableColumns } from '../sorting.js';
@@ -10,12 +10,24 @@ export function Swatches({ value, onPick }) {
   </div>;
 }
 
-// A small menu next to a heading or a row; it closes on Escape or when focus leaves it.
+// A small menu next to a heading or a row. It is placed on the window, so a narrow
+// column never cuts it; it closes on Escape, on scroll or when focus leaves it.
 export function Popover({ label, icon, up = false, danger = false, children }) {
-  const [open, setOpen] = useState(false);
-  return <span className="funding-popover" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }} onKeyDown={event => { if (event.key === 'Escape') setOpen(false); }}>
-    <button type="button" className={`funding-menu-button ${danger ? 'danger' : ''}`} aria-label={label} title={label} aria-expanded={open} onClick={() => setOpen(current => !current)}><Icon name={icon} size={15} /></button>
-    {open && <div className={`funding-popover-panel ${up ? 'up' : ''}`}>{children(() => setOpen(false))}</div>}
+  const [place, setPlace] = useState(null);
+  useEffect(() => {
+    if (!place) return undefined;
+    const close = () => setPlace(null);
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('resize', close);
+    return () => { window.removeEventListener('scroll', close, true); window.removeEventListener('resize', close); };
+  }, [place]);
+  const toggle = event => {
+    const box = event.currentTarget.getBoundingClientRect();
+    setPlace(place ? null : { right: window.innerWidth - box.right, ...(up ? { bottom: window.innerHeight - box.top + 6 } : { top: box.bottom + 6 }) });
+  };
+  return <span className="funding-popover" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPlace(null); }} onKeyDown={event => { if (event.key === 'Escape') setPlace(null); }}>
+    <button type="button" className={`funding-menu-button ${danger ? 'danger' : ''}`} aria-label={label} title={label} aria-expanded={Boolean(place)} onClick={toggle}><Icon name={icon} size={15} /></button>
+    {place && <div className="funding-popover-panel" style={place}>{children(() => setPlace(null))}</div>}
   </span>;
 }
 

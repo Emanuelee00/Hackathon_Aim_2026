@@ -114,8 +114,7 @@
 .funding-menu-button { display: inline-grid; width: 24px; height: 24px; flex: none; place-items: center; padding: 0; border: 0; border-radius: 6px; color: #b3a6b6; background: none; cursor: pointer; }
 .funding-menu-button:hover, .funding-menu-button[aria-expanded="true"] { color: var(--green); background: #f1e6f4; }
 .funding-popover { position: relative; display: inline-flex; }
-.funding-popover-panel { position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; display: grid; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 14px 34px rgba(27,19,25,.16); font-weight: 600; letter-spacing: 0; text-transform: none; white-space: normal; }
-.funding-popover-panel.up { top: auto; bottom: calc(100% + 6px); }
+.funding-popover-panel { position: fixed; z-index: 40; display: grid; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 14px 34px rgba(27,19,25,.16); font-weight: 600; letter-spacing: 0; text-transform: none; white-space: normal; }
 .funding-popover-title { margin: 0; color: var(--muted); font-size: 12px; }
 .funding-popover-moves { display: grid; gap: 6px; }
 .funding-popover-moves .text-link { font-size: 13px; }
@@ -123,6 +122,8 @@
 .funding-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
 .funding-swatch { display: grid; width: 26px; height: 26px; place-items: center; padding: 0; border: 1px solid rgba(27,19,25,.15); border-radius: 50%; color: var(--muted); background: white; cursor: pointer; }
 .funding-swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px white, 0 0 0 4px var(--green); }
+/* Covered by a wider last column, the icons disappear from the left, under its border. */
+.funding-actions-cell { overflow: hidden; }
 .funding-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 .funding-menu-button.danger:hover, .funding-menu-button.danger[aria-expanded="true"] { color: #a2264a; background: #fbe3e8; }
 .funding-remove { display: grid; gap: 10px; min-width: 250px; color: #852a41; }

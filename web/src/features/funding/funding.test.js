@@ -78,11 +78,12 @@ test('sorts by amount, deadline or state, empty values last either way', () => {
   assert.deepEqual(ids(null), ['a', 'b', 'c']);
 });
 
-test('resizing a column changes its neighbour, never the table width', () => {
-  const widths = { name: 200, type: 100, amount: 150, card: 50 };
-  const order = ['name', 'type', 'amount'];
-  assert.deepEqual(resizeWithNeighbour(widths, order, 'name', 240), { name: 240, type: 60, amount: 150, card: 50 });
-  assert.deepEqual(resizeWithNeighbour(widths, order, 'name', 400), { name: 250, type: 50, amount: 150, card: 50 });
-  assert.deepEqual(resizeWithNeighbour(widths, order, 'amount', 120), { name: 200, type: 130, amount: 120, card: 50 });
+test('resizing a column changes its neighbour, never the table; the last one covers the row actions', () => {
+  const widths = { name: 200, type: 100, amount: 150, card: 100 };
+  const order = ['name', 'type', 'amount', 'card'];
+  assert.deepEqual(resizeWithNeighbour(widths, order, 'name', 240), { name: 240, type: 60, amount: 150, card: 100 });
+  assert.deepEqual(resizeWithNeighbour(widths, order, 'name', 400), { name: 250, type: 50, amount: 150, card: 100 });
+  assert.deepEqual(resizeWithNeighbour(widths, order, 'amount', 190), { name: 200, type: 100, amount: 190, card: 60 });
+  assert.deepEqual(resizeWithNeighbour(widths, order, 'amount', 400), { name: 200, type: 100, amount: 200, card: 50 });
   assert.equal(totalWidth(resizeWithNeighbour(widths, order, 'type', 10)), totalWidth(widths));
 });

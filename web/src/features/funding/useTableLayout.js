@@ -16,7 +16,9 @@ function savedLayout() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY)) || {};
     const order = saved.order?.length === movable.length && movable.every(key => saved.order.includes(key)) ? saved.order : movable;
-    return { ...saved, order };
+    // Layouts saved before the delete button had the row actions at 88 px: room for two icons.
+    const widths = saved.widths?.card === 88 ? { ...saved.widths, card: defaults.card } : saved.widths;
+    return { ...saved, widths, order };
   } catch { return { order: movable }; }
 }
 
@@ -33,8 +35,7 @@ export default function useTableLayout(slot) {
     try { localStorage.setItem(KEY, JSON.stringify(layout)); }
     catch { /* The layout remains for this visit. */ }
   }, [layout]);
-  // The row actions always keep their width, even in a layout saved before a new action.
-  const widths = { ...(layout.widths || (available ? scaleWidths(defaults, available - PANEL_CHROME) : defaults)), card: defaults.card };
+  const widths = layout.widths || (available ? scaleWidths(defaults, available - PANEL_CHROME) : defaults);
   const change = patch => setLayout(current => ({ ...current, ...patch }));
   const drag = (event, resize) => {
     event.preventDefault();
@@ -45,7 +46,7 @@ export default function useTableLayout(slot) {
     window.addEventListener('pointerup', stop);
   };
   // The neighbouring column gives or takes the difference: the table keeps its width.
-  const resizeColumn = (key, width, from = widths) => change({ widths: resizeWithNeighbour(from, layout.order, key, width) });
+  const resizeColumn = (key, width, from = widths) => change({ widths: resizeWithNeighbour(from, [...layout.order, 'card'], key, width) });
   const offset = layout.offset || 0;
   const near = (value, target) => Math.abs(value - target) <= SNAP;
   const resizeTable = (width, from = widths) => {

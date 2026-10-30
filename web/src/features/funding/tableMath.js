@@ -23,11 +23,11 @@ export function moveColumn(order, key, target) {
   return [...rest.slice(0, index), key, ...rest.slice(index)];
 }
 
-// A column made wider or narrower takes or gives the difference to its right neighbour
-// (its left one for the last column), so the table keeps its width.
+// A column made wider or narrower takes or gives the difference to its right neighbour,
+// so the table keeps its width; the last one takes it from the row actions, which it
+// can cover, as the first column's text gets cut.
 export function resizeWithNeighbour(widths, order, key, width) {
-  const index = order.indexOf(key);
-  const neighbour = order[index + 1] ?? order[index - 1];
+  const neighbour = order[order.indexOf(key) + 1];
   const pair = widths[key] + widths[neighbour];
   const next = Math.min(pair - MIN_COLUMN, Math.max(MIN_COLUMN, Math.round(width)));
   return { ...widths, [key]: next, [neighbour]: pair - next };

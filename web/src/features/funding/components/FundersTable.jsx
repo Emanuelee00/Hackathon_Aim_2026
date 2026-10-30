@@ -54,7 +54,7 @@ function Row({ funder, today, layout, onSave, onOpen, onRemove }) {
       <button type="button" className="icon-button" aria-label={`Ouvrir la fiche de ${funder.name}`} onClick={() => onOpen(funder.id)}><Icon name="file" size={16} /></button>
       <RemoveButton funder={funder} onRemove={onRemove} /></div>,
   };
-  const classes = { name: 'funding-name', deadline: funder.deadline && funder.deadline < today ? 'funding-past' : '', owner: 'funding-owner', next: 'funding-next' };
+  const classes = { card: 'funding-actions-cell', name: 'funding-name', deadline: funder.deadline && funder.deadline < today ? 'funding-past' : '', owner: 'funding-owner', next: 'funding-next' };
   // A row's colour wins over its column's, as when a whole line is highlighted in Excel.
   const background = column => rowColors[funder.color]?.value || rowColors[layout.colors[column]]?.value;
   return <tr>{layout.order.map(column => <td key={column} className={classes[column] || ''} style={{ background: background(column) }}>{content[column]}</td>)}</tr>;
