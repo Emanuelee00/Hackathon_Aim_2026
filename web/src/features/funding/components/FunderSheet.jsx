@@ -4,6 +4,8 @@ import Modal from '../../../shared/components/Modal.jsx';
 import { funderFields, fundingStatuses } from '../funding.js';
 
 const shortFields = new Set(['name', 'type', 'contact', 'email', 'phone']);
+// Name, type, contact, mail, phone and informations, above the tasks.
+const IDENTITY = 6;
 
 function TaskList({ tasks, onChange }) {
   const update = (id, patch) => onChange(tasks.map(task => task.id === id ? { ...task, ...patch } : task));
@@ -35,8 +37,9 @@ export default function FunderSheet({ funder, onSave, onRemove, onClose }) {
       <label className="field"><span>Responsable</span><input value={draft.owner} placeholder="Véro, Caro…" onChange={event => set('owner', event.target.value)} /></label>
       <label className="field"><span>Date limite</span><input type="date" value={draft.deadline} onChange={event => set('deadline', event.target.value)} /></label>
     </div>
+    <div className="funding-sheet-grid">{funderFields.slice(0, IDENTITY).map(field)}</div>
     <TaskList tasks={draft.tasks} onChange={tasks => set('tasks', tasks)} />
-    <div className="funding-sheet-grid">{funderFields.map(field)}</div>
+    <div className="funding-sheet-grid">{funderFields.slice(IDENTITY).map(field)}</div>
     <div className="form-actions">{removing ? <><span className="funding-confirm-text">Supprimer définitivement cette piste ?</span><button type="button" className="button button-quiet" onClick={() => setRemoving(false)}>Garder</button><button type="button" className="button button-danger" onClick={remove}>Oui, supprimer</button></> : <button type="button" className="button button-danger" onClick={() => setRemoving(true)}>Supprimer la piste</button>}<button type="button" className="button button-dark" onClick={close}>Enregistrer et fermer</button></div>
   </Modal>;
 }

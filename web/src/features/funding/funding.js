@@ -15,11 +15,12 @@ export const rowColors = {
   rose: { label: 'Rose', value: '#fde2e7' }, lilas: { label: 'Lilas', value: '#ece3f5' }, sable: { label: 'Sable', value: '#fbf3c9' },
   menthe: { label: 'Menthe', value: '#dcf2e6' }, ciel: { label: 'Ciel', value: '#dbeaf7' }, gris: { label: 'Gris', value: '#ececec' },
 };
-// The columns of the Excel "Retroplanning" sheet, with their original headings.
+// The columns of the Excel "Retroplanning" sheet, with their original headings,
+// in the card's order: who the funder is and how to reach them come first.
 export const funderFields = [
-  ['name', 'Nom de la structure'], ['type', 'Type'], ['amount', 'Nature de l’aide / montant'], ['deadlineNote', 'Échéances'],
-  ['purpose', 'Objet, pertinence pour Chez Marthe'], ['contact', 'Nom, prénom du contact'], ['email', 'Mail'], ['phone', 'Téléphone'],
-  ['documents', 'Documents à envoyer'], ['links', 'Liens utiles'], ['notes', 'Informations'], ['history', 'Historique d’accès à l’info'],
+  ['name', 'Nom de la structure'], ['type', 'Type'], ['contact', 'Nom, prénom du contact'], ['email', 'Mail'], ['phone', 'Téléphone'], ['notes', 'Informations'],
+  ['amount', 'Nature de l’aide / montant'], ['deadlineNote', 'Échéances'], ['purpose', 'Objet, pertinence pour Chez Marthe'],
+  ['documents', 'Documents à envoyer'], ['links', 'Liens utiles'], ['history', 'Historique d’accès à l’info'],
   ['firstContact', 'Premier contact effectué'], ['potential', 'Potentialité (texte d’origine)'], ['progress', 'État d’avancement de la candidature'],
 ];
 
