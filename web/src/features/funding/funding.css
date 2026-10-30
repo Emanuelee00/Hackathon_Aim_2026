@@ -122,9 +122,9 @@
 .funding-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
 .funding-swatch { display: grid; width: 26px; height: 26px; place-items: center; padding: 0; border: 1px solid rgba(27,19,25,.15); border-radius: 50%; color: var(--muted); background: white; cursor: pointer; }
 .funding-swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px white, 0 0 0 4px var(--green); }
-/* Covered by a wider last column, the icons disappear from the left, under its border. */
+/* A wider last column pushes the icons right: they slide under the table's border, the bin first. */
 .funding-actions-cell { overflow: hidden; }
-.funding-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.funding-row-actions { display: flex; width: max-content; align-items: center; gap: 4px; }
 .funding-menu-button.danger:hover, .funding-menu-button.danger[aria-expanded="true"] { color: #a2264a; background: #fbe3e8; }
 .funding-remove { display: grid; gap: 10px; min-width: 250px; color: #852a41; }
 .funding-remove p { margin: 0; font-size: 13px; line-height: 1.45; }
