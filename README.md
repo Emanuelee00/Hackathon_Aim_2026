@@ -97,6 +97,34 @@ il file. L'AI propone punti di forza, miglioramenti del CV e passi concreti; se
 il modello locale non risponde correttamente, viene mostrato un piano guidato
 esplicitamente riconoscibile e da validare con l'accompagnatrice.
 
+### Financements
+
+La pagina `Financements` dello spazio équipe sostituisce il file Excel di suivi
+dei finanziatori (« AAP retroplanning »): scadenza vicina, numeri chiave,
+calendario dal mese corrente allo stesso mese dell'anno dopo, tâches en retard e la tabella di tutte le piste,
+modificabile cella per cella come in Excel. L'icona di fiche apre tutti i campi
+del file e le tâches della pista.
+
+Il pulsante « Importer depuis Excel » legge l'onglet `Retroplanning` e, se
+presente, la `feuille de route` (`POST /api/funders/import`, solo équipe); ogni
+tâche è collegata al finanziatore che nomina. Le piste sono salvate nello store
+(`/api/store/funders`), visibili e modificabili solo dall'équipe. I dati reali
+non sono nel codice: entrano solo dal pulsante d'import.
+
+« Enregistrer dans Excel » (`POST /api/funders/export`) scarica un `.xlsx` nello
+stesso formato, con quattro colonne in più (État, Date limite, Responsable,
+Identifiant) e, nella `feuille de route`, le colonne Fait e Identifiant de la
+piste. Reimportato, questo file ridà esattamente le stesse piste: è la copia
+locale se il sito non risponde, e il modo di caricare sul sito le modifiche
+fatte in Excel.
+
+A ogni salvataggio delle piste il server riscrive anche una copia Excel nello
+stesso formato in `excel-sauvegarde/` (esclusa da Git): `AAP retroplanning -
+sauvegarde.xlsx`, sempre aggiornata, e una copia per giorno in `par jour/`. La
+cartella si cambia con `FUNDERS_BACKUP_DIR` (vuota = nessuna copia); su Vercel
+la copia è disattivata. Il sito resta l'unica fonte: per lavorare in Excel,
+modificare una copia del file e caricarla con « Importer depuis Excel ».
+
 ## Agenti chatbot
 
 Gli agenti usano l'API OpenAI (`OPENAI_API` in `.env`, letta da Make e da docker

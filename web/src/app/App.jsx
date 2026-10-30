@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../shared/components/Header.jsx';
 import Modal from '../shared/components/Modal.jsx';
 import Sidebar, { navigation } from '../shared/components/Sidebar.jsx';
@@ -11,6 +11,7 @@ import Calendar from '../features/calendar/Calendar.jsx';
 import Spaces from '../features/spaces/Spaces.jsx';
 import Reports from '../features/reports/Reports.jsx';
 import Stats from '../features/stats/Stats.jsx';
+import Funding from '../features/funding/Funding.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
@@ -37,12 +38,24 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'spaces') return <Spaces onBook={openSpaceRequest} onOpen={openEvent} />;
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
   if (page === 'stats') return <Stats />;
+  if (page === 'funding') return <Funding />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 
+// The page is kept in the address (#funding), so a reload or the back button stays on it.
+const pageFromHash = () => {
+  const id = window.location.hash.slice(1);
+  return navigation.some(item => item.id === id) ? id : 'dashboard';
+};
+
 export default function App() {
   const { events, saveEvent, matches, saveJourney, notify, storageError, toast } = useStore();
-  const [page, setPage] = useState('dashboard');
+  const [page, setPage] = useState(pageFromHash);
+  useEffect(() => {
+    const follow = () => setPage(pageFromHash());
+    window.addEventListener('hashchange', follow);
+    return () => window.removeEventListener('hashchange', follow);
+  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [modal, setModal] = useState(null);
   const questions = useQuestions();
@@ -54,6 +67,7 @@ export default function App() {
   const journeyResident = residentById[selectedMatch?.resident_id];
   const linkedParticipations = matches.filter(match => match.eventId === selectedEvent?.id && match.status === 'accepted' && match.journey?.participation === 'participated').length;
   const navigate = nextPage => {
+    window.location.hash = nextPage;
     setPage(nextPage);
     setMenuOpen(false);
   };

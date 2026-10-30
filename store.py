@@ -18,7 +18,7 @@ SQLITE_PATH = (
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"
 )
-Key = Literal["events", "matches", "partners", "visitSlots", "laughs"]
+Key = Literal["events", "matches", "partners", "visitSlots", "laughs", "funders"]
 
 
 def execute(sql: str, params: tuple = ()) -> list[tuple]:
@@ -43,3 +43,14 @@ def save_document(key: str, value: list) -> None:
         "ON CONFLICT (key) DO UPDATE SET value = excluded.value",
         (key, json.dumps(value, ensure_ascii=False)),
     )
+
+
+def list_keys(prefix: str) -> list[str]:
+    rows = execute(
+        "SELECT key FROM documents WHERE key LIKE ? ORDER BY key", (f"{prefix}%",)
+    )
+    return [row[0] for row in rows]
+
+
+def delete_document(key: str) -> None:
+    execute("DELETE FROM documents WHERE key = ?", (key,))

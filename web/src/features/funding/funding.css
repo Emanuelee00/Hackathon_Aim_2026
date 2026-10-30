@@ -1,0 +1,151 @@
+/* Funding: page actions & urgent deadline */
+.funding-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.funding-alert { display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center; margin-bottom: 20px; padding: 18px 24px; border-radius: 14px; background: var(--pink); }
+.funding-alert strong { color: var(--violet-dark); font-family: var(--font-display); font-size: 40px; font-weight: 400; line-height: 1; text-align: center; }
+.funding-alert strong small { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 800; letter-spacing: .1em; }
+.funding-alert p { margin: 0; font-size: 14px; line-height: 1.45; }
+.funding-alert b { display: block; font-size: 17px; }
+
+/* Funding: six-month calendar */
+.funding-calendar { margin-bottom: 20px; padding-bottom: 18px; }
+.funding-months { position: relative; display: grid; grid-template-columns: repeat(var(--months), 1fr); height: calc(64px + var(--lanes) * 40px); margin: 0 24px; border-top: 2px solid var(--line); }
+.funding-month small { display: block; margin-top: 2px; font-size: 10px; letter-spacing: .06em; }
+.funding-month { overflow: hidden; padding: 10px 0 0 8px; white-space: nowrap; border-left: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.funding-today { position: absolute; top: -8px; bottom: 0; width: 2px; background: var(--pink); pointer-events: none; }
+.funding-today span { position: absolute; bottom: -20px; left: -30px; color: var(--plum); font-size: 11px; font-weight: 700; white-space: nowrap; }
+.funding-event { position: absolute; display: flex; max-width: 30%; align-items: center; gap: 7px; padding: 3px 6px 3px 0; transform: translateX(-6px); border: 0; border-radius: 6px; color: var(--ink); background: rgba(255,255,255,.85); cursor: pointer; font-size: 13px; font-weight: 700; text-align: left; }
+.funding-event span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.funding-event:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.funding-event.flip { flex-direction: row-reverse; padding: 3px 0 3px 6px; transform: translateX(calc(-100% + 6px)); }
+.funding-event i, .funding-dot { width: 12px; height: 12px; flex: none; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 2px white; }
+.funding-event.urgent, .funding-event.late { color: #a2264a; }
+.funding-event.urgent i, .funding-dot.urgent { background: #a2264a; }
+.funding-event.task i, .funding-dot.task { background: white; box-shadow: inset 0 0 0 2.5px var(--plum), 0 0 0 2px white; }
+.funding-event.late i, .funding-dot.late { background: white; box-shadow: inset 0 0 0 2.5px #a2264a, 0 0 0 2px white; }
+.funding-legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 30px 24px 0; color: var(--muted); font-size: 13px; font-weight: 600; }
+.funding-legend span { display: inline-flex; align-items: center; gap: 7px; }
+
+/* Funding: status bars, overdue tasks, priorities */
+.funding-panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-bottom: 20px; align-items: start; }
+.funding-panel { padding: 22px 24px; }
+.funding-panel h3 { margin: 0 0 16px; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
+.funding-bar-row { display: grid; grid-template-columns: 112px 1fr; gap: 10px; align-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 600; }
+.funding-bar { display: flex; height: 18px; align-items: center; gap: 8px; }
+.funding-bar i { display: block; height: 100%; min-width: 2px; border-radius: 0 4px 4px 0; background: var(--green); }
+.funding-bar-row.off { color: var(--muted); }
+.funding-bar-row.off i { background: #cfc8cd; }
+.funding-off-label { margin: 14px 0 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.funding-tasks, .funding-priorities ul { margin: 0; padding: 0; list-style: none; }
+.funding-tasks li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.funding-tasks li:last-child, .funding-priorities li:last-child button { border-bottom: 0; }
+.funding-tasks input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--green); }
+.funding-tasks li > button, .funding-priorities button { display: flex; width: 100%; gap: 10px; align-items: flex-start; padding: 0; border: 0; color: var(--ink); background: none; cursor: pointer; font-size: 14px; line-height: 1.4; text-align: left; }
+.funding-tasks li > button:hover b, .funding-priorities button:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.funding-priorities button { flex-direction: column; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.funding-priorities small, .funding-clamp { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.funding-priorities small { color: var(--muted); font-size: 13px; -webkit-line-clamp: 2; }
+.funding-avatar { display: inline-grid; width: 26px; height: 26px; flex: none; place-items: center; border-radius: 50%; color: white; background: var(--green); font-size: 12px; font-weight: 800; }
+.funding-avatar.plum { background: var(--plum); }
+.funding-late { display: inline-flex; align-items: center; gap: 4px; color: #a2264a; font-weight: 700; }
+.funding-tasks small.funding-late { display: flex; margin-top: 2px; font-size: 12px; }
+.funding-muted { color: var(--muted); }
+.funding-undo { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; color: #6d1d7d; background: #ecd4f0; font-size: 13px; line-height: 1.4; }
+.funding-undo svg { flex: none; margin-top: 2px; }
+.funding-undo .text-link { flex: none; margin-left: auto; font-size: 13px; }
+.funding-confirm { display: flex; grid-column: 2; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 12px; border-radius: 10px; background: #f6eef8; font-size: 13px; font-weight: 700; }
+.funding-confirm span { width: 100%; }
+.funding-confirm-text { margin-right: auto; align-self: center; font-size: 14px; font-weight: 700; }
+
+/* Funding: editable table */
+.funding-table-panel { position: relative; max-width: none; padding: 20px 24px 18px; }
+.funding-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+.funding-tools h3 { margin: 0 8px 0 0; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
+.funding-search { display: flex; width: 260px; align-items: center; gap: 8px; margin-left: auto; padding: 0 14px; border: 1px solid var(--line); border-radius: 20px; color: var(--muted); }
+.funding-search input { width: 100%; height: 38px; border: 0; outline: 0; background: transparent; font-size: 14px; }
+.funding-table-scroll { overflow-x: auto; }
+.funding-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; }
+/* The panel's left and right borders are the table's limits: drag them, like a column's. */
+.funding-table-edge { position: absolute; top: 0; right: -7px; bottom: 0; width: 14px; cursor: col-resize; touch-action: none; }
+.funding-table-edge::after { content: ""; position: absolute; top: 14px; bottom: 14px; left: 6px; width: 2px; border-radius: 2px; background: transparent; }
+.funding-table-edge:hover::after, .funding-table-edge:focus-visible::after { background: var(--green); }
+.funding-table-edge:focus-visible { outline: 0; }
+.funding-table-edge.left { right: auto; left: -7px; }
+.funding-table th { position: relative; padding: 8px 12px 8px 6px; white-space: nowrap; border-bottom: 2px solid var(--line); color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+.funding-table td { padding: 5px 4px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.funding-table tr:hover td { background: #faf6fb; }
+.funding-cell { width: 100%; min-width: 0; padding: 7px 6px; text-overflow: ellipsis; border: 1px solid transparent; border-radius: 7px; outline: 0; color: var(--ink); background: transparent; font: inherit; text-align: left; }
+.funding-cell:hover { border-color: var(--line); background: white; }
+.funding-cell:focus { border-color: var(--green); background: white; box-shadow: 0 0 0 3px rgba(102,43,128,.12); }
+.funding-resize { position: absolute; top: 0; right: 0; bottom: 0; width: 10px; cursor: col-resize; touch-action: none; }
+.funding-resize::after { content: ""; position: absolute; top: 8px; right: 3px; bottom: 8px; width: 2px; border-radius: 2px; background: var(--line); }
+.funding-resize:hover::after, .funding-resize:focus-visible::after { background: var(--green); }
+.funding-resize:focus-visible { outline: 0; }
+.funding-cell-long { overflow: hidden; cursor: pointer; text-overflow: ellipsis; white-space: nowrap; }
+.funding-name .funding-cell { font-weight: 800; }
+.funding-past .funding-cell { color: var(--muted); }
+.funding-status { width: 100%; }
+.funding-next { font-size: 13px; }
+.funding-status { height: 30px; padding: 0 8px; border: 0; border-radius: 20px; color: var(--ink); background: #f5e88f; cursor: pointer; font-size: 13px; font-weight: 700; }
+.funding-status.priority { background: var(--pink); }
+.funding-status.submitted { background: var(--lavender); }
+.funding-status.validated { color: white; background: var(--green); }
+.funding-status.qualify, .funding-status.check { background: white; box-shadow: inset 0 0 0 1.5px #cfc8cd; }
+.funding-status.closed, .funding-status.ineligible { color: var(--muted); background: var(--line); }
+.funding-add { margin: 14px 6px 6px; }
+.funding-hint, .funding-none { margin: 6px; color: var(--muted); font-size: 13px; }
+.funding-hint .text-link { font-size: 13px; }
+
+.funding-import-changes { display: grid; gap: 6px; margin: 0 0 18px; padding-left: 20px; font-size: 14px; line-height: 1.45; }
+
+.funding-copies { margin-top: 20px; padding: 20px 24px; }
+.funding-copies h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 22px; font-weight: 400; }
+.funding-copies p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+.funding-copies ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.funding-copies a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid #d7c1db; border-radius: 20px; color: var(--green); font-size: 14px; font-weight: 600; text-decoration: none; }
+.funding-copies a:hover { border-color: var(--green); background: #edd3f2; }
+
+/* Funding: table headings (move, sort, colour) and row actions */
+.funding-th { display: flex; min-width: 0; align-items: center; gap: 4px; }
+.funding-th-label { overflow: hidden; cursor: grab; text-overflow: ellipsis; }
+.funding-th-label:active { cursor: grabbing; }
+.funding-table th.funding-drop { box-shadow: inset 3px 0 var(--green); background: #f6eef8; }
+.funding-sort { flex: none; padding: 2px 5px; border: 0; border-radius: 6px; color: #b3a6b6; background: none; cursor: pointer; font-size: 12px; line-height: 1; }
+.funding-sort:hover, .funding-sort.on { color: var(--green); background: #f1e6f4; }
+.funding-menu-button { display: inline-grid; width: 24px; height: 24px; flex: none; place-items: center; padding: 0; border: 0; border-radius: 6px; color: #b3a6b6; background: none; cursor: pointer; }
+.funding-menu-button:hover, .funding-menu-button[aria-expanded="true"] { color: var(--green); background: #f1e6f4; }
+.funding-popover { position: relative; display: inline-flex; }
+.funding-popover-panel { position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; display: grid; gap: 10px; min-width: 210px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 14px 34px rgba(27,19,25,.16); font-weight: 600; letter-spacing: 0; text-transform: none; white-space: normal; }
+.funding-popover-panel.up { top: auto; bottom: calc(100% + 6px); }
+.funding-popover-title { margin: 0; color: var(--muted); font-size: 12px; }
+.funding-popover-moves { display: grid; gap: 6px; }
+.funding-popover-moves .text-link { font-size: 13px; }
+.funding-popover-moves .text-link:disabled { opacity: .4; cursor: default; text-decoration: none; }
+.funding-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.funding-swatch { display: grid; width: 26px; height: 26px; place-items: center; padding: 0; border: 1px solid rgba(27,19,25,.15); border-radius: 50%; color: var(--muted); background: white; cursor: pointer; }
+.funding-swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px white, 0 0 0 4px var(--green); }
+.funding-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.funding-next-cell { display: flex; align-items: center; gap: 2px; }
+.funding-next-cell.funding-late .funding-cell { color: #a2264a; font-weight: 700; }
+.funding-next .funding-cell::placeholder { color: transparent; }
+.funding-next .funding-cell:hover::placeholder, .funding-next .funding-cell:focus::placeholder { color: var(--muted); }
+
+/* Funding: funder card, opened as a side sheet */
+.modal.modal-sheet { width: min(96vw, 640px); height: 100dvh; max-height: 100dvh; margin: 0 0 0 auto; border-radius: 16px 0 0 16px; }
+.funding-sheet-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+.funding-sheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.funding-sheet-tasks { display: grid; gap: 8px; margin: 0 0 20px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; }
+.funding-sheet-tasks legend { padding: 0 6px; color: #76647a; font-size: 13px; font-weight: 700; }
+.funding-task-edit { display: grid; grid-template-columns: 18px 1fr 90px 140px 32px; gap: 8px; align-items: center; }
+.funding-task-edit input:not([type="checkbox"]) { height: 36px; min-width: 0; padding: 0 9px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+.funding-task-edit input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--green); }
+.funding-task-edit .icon-button { width: 32px; height: 32px; }
+
+@media (max-width: 1120px) {
+  .funding-panels { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .funding-alert { grid-template-columns: 1fr; }
+  .funding-sheet-top, .funding-sheet-grid { grid-template-columns: 1fr; }
+  .funding-task-edit { grid-template-columns: 18px 1fr 32px; }
+  .funding-search { width: 100%; margin-left: 0; }
+}

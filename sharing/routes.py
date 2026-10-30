@@ -8,6 +8,7 @@ from pydantic import ValidationError
 import store
 from accounts.models import User
 from accounts.sessions import current_user
+from funding.backup import save_copy
 
 from .events import merge_bookings, merge_signups, shared_view
 from .laughs import merge_laughs, own_laughs
@@ -61,6 +62,8 @@ def write_document(
 ) -> dict[str, str]:
     if user.role == "equipe":
         store.save_document(key, value)
+        if key == "funders":
+            save_copy(value)
         return {"status": "ok"}
     merge = WRITERS.get((key, user.role))
     if not merge:
