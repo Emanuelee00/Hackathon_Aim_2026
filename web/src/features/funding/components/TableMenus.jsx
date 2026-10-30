@@ -11,10 +11,10 @@ export function Swatches({ value, onPick }) {
 }
 
 // A small menu next to a heading or a row; it closes on Escape or when focus leaves it.
-export function Popover({ label, icon, up = false, children }) {
+export function Popover({ label, icon, up = false, danger = false, children }) {
   const [open, setOpen] = useState(false);
   return <span className="funding-popover" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }} onKeyDown={event => { if (event.key === 'Escape') setOpen(false); }}>
-    <button type="button" className="funding-menu-button" aria-label={label} title={label} aria-expanded={open} onClick={() => setOpen(current => !current)}><Icon name={icon} size={15} /></button>
+    <button type="button" className={`funding-menu-button ${danger ? 'danger' : ''}`} aria-label={label} title={label} aria-expanded={open} onClick={() => setOpen(current => !current)}><Icon name={icon} size={15} /></button>
     {open && <div className={`funding-popover-panel ${up ? 'up' : ''}`}>{children(() => setOpen(false))}</div>}
   </span>;
 }

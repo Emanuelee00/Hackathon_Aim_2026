@@ -36,14 +36,23 @@ function NextAction({ funder, today, onSave, onOpen }) {
   </span>;
 }
 
-function Row({ funder, today, layout, onSave, onOpen }) {
+// Deleting a funder asks first, in red, next to the row.
+function RemoveButton({ funder, onRemove }) {
+  return <Popover label={`Supprimer la piste ${funder.name}`} icon="trash" up danger>{close => <div className="funding-remove">
+    <p><b>Supprimer « {funder.name || 'piste sans nom'} » ?</b> La piste et ses tâches seront effacées.</p>
+    <div><button type="button" className="button button-small funding-remove-yes" onClick={() => { close(); onRemove(funder); }}>Oui, supprimer</button><button type="button" className="button button-quiet button-small" onClick={close}>Annuler</button></div>
+  </div>}</Popover>;
+}
+
+function Row({ funder, today, layout, onSave, onOpen, onRemove }) {
   const cell = (field, type) => <Cell funder={funder} field={field} label={labels[field] || 'Responsable'} type={type} onSave={onSave} onOpen={onOpen} />;
   const content = {
     name: cell('name'), type: cell('type'), amount: cell('amount'), deadline: cell('deadline', 'date'), owner: cell('owner'),
     status: <select className={`funding-status ${funder.status}`} aria-label={`État · ${funder.name}`} value={funder.status} onChange={event => onSave({ ...funder, status: event.target.value })}>{Object.entries(fundingStatuses).map(([key, status]) => <option key={key} value={key}>{status.mark} {status.label}</option>)}</select>,
     next: <NextAction funder={funder} today={today} onSave={onSave} onOpen={onOpen} />,
     card: <div className="funding-row-actions"><Popover label={`Couleur de la ligne ${funder.name}`} icon="palette" up>{close => <Swatches value={funder.color} onPick={color => { onSave({ ...funder, color }); close(); }} />}</Popover>
-      <button type="button" className="icon-button" aria-label={`Ouvrir la fiche de ${funder.name}`} onClick={() => onOpen(funder.id)}><Icon name="file" size={16} /></button></div>,
+      <button type="button" className="icon-button" aria-label={`Ouvrir la fiche de ${funder.name}`} onClick={() => onOpen(funder.id)}><Icon name="file" size={16} /></button>
+      <RemoveButton funder={funder} onRemove={onRemove} /></div>,
   };
   const classes = { name: 'funding-name', deadline: funder.deadline && funder.deadline < today ? 'funding-past' : '', owner: 'funding-owner', next: 'funding-next' };
   // A row's colour wins over its column's, as when a whole line is highlighted in Excel.
@@ -51,7 +60,7 @@ function Row({ funder, today, layout, onSave, onOpen }) {
   return <tr>{layout.order.map(column => <td key={column} className={classes[column] || ''} style={{ background: background(column) }}>{content[column]}</td>)}</tr>;
 }
 
-export default function FundersTable({ funders, today, onSave, onOpen, onAdd }) {
+export default function FundersTable({ funders, today, onSave, onOpen, onAdd, onRemove }) {
   const [filter, setFilter] = useState('active');
   const [query, setQuery] = useState('');
   const [dragging, setDragging] = useState(null);
@@ -74,7 +83,7 @@ export default function FundersTable({ funders, today, onSave, onOpen, onAdd }) 
     <div className="funding-table-scroll"><table className="funding-table" style={{ width: total }}>
       <colgroup>{layout.order.map(key => <col key={key} style={{ width: layout.widths[key] }} />)}</colgroup>
       <thead><tr>{layout.order.map(key => <Heading key={key} column={key} label={labels[key]} layout={layout} drag={drag} />)}</tr></thead>
-      <tbody>{visible.map(funder => <Row key={funder.id} funder={funder} today={today} layout={layout} onSave={onSave} onOpen={onOpen} />)}</tbody>
+      <tbody>{visible.map(funder => <Row key={funder.id} funder={funder} today={today} layout={layout} onSave={onSave} onOpen={onOpen} onRemove={onRemove} />)}</tbody>
     </table></div>
     {!visible.length && <p className="funding-muted funding-none">Aucune piste ne correspond.</p>}
     <button type="button" className="text-link funding-add" onClick={onAdd}><Icon name="plus" size={16} />Ajouter une piste</button>

@@ -124,6 +124,14 @@
 .funding-swatch { display: grid; width: 26px; height: 26px; place-items: center; padding: 0; border: 1px solid rgba(27,19,25,.15); border-radius: 50%; color: var(--muted); background: white; cursor: pointer; }
 .funding-swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px white, 0 0 0 4px var(--green); }
 .funding-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.funding-menu-button.danger:hover, .funding-menu-button.danger[aria-expanded="true"] { color: #a2264a; background: #fbe3e8; }
+.funding-remove { display: grid; gap: 10px; min-width: 250px; color: #852a41; }
+.funding-remove p { margin: 0; font-size: 13px; line-height: 1.45; }
+.funding-remove b { display: block; }
+.funding-remove div { display: flex; gap: 8px; }
+.funding-remove-yes { color: white; background: #b42346; }
+.funding-remove-yes:hover { background: #94193a; }
+.funding-popover-panel:has(.funding-remove) { border-color: #f1b8c5; }
 .funding-next-cell { display: flex; align-items: center; gap: 2px; }
 .funding-next-cell.funding-late .funding-cell { color: #a2264a; font-weight: 700; }
 .funding-next .funding-cell::placeholder { color: transparent; }

@@ -87,7 +87,7 @@ export default function Funding() {
       <section className="metrics-grid" aria-label="Les financements en chiffres"><Metric icon="sparkles" label="Pistes prioritaires" value={count('priority')} caption="À traiter en premier" tone="peach" /><Metric icon="send" label="Dossiers déposés" value={count('submitted')} caption="En attente de réponse" tone="lavender" /><Metric icon="check" label="Presque validés" value={count('validated')} caption="Financements en bonne voie" /><Metric icon="clock" label="Tâches en retard" value={overdue.length} caption="Date dépassée, non cochées" tone="sand" /></section>
       <FundingCalendar funders={funders} today={today} onOpen={setOpenId} />
       <FundingPanels funders={funders} overdue={overdue} lastDone={lastDone} onOpen={setOpenId} onDone={markDone} onUndo={undoDone} />
-      <FundersTable funders={funders} today={today} onSave={saveFunder} onOpen={setOpenId} onAdd={addFunder} />
+      <FundersTable funders={funders} today={today} onSave={saveFunder} onOpen={setOpenId} onAdd={addFunder} onRemove={funder => { removeFunder(funder.id); notify(`La piste « ${funder.name || 'sans nom'} » est supprimée.`); }} />
       <ServerCopies funders={funders} />
     </>}
     {pendingImport && <ImportConfirm current={funders} pending={pendingImport} onConfirm={() => applyImport(pendingImport)} onCancel={() => setPendingImport(null)} />}
