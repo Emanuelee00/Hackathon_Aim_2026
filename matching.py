@@ -6,7 +6,7 @@ import httpx
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, ValidationError
 
-from ai import MODEL, OLLAMA_URL
+from ai import AI_ENABLED, MODEL, OLLAMA_URL
 from demo import DEMO_DELAY, DEMO_MODE, demo_rationales
 from ranking import guided_rationale, rank_profiles
 
@@ -105,8 +105,10 @@ def request_matching(request: MatchRequest) -> MatchResponse:
     if DEMO_MODE:
         time.sleep(DEMO_DELAY)
         written = demo_rationales(event["title"], ranked)
-    else:
+    elif AI_ENABLED:
         written = write_rationales(event, ranked)
+    else:
+        written = {}
     matches = []
     for profile, terms in ranked:
         reasons = [

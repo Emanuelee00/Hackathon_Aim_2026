@@ -1,0 +1,15 @@
+.git
+.venv
+.ollama
+**/node_modules
+web/dist
+web/test-results
+web/playwright-report
+**/__pycache__
+**/*.pyc
+.ruff_cache
+.pytest_cache
+.env
+.env.*
+marthe.db
+deploy/.env

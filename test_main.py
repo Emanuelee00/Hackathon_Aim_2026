@@ -28,3 +28,28 @@ def test_hashed_assets_can_still_be_revalidated():
         f"/assets/{asset}", headers={"If-None-Match": first.headers["etag"]}
     )
     assert again.status_code == 304
+
+
+def test_old_and_www_domains_redirect_to_canonical(monkeypatch):
+    monkeypatch.setattr(main, "CANONICAL_DOMAIN", "chezmarthe.org")
+    monkeypatch.setattr(main, "OLD_DOMAINS", ["chezmarthe.site"])
+    client = TestClient(main.app, follow_redirects=False)
+    cases = {
+        "http://www.chezmarthe.org/?a=1": "https://chezmarthe.org/?a=1",
+        "http://chezmarthe.site/": "https://chezmarthe.org/",
+        "http://bilan.chezmarthe.site/?event=yoga": "https://bilan.chezmarthe.org/?event=yoga",
+    }
+    for url, target in cases.items():
+        response = client.get(url)
+        assert response.status_code == 301
+        assert response.headers["location"] == target
+    assert client.post("http://chezmarthe.site/api/health").status_code == 308
+    assert client.get("http://equipe.chezmarthe.org/").status_code == 200
+
+
+def test_unknown_pages_of_the_old_site_go_home():
+    client = TestClient(main.app, follow_redirects=False)
+    response = client.get("/shop/category/dons-3")
+    assert response.status_code == 301
+    assert response.headers["location"] == "/"
+    assert client.get("/api/inconnu").status_code == 404

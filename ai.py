@@ -7,6 +7,9 @@ from pydantic import BaseModel, ConfigDict, Field
 router = APIRouter(prefix="/api")
 MODEL = "qwen2.5:3b"
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11435/api/chat")
+# MARTHE_AI=0 turns every model call off (production without Ollama/OpenAI):
+# matching, plans and CV lines use their guided texts, chatbots answer 503.
+AI_ENABLED = os.getenv("MARTHE_AI", "1") != "0"
 
 
 class ChatRequest(BaseModel):
@@ -45,6 +48,8 @@ def warm_up() -> None:
 
 @router.post("/chat")
 def chat(request: ChatRequest) -> dict[str, str]:
+    if not AI_ENABLED:
+        raise HTTPException(503, "L’IA est désactivée sur ce serveur.")
     try:
         return {"reply": request_completion(request.message)}
     except httpx.TimeoutException as exc:

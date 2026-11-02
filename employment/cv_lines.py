@@ -6,7 +6,7 @@ import time
 import httpx
 from pydantic import ValidationError
 
-from ai import MODEL, OLLAMA_URL
+from ai import AI_ENABLED, MODEL, OLLAMA_URL
 from demo import DEMO_DELAY, DEMO_MODE, demo_cv_lines
 
 from .models import CvLine, CvLines, CvLinesContent, CvLinesRequest
@@ -80,4 +80,6 @@ def generate_lines(request: CvLinesRequest) -> CvLines:
             request.objective, [item.skill for item in request.skills]
         )
         return CvLines(**written, source="ai") if written else guided_lines(request)
+    if not AI_ENABLED:
+        return guided_lines(request)
     return _ai_lines(request) or guided_lines(request)

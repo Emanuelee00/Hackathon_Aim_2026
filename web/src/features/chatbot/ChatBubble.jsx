@@ -8,7 +8,14 @@ function Message({ message }) {
 }
 
 // Floating chat with one of the platform's agents; the conversation lives in the page only.
-export default function ChatBubble({ agentId, label, title, subtitle, greeting }) {
+// Built with VITE_AI=off (production without AI), no chat bubble is shown.
+const AI_ENABLED = import.meta.env.VITE_AI !== 'off';
+
+export default function ChatBubble(props) {
+  return AI_ENABLED ? <ChatPanel {...props} /> : null;
+}
+
+function ChatPanel({ agentId, label, title, subtitle, greeting }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');

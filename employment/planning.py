@@ -5,6 +5,7 @@ import time
 import httpx
 from pydantic import ValidationError
 
+from ai import AI_ENABLED
 from demo import DEMO_DELAY, DEMO_MODE, demo_plan
 
 from .models import EmploymentContext, EmploymentPlan, PlanContent, PlanStep
@@ -73,7 +74,9 @@ def generate_plan(context: EmploymentContext, cv_text: str) -> EmploymentPlan:
     if technical_to_kitchen(context, cv_text):
         return transition_plan(context, cv_text)
     if not DEMO_MODE:
-        return _ai_plan(context, cv_text)
+        return (
+            _ai_plan(context, cv_text) if AI_ENABLED else guided_plan(context, cv_text)
+        )
     plan = demo_plan(context.objective, context.acquired_skills)
     return (
         EmploymentPlan(**plan, source="ai") if plan else guided_plan(context, cv_text)

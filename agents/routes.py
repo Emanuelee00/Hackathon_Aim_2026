@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from accounts.models import User
 from accounts.sessions import optional_user, team_member
+from ai import AI_ENABLED
 from db import get_session
 
 from . import benevoles, equipe, partenaires, renseignements, residents
@@ -49,6 +50,8 @@ def chat(
     user: Annotated[User | None, Depends(optional_user)],
 ) -> ChatReply:
     agent = allowed_agent(agent_id, user)
+    if not AI_ENABLED:
+        raise HTTPException(503, "L’assistant est désactivé sur ce serveur.")
     transcript = [turn.model_dump() for turn in request.messages]
     context = Context(db, transcript, user=user)
     try:
