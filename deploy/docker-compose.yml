@@ -24,19 +24,31 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://marthe:${POSTGRES_PASSWORD}@db:5432/marthe
-      CANONICAL_DOMAIN: chezmarthe.org
-      OLD_DOMAINS: chezmarthe.site
+      CANONICAL_DOMAIN: ${CANONICAL_DOMAIN:-}
+      OLD_DOMAINS: ${OLD_DOMAINS:-}
     depends_on:
       db:
         condition: service_healthy
 
-  # Cloudflare Tunnel: no open port on the VM, HTTPS and *.chezmarthe.org handled by Cloudflare.
-  tunnel:
-    image: cloudflare/cloudflared:latest
+  # The only service reachable from the Internet: HTTPS in front of the app.
+  caddy:
+    image: caddy:2-alpine
     restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN:?set TUNNEL_TOKEN in deploy/.env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_HOSTS: ${SITE_HOSTS:?set SITE_HOSTS in deploy/.env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Certificates: kept across restarts so Let's Encrypt is not asked again.
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       - app
 
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:

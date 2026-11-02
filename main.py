@@ -82,7 +82,7 @@ class Frontend(StaticFiles):
     """Never answers 304 for HTML pages.
 
     After a rebuild index.html can keep its size and date, so its ETag would not
-    change: browsers (or the Cloudflare edge) would reuse an old page that
+    change: browsers (or a caching proxy) would reuse an old page that
     points to deleted bundles and show a blank screen.
     """
 

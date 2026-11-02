@@ -1,0 +1,6 @@
+# HTTPS for every host listed in SITE_HOSTS (deploy/.env): Caddy obtains and
+# renews the Let's Encrypt certificates and redirects http:// to https://.
+{$SITE_HOSTS} {
+	encode zstd gzip
+	reverse_proxy app:8000
+}
