@@ -21,6 +21,7 @@
 @import '../features/resident/resident.css';
 @import '../features/traces/traces.css';
 @import '../features/landing/landing.css';
+@import '../features/site-pages/site-pages.css';
 @import '../features/auth/auth.css';
 @import '../features/chatbot/chatbot.css';
 @import '../features/questions/questions.css';

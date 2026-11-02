@@ -78,6 +78,11 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+SITE_PAGES = {"contact", "mentions-legales", "politique-de-confidentialite"}
+# Addresses of the previous site (Odoo) that have a page here.
+OLD_PAGES = {"contactus": "/contact", "privacy": "/politique-de-confidentialite"}
+
+
 class Frontend(StaticFiles):
     """Never answers 304 for HTML pages.
 
@@ -99,11 +104,14 @@ class Frontend(StaticFiles):
         try:
             return await super().get_response(path, scope)
         except HTTPException as exc:
-            # The app has no URL paths: old links (e.g. pages of the previous
-            # site) land on the home page instead of a 404.
-            if exc.status_code == 404 and not path.startswith("api"):
-                return RedirectResponse("/", status_code=301)
-            raise
+            if exc.status_code != 404 or path.startswith("api"):
+                raise
+            # React shows these pages from the address (see main.jsx).
+            if path in SITE_PAGES:
+                return await super().get_response("index.html", scope)
+            # Other old links (e.g. pages of the previous site) land on the
+            # matching page, or on the home page instead of a 404.
+            return RedirectResponse(OLD_PAGES.get(path, "/"), status_code=301)
 
     def is_not_modified(self, response_headers, request_headers) -> bool:
         if response_headers.get("content-type", "").startswith("text/html"):

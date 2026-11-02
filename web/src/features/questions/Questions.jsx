@@ -4,7 +4,7 @@ import { EmptyState, PageIntro } from '../../shared/components/Primitives.jsx';
 
 const filters = [['new', 'À traiter'], ['done', 'Traitées'], ['all', 'Toutes']];
 // Which assistant handed the question off, i.e. who is asking.
-const sources = { renseignements: 'Site public', residents: 'Résidente', partenaires: 'Association', benevoles: 'Bénévole' };
+const sources = { renseignements: 'Site public', contact: 'Formulaire de contact', residents: 'Résidente', partenaires: 'Association', benevoles: 'Bénévole' };
 const formatDate = value => new Date(value).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 
 function QuestionCard({ question, setStatus }) {
@@ -13,9 +13,9 @@ function QuestionCard({ question, setStatus }) {
     <div className="question-head"><span className="eyebrow">Q-{question.id} · {sources[question.agent] || question.agent} · {formatDate(question.created_at)}</span>{question.status === 'done' && <span className="verdict ok">Traitée</span>}</div>
     <p className="question-summary">{question.summary}</p>
     <p className="question-from"><strong>{question.name}</strong> · <a href={`mailto:${question.email}?subject=${subject}`}>{question.email}</a></p>
-    <details><summary>Voir la conversation avec l’assistant</summary>
+    {question.transcript.length > 0 && <details><summary>Voir la conversation avec l’assistant</summary>
       <ol className="question-transcript">{question.transcript.map((turn, index) => <li key={index} className={turn.role}><small>{turn.role === 'user' ? question.name : 'Assistant'}</small>{turn.content}</li>)}</ol>
-    </details>
+    </details>}
     <div className="form-actions">
       <a className="button button-quiet button-small" href={`mailto:${question.email}?subject=${subject}`}><Icon name="send" size={15} />Répondre par e-mail</a>
       {question.status === 'new'

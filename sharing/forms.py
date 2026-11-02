@@ -1,20 +1,26 @@
-"""The two public forms: a request from the landing page, a bilan after an event.
+"""The public forms: a request from the landing page, a bilan after an event, a
+message from the contact page.
 
-They never read the shared documents: each only adds one thing to them.
+They never read what is stored: each only adds one thing to it.
 """
 
 import re
 from datetime import datetime
+from typing import Annotated
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
 import store
+from agents.models import Question
+from db import get_session
 
-from .models import EventDraft, Feedback
+from .models import ContactMessage, EventDraft, Feedback
 
 router = APIRouter(prefix="/api")
+Db = Annotated[Session, Depends(get_session)]
 EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
@@ -69,4 +75,25 @@ def submit_feedback(event_id: str, feedback: Feedback) -> dict[str, str]:
         "events",
         [{**e, "organizerFeedback": recorded} if e is event else e for e in events],
     )
+    return {"status": "ok"}
+
+
+@router.post("/contact", status_code=201)
+def send_contact(message: ContactMessage, db: Db) -> dict[str, str]:
+    """Lands in the team's "Questions reçues", next to the chatbots' questions."""
+    if message.website:
+        return {"status": "ok"}  # a robot: it believes it was sent
+    if not EMAIL.match(message.email):
+        raise HTTPException(422, "Indiquez une adresse e-mail valide.")
+    phone = f"\n\nTéléphone : {message.phone}" if message.phone else ""
+    db.add(
+        Question(
+            agent="contact",
+            name=message.name,
+            email=message.email,
+            summary=f"{message.subject}\n\n{message.message}{phone}",
+            transcript=[],
+        )
+    )
+    db.commit()
     return {"status": "ok"}

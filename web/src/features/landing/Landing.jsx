@@ -56,6 +56,16 @@ export function Brand() {
   return <a href={spaceUrl(null)} className="landing-brand"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>;
 }
 
+export function SiteFooter() {
+  return <footer className="site-footer">
+    <div className="landing-wrap">
+      <img src="/logo-chez-marthe.png" alt="Chez Marthe" />
+      <p>Habiter &amp; rayonner. Démonstration hackathon : les données de la plateforme sont fictives.</p>
+      <nav aria-label="Informations"><a href="/contact">Contact</a><a href="/mentions-legales">Mentions légales</a><a href="/politique-de-confidentialite">Confidentialité</a></nav>
+    </div>
+  </footer>;
+}
+
 function Wave({ className }) {
   return <svg className={className} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 48 C 240 8 480 8 720 40 S 1200 80 1440 30 V80 H0 Z" /></svg>;
 }
@@ -138,13 +148,7 @@ export default function Landing() {
       </a>)}</div>
     </section>
 
-    <footer className="site-footer">
-      <div className="landing-wrap">
-        <img src="/logo-chez-marthe.png" alt="Chez Marthe" />
-        <p>Habiter &amp; rayonner. Démonstration hackathon : les données de la plateforme sont fictives.</p>
-        <a href="https://www.chezmarthe.org/" target="_blank" rel="noreferrer">chezmarthe.org</a>
-      </div>
-    </footer>
+    <SiteFooter />
     <ChatBubble agentId="renseignements" title="Une question sur le lieu ?" subtitle="Réponses selon les règles du lieu, sinon transmises à l’équipe" greeting="Bonjour ! Vous voulez savoir si une activité est possible Chez Marthe ? Posez votre question : je réponds avec les règles du lieu, et je transmets à l’équipe ce que je ne sais pas." />
   </div>;
 }

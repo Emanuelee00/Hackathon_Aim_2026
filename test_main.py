@@ -53,3 +53,13 @@ def test_unknown_pages_of_the_old_site_go_home():
     assert response.status_code == 301
     assert response.headers["location"] == "/"
     assert client.get("/api/inconnu").status_code == 404
+
+
+def test_site_pages_and_old_addresses():
+    client = TestClient(main.app, follow_redirects=False)
+    for page in ("contact", "mentions-legales", "politique-de-confidentialite"):
+        response = client.get(f"/{page}")
+        assert response.status_code == 200
+        assert response.headers["content-type"].startswith("text/html")
+    assert client.get("/contactus").headers["location"] == "/contact"
+    assert client.get("/privacy").headers["location"] == "/politique-de-confidentialite"

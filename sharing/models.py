@@ -69,3 +69,16 @@ class Feedback(BaseModel):
     residents: Literal["yes", "no", "unknown"]
     logistics: Literal["", "ready", "adjust", "issues"] = ""
     comment: str = Field(default="", max_length=1000)
+
+
+class ContactMessage(BaseModel):
+    """The contact page: it reaches the team with the chatbots' questions."""
+
+    model_config = ConfigDict(str_strip_whitespace=True)
+    name: str = Field(min_length=1, max_length=120)
+    email: str = Field(max_length=254)
+    phone: str = Field(default="", max_length=30)
+    subject: str = Field(min_length=1, max_length=150)
+    message: Text = Field(min_length=1)
+    # Hidden from people: only spam robots fill it in.
+    website: str = ""

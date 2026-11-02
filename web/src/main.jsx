@@ -10,6 +10,9 @@ import PartnerSpace from './features/partners/PartnerSpace.jsx';
 import OrganizerFeedback from './features/feedback/OrganizerFeedback.jsx';
 import AuthGate from './features/auth/AuthGate.jsx';
 import SpaceAssistant from './features/chatbot/SpaceAssistant.jsx';
+import Contact from './features/site-pages/Contact.jsx';
+import LegalNotice from './features/site-pages/LegalNotice.jsx';
+import PrivacyPolicy from './features/site-pages/PrivacyPolicy.jsx';
 import { spaceFromHost } from './shared/lib/spaces.js';
 import './styles/index.css';
 
@@ -21,4 +24,12 @@ const pages = {
   bilan: <PublicShell><OrganizerFeedback /></PublicShell>,
 };
 
-createRoot(document.getElementById('root')).render(<React.StrictMode>{pages[spaceFromHost(window.location.hostname)] || <Landing />}</React.StrictMode>);
+// Pages of the public site; the server sends index.html for these paths (main.py).
+const sitePages = {
+  contact: <Contact />,
+  'mentions-legales': <LegalNotice />,
+  'politique-de-confidentialite': <PrivacyPolicy />,
+};
+const sitePage = sitePages[window.location.pathname.replace(/^\/|\/$/g, '')];
+
+createRoot(document.getElementById('root')).render(<React.StrictMode>{pages[spaceFromHost(window.location.hostname)] || sitePage || <Landing />}</React.StrictMode>);

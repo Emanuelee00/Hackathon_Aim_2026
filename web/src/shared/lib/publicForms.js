@@ -1,6 +1,6 @@
 import { errorMessage } from '../../features/auth/api.js';
 
-// The public pages (landing request, bilan) never read the shared store: they only add to it.
+// The public pages (landing request, bilan, contact) never read the shared store: they only add to it.
 const offline = 'Le serveur est injoignable : votre envoi n’a pas été enregistré. Réessayez dans un instant.';
 
 async function call(path, body) {
@@ -16,3 +16,5 @@ export const submitRequest = request => call('/api/requests', request);
 // Past events an organiser can review, without contacts or other answers.
 export const fetchFeedbackEvents = () => call('/api/feedback/events');
 export const submitFeedback = (eventId, feedback) => call(`/api/feedback/${encodeURIComponent(eventId)}`, feedback);
+// Lands in the team's "Questions reçues".
+export const sendContact = message => call('/api/contact', message);

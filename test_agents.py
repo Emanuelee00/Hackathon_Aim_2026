@@ -14,6 +14,7 @@ from accounts.passwords import hash_password
 from accounts.routes import router as accounts_router
 from agents import llm
 from agents.routes import router
+from sharing.forms import router as forms_router
 
 QUESTION = [{"role": "user", "content": "Puis-je faire un barbecue au jardin ?"}]
 HAND_OFF = {
@@ -141,3 +142,24 @@ def test_complete_sends_key_and_tools(monkeypatch):
     }
     assert requests[0].headers["authorization"] == "Bearer sk-test"
     assert json.loads(requests[0].content)["tools"][0]["function"]["name"] == "outil"
+
+
+def test_contact_page_reaches_the_team_questions(client):
+    client.app.include_router(forms_router)
+    message = {
+        "name": "Awa",
+        "email": "awa@soleil.org",
+        "phone": "06 00 00 00 00",
+        "subject": "Visite",
+        "message": "Peut-on visiter le lieu ?",
+    }
+    assert client.post("/api/contact", json=message).status_code == 201
+    bad = client.post("/api/contact", json={**message, "email": "pas-un-email"})
+    assert bad.status_code == 422
+    robot = client.post("/api/contact", json={**message, "website": "spam.example"})
+    assert robot.status_code == 201
+    sign_in(client, "coord@marthe.fr", "equipe")
+    [question] = client.get("/api/questions").json()
+    assert question["agent"] == "contact" and question["transcript"] == []
+    assert question["summary"].startswith("Visite\n\nPeut-on visiter le lieu ?")
+    assert "06 00 00 00 00" in question["summary"]
