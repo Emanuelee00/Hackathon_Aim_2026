@@ -58,7 +58,7 @@ Sulla VM:
 curl -fsSL https://get.docker.com | sudo sh
 sudo usermod -aG docker $USER && newgrp docker
 git clone https://github.com/Emanuelee00/Hackathon_Aim_2026.git marthe   # o via SSH con una deploy key
-cd marthe && git checkout deploy
+cd marthe
 cp deploy/.env.example deploy/.env
 nano deploy/.env        # POSTGRES_PASSWORD lunga e casuale (openssl rand -hex 24), TUNNEL_TOKEN
 cd deploy && docker compose up -d --build
@@ -73,6 +73,8 @@ docker compose exec app /opt/venv/bin/python -m accounts.create_user email@... "
 ```
 
 ## Aggiornare
+
+La VM segue il branch `main`: quello che è su `main` va in produzione al prossimo aggiornamento.
 
 ```sh
 cd ~/marthe && git pull && cd deploy && docker compose up -d --build
