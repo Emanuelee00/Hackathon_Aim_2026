@@ -380,14 +380,19 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 @media (max-width: 359px) { .hero-follow > span { display: none; } }
 
 
-/* Téléphone et tablette : légère ombre sombre en bas de la photo, derrière le texte blanc ;
-   le haut de la photo reste net. */
+/* Téléphone et tablette : un voile violet flouté seulement derrière le titre et la phrase ;
+   le reste de la photo reste net. */
 @media (max-width: 959px) {
-  [data-hero] .hero-media::after {
-    content: ""; position: absolute; inset: 0; display: block; z-index: 1;
-    background: linear-gradient(to top, rgba(52, 22, 66, 0.86) 0%, rgba(62, 26, 78, 0.6) 34%, rgba(62, 26, 78, 0) 62%);
+  [data-hero] .hero-media::after { display: none; }
+  .hero-headline {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 22px 20px; border-radius: 28px;
+    background: rgba(87, 37, 109, 0.42);
+    backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(10px) saturate(120%);
+    box-shadow: 0 0 40px 18px rgba(87, 37, 109, 0.28);
   }
 }
+@media (min-width: 960px) { .hero-headline { display: contents; } }
 
 
 /* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
@@ -447,3 +452,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 
 /* Page « Notre équipe » */
 .team-page { padding-top: 48px; padding-bottom: 56px; }
+
+/* Cartes des espaces : prix sur une ligne à part, en violet. */
+.space .price { color: var(--violet); font-weight: 700; }
+.spaces-grid .space img { object-position: center 35%; }
