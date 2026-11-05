@@ -377,3 +377,16 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 }
 @media (max-width: 359px) { .hero-follow > span { display: none; } }
 
+
+/* Téléphone et tablette : voile violet derrière les deux textes blancs, ligne par ligne. */
+@media (max-width: 959px) {
+  .hero-text .mark {
+    background: rgba(102, 43, 128, 0.72);
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    border-radius: 10px;
+  }
+  .hero-text h1 { line-height: 1.22; }
+  .hero-text h1 .mark { padding: 0.02em 0.26em; }
+  .hero-text p { line-height: 1.8; }
+  .hero-text p .mark { padding: 0.14em 0.42em; }
+}
