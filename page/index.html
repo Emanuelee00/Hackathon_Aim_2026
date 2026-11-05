@@ -464,8 +464,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     const sources = ['assets/videos/video-1.mp4', 'assets/videos/video-2.mp4', 'assets/videos/video-3.mp4'];
     const clips = document.querySelectorAll('.clip');
     if (clips.length !== 2) return;
-    // Vidéos ralenties de moitié ; reappliqué à chaque changement de source, qui remet la vitesse à zéro.
-    const SPEED = 0.5;
+    // Vitesse de lecture (1 = normale). À 0.5 l'image saccade : les vidéos n'ont que ~30 images/s.
+    const SPEED = 1;
     clips.forEach(clip => {
       clip.defaultPlaybackRate = SPEED;
       clip.addEventListener('loadedmetadata', () => { clip.playbackRate = SPEED; });
