@@ -150,14 +150,57 @@
     <p class="eyebrow">LOUER UN ESPACE</p>
     <h2 id="espaces-titre">Un lieu pour votre activité</h2>
     <div class="spaces-grid">
-      <a class="space" href="#louer-contact"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
-      <a class="space" href="#louer-contact"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
-      <a class="space" href="#louer-contact"><img src="assets/cour.jpg" alt=""><span><strong>Le Bureau</strong><small>[capacité] pers. · [prix]</small></span></a>
-      <a class="space" href="#louer-contact"><img src="assets/facade.webp" alt=""><span><strong>L’Atelier</strong><small class="exchange">Échange de services : vous créez ici, vous animez un atelier pour nous</small></span></a>
+      <a class="space" href="#demande" data-space="chapelle"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
+      <a class="space" href="#demande" data-space="salon-collectif"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
+      <a class="space" href="#demande" data-space="reunion"><img src="assets/cour.jpg" alt=""><span><strong>Le Bureau</strong><small>[capacité] pers. · [prix]</small></span></a>
+      <a class="space" href="#demande" data-space="atelier"><img src="assets/facade.webp" alt=""><span><strong>L’Atelier</strong><small class="exchange">Échange de services : vous créez ici, vous animez un atelier pour nous</small></span></a>
     </div>
-    <p id="louer-contact">Dites-nous ce que vous imaginez : l’activité, la date, le nombre de personnes. Pour l’Atelier, proposez l’atelier gratuit que vous animeriez en échange.</p>
-    <a class="btn btn-primary" href="mailto:contact.chezmarthe@gmail.com?subject=Louer%20un%20espace">Écrire à l’équipe</a>
-    <p class="small">ou directement : contact.chezmarthe@gmail.com</p>
+  </section>
+
+  <section id="demande" class="block" aria-labelledby="demande-titre">
+    <p class="eyebrow">UN LIEU À PARTAGER</p>
+    <h2 id="demande-titre">Proposer une activité ou louer un espace</h2>
+    <p>L’équipe étudie chaque demande en comité, chaque vendredi.</p>
+    <div class="request-layout">
+      <form id="request-form" class="panel" novalidate>
+        <div class="kind-picker" role="radiogroup" aria-label="Vous souhaitez">
+          <label class="active"><input type="radio" name="kind" value="programming" checked><strong>Proposer une activité</strong><small>Ouverte au public, gratuite ou à prix libre</small></label>
+          <label><input type="radio" name="kind" value="rental"><strong>Louer un espace</strong><small>Cours, atelier, réunion</small></label>
+          <label><input type="radio" name="kind" value="privatisation"><strong>Privatiser</strong><small>Événement privé</small></label>
+          <label><input type="radio" name="kind" value="coworking"><strong>Coworker</strong><small>Réserver une place</small></label>
+        </div>
+        <div class="form-grid">
+          <label class="field" for="pr-title"><span>Nom de l’activité *</span><input id="pr-title" name="title" placeholder="Ex. Cours de yoga doux"></label>
+          <label class="field" for="pr-space"><span>Espace *</span><select id="pr-space" name="space"><option value="">Choisir un espace</option><option value="chapelle">La Chapelle</option><option value="salon-collectif">Le Salon collectif / Séminaire</option><option value="reunion">Le Bureau</option><option value="atelier">L’Atelier (échange de services)</option></select></label>
+          <label class="field" for="pr-date"><span>Date souhaitée *</span><input id="pr-date" name="date" type="date"></label>
+          <label class="field" for="pr-duration"><span>Durée</span><select id="pr-duration" name="duration"><option value="2h">2 heures</option><option value="half">Une demi-journée</option><option value="day">Une journée</option><option value="weekly">Créneau hebdomadaire d’1 heure</option></select></label>
+          <label class="field" for="pr-start"><span>Heure de début</span><input id="pr-start" name="start" type="time" value="18:00"></label>
+          <label class="field" for="pr-participants"><span>Personnes attendues *</span><input id="pr-participants" name="participants" type="number" min="1" value="15"></label>
+          <label class="field field-full" for="pr-description"><span>Décrivez votre projet *</span><textarea id="pr-description" name="description" rows="4" placeholder="Ce que vous proposez, pour qui, et pourquoi Chez Marthe"></textarea></label>
+        </div>
+        <fieldset class="request-options"><legend>Besoins techniques</legend>
+          <div class="option-list">
+            <label><input type="checkbox" name="technical" value="sound">Sonorisation</label>
+            <label><input type="checkbox" name="technical" value="light">Éclairage de la chapelle</label>
+            <label><input type="checkbox" name="technical" value="video">Vidéoprojecteur</label>
+            <label><input type="checkbox" name="technical" value="breakfast">Petit-déjeuner</label>
+          </div>
+          <div class="option-list"><label><input type="checkbox" name="openToResidents" checked>J’accepte d’ouvrir l’activité gratuitement aux femmes hébergées</label></div>
+        </fieldset>
+        <div class="form-grid">
+          <label class="field" for="pr-organizer"><span>Votre nom ou structure *</span><input id="pr-organizer" name="organizer" autocomplete="name"></label>
+          <label class="field" for="pr-email"><span>E-mail *</span><input id="pr-email" name="email" type="email" autocomplete="email"></label>
+        </div>
+        <p class="form-status" role="status"></p>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Envoyer ma demande</button></div>
+      </form>
+      <aside class="panel request-estimate" aria-live="polite">
+        <small class="eyebrow">ESTIMATION</small>
+        <strong id="estimate-label">Gratuit</strong>
+        <p id="estimate-note">Les activités ouvertes au public sont étudiées par le comité de programmation.</p>
+        <div id="estimate-alerts"></div>
+      </aside>
+    </div>
   </section>
 
 
@@ -189,8 +232,26 @@
     <p class="eyebrow">CONTACT</p>
     <h2 id="contact-titre">Contactez-nous</h2>
     <p>Une question, une idée, l’envie de vous impliquer ? Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
-    <p><a href="mailto:contact.chezmarthe@gmail.com">contact.chezmarthe@gmail.com</a></p>
-    <p>Siège social : Maison des Associations, 93 La Canebière, 13001 Marseille</p>
+    <div class="contact-layout">
+      <form id="contact-form" class="panel" novalidate>
+        <div class="form-grid">
+          <label class="field" for="contact-name"><span>Nom *</span><input id="contact-name" name="name" autocomplete="name"></label>
+          <label class="field" for="contact-email"><span>E-mail *</span><input id="contact-email" name="email" type="email" autocomplete="email"></label>
+          <label class="field" for="contact-phone"><span>Téléphone</span><input id="contact-phone" name="phone" type="tel" autocomplete="tel"></label>
+          <label class="field" for="contact-subject"><span>Sujet *</span><input id="contact-subject" name="subject"></label>
+          <label class="field field-full" for="contact-message"><span>Message *</span><textarea id="contact-message" name="message" rows="6"></textarea></label>
+          <input class="contact-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
+        <p class="small">Vos informations servent uniquement à vous répondre. Voir notre <a href="#confidentialite">politique de confidentialité</a>.</p>
+        <p class="form-status" role="status"></p>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Envoyer le message</button></div>
+      </form>
+      <aside class="panel contact-details">
+        <h3>Chez Marthe</h3>
+        <p><a href="mailto:contact.chezmarthe@gmail.com">contact.chezmarthe@gmail.com</a></p>
+        <p>Siège social :<br>Maison des Associations, 93 La Canebière, 13001 Marseille</p>
+      </aside>
+    </div>
   </section>
 
   <section class="block legal" aria-label="Informations légales">
@@ -304,5 +365,6 @@
     if (event.target.closest('a')) setMenu(false);
   });
 </script>
+<script src="assets/forms.js"></script>
 </body>
 </html>

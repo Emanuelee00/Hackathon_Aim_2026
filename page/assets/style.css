@@ -391,3 +391,54 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 /* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
 .btn-rent span[aria-hidden="true"] { color: #F6A55C; transition: transform 0.15s; display: inline-block; }
 .btn-rent:hover span[aria-hidden="true"] { transform: translateX(3px); }
+
+/* ---------- Formulaires (demande, contact) ---------- */
+.panel { background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 10px 30px rgba(27, 19, 25, 0.06); }
+.request-layout, .contact-layout { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+@media (min-width: 900px) {
+  .request-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  .contact-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  .request-estimate { position: sticky; top: calc(var(--bar) + 20px); }
+}
+#request-form, #contact-form { display: flex; flex-direction: column; gap: 18px; }
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 600px) { .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .field-full { grid-column: 1 / -1; } }
+.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: var(--night); }
+.field input, .field select, .field textarea {
+  font: inherit; font-weight: 500; font-size: 16px; color: var(--night);
+  padding: 12px 14px; border: 1.5px solid #e4dfe2; border-radius: 12px; background: var(--cream);
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--violet); background: #fff; box-shadow: 0 0 0 3px rgba(102, 43, 128, 0.15); }
+.field [aria-invalid="true"] { border-color: #c0392b; }
+.field select:disabled { opacity: 0.55; }
+.form-error { margin: 0; font-size: 13px; font-weight: 700; color: #b03a2e; }
+.kind-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 720px) { .kind-picker { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.kind-picker label { display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1.5px solid #e4dfe2; border-radius: 16px; cursor: pointer; background: var(--cream); }
+.kind-picker label.active { border-color: var(--violet); background: #f3ebf6; box-shadow: 0 0 0 3px rgba(102, 43, 128, 0.12); }
+.kind-picker input { position: absolute; opacity: 0; pointer-events: none; }
+.kind-picker strong { font-size: 15px; color: var(--violet); }
+.kind-picker small { font-size: 12px; color: var(--muted); line-height: 1.35; }
+.kind-picker label:focus-within { outline: 3px solid var(--pink); outline-offset: 2px; }
+.request-options { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.request-options legend { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.option-list { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; }
+.option-list label { display: flex; align-items: center; gap: 8px; }
+.option-list input { width: 18px; height: 18px; accent-color: var(--violet); }
+.form-actions { display: flex; }
+.form-actions .btn { border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 16px; }
+.form-actions .btn:disabled { opacity: 0.6; cursor: wait; }
+.form-status { margin: 0; font-size: 15px; font-weight: 700; }
+.form-status:empty { display: none; }
+.form-status.ok { padding: 14px 16px; border-radius: 14px; background: #eaf6ee; color: #1f6b3a; }
+.form-status.error { padding: 14px 16px; border-radius: 14px; background: #fbeceb; color: #9b2c22; }
+.request-estimate { display: flex; flex-direction: column; gap: 8px; background: var(--violet); color: #fff; }
+.request-estimate .eyebrow { color: var(--pink); }
+.request-estimate strong { font-family: var(--display); font-size: 30px; }
+.request-estimate p { margin: 0; font-size: 14px; line-height: 1.5; }
+.request-alert { padding: 10px 12px; border-radius: 12px; font-weight: 700; }
+.request-alert.no { background: rgba(255, 255, 255, 0.95); color: #9b2c22; }
+.request-alert.warn { background: rgba(255, 255, 255, 0.85); color: var(--night); }
+.contact-details h3 { margin: 0 0 8px; color: var(--violet); }
+.contact-details p { margin: 0 0 8px; font-size: 15px; }
+.contact-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
