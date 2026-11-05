@@ -24,8 +24,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 }
 /* Séparation : une vague rose sous le bandeau, comme les traits du logo. */
 .bar::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -11px; height: 12px; pointer-events: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V6C100 0 80 0 60 6S20 12 0 6Z' fill='%23662B80'/%3E%3Cpath d='M0 6C20 12 40 12 60 6S100 0 120 6' fill='none' stroke='%23F2A1AB' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left top / 120px 12px;
+  content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 8px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 8' preserveAspectRatio='none'%3E%3Cpath d='M0 0H240V4C200 1 160 1 120 4S40 7 0 4Z' fill='%23662B80'/%3E%3Cpath d='M0 4C40 7 80 7 120 4S200 1 240 4' fill='none' stroke='%23F2A1AB' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left top / 240px 8px;
 }
 .bar.solid, .bar.menu-open { background: var(--violet); }
 .bar .logo { margin-right: auto; display: flex; }
@@ -378,15 +378,11 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 @media (max-width: 359px) { .hero-follow > span { display: none; } }
 
 
-/* Téléphone et tablette : voile violet derrière les deux textes blancs, ligne par ligne. */
+/* Téléphone et tablette : légère ombre sombre en bas de la photo, derrière le texte blanc ;
+   le haut de la photo reste net. */
 @media (max-width: 959px) {
-  .hero-text .mark {
-    background: rgba(102, 43, 128, 0.72);
-    -webkit-box-decoration-break: clone; box-decoration-break: clone;
-    border-radius: 10px;
+  [data-hero] .hero-media::after {
+    content: ""; position: absolute; inset: 0; display: block; z-index: 1;
+    background: linear-gradient(to top, rgba(27, 19, 25, 0.66) 0%, rgba(27, 19, 25, 0.4) 32%, rgba(27, 19, 25, 0) 58%);
   }
-  .hero-text h1 { line-height: 1.22; }
-  .hero-text h1 .mark { padding: 0.02em 0.26em; }
-  .hero-text p { line-height: 1.8; }
-  .hero-text p .mark { padding: 0.14em 0.42em; }
 }
