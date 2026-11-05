@@ -110,7 +110,7 @@
     </div>
   </section>
 
-  <section id="equipe" class="block" aria-labelledby="equipe-titre">
+  <section id="equipe" class="block" aria-labelledby="equipe-titre" hidden>
     <p class="eyebrow">NOTRE ÉQUIPE</p>
     <h2 id="equipe-titre">Les visages de Chez Marthe</h2>
     <div class="team">
@@ -291,6 +291,19 @@
   <nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
+  // « Notre équipe » n'apparaît pas sur la page : seulement quand on y va depuis le menu (ou un lien #equipe).
+  (function teamSection() {
+    const team = document.getElementById('equipe');
+    if (!team) return;
+    function reveal() {
+      if (location.hash !== '#equipe' && location.hash !== '#valeurs') return;
+      team.hidden = false;
+      requestAnimationFrame(() => document.getElementById(location.hash.slice(1)).scrollIntoView());
+    }
+    document.querySelectorAll('a[href="#equipe"], a[href="#valeurs"]').forEach(link => link.addEventListener('click', () => { team.hidden = false; }));
+    window.addEventListener('hashchange', reveal);
+    reveal();
+  })();
   // Proposition de haut de page choisie dans l'adresse (?style=a, b ou c) ; sans paramètre : version actuelle.
   (function heroStyle() {
     const choice = new URLSearchParams(location.search).get('style');
