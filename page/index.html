@@ -240,7 +240,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     border-radius: 32px; overflow: hidden; box-shadow: 0 24px 60px rgba(27, 19, 25, 0.35);
   }
   .hero-media::after { display: none; }
-  .hero-media .clip { object-position: left center; }
   .hero-text { grid-area: text; align-items: flex-start; text-align: left; text-shadow: none; justify-content: flex-end; }
   .hero-text h1 { font-size: 60px; }
   .hero-text p { font-size: 20px; }
@@ -316,9 +315,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     background: linear-gradient(to top, rgba(102, 43, 128, 0.96) 0%, rgba(102, 43, 128, 0.9) 40%, rgba(102, 43, 128, 0.45) 58%, rgba(102, 43, 128, 0) 74%);
   }
   .hero-text { justify-content: flex-end; color: #fff; padding-bottom: 12px; }
-  /* La photo de la cour reste immobile quand on fait défiler (la page glisse dessus), calée à gauche. */
-  .hero-media { clip-path: inset(0); }
-  .hero-media .clip { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-position: left center; }
   .hero-text h1 { color: #fff; font-size: 44px; }
   .hero-text p { font-size: 19px; }
   .hero-text .city { color: var(--pink); }
