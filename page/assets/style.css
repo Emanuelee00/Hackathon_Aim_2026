@@ -380,3 +380,9 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   .hero-social-mini a:hover { background: rgba(102, 43, 128, 0.1); }
 }
 @media (max-width: 359px) { .hero-follow > span { display: none; } }
+
+/* « Rejoignez l'aventure » écrit à la main, comme le « Marthe » du logo. */
+.hero-text h1 { font-family: "Damion", var(--display); font-weight: 400; letter-spacing: 0.01em; line-height: 1.05; }
+@media (max-width: 719px) { [data-hero="c"] .hero-text h1 { font-size: 56px; } }
+@media (min-width: 720px) and (max-width: 959px) { [data-hero="c"] .hero-text h1 { font-size: 66px; } }
+@media (min-width: 960px) { .hero-text h1 { font-size: 78px; } }
