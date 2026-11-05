@@ -12,6 +12,8 @@
   --bar: 88px; /* hauteur du bandeau du haut */
 }
 * { box-sizing: border-box; }
+/* « hidden » doit toujours cacher, même un élément qui a son propre display. */
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body { font-family: var(--body); color: var(--night); background: var(--cream); }
 a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
