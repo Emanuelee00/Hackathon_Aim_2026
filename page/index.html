@@ -43,10 +43,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu {
   position: fixed; top: 72px; left: 0; right: 0; z-index: 9;
   display: none; flex-direction: column;
-  background: var(--violet); padding: 8px 14px 16px;
+  background: var(--violet); padding: 4px 14px 24px;
+  max-height: calc(100svh - 72px); overflow-y: auto;
 }
 .menu.open { display: flex; }
-.menu a { color: #fff; text-decoration: none; font-weight: 700; font-size: 18px; padding: 14px 6px; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+.menu a { color: #fff; text-decoration: none; font-weight: 700; font-size: 17px; padding: 12px 6px; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+.menu-group { margin: 18px 6px 4px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--pink); }
 
 .hero { position: relative; min-height: calc(100svh - 72px); display: flex; }
 .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -109,10 +111,27 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   </button>
   <a class="logo" href="#"><img src="assets/logo-fond-violet.png" alt="Chez Marthe"></a>
 </header>
+<!-- Liens vers le nouveau site. Quand chezmarthe.org pointera vers la VM, remplacer « 34-155-50-2.sslip.io » par « chezmarthe.org ». -->
 <nav id="menu" class="menu" aria-label="Menu">
-  <a href="#espaces">Nos espaces</a>
+  <p class="menu-group">Le lieu</p>
+  <a href="https://34-155-50-2.sslip.io/#espaces">Espaces</a>
+  <a href="https://34-155-50-2.sslip.io/#le-lieu">Le lieu</a>
+  <a href="https://34-155-50-2.sslip.io/#demande">Faire une demande</a>
+  <a href="https://34-155-50-2.sslip.io/#partenaires">Partenaires</a>
+  <a href="https://34-155-50-2.sslip.io/#s-impliquer">S’impliquer</a>
+  <p class="menu-group">Se connecter</p>
+  <a href="https://residents.34-155-50-2.sslip.io">Résidentes</a>
+  <a href="https://equipe.34-155-50-2.sslip.io">Équipe</a>
+  <a href="https://benevoles.34-155-50-2.sslip.io">Bénévoles</a>
+  <a href="https://partenaires.34-155-50-2.sslip.io">Associations</a>
+  <p class="menu-group">Soutenir</p>
   <a href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
   <a href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
+  <a href="https://chat.whatsapp.com/GCTH2IPPnraADelLbGxVzX?mode=gi_t">Les amies de Chez Marthe</a>
+  <p class="menu-group">Informations</p>
+  <a href="https://34-155-50-2.sslip.io/contact">Contact</a>
+  <a href="https://34-155-50-2.sslip.io/mentions-legales">Mentions légales</a>
+  <a href="https://34-155-50-2.sslip.io/politique-de-confidentialite">Confidentialité</a>
 </nav>
 
 <main>
