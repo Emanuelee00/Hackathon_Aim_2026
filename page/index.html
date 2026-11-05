@@ -106,9 +106,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 /* Hauteur réellement visible (dvh) : la vidéo s'adapte quand les barres du navigateur
    apparaissent ou disparaissent, sans que le bas soit caché dessous. */
 @supports (height: 100dvh) { .hero { min-height: 100dvh; } }
-/* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
+/* Photo de la cour en fond du haut de page. */
 .hero-media { position: absolute; inset: 0; background: var(--night); }
-/* Pas de voile : la vidéo garde ses couleurs d'origine. */
+/* Pas de voile : la photo garde ses couleurs d'origine. */
 .hero-media::after { display: none; }
 .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
 .clip.is-on { opacity: 1; }
@@ -347,15 +347,13 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-media" aria-hidden="true">
-        <video class="clip is-on" muted playsinline preload="auto" poster="assets/cour.jpg"></video>
-        <video class="clip" muted playsinline preload="auto"></video>
+        <img class="clip is-on" src="assets/cour.jpg" alt="">
       </div>
       <div class="hero-text">
           <h1>Rejoignez l’aventure</h1>
           <p>Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
           <div class="actions">
-            <a class="btn btn-primary" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Nous soutenir</a>
-            <a class="btn btn-outline" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
+            <a class="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
           </div>
           <a class="btn btn-rent" href="#espaces">Louer un espace <span aria-hidden="true">→</span></a>
       </div>
@@ -461,7 +459,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 
   <section id="s-impliquer" class="block" aria-labelledby="impliquer-titre">
     <p class="eyebrow">REJOINDRE LE MOUVEMENT</p>
-    <h2 id="impliquer-titre">Comment s’impliquer ?</h2>
+    <h2 id="impliquer-titre">Nous soutenir</h2>
+    <p>Faites un don, adhérez à l’association ou rejoignez la communauté : chaque soutien fait vivre Chez Marthe.</p>
     <div class="involve-grid">
       <a class="involve" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3"><strong>Faire un don</strong><span>Aménager les espaces et faire durer le lieu.</span></a>
       <a class="involve" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe"><strong>Adhérer</strong><span>Rejoindre l’association et porter le projet avec nous.</span></a>
@@ -510,35 +509,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
     update();
-  })();
-  // Les 3 vidéos à la suite, en boucle : deux lecteurs qui se relaient pour un fondu sans écran noir.
-  (function videos() {
-    const sources = ['assets/videos/video-1.mp4', 'assets/videos/video-2.mp4', 'assets/videos/video-3.mp4'];
-    const clips = document.querySelectorAll('.clip');
-    if (clips.length !== 2) return;
-    // Vitesse de lecture (1 = normale). À 0.5 l'image saccade : les vidéos n'ont que ~30 images/s.
-    const SPEED = 0.75;
-    clips.forEach(clip => {
-      clip.defaultPlaybackRate = SPEED;
-      clip.addEventListener('loadedmetadata', () => { clip.playbackRate = SPEED; });
-      clip.addEventListener('play', () => { clip.playbackRate = SPEED; });
-    });
-    let current = 0, active = 0;
-    clips[0].src = sources[0];
-    clips[1].src = sources[1];
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    function next() {
-      const incoming = 1 - active;
-      clips[incoming].play().catch(() => {});
-      clips[incoming].classList.add('is-on');
-      clips[active].classList.remove('is-on');
-      const outgoing = active;
-      active = incoming;
-      current = (current + 1) % sources.length;
-      setTimeout(() => { clips[outgoing].src = sources[(current + 1) % sources.length]; clips[outgoing].load(); }, 800);
-    }
-    clips.forEach(clip => clip.addEventListener('ended', next));
-    clips[0].play().catch(() => {});
   })();
   // Villes du nouveau site, avec le même rythme (frappe 90 ms, effacement 45 ms, pause 1,5 s).
   (function typewriter() {
