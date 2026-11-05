@@ -15,6 +15,12 @@ test('estimates the price from the spaces sheet', () => {
   assert.equal(estimatePrice({ ...base, space: 'coworking' }).label, 'Sur demande');
 });
 
+test('the Atelier is lent in exchange for workshops, not rented', () => {
+  const price = estimatePrice({ ...base, space: 'atelier' });
+  assert.equal(price.label, 'Échange de services');
+  assert.equal(price.amount, 0);
+});
+
 test('warns about projections in the chapel and the residents’ evenings', () => {
   assert.ok(requestAlerts({ ...base, technical: ['video'] }).some(alert => alert.level === 'no' && alert.topic === 'technical'));
   assert.ok(requestAlerts({ ...base, space: 'salon-collectif', end: '20:00' }).some(alert => alert.topic === 'residents'));

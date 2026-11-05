@@ -25,7 +25,9 @@ function Done({ request, onAgain }) {
 }
 
 // Single desk for every request: programming, rental, privatisation or coworking.
-export default function PublicRequest() {
+// `spaces` limits and renames the spaces offered; `hidePicker` hides the built-in cards when the page shows its
+// own; `picked` ({ space, at }) selects a space from outside, e.g. a card of the home page.
+export default function PublicRequest({ spaces, hidePicker = false, picked }) {
   const [form, setForm] = useState(emptyForm);
   const [sendError, setSendError] = useState('');
   const [sending, setSending] = useState(false);
@@ -36,9 +38,10 @@ export default function PublicRequest() {
   const pick = space => {
     set('space', space);
     if (space === 'coworking') set('kind', 'coworking');
-    else if (form.kind === 'coworking') set('kind', 'rental');
+    else if (form.kind === 'coworking' || form.kind === 'programming') set('kind', 'rental');
     formRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+  useEffect(() => { if (picked?.space) pick(picked.space); }, [picked?.at]); // eslint-disable-line react-hooks/exhaustive-deps
   const submit = async e => {
     e.preventDefault();
     const found = formErrors(form, TODAY);
@@ -56,10 +59,10 @@ export default function PublicRequest() {
   };
   return <section className="public-request" aria-labelledby="public-request-title">
     <div className="landing-hero"><p className="eyebrow">UN LIEU À PARTAGER</p><h2 id="public-request-title">Proposer une activité ou louer un espace</h2><p>L’équipe étudie chaque demande en comité, chaque vendredi.</p></div>
-    <SpacePicker value={form.space} onPick={pick} />
+    {!hidePicker && <SpacePicker value={form.space} onPick={pick} />}
     {sendError && <p className="form-error" role="alert">{sendError}</p>}
     {sent ? <Done request={sent} onAgain={() => { setForm(emptyForm); setSent(null); }} /> : <div className="request-layout">
-      <form className="panel event-form" ref={formRef} onSubmit={submit} noValidate><RequestFields form={form} errors={errors} set={set} /><div className="form-actions"><button className="button button-dark" disabled={sending}>{sending ? 'Envoi…' : 'Envoyer ma demande'}</button></div></form>
+      <form className="panel event-form" ref={formRef} onSubmit={submit} noValidate><RequestFields form={form} errors={errors} set={set} spaces={spaces} /><div className="form-actions"><button className="button button-dark" disabled={sending}>{sending ? 'Envoi…' : 'Envoyer ma demande'}</button></div></form>
       <Estimate request={buildRequest(form)} />
     </div>}
   </section>;

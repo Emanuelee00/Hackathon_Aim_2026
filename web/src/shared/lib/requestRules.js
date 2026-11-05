@@ -17,6 +17,7 @@ export function estimatePrice(event) {
   const space = spaceById[event.space];
   if (event.requestType === 'programming') return { amount: 0, label: 'Gratuit', note: 'Les activités ouvertes au public sont étudiées par le comité de programmation.' };
   if (!space) return { amount: null, label: '—', note: 'Choisissez un espace pour obtenir une estimation.' };
+  if (space.exchange) return { amount: 0, label: 'Échange de services', note: 'Vous utilisez l’Atelier ; en échange, vous animez un atelier gratuit pour Chez Marthe.' };
   if (space.unit === 'place') return { amount: null, label: 'Sur demande', note: 'L’équipe vous recontacte avec les formules disponibles.' };
   const key = durationKeyFor(event);
   const base = space.prices?.[key] ?? (key === '2h' ? space.prices?.half : null) ?? (space.rate != null ? space.rate * durations[key][1] : null);

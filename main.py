@@ -78,7 +78,13 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-SITE_PAGES = {"contact", "mentions-legales", "politique-de-confidentialite"}
+SITE_PAGES = {
+    "contact",
+    "mentions-legales",
+    "politique-de-confidentialite",
+    "connexion",
+    "equipe",
+}
 # Addresses of the previous site (Odoo) that have a page here.
 OLD_PAGES = {"contactus": "/contact", "privacy": "/politique-de-confidentialite"}
 

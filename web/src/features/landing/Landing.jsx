@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import Icon from '../../shared/components/Icon.jsx';
-import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
+import { spaceById } from '../../shared/data/spaces.js';
+import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
-import ChatBubble from '../chatbot/ChatBubble.jsx';
+import { ContactForm } from '../site-pages/Contact.jsx';
+import HomeShell, { LINKS, SocialLinks } from './HomeShell.jsx';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
 
@@ -12,8 +13,8 @@ function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 }
   useEffect(() => {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
     let index = 0;
-    let current = '';
-    let deleting = false;
+    let current = words[0];
+    let deleting = true;
     let timerId;
     function step() {
       const word = words[index];
@@ -24,19 +25,28 @@ function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 }
       else if (deleting && current === '') { deleting = false; index = (index + 1) % words.length; }
       timerId = setTimeout(step, delay);
     }
-    timerId = setTimeout(step, typingMs);
+    timerId = setTimeout(step, pauseMs);
     return () => clearTimeout(timerId);
   }, []);
   return text;
 }
 
-// Pages, photos and partners mirror the association's site (chezmarthe.org) so the demo feels like its next version.
 const pillars = [
-  { title: 'Se loger', photo: '/chezmarthe/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité avant la prochaine étape.' },
-  { title: 'Se reconstruire', photo: '/chezmarthe/sororite.webp', text: 'Un lieu d’écoute, sans jugement, pour prendre soin de soi à son rythme.' },
-  { title: 'Se nourrir', photo: '/chezmarthe/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine et le jardin.' },
-  { title: 'Rayonner', photo: '/chezmarthe/jardin.webp', text: 'Des rencontres, des projets et des coups de main avec tout le quartier.' },
+  { title: 'Se loger', photo: '/chezmarthe/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité.' },
+  { title: 'Se reconstruire', photo: '/chezmarthe/sororite.webp', text: 'Un lieu d’écoute, sans jugement, à son rythme.' },
+  { title: 'Se nourrir', photo: '/chezmarthe/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine.' },
+  { title: 'Rayonner', photo: '/chezmarthe/jardin.webp', text: 'Des rencontres et des projets avec tout le quartier.' },
 ];
+
+// The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
+// « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
+const publicSpaces = [
+  { id: 'chapelle', name: 'La Chapelle', photo: '/home/chapelle.jpg', info: '114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
+  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/home/salon.jpg', info: '28 m² · séminaires et réunions', price: '½ journée 80 € · journée 150 €' },
+  { id: 'reunion', name: 'Le Bureau', photo: '/home/bureau.jpg', info: '16 m² · réunions en petit comité', price: 'Tarif sur demande' },
+  { id: 'atelier', name: 'L’Atelier', photo: '/home/bienvenue.jpg', exchange: 'Échange de services : vous créez ici, vous animez un atelier pour nous' },
+];
+const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
 const partners = [
   { name: 'Habitat Alternatif Social', logo: 'has.webp', url: 'https://www.has.asso.fr/' },
@@ -47,108 +57,108 @@ const partners = [
 ];
 
 const involvement = [
-  { title: 'Faire un don', icon: 'heart', text: 'Aménager les espaces et faire durer le lieu.', url: 'https://www.helloasso.com/associations/chez-marthe/formulaires/3', cta: 'Je donne' },
-  { title: 'Adhérer', icon: 'users', text: 'Rejoindre l’association et porter le projet avec nous.', url: 'https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe', cta: 'J’adhère' },
-  { title: 'Les amies de Chez Marthe', icon: 'sparkles', text: 'La communauté qui suit la vie du lieu au quotidien.', url: 'https://chat.whatsapp.com/GCTH2IPPnraADelLbGxVzX?mode=gi_t', cta: 'Je rejoins' },
+  { title: 'Faire un don', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
+  { title: 'Adhérer', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
+  { title: 'Les amies de Chez Marthe', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
 ];
 
 export function Brand() {
   return <a href={spaceUrl(null)} className="landing-brand"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>;
 }
 
+// Still used by the legal and contact pages (SitePage).
 export function SiteFooter() {
   return <footer className="site-footer">
     <div className="landing-wrap">
       <img src="/logo-chez-marthe.png" alt="Chez Marthe" />
-      <p>Habiter &amp; rayonner. Démonstration hackathon : les données de la plateforme sont fictives.</p>
+      <p>Habiter &amp; rayonner.</p>
       <nav aria-label="Informations"><a href="/contact">Contact</a><a href="/mentions-legales">Mentions légales</a><a href="/politique-de-confidentialite">Confidentialité</a></nav>
     </div>
   </footer>;
 }
 
-function Wave({ className }) {
-  return <svg className={className} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 48 C 240 8 480 8 720 40 S 1200 80 1440 30 V80 H0 Z" /></svg>;
+function Hero() {
+  const city = useTypewriter(cities);
+  return <section className="home-hero">
+    <div className="hero-inner">
+      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/chezmarthe/cour.jpg" alt="" /></div>
+      <div className="hero-text">
+        <div className="hero-headline">
+          <h1>Rejoignez l’aventure</h1>
+          <p>Soutenez un lieu tremplin pour les femmes, <span className="keep">au cœur de{' '}
+            {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so « au cœur de » never moves. */}
+            <span className="city" aria-hidden="true">
+              <span className="city-sizer">{cities.map(c => <span key={c}>{c}|.</span>)}</span>
+              <span className="city-now">{city}<span className="city-cursor">|</span>.</span>
+            </span></span>
+            <span className="sr-only">{cities.join(', ')}.</span>
+          </p>
+        </div>
+        <div className="actions"><a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a></div>
+        <a className="btn btn-rent" href="#espaces">Louer un espace <span aria-hidden="true">→</span></a>
+        <div className="hero-follow"><span>Suivez-nous</span><SocialLinks className="hero-social-mini" /></div>
+      </div>
+    </div>
+  </section>;
 }
 
 export default function Landing() {
-  const city = useTypewriter(cities);
-  return <div className="landing">
-    <header className="site-header">
-      <Brand />
-      <nav aria-label="Sur cette page"><a href="#espaces">Espaces</a><a href="#le-lieu">Le lieu</a><a href="#demande">Demande</a><a href="#partenaires">Partenaires</a><a href="#s-impliquer">S’impliquer</a></nav>
-      <a className="button button-pink button-small" href="#demande">Faire une demande</a>
-    </header>
+  const [picked, setPicked] = useState(null);
+  return <HomeShell home>
+    <main>
+      <Hero />
 
-    <section className="landing-cover">
-      <div className="landing-cover-inner">
-        <p className="cover-kicker">
-          Chez Marthe ·{' '}
-          <span aria-hidden="true">{city}<span className="cover-kicker-cursor">|</span></span>
-          <span className="sr-only">{cities.join(', ')}</span>
-        </p>
-        <h1>Des lieux tremplins pour les femmes</h1>
-        <p>Habiter, travailler, vivre ensemble, créer du lien et rayonner.</p>
-        <div className="cover-actions"><a className="button button-dark button-large" href="#espaces">Choisir mon espace</a><a className="button button-light button-large" href="#demande">Proposer une activité</a></div>
-      </div>
-    </section>
-
-    <section id="espaces" className="landing-section landing-wrap">
-      <div className="section-title"><p className="eyebrow">LA PLATEFORME</p><h2>Un espace pour chacune et chacun</h2></div>
-      <nav className="landing-spaces" aria-label="Espaces">
-        {spaces.filter(space => !space.hidden).map(space => <a key={space.id} href={spaceUrl(space.id)} className="landing-card">
-          <span className="landing-icon"><Icon name={space.icon} size={22} /></span>
-          <strong>{space.label}{space.soon && <small>Bientôt</small>}</strong>
-          <p>{space.text}</p>
-          <Icon name="arrow" size={18} className="landing-arrow" />
-        </a>)}
-      </nav>
-    </section>
-
-    <section className="landing-band" aria-labelledby="pillars-title">
-      <Wave className="wave wave-top" />
-      <div className="landing-wrap">
-        <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
-        <div className="pillars">{pillars.map(pillar => <article key={pillar.title} className="pillar">
-          <img src={pillar.photo} alt="" loading="lazy" />
-          <h3>{pillar.title}</h3>
-          <p>{pillar.text}</p>
-        </article>)}</div>
-      </div>
-      <Wave className="wave wave-bottom" />
-    </section>
-
-    <section id="le-lieu" className="landing-section landing-wrap place">
-      <img src="/chezmarthe/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" loading="lazy" />
-      <div>
-        <p className="eyebrow">NOTRE PREMIER LIEU</p>
-        <h2>Chez Marthe, Saint-Savournin</h2>
+      <section id="le-lieu" className="block" aria-labelledby="lieu-titre">
+        <p className="kicker">NOTRE PREMIER LIEU</p>
+        <h2 id="lieu-titre">Chez Marthe, Saint-Savournin</h2>
+        <img className="wide" src="/chezmarthe/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" />
         <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
-        <ul className="place-facts">
+        <ul className="facts">
           <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
           <li><strong>~20</strong><span>étudiantes en situation de précarité</span></li>
           <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
         </ul>
-      </div>
-    </section>
+        <div className="home-pillars">{pillars.map(p => <figure key={p.title}><img src={p.photo} alt="" loading="lazy" /><figcaption><strong>{p.title}</strong>{p.text}</figcaption></figure>)}</div>
+      </section>
 
-    <div id="demande" className="landing-section landing-wrap"><PublicRequest /></div>
+      <section id="evenements" className="block" aria-labelledby="evenements-titre">
+        <p className="kicker">NOS ÉVÈNEMENTS</p>
+        <h2 id="evenements-titre">La programmation</h2>
+        {/* To fill with the real programme. */}
+        <ol className="events">{[1, 2, 3].map(n => <li key={n} className="event"><span className="event-date"><strong>jj</strong>mois</span><span className="event-body"><strong>[Titre de l’évènement]</strong><small>[heure] · [espace] · [gratuit / prix]</small></span></li>)}</ol>
+        <p className="small">Toute la programmation et les inscriptions sur notre Instagram.</p>
+      </section>
 
-    <section id="partenaires" className="landing-section landing-wrap">
-      <div className="section-title"><p className="eyebrow">ILS FONT VIVRE LE LIEU</p><h2>Nos partenaires</h2></div>
-      <ul className="partners">{partners.map(partner => <li key={partner.name}><a href={partner.url} target="_blank" rel="noreferrer"><img src={`/chezmarthe/partenaires/${partner.logo}`} alt={partner.name} loading="lazy" /></a></li>)}</ul>
-    </section>
+      <section id="espaces" className="block" aria-labelledby="espaces-titre">
+        <p className="kicker">LOUER UN ESPACE</p>
+        <h2 id="espaces-titre">Un lieu pour votre activité</h2>
+        <div className="home-spaces">{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
+          <img src={space.photo} alt="" loading="lazy" />
+          <span><strong>{space.name}</strong>{space.info && <small>{space.info}</small>}{space.price && <small className="price">{space.price}</small>}{space.exchange && <small className="exchange">{space.exchange}</small>}</span>
+        </a>)}</div>
+      </section>
 
-    <section id="s-impliquer" className="landing-section landing-wrap">
-      <div className="section-title"><p className="eyebrow">REJOINDRE LE MOUVEMENT</p><h2>Comment s’impliquer ?</h2></div>
-      <div className="involve">{involvement.map(item => <a key={item.title} className="involve-card" href={item.url} target="_blank" rel="noreferrer">
-        <span className="landing-icon"><Icon name={item.icon} size={22} /></span>
-        <h3>{item.title}</h3>
-        <p>{item.text}</p>
-        <span className="button button-dark button-small">{item.cta}</span>
-      </a>)}</div>
-    </section>
+      <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>
 
-    <SiteFooter />
-    <ChatBubble agentId="renseignements" title="Une question sur le lieu ?" subtitle="Réponses selon les règles du lieu, sinon transmises à l’équipe" greeting="Bonjour ! Vous voulez savoir si une activité est possible Chez Marthe ? Posez votre question : je réponds avec les règles du lieu, et je transmets à l’équipe ce que je ne sais pas." />
-  </div>;
+      <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
+        <p className="kicker">ILS FONT VIVRE LE LIEU</p>
+        <h2 id="partenaires-titre">Nos partenaires</h2>
+        <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/chezmarthe/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+      </section>
+
+      <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
+        <p className="kicker">REJOINDRE LE MOUVEMENT</p>
+        <h2 id="impliquer-titre">Nous soutenir</h2>
+        <p>Faites un don, adhérez à l’association ou rejoignez la communauté : chaque soutien fait vivre Chez Marthe.</p>
+        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target="_blank" rel="noreferrer"><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
+      </section>
+
+      <section id="contact" className="block" aria-labelledby="contact-titre">
+        <p className="kicker">CONTACT</p>
+        <h2 id="contact-titre">Contactez-nous</h2>
+        <p>Une question, une idée, l’envie de vous impliquer ? Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
+        <ContactForm />
+      </section>
+    </main>
+  </HomeShell>;
 }

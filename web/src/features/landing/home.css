@@ -1,0 +1,394 @@
+/* Les styles généraux de la plateforme donnent des marges à <main> : pas sur le site public. */
+.cm-home main { width: auto; max-width: none; margin: 0; padding: 0; }
+
+/* Accueil de chezmarthe.org (branche design), repris de la page statique : tout est limité à .cm-home
+   pour ne pas toucher aux espaces (équipe, résidentes…). */
+/* Charte chezmarthe.org — variante 1 : bandeau violet, carte blanche transparente sur la photo. */
+.cm-home {
+  --violet: #662B80;
+  --violet-dark: #57256d;
+  --pink: #F2A1AB;
+  --night: #1B1319;
+  --cream: #F6F5F4;
+  --muted: #5e5360;
+  --display: "Amiamie", "Raleway", system-ui, sans-serif;
+  --body: "Raleway", system-ui, sans-serif;
+  --bar: 88px; /* hauteur du bandeau du haut */
+}
+.cm-home, .cm-home * { box-sizing: border-box; }
+/* « hidden » doit toujours cacher, même un élément qui a son propre display. */
+[hidden] { display: none !important; }
+.cm-home, .cm-home { margin: 0; }
+.cm-home { font-family: var(--body); color: var(--night); background: var(--cream); }
+.cm-home a:focus-visible, .cm-home button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+.cm-home .bar {
+  position: sticky; top: 0; z-index: 10;
+  height: var(--bar); padding: 0 14px;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--violet);
+}
+/* Séparation : une vague rose sous le bandeau, comme les traits du logo. */
+.cm-home .bar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -9px; height: 10px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 10' preserveAspectRatio='none'%3E%3Cpath d='M0 0H180V5C150 0.5 120 0.5 90 5S30 9.5 0 5Z' fill='%23662B80'/%3E%3Cpath d='M0 5C30 9.5 60 9.5 90 5S150 0.5 180 5' fill='none' stroke='%23F2A1AB' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left top / 180px 10px;
+}
+.cm-home .bar.solid, .cm-home .bar.menu-open { background: var(--violet); }
+.cm-home .bar .logo { margin-right: auto; display: flex; }
+.cm-home .bar .logo img { height: 56px; width: auto; display: block; filter: drop-shadow(0 1px 3px rgba(27, 19, 25, 0.35)); }
+.cm-home .social { display: flex; flex-wrap: wrap; gap: 10px; }
+/* Réseaux aux couleurs de Chez Marthe (pas celles des réseaux). */
+.cm-home .social a { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cm-home .social .ig { background: linear-gradient(45deg, #F28C38, #A25889 55%, #662B80); }
+.cm-home .social .fb { background: var(--violet); }
+.cm-home .social .li { background: #A25889; }
+.cm-home .menu-social .fb { background: rgba(255, 255, 255, 0.2); }
+.cm-home .footer-social { justify-content: center; }
+.cm-home .footer-social a { width: 44px; height: 44px; box-shadow: 0 4px 12px rgba(102, 43, 128, 0.25); }
+.cm-home .follow { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 24px; }
+.cm-home .follow p { margin: 0; }
+.cm-home .follow-title { font-family: var(--display); font-size: 24px; color: var(--violet); }
+.cm-home .menu-button {
+  width: 46px; height: 46px; border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16); color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+/* Petits téléphones : logo un peu plus petit pour garder de l'air dans le bandeau. */
+@media (max-width: 359px) {
+  .cm-home .bar { padding: 0 10px; }
+  .cm-home .bar .logo img { height: 46px; }
+}
+.cm-home .menu-button svg .line { transition: transform 0.2s, opacity 0.2s; transform-origin: 12px 12px; }
+.cm-home .menu-button[aria-expanded="true"] .l1 { transform: translateY(5px) rotate(45deg); }
+.cm-home .menu-button[aria-expanded="true"] .l2 { opacity: 0; }
+.cm-home .menu-button[aria-expanded="true"] .l3 { transform: translateY(-5px) rotate(-45deg); }
+
+/* Menu : panneau semi-transparent qui glisse depuis la droite, sous le bandeau. */
+.cm-home .scrim { position: fixed; inset: var(--bar) 0 0; z-index: 8; background: rgba(27, 19, 25, 0.35); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.cm-home .scrim.open { opacity: 1; pointer-events: auto; }
+.cm-home .menu {
+  position: fixed; top: var(--bar); bottom: 0; right: 0; z-index: 9;
+  width: min(100%, 400px); overflow: hidden;
+  display: flex; flex-direction: column;
+  background: rgba(87, 37, 109, 0.74);
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: -12px 0 40px rgba(27, 19, 25, 0.25);
+  transform: translateX(102%); visibility: hidden;
+  transition: transform 0.28s ease, visibility 0s 0.28s;
+}
+.cm-home .menu.open { transform: none; visibility: visible; transition: transform 0.28s ease; }
+.cm-home .menu-section { display: flex; flex-direction: column; }
+/* Seule la liste défile, avec sa barre à l'intérieur du panneau ; « Soutenir » reste fixé en bas. */
+.cm-home .menu-scroll {
+  position: relative; z-index: 1;
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 22px; padding: 26px 14px 20px 20px; margin-right: 6px;
+  scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+}
+.cm-home .menu-scroll::-webkit-scrollbar { width: 6px; }
+.cm-home .menu-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 6px; }
+.cm-home .menu-scroll::-webkit-scrollbar-track { background: transparent; }
+.cm-home .menu-fixed {
+  position: relative; flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; padding: 10px 20px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2); background: rgba(87, 37, 109, 0.55);
+}
+.cm-home .menu-group { margin: 0 0 6px; padding: 0 4px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--pink); }
+.cm-home .menu-link {
+  display: flex; align-items: center; gap: 12px; padding: 13px 4px;
+  color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cm-home .menu-link span { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; }
+.cm-home .menu-link strong { font-size: 17px; font-weight: 700; }
+.cm-home .menu-link small { font-size: 13px; color: rgba(255, 255, 255, 0.78); }
+.cm-home .menu-link svg { flex-shrink: 0; opacity: 0.7; transition: transform 0.15s; }
+.cm-home .menu-link:hover svg, .cm-home .menu-link:focus-visible svg { transform: translateX(3px); opacity: 1; }
+.cm-home .menu-support { display: flex; gap: 10px; }
+.cm-home .menu-support a { flex: 1; text-align: center; padding: 9px 10px; border-radius: 999px; font-size: 14px; font-weight: 700; text-decoration: none; }
+.cm-home .menu-support .don { background: var(--pink); color: var(--night); }
+.cm-home .menu-support .adherer { border: 2px solid rgba(255, 255, 255, 0.85); color: #fff; padding: 7px 10px; }
+.cm-home .menu-info { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 4px; font-size: 12px; }
+.cm-home .menu-info a { color: rgba(255, 255, 255, 0.8); text-decoration: none; }
+.cm-home .menu-info a:hover { color: #fff; }
+@media (prefers-reduced-motion: reduce) { .cm-home .menu, .cm-home .menu.open, .cm-home .scrim, .cm-home .menu-button svg .line { transition: none; } }
+
+.cm-home .home-hero { position: relative; margin-top: calc(-1 * var(--bar)); padding-top: var(--bar); min-height: 100vh; box-sizing: border-box; display: flex; background: var(--night); overflow: hidden; }
+/* Hauteur réellement visible (dvh) : la vidéo s'adapte quand les barres du navigateur
+   apparaissent ou disparaissent, sans que le bas soit caché dessous. */
+@supports (height: 100dvh) { .cm-home .home-hero { min-height: 100dvh; } }
+/* Photo de la cour en fond du haut de page. */
+.cm-home .hero-media { position: absolute; inset: 0; background: var(--night); }
+/* Pas de voile : la photo garde ses couleurs d'origine. */
+.cm-home .hero-media::after { display: none; }
+.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
+.cm-home .clip.is-on { opacity: 1; }
+.cm-home .hero-inner {
+  width: 100%; max-width: 520px; margin: 0 auto;
+  padding: 20px 18px 24px; display: flex; flex-direction: column; gap: 18px;
+}
+.cm-home .hero-text {
+  position: relative; z-index: 1; flex-grow: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;
+  color: var(--night);
+}
+.cm-home .hero-text h1 { margin: 0; color: var(--violet); font-family: var(--display); font-size: 40px; line-height: 1.02; text-wrap: balance; }
+.cm-home .hero-text p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; max-width: 24em; }
+.cm-home .hero-text .city { color: var(--violet); }
+/* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
+.cm-home .city { font-weight: 700; white-space: nowrap; }
+/* Largeur réservée pour la ville la plus longue (voir le script) : « au cœur de » ne bouge plus. */
+.cm-home .city { display: inline-grid; text-align: left; vertical-align: bottom; }
+.cm-home .city > *, .cm-home .city-sizer > * { grid-area: 1 / 1; }
+.cm-home .city-sizer { display: grid; visibility: hidden; }
+.cm-home .city-cursor { margin-left: 1px; font-weight: 400; animation: city-blink 1s step-end infinite; }
+@keyframes city-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cm-home .city-cursor { animation: none; } }
+.cm-home .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.cm-home .hero-text .btn { text-shadow: none; }
+.cm-home .home-hero .btn-outline { background: rgba(255, 255, 255, 0.6); }
+.cm-home .home-hero .btn-rent { display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; font-size: 16px; background: var(--violet); color: #fff; box-shadow: 0 8px 22px rgba(102, 43, 128, 0.45); letter-spacing: 0.02em; }
+.cm-home .home-hero .btn-rent:hover { background: var(--violet-dark); }
+.cm-home .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 4px; }
+.cm-home .btn { display: inline-block; border-radius: 999px; font-weight: 700; text-decoration: none; text-align: center; }
+.cm-home .btn-primary { padding: 14px 22px; background: var(--violet); color: #fff; }
+.cm-home .btn-primary:hover { background: var(--violet-dark); }
+.cm-home .btn-outline { padding: 12px 20px; border: 2px solid var(--violet); color: var(--violet); background: rgba(255, 255, 255, 0.5); }
+.cm-home .btn-rent { display: block; padding: 17px; font-size: 17px; background: var(--pink); color: var(--night); }
+
+.cm-home .socials { display: flex; justify-content: center; gap: 12px; padding-top: 8px; }
+.cm-home .socials a { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cm-home .ig { background: linear-gradient(45deg, #F58529, #DD2A7B 55%, #8134AF); }
+.cm-home .fb { background: #1877F2; }
+.cm-home .li { background: #0A66C2; }
+.cm-home .tt { background: #000; }
+
+.cm-home .block { max-width: 560px; margin: 0 auto; padding: 36px 16px 8px; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: var(--bar); }
+.cm-home .block h2 { margin: 0 0 4px; font-family: var(--display); font-size: 28px; line-height: 1.1; color: var(--violet); text-wrap: balance; }
+.cm-home .block p { margin: 0; font-size: 16px; line-height: 1.6; }
+.cm-home .block .btn { align-self: flex-start; }
+.cm-home .kicker { margin: 0; font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #A25889; }
+.cm-home .small { font-size: 14px; color: var(--muted); }
+.cm-home .wide { width: 100%; height: 220px; object-fit: cover; border-radius: 22px; }
+.cm-home .facts { list-style: none; margin: 4px 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cm-home .facts li { display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.35; }
+.cm-home .facts strong { font-family: var(--display); font-size: 30px; color: #A25889; }
+.cm-home .home-pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cm-home .home-pillars figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.cm-home .home-pillars img { width: 100%; height: 120px; object-fit: cover; border-radius: 16px; }
+.cm-home .home-pillars figcaption { font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+.cm-home .home-partners { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.cm-home .home-partners a { display: flex; align-items: center; justify-content: center; height: 88px; padding: 12px; background: #fff; border-radius: 16px; }
+.cm-home .home-partners img { max-width: 100%; max-height: 64px; object-fit: contain; }
+.cm-home .home-involve { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
+.cm-home .home-involve strong { font-size: 18px; color: var(--violet); }
+.cm-home .legal { padding-bottom: 24px; }
+.cm-home .team { display: flex; flex-direction: column; gap: 10px; }
+.cm-home .member { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 18px; background: #fff; }
+/* Initiales en attendant les photos. */
+.cm-home .member-avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--violet); font-family: var(--display); font-size: 26px; }
+.cm-home .member h3 { margin: 0; font-size: 18px; }
+.cm-home .member .role { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #A25889; }
+.cm-home .member p { font-size: 15px; line-height: 1.5; }
+.cm-home .subtitle { margin: 18px 0 2px; font-family: var(--display); font-size: 22px; color: var(--violet); scroll-margin-top: calc(var(--bar) + 12px); }
+.cm-home .values { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .cm-home .values { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cm-home .value { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 18px; background: var(--violet); color: #fff; font-size: 14px; line-height: 1.45; }
+.cm-home .value strong { font-size: 17px; color: var(--pink); }
+.cm-home .audiences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cm-home .audience { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 18px; background: #fff; font-size: 14px; line-height: 1.4; }
+.cm-home .audience strong { font-size: 16px; color: var(--violet); }
+.cm-home .events { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.cm-home .event { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: #fff; }
+.cm-home .event-date { flex-shrink: 0; width: 64px; height: 64px; border-radius: 14px; background: var(--violet); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-transform: uppercase; }
+.cm-home .event-date strong { font-family: var(--display); font-size: 22px; line-height: 1; }
+.cm-home .event-body { display: flex; flex-direction: column; gap: 2px; }
+.cm-home .event-body small { font-size: 14px; color: var(--muted); }
+.cm-home #louer-contact { scroll-margin-top: calc(var(--bar) + 18px); padding-top: 8px; }
+.cm-home footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 10px; }
+.cm-home footer a { color: var(--violet); font-weight: 700; text-decoration: none; }
+.cm-home footer p { margin: 0; }
+.cm-home .legal details { background: #fff; border-radius: 16px; padding: 4px 18px; scroll-margin-top: calc(var(--bar) + 8px); }
+.cm-home .legal summary { cursor: pointer; font-weight: 700; padding: 14px 0; }
+.cm-home .legal h3 { margin: 12px 0 4px; font-size: 16px; }
+.cm-home .legal p { font-size: 15px; margin-bottom: 10px; }
+.cm-home .spaces { max-width: 480px; margin: 0 auto; padding: 28px 16px 48px; display: flex; flex-direction: column; gap: 12px; }
+.cm-home .spaces h2 { margin: 0; font-family: var(--display); font-size: 26px; color: var(--violet); }
+.cm-home .space { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
+.cm-home .space img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
+.cm-home .space span { display: flex; flex-direction: column; gap: 2px; }
+.cm-home .space small { font-size: 14px; color: var(--muted); }
+.cm-home .space .exchange { color: var(--violet); font-weight: 700; }
+
+.cm-home footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: var(--muted); }
+
+/* Ordinateur : titre sur une ligne, « au cœur de » toujours collé à la ville. */
+@media (min-width: 720px) {
+  .cm-home .hero-text h1 { font-size: 48px; white-space: nowrap; }
+  .cm-home .hero-text p { max-width: none; }
+  .cm-home .keep { white-space: nowrap; }
+}
+/* Grand écran : texte à gauche sur fond violet, vidéo verticale dans un cadre à droite. */
+@media (min-width: 960px) {
+  .cm-home .home-hero { background: var(--cream); align-items: center; }
+  .cm-home .hero-inner {
+    max-width: 1180px; padding: 48px 40px; gap: 28px 64px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "text media"; align-items: center;
+  }
+  .cm-home .hero-media {
+    position: relative; grid-area: media;
+    height: min(calc(100svh - var(--bar) - 96px), 680px); aspect-ratio: 9 / 16;
+    border-radius: 32px; overflow: hidden; box-shadow: 0 24px 60px rgba(27, 19, 25, 0.35);
+  }
+  .cm-home .hero-media::after { display: none; }
+  .cm-home .hero-text { grid-area: text; align-items: flex-start; text-align: left; text-shadow: none; justify-content: flex-end; }
+  .cm-home .hero-text h1 { font-size: 60px; }
+  .cm-home .hero-text p { font-size: 20px; }
+  .cm-home .hero-text .actions { justify-content: flex-start; }
+}
+/* Trois marguerites décoratives (pétales violets, cœur orange), éparpillées dans le menu. */
+.cm-home .block { position: relative; }
+.cm-home .daisy {
+  position: absolute; z-index: 2; pointer-events: none;
+  /* Violet plus clair que le fond du menu pour rester visible. */
+  --daisy-petal: #C08AD9; --daisy-edge: #F6F5F4;
+  filter: drop-shadow(0 2px 4px rgba(27, 19, 25, 0.35));
+}
+/* Dans les titres de groupe : elles défilent avec la liste, centrées sur la hauteur du texte. */
+.cm-home .menu-group { display: flex; align-items: center; }
+.cm-home .menu-group .daisy { position: static; }
+.cm-home .daisy-1 { width: 30px; height: 30px; margin-left: auto; margin-right: 8px; transform: rotate(18deg); }   /* à droite de « Découvrir » */
+.cm-home .daisy-2 { width: 30px; height: 30px; margin-left: 14px; transform: rotate(-28deg); } /* à côté de « Participer » */
+.cm-home .daisy-3 { width: 30px; height: 30px; top: -15px; left: 58%; transform: rotate(40deg); }      /* posée sur « Soutenir » */
+.cm-home .home-spaces, .cm-home .involve-grid { display: flex; flex-direction: column; gap: 12px; }
+/* ---------- Tablette et ordinateur : la page s'élargit, les listes deviennent des grilles. ---------- */
+@media (min-width: 720px) {
+  .cm-home .block { max-width: 760px; padding: 56px 32px 8px; gap: 16px; }
+  .cm-home .block h2 { font-size: 34px; }
+  .cm-home .home-spaces, .cm-home .events { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .cm-home .home-partners { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .cm-home .block { max-width: 1140px; padding: 80px 40px 8px; gap: 20px; }
+  .cm-home .block h2 { font-size: 42px; margin-bottom: 8px; }
+  .cm-home .block > p { max-width: 46em; font-size: 17px; }
+
+  .cm-home .audiences { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .audience { padding: 24px; font-size: 15px; }
+  .cm-home .audience strong { font-size: 19px; }
+
+  /* Notre premier lieu : photo à gauche, texte et chiffres à droite, piliers en dessous. */
+  .cm-home #le-lieu { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; row-gap: 16px; align-content: start; }
+  .cm-home #le-lieu > * { grid-column: 2; }
+  .cm-home #le-lieu .wide { grid-column: 1; grid-row: 1 / span 5; height: 100%; min-height: 420px; }
+  .cm-home #le-lieu .home-pillars { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
+  .cm-home .home-pillars img { height: 180px; }
+  .cm-home .facts strong { font-size: 40px; }
+  .cm-home .facts li { font-size: 15px; }
+
+  .cm-home .team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .member { flex-direction: column; align-items: center; text-align: center; padding: 28px 22px; }
+  .cm-home .member-avatar { width: 96px; height: 96px; font-size: 38px; }
+  .cm-home .value { padding: 24px; font-size: 15px; }
+
+  .cm-home .events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* Espaces : cartes avec grande photo, quatre par ligne. */
+  .cm-home .home-spaces { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .home-spaces .space { flex-direction: column; align-items: stretch; padding: 0; overflow: hidden; }
+  .cm-home .home-spaces .space img { width: 100%; height: 200px; border-radius: 0; }
+  .cm-home .home-spaces .space span { padding: 14px 18px 18px; }
+
+  .cm-home .home-partners { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .home-partners a { height: 110px; }
+
+  .cm-home .involve-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .home-involve { padding: 26px; }
+
+  .cm-home .legal { max-width: 1140px; }
+  .cm-home footer { padding: 40px 16px 56px; }
+}
+/* ---------- Propositions de lisibilité du haut de page (téléphone et tablette), à choisir :
+   ?style=a vitre violette · ?style=b surligneur · ?style=c dégradé depuis le bas ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cm-home .btn, .cm-home .socials a { transition: transform 0.15s; }
+  .cm-home .btn:hover, .cm-home .socials a:hover { transform: translateY(-1px); }
+}
+
+/* ---------- Bouton Connexion du bandeau ---------- */
+.cm-home .login-button {
+  height: 46px; min-width: 46px; box-sizing: border-box; border-radius: 999px; padding: 0 12px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: rgba(255, 255, 255, 0.16); color: #fff; font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.cm-home .login-button:hover { background: rgba(255, 255, 255, 0.26); }
+.cm-home .login-button span { display: none; }
+@media (min-width: 720px) { .cm-home .login-button { padding: 0 18px; } .cm-home .login-button span { display: inline; } }
+
+/* ---------- Page « Nos espaces » (connexion / inscription) ---------- */
+.cm-home .spaces-page { background: var(--cream); min-height: 100vh; }
+.cm-home .spaces-page .bar { background: var(--violet); }
+.cm-home .back-link { color: #fff; text-decoration: none; font-weight: 700; padding: 10px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.16); }
+.cm-home .portal { max-width: 1040px; margin: 0 auto; padding: 40px 16px 64px; display: flex; flex-direction: column; gap: 18px; }
+.cm-home .portal h1 { margin: 0; font-family: var(--display); font-size: 36px; color: var(--violet); }
+.cm-home .portal > p { margin: 0; font-size: 17px; line-height: 1.55; max-width: 40em; }
+.cm-home .portal-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 8px; }
+@media (min-width: 720px) { .cm-home .portal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cm-home .portal h1 { font-size: 44px; } }
+.cm-home .portal-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 22px; background: #fff; box-shadow: 0 10px 30px rgba(27, 19, 25, 0.06); }
+.cm-home .portal-card h2 { margin: 0; font-size: 22px; color: var(--violet); }
+.cm-home .portal-card p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--muted); flex-grow: 1; }
+.cm-home .portal-card .signup { font-size: 14px; color: var(--night); }
+.cm-home .portal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.cm-home .portal-actions .btn-outline { background: #fff; }
+
+/* ---------- Réseaux discrets sous « Louer un espace » ---------- */
+.cm-home .hero-follow span { white-space: nowrap; }
+.cm-home .hero-follow { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; opacity: 0.95; }
+.cm-home .hero-social-mini { display: flex; gap: 2px; }
+.cm-home .hero-social-mini a { background: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: inherit; }
+.cm-home .hero-social-mini a:hover { background: rgba(255, 255, 255, 0.15); }
+@media (min-width: 960px) {
+  .cm-home .hero-follow { justify-content: flex-start; color: var(--violet); }
+  .cm-home .hero-social-mini a:hover { background: rgba(102, 43, 128, 0.1); }
+}
+@media (max-width: 359px) { .cm-home .hero-follow > span { display: none; } }
+
+
+/* Téléphone et tablette : texte blanc en bas de la photo (proposition C retenue). */
+@media (max-width: 959px) {
+  .cm-home .hero-text { justify-content: flex-end; color: #fff; padding-bottom: 12px; }
+  .cm-home .hero-text h1 { color: #fff; font-size: 44px; }
+  .cm-home .hero-text p { font-size: 19px; }
+  .cm-home .hero-text .city { color: var(--pink); }
+}
+
+/* Téléphone et tablette : un voile violet flouté seulement derrière le titre et la phrase ;
+   le reste de la photo reste net. */
+@media (max-width: 959px) {
+  .cm-home .hero-media::after { display: none; }
+  .cm-home .hero-headline {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 22px 20px; border-radius: 28px;
+    background: rgba(87, 37, 109, 0.42);
+    backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(10px) saturate(120%);
+    box-shadow: 0 0 40px 18px rgba(87, 37, 109, 0.28);
+  }
+}
+@media (min-width: 960px) { .cm-home .hero-headline { display: contents; } }
+
+
+/* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
+.cm-home .btn-rent span[aria-hidden="true"] { color: #F6A55C; transition: transform 0.15s; display: inline-block; }
+.cm-home .btn-rent:hover span[aria-hidden="true"] { transform: translateX(3px); }
+
+
+/* Page « Notre équipe » */
+.cm-home .team-page { padding-top: 48px; padding-bottom: 56px; }
+
+/* Cartes des espaces : prix sur une ligne à part, en violet. */
+.cm-home .space .price { color: var(--violet); font-weight: 700; }
+.cm-home .home-spaces .space img { object-position: center 35%; }
+
+/* Formulaire de demande (composant de la plateforme) dans la page d'accueil. */
+.cm-home .request-block { max-width: 1140px; }
+.cm-home .request-block .landing-hero h2 { font-family: var(--display); color: var(--violet); }
