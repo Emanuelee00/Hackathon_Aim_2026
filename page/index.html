@@ -69,6 +69,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 }
 .card h1 { margin: 0; font-family: var(--display); font-size: 32px; line-height: 1.05; color: var(--violet); text-wrap: balance; }
 .card p { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; max-width: 26em; }
+/* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
+.city { color: var(--violet); font-weight: 700; white-space: nowrap; }
+.city-cursor { margin-left: 1px; font-weight: 400; animation: city-blink 1s step-end infinite; }
+@keyframes city-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .city-cursor { animation: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 4px; }
 .btn { display: inline-block; border-radius: 999px; font-weight: 700; text-decoration: none; text-align: center; }
 .btn-primary { padding: 14px 22px; background: var(--violet); color: #fff; }
@@ -163,8 +169,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     <div class="hero-inner">
       <div class="hero-center">
         <div class="card">
-          <h1>Faisons vivre Chez Marthe</h1>
-          <p>Votre don aménage les espaces. Votre adhésion fait grandir le projet.</p>
+          <h1>Rejoignez l’aventure</h1>
+          <p>Soutenez un lieu tremplin pour les femmes, au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
           <div class="actions">
             <a class="btn btn-primary" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
             <a class="btn btn-outline" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
@@ -288,6 +294,24 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 <footer><nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
+  // Villes du nouveau site, avec le même rythme (frappe 90 ms, effacement 45 ms, pause 1,5 s).
+  (function typewriter() {
+    const words = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
+    const el = document.getElementById('city');
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Marseille est déjà écrit au chargement : on commence par l'effacer.
+    let index = 0, current = words[0], deleting = true;
+    function step() {
+      const word = words[index];
+      current = deleting ? current.slice(0, -1) : word.slice(0, current.length + 1);
+      el.textContent = current;
+      let delay = deleting ? 45 : 90;
+      if (!deleting && current === word) { delay = 1500; deleting = true; }
+      else if (deleting && current === '') { deleting = false; index = (index + 1) % words.length; }
+      setTimeout(step, delay);
+    }
+    setTimeout(step, 1500);
+  })();
   const button = document.querySelector('.menu-button');
   const menu = document.getElementById('menu');
   button.addEventListener('click', () => {
