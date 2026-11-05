@@ -84,7 +84,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .hero { position: relative; min-height: calc(100svh - var(--bar)); display: flex; background: var(--night); overflow: hidden; }
 /* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
 .hero-media { position: absolute; inset: 0; background: var(--night); }
-.hero-media::after { content: ""; position: absolute; inset: 0; background: rgba(246, 245, 244, 0.58); }
+/* Pas de voile : la vidéo garde ses couleurs d'origine. */
+.hero-media::after { display: none; }
 .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
 .clip.is-on { opacity: 1; }
 .hero-inner {
@@ -94,10 +95,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .hero-text {
   position: relative; z-index: 1; flex-grow: 1;
   display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;
-  color: var(--night); text-shadow: 0 1px 14px rgba(255, 255, 255, 0.7);
+  color: var(--night);
+  /* Contour blanc doux : le texte reste lisible directement sur la vidéo. */
+  text-shadow: 0 0 2px #fff, 0 0 8px rgba(255, 255, 255, 0.95), 0 0 18px rgba(255, 255, 255, 0.8);
 }
 .hero-text h1 { margin: 0; color: var(--violet); font-family: var(--display); font-size: 40px; line-height: 1.02; text-wrap: balance; }
-.hero-text p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 24em; }
+.hero-text p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; max-width: 24em; }
 .hero-text .city { color: var(--violet); }
 /* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
 .city { font-weight: 700; white-space: nowrap; }
