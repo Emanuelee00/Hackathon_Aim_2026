@@ -140,6 +140,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .hero-text .city { color: var(--violet); }
 /* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
 .city { font-weight: 700; white-space: nowrap; }
+/* Largeur réservée pour la ville la plus longue (voir le script) : « au cœur de » ne bouge plus. */
+.city { display: inline-block; text-align: left; }
 .city-cursor { margin-left: 1px; font-weight: 400; animation: city-blink 1s step-end infinite; }
 @keyframes city-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .city-cursor { animation: none; } }
@@ -338,7 +340,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     background: linear-gradient(to top, rgba(102, 43, 128, 0.97) 0%, rgba(102, 43, 128, 0.9) 42%, rgba(102, 43, 128, 0.55) 62%, rgba(102, 43, 128, 0) 82%);
   }
   [data-hero="c"] .hero-text { justify-content: flex-end; color: #fff; padding-bottom: 12px; }
-  [data-hero="c"] .hero-text h1 { color: #fff; }
+  [data-hero="c"] .hero-text h1 { color: #fff; font-size: 44px; }
+  [data-hero="c"] .hero-text p { font-size: 19px; }
   [data-hero="c"] .hero-text .city { color: var(--pink); }
   [data-hero="c"] .hero .btn-primary { background: var(--pink); color: var(--night); }
   [data-hero="c"] .hero .btn-rent { background: #fff; color: var(--violet); box-shadow: none; }
@@ -409,7 +412,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
       </div>
       <div class="hero-text">
           <h1><span class="mark">Rejoignez l’aventure</span></h1>
-          <p><span class="mark">Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</span></p>
+          <p><span class="mark">Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span>.</span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span></span></p>
           <div class="actions">
             <a class="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
           </div>
@@ -575,7 +578,21 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   (function typewriter() {
     const words = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
     const el = document.getElementById('city');
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!el) return;
+    // Réserve la largeur de la ville la plus longue, pour que la ligne ne bouge pas pendant la frappe.
+    const box = el.parentElement;
+    function reserve() {
+      const shown = el.textContent;
+      box.style.minWidth = '';
+      let widest = 0;
+      for (const w of words) { el.textContent = w; widest = Math.max(widest, box.getBoundingClientRect().width); }
+      el.textContent = shown;
+      box.style.minWidth = Math.ceil(widest) + 'px';
+    }
+    reserve();
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(reserve);
+    window.addEventListener('resize', reserve);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     // Marseille est déjà écrit au chargement : on commence par l'effacer.
     let index = 0, current = words[0], deleting = true;
     function step() {
