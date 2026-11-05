@@ -465,7 +465,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     const clips = document.querySelectorAll('.clip');
     if (clips.length !== 2) return;
     // Vitesse de lecture (1 = normale). À 0.5 l'image saccade : les vidéos n'ont que ~30 images/s.
-    const SPEED = 1;
+    const SPEED = 0.75;
     clips.forEach(clip => {
       clip.defaultPlaybackRate = SPEED;
       clip.addEventListener('loadedmetadata', () => { clip.playbackRate = SPEED; });
