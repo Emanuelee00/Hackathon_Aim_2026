@@ -81,7 +81,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu-info a:hover { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .menu, .menu.open, .scrim, .menu-button svg .line { transition: none; } }
 
-.hero { position: relative; min-height: calc(100svh - var(--bar)); display: flex; background: var(--night); overflow: hidden; }
+.hero { position: relative; min-height: calc(100vh - var(--bar)); display: flex; background: var(--night); overflow: hidden; }
+/* Téléphone : la vidéo remplit tout l'écran, même quand la barre d'adresse du navigateur se cache. */
+@supports (height: 100lvh) { .hero { min-height: calc(100lvh - var(--bar)); } }
 /* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
 .hero-media { position: absolute; inset: 0; background: var(--night); }
 /* Pas de voile : la vidéo garde ses couleurs d'origine. */
@@ -462,6 +464,13 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     const sources = ['assets/videos/video-1.mp4', 'assets/videos/video-2.mp4', 'assets/videos/video-3.mp4'];
     const clips = document.querySelectorAll('.clip');
     if (clips.length !== 2) return;
+    // Vidéos ralenties de moitié ; reappliqué à chaque changement de source, qui remet la vitesse à zéro.
+    const SPEED = 0.5;
+    clips.forEach(clip => {
+      clip.defaultPlaybackRate = SPEED;
+      clip.addEventListener('loadedmetadata', () => { clip.playbackRate = SPEED; });
+      clip.addEventListener('play', () => { clip.playbackRate = SPEED; });
+    });
     let current = 0, active = 0;
     clips[0].src = sources[0];
     clips[1].src = sources[1];
