@@ -444,3 +444,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 .contact-details h3 { margin: 0 0 8px; color: var(--violet); }
 .contact-details p { margin: 0 0 8px; font-size: 15px; }
 .contact-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+/* Page « Notre équipe » */
+.team-page { padding-top: 48px; padding-bottom: 56px; }

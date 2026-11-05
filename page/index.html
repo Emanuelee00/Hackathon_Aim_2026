@@ -36,7 +36,7 @@
     <div class="menu-section">
       <p class="menu-group">Découvrir<svg class="daisy daisy-1" aria-hidden="true"><use href="#daisy"/></svg></p>
       <a class="menu-link" href="#le-lieu"><span><strong>Notre premier lieu</strong><small>Chez Marthe, Saint-Savournin</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
-      <a class="menu-link" href="#equipe"><span><strong>Notre équipe</strong><small>Les visages de Chez Marthe et nos valeurs</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <a class="menu-link" href="equipe.html"><span><strong>Notre équipe</strong><small>Les visages de Chez Marthe et nos valeurs</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#evenements"><span><strong>Nos évènements</strong><small>La programmation</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     </div>
     <div class="menu-section">
@@ -107,31 +107,6 @@
       <figure><img src="assets/sororite.webp" alt=""><figcaption><strong>Se reconstruire</strong>Un lieu d’écoute, sans jugement, à son rythme.</figcaption></figure>
       <figure><img src="assets/cantine.webp" alt=""><figcaption><strong>Se nourrir</strong>Des repas partagés à prix libre avec la cantine.</figcaption></figure>
       <figure><img src="assets/jardin.webp" alt=""><figcaption><strong>Rayonner</strong>Des rencontres et des projets avec tout le quartier.</figcaption></figure>
-    </div>
-  </section>
-
-  <section id="equipe" class="block" aria-labelledby="equipe-titre" hidden>
-    <p class="eyebrow">NOTRE ÉQUIPE</p>
-    <h2 id="equipe-titre">Les visages de Chez Marthe</h2>
-    <div class="team">
-      <article class="member">
-        <span class="avatar" aria-hidden="true">V</span>
-        <div><h3>Véronique</h3><p class="role">Présidente</p><p>[Une ou deux phrases de présentation]</p></div>
-      </article>
-      <article class="member">
-        <span class="avatar" aria-hidden="true">J</span>
-        <div><h3>Joria</h3><p class="role">[Rôle]</p><p>[Une ou deux phrases de présentation]</p></div>
-      </article>
-      <article class="member">
-        <span class="avatar" aria-hidden="true">F</span>
-        <div><h3>Flora</h3><p class="role">[Rôle]</p><p>[Une ou deux phrases de présentation]</p></div>
-      </article>
-    </div>
-    <h3 id="valeurs" class="subtitle">Nos valeurs</h3>
-    <div class="values">
-      <div class="value"><strong>[Valeur 1]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
-      <div class="value"><strong>[Valeur 2]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
-      <div class="value"><strong>[Valeur 3]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
     </div>
   </section>
 
@@ -291,19 +266,6 @@
   <nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
-  // « Notre équipe » n'apparaît pas sur la page : seulement quand on y va depuis le menu (ou un lien #equipe).
-  (function teamSection() {
-    const team = document.getElementById('equipe');
-    if (!team) return;
-    function reveal() {
-      if (location.hash !== '#equipe' && location.hash !== '#valeurs') return;
-      team.hidden = false;
-      requestAnimationFrame(() => document.getElementById(location.hash.slice(1)).scrollIntoView());
-    }
-    document.querySelectorAll('a[href="#equipe"], a[href="#valeurs"]').forEach(link => link.addEventListener('click', () => { team.hidden = false; }));
-    window.addEventListener('hashchange', reveal);
-    reveal();
-  })();
   // Proposition de haut de page choisie dans l'adresse (?style=a, b ou c) ; sans paramètre : version actuelle.
   (function heroStyle() {
     const choice = new URLSearchParams(location.search).get('style');
