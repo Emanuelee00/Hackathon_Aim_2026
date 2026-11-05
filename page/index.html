@@ -83,6 +83,30 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .li { background: #0A66C2; }
 .tt { background: #000; }
 
+.block { max-width: 560px; margin: 0 auto; padding: 36px 16px 8px; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 72px; }
+.block h2 { margin: 0 0 4px; font-family: var(--display); font-size: 28px; line-height: 1.1; color: var(--violet); text-wrap: balance; }
+.block p { margin: 0; font-size: 16px; line-height: 1.6; }
+.block .btn { align-self: flex-start; }
+.eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #A25889; }
+.small { font-size: 14px; color: var(--muted); }
+.wide { width: 100%; height: 220px; object-fit: cover; border-radius: 22px; }
+.facts { list-style: none; margin: 4px 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.facts li { display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.35; }
+.facts strong { font-family: var(--display); font-size: 30px; color: #A25889; }
+.pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pillars figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.pillars img { width: 100%; height: 120px; object-fit: cover; border-radius: 16px; }
+.pillars figcaption { font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+.partners { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.partners a { display: flex; align-items: center; justify-content: center; height: 88px; padding: 12px; background: #fff; border-radius: 16px; }
+.partners img { max-width: 100%; max-height: 64px; object-fit: contain; }
+.involve { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
+.involve strong { font-size: 18px; color: var(--violet); }
+.legal { padding-bottom: 24px; }
+.legal details { background: #fff; border-radius: 16px; padding: 4px 18px; scroll-margin-top: 80px; }
+.legal summary { cursor: pointer; font-weight: 700; padding: 14px 0; }
+.legal h3 { margin: 12px 0 4px; font-size: 16px; }
+.legal p { font-size: 15px; margin-bottom: 10px; }
 .spaces { max-width: 480px; margin: 0 auto; padding: 28px 16px 48px; display: flex; flex-direction: column; gap: 12px; }
 .spaces h2 { margin: 0; font-family: var(--display); font-size: 26px; color: var(--violet); }
 .space { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
@@ -111,27 +135,17 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   </button>
   <a class="logo" href="#"><img src="assets/logo-fond-violet.png" alt="Chez Marthe"></a>
 </header>
-<!-- Liens vers le nouveau site. Quand chezmarthe.org pointera vers la VM, remplacer « 34-155-50-2.sslip.io » par « chezmarthe.org ». -->
 <nav id="menu" class="menu" aria-label="Menu">
   <p class="menu-group">Le lieu</p>
-  <a href="https://34-155-50-2.sslip.io/#espaces">Espaces</a>
-  <a href="https://34-155-50-2.sslip.io/#le-lieu">Le lieu</a>
-  <a href="https://34-155-50-2.sslip.io/#demande">Faire une demande</a>
-  <a href="https://34-155-50-2.sslip.io/#partenaires">Partenaires</a>
-  <a href="https://34-155-50-2.sslip.io/#s-impliquer">S’impliquer</a>
-  <p class="menu-group">Se connecter</p>
-  <a href="https://residents.34-155-50-2.sslip.io">Résidentes</a>
-  <a href="https://equipe.34-155-50-2.sslip.io">Équipe</a>
-  <a href="https://benevoles.34-155-50-2.sslip.io">Bénévoles</a>
-  <a href="https://partenaires.34-155-50-2.sslip.io">Associations</a>
-  <p class="menu-group">Soutenir</p>
-  <a href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
-  <a href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
-  <a href="https://chat.whatsapp.com/GCTH2IPPnraADelLbGxVzX?mode=gi_t">Les amies de Chez Marthe</a>
+  <a href="#espaces">Espaces</a>
+  <a href="#le-lieu">Le lieu</a>
+  <a href="#demande">Faire une demande</a>
+  <a href="#partenaires">Partenaires</a>
+  <a href="#s-impliquer">S’impliquer</a>
   <p class="menu-group">Informations</p>
-  <a href="https://34-155-50-2.sslip.io/contact">Contact</a>
-  <a href="https://34-155-50-2.sslip.io/mentions-legales">Mentions légales</a>
-  <a href="https://34-155-50-2.sslip.io/politique-de-confidentialite">Confidentialité</a>
+  <a href="#contact">Contact</a>
+  <a href="#mentions-legales">Mentions légales</a>
+  <a href="#confidentialite">Confidentialité</a>
 </nav>
 
 <main>
@@ -158,15 +172,91 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     </div>
   </section>
 
-  <section id="espaces" class="spaces" aria-labelledby="espaces-titre">
-    <h2 id="espaces-titre">Nos espaces</h2>
-    <a class="space" href="#"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
-    <a class="space" href="#"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
-    <a class="space" href="#"><img src="assets/facade.webp" alt=""><span><strong>L'Atelier</strong><small class="exchange">Échange de services</small></span></a>
+  <section id="espaces" class="block" aria-labelledby="espaces-titre">
+    <p class="eyebrow">NOS ESPACES</p>
+    <h2 id="espaces-titre">Un lieu pour votre activité</h2>
+    <a class="space" href="#demande"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#demande"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#demande"><img src="assets/facade.webp" alt=""><span><strong>L’Atelier</strong><small class="exchange">Échange de services : vous créez ici, vous animez un atelier pour nous</small></span></a>
+  </section>
+
+  <section id="le-lieu" class="block" aria-labelledby="lieu-titre">
+    <p class="eyebrow">NOTRE PREMIER LIEU</p>
+    <h2 id="lieu-titre">Chez Marthe, Saint-Savournin</h2>
+    <img class="wide" src="assets/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu">
+    <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
+    <ul class="facts">
+      <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
+      <li><strong>~20</strong><span>étudiantes en situation de précarité</span></li>
+      <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
+    </ul>
+    <div class="pillars">
+      <figure><img src="assets/facade.webp" alt=""><figcaption><strong>Se loger</strong>Un toit sûr pour se poser et retrouver de la stabilité.</figcaption></figure>
+      <figure><img src="assets/sororite.webp" alt=""><figcaption><strong>Se reconstruire</strong>Un lieu d’écoute, sans jugement, à son rythme.</figcaption></figure>
+      <figure><img src="assets/cantine.webp" alt=""><figcaption><strong>Se nourrir</strong>Des repas partagés à prix libre avec la cantine.</figcaption></figure>
+      <figure><img src="assets/jardin.webp" alt=""><figcaption><strong>Rayonner</strong>Des rencontres et des projets avec tout le quartier.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="demande" class="block" aria-labelledby="demande-titre">
+    <p class="eyebrow">FAIRE UNE DEMANDE</p>
+    <h2 id="demande-titre">Louer un espace ou proposer un atelier</h2>
+    <p>Dites-nous ce que vous imaginez : l’activité, la date, le nombre de personnes. Pour l’Atelier, proposez l’atelier gratuit que vous animeriez en échange.</p>
+    <a class="btn btn-primary" href="mailto:contact.chezmarthe@gmail.com?subject=Demande%20d%E2%80%99espace">Écrire à l’équipe</a>
+    <p class="small">ou directement : contact.chezmarthe@gmail.com</p>
+  </section>
+
+  <section id="partenaires" class="block" aria-labelledby="partenaires-titre">
+    <p class="eyebrow">ILS FONT VIVRE LE LIEU</p>
+    <h2 id="partenaires-titre">Nos partenaires</h2>
+    <ul class="partners">
+      <li><a href="https://www.has.asso.fr/"><img src="assets/partenaires/has.webp" alt="Habitat Alternatif Social"></a></li>
+      <li><a href="https://just.earth/"><img src="assets/partenaires/just.webp" alt="JUST"></a></li>
+      <li><a href="https://marseille.lespetitescantines.org/"><img src="assets/partenaires/petites-cantines.webp" alt="Les Petites Cantines Marseille"></a></li>
+      <li><a href="https://www.sista4good.com/"><img src="assets/partenaires/sista4good.webp" alt="Sister4Good"></a></li>
+      <li><a href="https://www.benenova.fr/"><img src="assets/partenaires/benenova.webp" alt="Benenova Marseille"></a></li>
+    </ul>
+  </section>
+
+  <section id="s-impliquer" class="block" aria-labelledby="impliquer-titre">
+    <p class="eyebrow">REJOINDRE LE MOUVEMENT</p>
+    <h2 id="impliquer-titre">Comment s’impliquer ?</h2>
+    <a class="involve" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3"><strong>Faire un don</strong><span>Aménager les espaces et faire durer le lieu.</span></a>
+    <a class="involve" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe"><strong>Adhérer</strong><span>Rejoindre l’association et porter le projet avec nous.</span></a>
+    <a class="involve" href="https://chat.whatsapp.com/GCTH2IPPnraADelLbGxVzX?mode=gi_t"><strong>Les amies de Chez Marthe</strong><span>La communauté qui suit la vie du lieu au quotidien.</span></a>
+  </section>
+
+  <section id="contact" class="block" aria-labelledby="contact-titre">
+    <p class="eyebrow">CONTACT</p>
+    <h2 id="contact-titre">Contactez-nous</h2>
+    <p>Une question, une idée, l’envie de vous impliquer ? Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
+    <p><a href="mailto:contact.chezmarthe@gmail.com">contact.chezmarthe@gmail.com</a></p>
+    <p>Siège social : Maison des Associations, 93 La Canebière, 13001 Marseille</p>
+  </section>
+
+  <section class="block legal" aria-label="Informations légales">
+    <details id="mentions-legales">
+      <summary>Mentions légales</summary>
+      <h3>Éditeur du site</h3>
+      <p><strong>Chez Marthe</strong>, association loi 1901<br>Siège social : Maison des Associations, 93 La Canebière, 13001 Marseille<br>N° SIRET : 100 396 464 00016<br>E-mail : contact.chezmarthe@gmail.com</p>
+      <p>Directrice de la publication : Véronique Eyraud, présidente</p>
+      <h3>Hébergement</h3>
+      <p>Cette page est hébergée par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis.</p>
+      <h3>Crédits</h3>
+      <p>Photographies : Céline Ravier. Conception : l’équipe bénévole du hackathon AIM 2026, pour Chez Marthe.</p>
+      <h3>Propriété intellectuelle</h3>
+      <p>Les textes, photographies, logos et éléments graphiques de ce site appartiennent à Chez Marthe ou à leurs auteurs. Toute reproduction sans autorisation préalable est interdite.</p>
+    </details>
+    <details id="confidentialite">
+      <summary>Politique de confidentialité</summary>
+      <p>Cette page ne collecte aucune donnée personnelle et ne dépose aucun cookie : pas de formulaire, pas de publicité, pas de mesure d’audience.</p>
+      <p>Les dons et adhésions passent par HelloAsso, le groupe « Les amies de Chez Marthe » par WhatsApp, et les e-mails par votre propre messagerie : ces services appliquent leur propre politique de confidentialité.</p>
+      <p>Pour toute question sur vos données : contact.chezmarthe@gmail.com. Vous pouvez aussi saisir la CNIL (<a href="https://www.cnil.fr/fr/plaintes">cnil.fr</a>).</p>
+    </details>
   </section>
 </main>
 
-<footer>Chez Marthe · Marseille — maquette de travail</footer>
+<footer>Chez Marthe · Marseille</footer>
 
 <script>
   const button = document.querySelector('.menu-button');
@@ -176,6 +266,13 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     button.setAttribute('aria-expanded', String(open));
     button.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
   });
+  // A menu link to the legal notice or the privacy policy opens it.
+  function openTarget() {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target && target.tagName === 'DETAILS') target.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
   menu.addEventListener('click', event => {
     if (event.target.closest('a')) { menu.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); }
   });
