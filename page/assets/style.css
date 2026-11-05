@@ -20,18 +20,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
   position: sticky; top: 0; z-index: 10;
   height: var(--bar); padding: 0 14px;
   display: flex; align-items: center; gap: 10px;
-  /* En haut de page : violet qui s'efface vers le bas dans la vidéo ; violet plein dès qu'on la dépasse. */
-  background: transparent;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  background: var(--violet);
 }
-.bar::before {
-  content: ""; position: absolute; inset: 0 0 auto; z-index: -1; pointer-events: none;
-  height: calc(var(--bar) + 56px);
-  background: linear-gradient(to bottom, rgba(102, 43, 128, 1) 0%, rgba(102, 43, 128, 0.92) 50%, rgba(102, 43, 128, 0.55) 72%, rgba(102, 43, 128, 0) 100%);
-  transition: opacity 0.3s;
+/* Séparation : une vague rose sous le bandeau, comme les traits du logo. */
+.bar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -11px; height: 12px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V6C100 0 80 0 60 6S20 12 0 6Z' fill='%23662B80'/%3E%3Cpath d='M0 6C20 12 40 12 60 6S100 0 120 6' fill='none' stroke='%23F2A1AB' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left top / 120px 12px;
 }
-.bar.solid::before, .bar.menu-open::before { opacity: 0; }
-.bar.solid, .bar.menu-open { background: var(--violet); box-shadow: 0 4px 16px rgba(27, 19, 25, 0.18); }
+.bar.solid, .bar.menu-open { background: var(--violet); }
 .bar .logo { margin-right: auto; display: flex; }
 .bar .logo img { height: 56px; width: auto; display: block; filter: drop-shadow(0 1px 3px rgba(27, 19, 25, 0.35)); }
 .social { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -381,8 +377,3 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 }
 @media (max-width: 359px) { .hero-follow > span { display: none; } }
 
-/* « Rejoignez l'aventure » écrit à la main, comme le « Marthe » du logo. */
-.hero-text h1 { font-family: "Damion", var(--display); font-weight: 400; letter-spacing: 0.01em; line-height: 1.05; }
-@media (max-width: 719px) { [data-hero="c"] .hero-text h1 { font-size: 56px; } }
-@media (min-width: 720px) and (max-width: 959px) { [data-hero="c"] .hero-text h1 { font-size: 66px; } }
-@media (min-width: 960px) { .hero-text h1 { font-size: 78px; } }
