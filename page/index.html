@@ -84,6 +84,16 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .hero { position: relative; min-height: calc(100vh - var(--bar)); display: flex; background: var(--night); overflow: hidden; }
 /* Téléphone : la vidéo remplit tout l'écran, même quand la barre d'adresse du navigateur se cache. */
 @supports (height: 100lvh) { .hero { min-height: calc(100lvh - var(--bar)); } }
+/* Téléphone et tablette : le riquadro vidéo est plus haut que l'écran (≈ 1,4 écran).
+   Le texte et les boutons restent dans le premier écran, la vidéo continue en dessous. */
+@media (max-width: 959px) {
+  .hero { min-height: calc(140vh - var(--bar)); }
+  .hero-inner { align-self: flex-start; min-height: calc(100vh - var(--bar)); }
+  @supports (height: 100lvh) {
+    .hero { min-height: calc(140lvh - var(--bar)); }
+    .hero-inner { min-height: calc(100lvh - var(--bar)); }
+  }
+}
 /* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
 .hero-media { position: absolute; inset: 0; background: var(--night); }
 /* Pas de voile : la vidéo garde ses couleurs d'origine. */
