@@ -307,6 +307,42 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   .legal { max-width: 1140px; }
   footer { padding: 40px 16px 56px; }
 }
+/* ---------- Propositions de lisibilité du haut de page (téléphone et tablette), à choisir :
+   ?style=a vitre violette · ?style=b surligneur · ?style=c dégradé depuis le bas ---------- */
+@media (max-width: 959px) {
+  /* A · Vitre violette : une petite plaque violette floutée derrière le texte. */
+  [data-hero="a"] .hero-inner { justify-content: center; }
+  [data-hero="a"] .hero-text {
+    flex-grow: 0; align-self: center; width: 100%; max-width: 440px; box-sizing: border-box;
+    padding: 28px 22px; border-radius: 28px; color: #fff;
+    background: rgba(87, 37, 109, 0.55); border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%);
+    box-shadow: 0 18px 40px rgba(27, 19, 25, 0.3);
+  }
+  [data-hero="a"] .hero-text h1 { color: #fff; }
+  [data-hero="a"] .hero-text .city { color: var(--pink); }
+  [data-hero="a"] .hero .btn-primary { background: var(--pink); color: var(--night); }
+  [data-hero="a"] .hero .btn-rent { background: #fff; color: var(--violet); }
+
+  /* B · Surligneur : le texte posé sur des bandes de couleur, comme au feutre. */
+  [data-hero="b"] .hero-text .mark { -webkit-box-decoration-break: clone; box-decoration-break: clone; border-radius: 6px; }
+  [data-hero="b"] .hero-text h1 { line-height: 1.25; }
+  [data-hero="b"] .hero-text h1 .mark { background: var(--violet); color: #fff; padding: 0 0.22em; }
+  [data-hero="b"] .hero-text p { line-height: 1.75; }
+  [data-hero="b"] .hero-text p .mark { background: #fff; color: var(--night); padding: 0.12em 0.4em; }
+  [data-hero="b"] .hero .btn-primary { background: var(--pink); color: var(--night); }
+
+  /* C · Dégradé depuis le bas : comme le bandeau du haut, mais à l'envers ; texte en bas. */
+  [data-hero="c"] .hero-media::after {
+    display: block;
+    background: linear-gradient(to top, rgba(102, 43, 128, 0.97) 0%, rgba(102, 43, 128, 0.9) 42%, rgba(102, 43, 128, 0.55) 62%, rgba(102, 43, 128, 0) 82%);
+  }
+  [data-hero="c"] .hero-text { justify-content: flex-end; color: #fff; padding-bottom: 12px; }
+  [data-hero="c"] .hero-text h1 { color: #fff; }
+  [data-hero="c"] .hero-text .city { color: var(--pink); }
+  [data-hero="c"] .hero .btn-primary { background: var(--pink); color: var(--night); }
+  [data-hero="c"] .hero .btn-rent { background: #fff; color: var(--violet); box-shadow: none; }
+}
 @media (prefers-reduced-motion: no-preference) {
   .btn, .socials a { transition: transform 0.15s; }
   .btn:hover, .socials a:hover { transform: translateY(-1px); }
@@ -372,8 +408,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
         <img class="clip is-on" src="assets/cour.jpg" alt="">
       </div>
       <div class="hero-text">
-          <h1>Rejoignez l’aventure</h1>
-          <p>Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
+          <h1><span class="mark">Rejoignez l’aventure</span></h1>
+          <p><span class="mark">Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</span></p>
           <div class="actions">
             <a class="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
           </div>
@@ -520,6 +556,11 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 <footer><nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
+  // Proposition de haut de page choisie dans l'adresse (?style=a, b ou c) ; sans paramètre : version actuelle.
+  (function heroStyle() {
+    const choice = new URLSearchParams(location.search).get('style');
+    if (['a', 'b', 'c'].includes(choice)) document.documentElement.dataset.hero = choice;
+  })();
   // Bandeau transparent sur la vidéo, violet dès qu'on a dépassé le haut de page.
   (function solidBar() {
     const bar = document.querySelector('.bar');
