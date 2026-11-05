@@ -85,6 +85,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu-section { display: flex; flex-direction: column; }
 /* Seule la liste défile, avec sa barre à l'intérieur du panneau ; « Soutenir » reste fixé en bas. */
 .menu-scroll {
+  position: relative; z-index: 1;
   flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
   display: flex; flex-direction: column; gap: 22px; padding: 26px 14px 20px 20px; margin-right: 6px;
   scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
@@ -93,7 +94,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 6px; }
 .menu-scroll::-webkit-scrollbar-track { background: transparent; }
 .menu-fixed {
-  flex: 0 0 auto; display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 24px;
+  position: relative; flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; padding: 10px 20px 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.2); background: rgba(87, 37, 109, 0.55);
 }
 .menu-group { margin: 0 0 6px; padding: 0 4px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--pink); }
@@ -107,10 +108,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu-link svg { flex-shrink: 0; opacity: 0.7; transition: transform 0.15s; }
 .menu-link:hover svg, .menu-link:focus-visible svg { transform: translateX(3px); opacity: 1; }
 .menu-support { display: flex; gap: 10px; }
-.menu-support a { flex: 1; text-align: center; padding: 13px 10px; border-radius: 999px; font-weight: 700; text-decoration: none; }
+.menu-support a { flex: 1; text-align: center; padding: 9px 10px; border-radius: 999px; font-size: 14px; font-weight: 700; text-decoration: none; }
 .menu-support .don { background: var(--pink); color: var(--night); }
-.menu-support .adherer { border: 2px solid rgba(255, 255, 255, 0.85); color: #fff; padding: 11px 10px; }
-.menu-info { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 0 4px; font-size: 13px; }
+.menu-support .adherer { border: 2px solid rgba(255, 255, 255, 0.85); color: #fff; padding: 7px 10px; }
+.menu-info { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 4px; font-size: 12px; }
 .menu-info a { color: rgba(255, 255, 255, 0.8); text-decoration: none; }
 .menu-info a:hover { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .menu, .menu.open, .scrim, .menu-button svg .line { transition: none; } }
@@ -244,18 +245,17 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   .hero-text p { font-size: 20px; }
   .hero-text .actions { justify-content: flex-start; }
 }
-/* Trois marguerites décoratives (pétales violets, cœur orange), dans le menu, à droite des titres de groupe. */
+/* Trois marguerites décoratives (pétales violets, cœur orange), éparpillées dans le menu. */
 .block { position: relative; }
-.menu-group { display: flex; align-items: center; }
 .daisy {
-  margin-left: auto; flex-shrink: 0; pointer-events: none;
+  position: absolute; z-index: 2; pointer-events: none;
   /* Violet plus clair que le fond du menu pour rester visible. */
   --daisy-petal: #C08AD9; --daisy-edge: #F6F5F4;
   filter: drop-shadow(0 2px 4px rgba(27, 19, 25, 0.35));
 }
-.daisy-1 { width: 34px; height: 34px; transform: rotate(14deg); }
-.daisy-2 { width: 26px; height: 26px; margin-right: 18px; transform: rotate(-22deg); }
-.daisy-3 { width: 40px; height: 40px; margin-right: 6px; transform: rotate(34deg); }
+.daisy-1 { width: 58px; height: 58px; top: -10px; right: -12px; transform: rotate(18deg); }   /* sort du coin en haut */
+.daisy-2 { width: 38px; height: 38px; top: 47%; left: -15px; transform: rotate(-28deg); }     /* dépasse du bord gauche */
+.daisy-3 { width: 30px; height: 30px; top: -15px; left: 58%; transform: rotate(40deg); }      /* posée sur « Soutenir » */
 .spaces-grid, .involve-grid { display: flex; flex-direction: column; gap: 12px; }
 /* ---------- Tablette et ordinateur : la page s'élargit, les listes deviennent des grilles. ---------- */
 @media (min-width: 720px) {
@@ -334,24 +334,27 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 </header>
 <div class="scrim" aria-hidden="true"></div>
 <nav id="menu" class="menu" aria-label="Menu">
+  <svg class="daisy daisy-1" aria-hidden="true"><use href="#daisy"/></svg>
+  <svg class="daisy daisy-2" aria-hidden="true"><use href="#daisy"/></svg>
   <div class="menu-scroll">
     <div class="menu-section">
-      <p class="menu-group">Découvrir<svg class="daisy daisy-1" aria-hidden="true"><use href="#daisy"/></svg></p>
+      <p class="menu-group">Découvrir</p>
       <a class="menu-link" href="#plateforme"><span><strong>La plateforme</strong><small>Un espace pour chacune et chacun</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#le-lieu"><span><strong>Notre premier lieu</strong><small>Chez Marthe, Saint-Savournin</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#equipe"><span><strong>Notre équipe</strong><small>Les visages de Chez Marthe et nos valeurs</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#evenements"><span><strong>Nos évènements</strong><small>La programmation</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     </div>
     <div class="menu-section">
-      <p class="menu-group">Participer<svg class="daisy daisy-2" aria-hidden="true"><use href="#daisy"/></svg></p>
+      <p class="menu-group">Participer</p>
       <a class="menu-link" href="#espaces"><span><strong>Louer un espace</strong><small>Chapelle, salon, atelier, bureau</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#partenaires"><span><strong>Nos partenaires</strong><small>Ils font vivre le lieu</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#s-impliquer"><span><strong>Rejoindre le mouvement</strong><small>Don, adhésion, communauté</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     </div>
   </div>
   <div class="menu-fixed">
+    <svg class="daisy daisy-3" aria-hidden="true"><use href="#daisy"/></svg>
     <div class="menu-section">
-      <p class="menu-group">Soutenir<svg class="daisy daisy-3" aria-hidden="true"><use href="#daisy"/></svg></p>
+      <p class="menu-group">Soutenir</p>
       <div class="menu-support">
         <a class="don" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
         <a class="adherer" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
