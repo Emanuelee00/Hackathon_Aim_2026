@@ -253,8 +253,8 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   --daisy-petal: #C08AD9; --daisy-edge: #F6F5F4;
   filter: drop-shadow(0 2px 4px rgba(27, 19, 25, 0.35));
 }
-.daisy-1 { width: 58px; height: 58px; top: -10px; right: -12px; transform: rotate(18deg); }   /* sort du coin en haut */
-.daisy-2 { width: 38px; height: 38px; top: 47%; left: -15px; transform: rotate(-28deg); }     /* dépasse du bord gauche */
+.daisy-1 { width: 30px; height: 30px; top: 12px; right: 26px; transform: rotate(18deg); }   /* en haut à droite */
+.daisy-2 { position: static; width: 30px; height: 30px; margin-left: 14px; transform: rotate(-28deg); } /* à côté de « Participer » */
 .daisy-3 { width: 30px; height: 30px; top: -15px; left: 58%; transform: rotate(40deg); }      /* posée sur « Soutenir » */
 .spaces-grid, .involve-grid { display: flex; flex-direction: column; gap: 12px; }
 /* ---------- Tablette et ordinateur : la page s'élargit, les listes deviennent des grilles. ---------- */
@@ -335,7 +335,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 <div class="scrim" aria-hidden="true"></div>
 <nav id="menu" class="menu" aria-label="Menu">
   <svg class="daisy daisy-1" aria-hidden="true"><use href="#daisy"/></svg>
-  <svg class="daisy daisy-2" aria-hidden="true"><use href="#daisy"/></svg>
   <div class="menu-scroll">
     <div class="menu-section">
       <p class="menu-group">Découvrir</p>
@@ -345,7 +344,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
       <a class="menu-link" href="#evenements"><span><strong>Nos évènements</strong><small>La programmation</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     </div>
     <div class="menu-section">
-      <p class="menu-group">Participer</p>
+      <p class="menu-group">Participer<svg class="daisy daisy-2" aria-hidden="true"><use href="#daisy"/></svg></p>
       <a class="menu-link" href="#espaces"><span><strong>Louer un espace</strong><small>Chapelle, salon, atelier, bureau</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#partenaires"><span><strong>Nos partenaires</strong><small>Ils font vivre le lieu</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       <a class="menu-link" href="#s-impliquer"><span><strong>Rejoindre le mouvement</strong><small>Don, adhésion, communauté</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
