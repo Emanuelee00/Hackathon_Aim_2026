@@ -383,7 +383,11 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 @media (max-width: 959px) {
   [data-hero] .hero-media::after {
     content: ""; position: absolute; inset: 0; display: block; z-index: 1;
-    background: linear-gradient(to top, rgba(27, 19, 25, 0.8) 0%, rgba(27, 19, 25, 0.55) 34%, rgba(27, 19, 25, 0) 62%);
+    background: linear-gradient(to top, rgba(52, 22, 66, 0.86) 0%, rgba(62, 26, 78, 0.6) 34%, rgba(62, 26, 78, 0) 62%);
   }
 }
 
+
+/* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
+.btn-rent span[aria-hidden="true"] { color: #F6A55C; transition: transform 0.15s; display: inline-block; }
+.btn-rent:hover span[aria-hidden="true"] { transform: translateX(3px); }
