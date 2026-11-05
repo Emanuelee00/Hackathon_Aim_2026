@@ -103,6 +103,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .involve { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
 .involve strong { font-size: 18px; color: var(--violet); }
 .legal { padding-bottom: 24px; }
+.audiences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.audience { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 18px; background: #fff; font-size: 14px; line-height: 1.4; }
+.audience strong { font-size: 16px; color: var(--violet); }
+.events { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.event { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: #fff; }
+.event-date { flex-shrink: 0; width: 64px; height: 64px; border-radius: 14px; background: var(--violet); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-transform: uppercase; }
+.event-date strong { font-family: var(--display); font-size: 22px; line-height: 1; }
+.event-body { display: flex; flex-direction: column; gap: 2px; }
+.event-body small { font-size: 14px; color: var(--muted); }
+#louer-contact { scroll-margin-top: 90px; padding-top: 8px; }
+footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 10px; }
+footer a { color: var(--violet); font-weight: 700; text-decoration: none; }
+footer p { margin: 0; }
 .legal details { background: #fff; border-radius: 16px; padding: 4px 18px; scroll-margin-top: 80px; }
 .legal summary { cursor: pointer; font-weight: 700; padding: 14px 0; }
 .legal h3 { margin: 12px 0 4px; font-size: 16px; }
@@ -136,16 +149,12 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   <a class="logo" href="#"><img src="assets/logo-fond-violet.png" alt="Chez Marthe"></a>
 </header>
 <nav id="menu" class="menu" aria-label="Menu">
-  <p class="menu-group">Le lieu</p>
-  <a href="#espaces">Espaces</a>
-  <a href="#le-lieu">Le lieu</a>
-  <a href="#demande">Faire une demande</a>
-  <a href="#partenaires">Partenaires</a>
-  <a href="#s-impliquer">S’impliquer</a>
-  <p class="menu-group">Informations</p>
-  <a href="#contact">Contact</a>
-  <a href="#mentions-legales">Mentions légales</a>
-  <a href="#confidentialite">Confidentialité</a>
+  <a href="#plateforme">La plateforme</a>
+  <a href="#le-lieu">Notre premier lieu</a>
+  <a href="#evenements">Nos évènements</a>
+  <a href="#espaces">Louer un espace</a>
+  <a href="#partenaires">Nos partenaires</a>
+  <a href="#s-impliquer">Rejoindre le mouvement</a>
 </nav>
 
 <main>
@@ -172,12 +181,16 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     </div>
   </section>
 
-  <section id="espaces" class="block" aria-labelledby="espaces-titre">
-    <p class="eyebrow">NOS ESPACES</p>
-    <h2 id="espaces-titre">Un lieu pour votre activité</h2>
-    <a class="space" href="#demande"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
-    <a class="space" href="#demande"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
-    <a class="space" href="#demande"><img src="assets/facade.webp" alt=""><span><strong>L’Atelier</strong><small class="exchange">Échange de services : vous créez ici, vous animez un atelier pour nous</small></span></a>
+
+  <section id="plateforme" class="block" aria-labelledby="plateforme-titre">
+    <p class="eyebrow">LA PLATEFORME</p>
+    <h2 id="plateforme-titre">Un espace pour chacune et chacun</h2>
+    <div class="audiences">
+      <div class="audience"><strong>Résidentes</strong><span>Vos propositions d’activités, votre parcours et votre plan emploi.</span></div>
+      <div class="audience"><strong>Équipe</strong><span>Coordonner les demandes, le calendrier, les espaces et les bilans.</span></div>
+      <div class="audience"><strong>Bénévoles</strong><span>Donner un coup de main aux événements du lieu.</span></div>
+      <div class="audience"><strong>Associations</strong><span>Vos créneaux, votre agenda et vos réservations.</span></div>
+    </div>
   </section>
 
   <section id="le-lieu" class="block" aria-labelledby="lieu-titre">
@@ -198,13 +211,29 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     </div>
   </section>
 
-  <section id="demande" class="block" aria-labelledby="demande-titre">
-    <p class="eyebrow">FAIRE UNE DEMANDE</p>
-    <h2 id="demande-titre">Louer un espace ou proposer un atelier</h2>
-    <p>Dites-nous ce que vous imaginez : l’activité, la date, le nombre de personnes. Pour l’Atelier, proposez l’atelier gratuit que vous animeriez en échange.</p>
-    <a class="btn btn-primary" href="mailto:contact.chezmarthe@gmail.com?subject=Demande%20d%E2%80%99espace">Écrire à l’équipe</a>
+  <section id="evenements" class="block" aria-labelledby="evenements-titre">
+    <p class="eyebrow">NOS ÉVÈNEMENTS</p>
+    <h2 id="evenements-titre">La programmation</h2>
+    <ol class="events">
+      <li class="event"><span class="event-date"><strong>[jour]</strong>[mois]</span><span class="event-body"><strong>[Titre de l’évènement]</strong><small>[heure] · [espace] · [gratuit / prix]</small></span></li>
+      <li class="event"><span class="event-date"><strong>[jour]</strong>[mois]</span><span class="event-body"><strong>[Titre de l’évènement]</strong><small>[heure] · [espace] · [gratuit / prix]</small></span></li>
+      <li class="event"><span class="event-date"><strong>[jour]</strong>[mois]</span><span class="event-body"><strong>[Titre de l’évènement]</strong><small>[heure] · [espace] · [gratuit / prix]</small></span></li>
+    </ol>
+    <p class="small">Toute la programmation et les inscriptions sur notre Instagram.</p>
+  </section>
+
+  <section id="espaces" class="block" aria-labelledby="espaces-titre">
+    <p class="eyebrow">LOUER UN ESPACE</p>
+    <h2 id="espaces-titre">Un lieu pour votre activité</h2>
+    <a class="space" href="#louer-contact"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#louer-contact"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#louer-contact"><img src="assets/facade.webp" alt=""><span><strong>L’Atelier</strong><small class="exchange">Échange de services : vous créez ici, vous animez un atelier pour nous</small></span></a>
+    <p id="louer-contact">Dites-nous ce que vous imaginez : l’activité, la date, le nombre de personnes. Pour l’Atelier, proposez l’atelier gratuit que vous animeriez en échange.</p>
+    <a class="btn btn-primary" href="mailto:contact.chezmarthe@gmail.com?subject=Louer%20un%20espace">Écrire à l’équipe</a>
     <p class="small">ou directement : contact.chezmarthe@gmail.com</p>
   </section>
+
+
 
   <section id="partenaires" class="block" aria-labelledby="partenaires-titre">
     <p class="eyebrow">ILS FONT VIVRE LE LIEU</p>
@@ -256,7 +285,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
   </section>
 </main>
 
-<footer>Chez Marthe · Marseille</footer>
+<footer><nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
   const button = document.querySelector('.menu-button');
