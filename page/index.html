@@ -81,31 +81,35 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .menu-info a:hover { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .menu, .menu.open, .scrim, .menu-button svg .line { transition: none; } }
 
-.hero { position: relative; min-height: calc(100svh - var(--bar)); display: flex; }
-.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero::after { content: ""; position: absolute; inset: 0; background: rgba(27, 19, 25, 0.30); }
+.hero { position: relative; min-height: calc(100svh - var(--bar)); display: flex; background: var(--night); overflow: hidden; }
+/* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
+.hero-media { position: absolute; inset: 0; background: var(--night); }
+.hero-media::after { content: ""; position: absolute; inset: 0; background: rgba(27, 19, 25, 0.42); }
+.clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
+.clip.is-on { opacity: 1; }
 .hero-inner {
-  position: relative; z-index: 1; width: 100%; max-width: 480px; margin: 0 auto;
-  padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 16px;
+  width: 100%; max-width: 520px; margin: 0 auto;
+  padding: 20px 18px 24px; display: flex; flex-direction: column; gap: 18px;
 }
-.hero-center { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-
-.card {
-  /* Plus transparente que la maquette : on voit davantage la cour derrière. */
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 28px; padding: 30px 22px;
-  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
+.hero-text {
+  position: relative; z-index: 1; flex-grow: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;
+  color: #fff; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
 }
-.card h1 { margin: 0; font-family: var(--display); font-size: 32px; line-height: 1.05; color: var(--violet); text-wrap: balance; }
-.card p { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; max-width: 26em; }
+.hero-text h1 { margin: 0; font-family: var(--display); font-size: 40px; line-height: 1.02; text-wrap: balance; }
+.hero-text p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 500; max-width: 24em; }
+.hero-text .city { color: var(--pink); }
 /* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
-.city { color: var(--violet); font-weight: 700; white-space: nowrap; }
+.city { font-weight: 700; white-space: nowrap; }
 .city-cursor { margin-left: 1px; font-weight: 400; animation: city-blink 1s step-end infinite; }
 @keyframes city-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .city-cursor { animation: none; } }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.hero-text .btn, .hero-text .socials { text-shadow: none; }
+.hero .btn-primary { background: var(--pink); color: var(--night); }
+.hero .btn-primary:hover { background: #f5b4bc; }
+.hero .btn-outline { border-color: #fff; color: #fff; background: rgba(255, 255, 255, 0.12); }
+.hero .btn-rent { position: relative; z-index: 1; background: #fff; color: var(--violet); }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 4px; }
 .btn { display: inline-block; border-radius: 999px; font-weight: 700; text-decoration: none; text-align: center; }
 .btn-primary { padding: 14px 22px; background: var(--violet); color: #fff; }
@@ -169,11 +173,28 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 
 /* Ordinateur : titre sur une ligne, « au cœur de » toujours collé à la ville. */
 @media (min-width: 720px) {
-  .hero-inner { max-width: 780px; }
-  .card { padding: 40px 36px; }
-  .card h1 { font-size: 44px; white-space: nowrap; }
-  .card p { max-width: none; }
+  .hero-text h1 { font-size: 48px; white-space: nowrap; }
+  .hero-text p { max-width: none; }
   .keep { white-space: nowrap; }
+}
+/* Grand écran : texte à gauche sur fond violet, vidéo verticale dans un cadre à droite. */
+@media (min-width: 960px) {
+  .hero { background: var(--violet); align-items: center; }
+  .hero-inner {
+    max-width: 1180px; padding: 48px 40px; gap: 28px 64px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "text media" "rent media"; align-items: center;
+  }
+  .hero-media {
+    position: relative; grid-area: media;
+    height: min(calc(100svh - var(--bar) - 96px), 680px); aspect-ratio: 9 / 16;
+    border-radius: 32px; overflow: hidden; box-shadow: 0 24px 60px rgba(27, 19, 25, 0.35);
+  }
+  .hero-media::after { display: none; }
+  .hero-text { grid-area: text; align-items: flex-start; text-align: left; text-shadow: none; justify-content: flex-end; }
+  .hero-text h1 { font-size: 60px; }
+  .hero-text p { font-size: 20px; }
+  .hero-text .actions, .hero-text .socials { justify-content: flex-start; }
+  .hero .btn-rent { grid-area: rent; justify-self: start; align-self: start; padding: 16px 32px; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn, .socials a { transition: transform 0.15s; }
@@ -215,10 +236,12 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 
 <main>
   <section class="hero">
-    <img src="assets/cour.jpg" alt="">
     <div class="hero-inner">
-      <div class="hero-center">
-        <div class="card">
+      <div class="hero-media" aria-hidden="true">
+        <video class="clip is-on" muted playsinline preload="auto" poster="assets/cour.jpg"></video>
+        <video class="clip" muted playsinline preload="auto"></video>
+      </div>
+      <div class="hero-text">
           <h1>Rejoignez l’aventure</h1>
           <p>Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
           <div class="actions">
@@ -232,7 +255,6 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
             <!-- TikTok : à réactiver avec le lien du compte quand il existera.
             <a class="tt" href="#" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.6 3c.4 2.1 1.7 3.5 3.9 3.7v3.1c-1.4 0-2.7-.4-3.9-1.2v6.3c0 3.3-2.5 5.6-5.6 5.6S5.4 18.2 5.4 15c0-3.3 2.8-5.7 6.2-5.3v3.2c-1.5-.4-3 .6-3 2.1 0 1.3 1 2.3 2.4 2.3 1.5 0 2.4-1 2.4-2.6V3z"/></svg></a> -->
           </nav>
-        </div>
       </div>
       <a class="btn btn-rent" href="#espaces">Louer un espace</a>
     </div>
@@ -346,6 +368,28 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 <footer><nav aria-label="Informations"><a href="#contact">Contact</a><a href="#mentions-legales">Mentions légales</a><a href="#confidentialite">Confidentialité</a></nav><p>Chez Marthe · Marseille</p></footer>
 
 <script>
+  // Les 3 vidéos à la suite, en boucle : deux lecteurs qui se relaient pour un fondu sans écran noir.
+  (function videos() {
+    const sources = ['assets/videos/video-1.mp4', 'assets/videos/video-2.mp4', 'assets/videos/video-3.mp4'];
+    const clips = document.querySelectorAll('.clip');
+    if (clips.length !== 2) return;
+    let current = 0, active = 0;
+    clips[0].src = sources[0];
+    clips[1].src = sources[1];
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    function next() {
+      const incoming = 1 - active;
+      clips[incoming].play().catch(() => {});
+      clips[incoming].classList.add('is-on');
+      clips[active].classList.remove('is-on');
+      const outgoing = active;
+      active = incoming;
+      current = (current + 1) % sources.length;
+      setTimeout(() => { clips[outgoing].src = sources[(current + 1) % sources.length]; clips[outgoing].load(); }, 800);
+    }
+    clips.forEach(clip => clip.addEventListener('ended', next));
+    clips[0].play().catch(() => {});
+  })();
   // Villes du nouveau site, avec le même rythme (frappe 90 ms, effacement 45 ms, pause 1,5 s).
   (function typewriter() {
     const words = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
