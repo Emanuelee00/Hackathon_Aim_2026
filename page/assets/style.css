@@ -368,3 +368,15 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
 .portal-card .signup { font-size: 14px; color: var(--night); }
 .portal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .portal-actions .btn-outline { background: #fff; }
+
+/* ---------- Réseaux discrets sous « Louer un espace » ---------- */
+.hero-follow span { white-space: nowrap; }
+.hero-follow { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; opacity: 0.95; }
+.hero-social-mini { display: flex; gap: 2px; }
+.hero-social-mini a { background: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: inherit; }
+.hero-social-mini a:hover { background: rgba(255, 255, 255, 0.15); }
+@media (min-width: 960px) {
+  .hero-follow { justify-content: flex-start; color: var(--violet); }
+  .hero-social-mini a:hover { background: rgba(102, 43, 128, 0.1); }
+}
+@media (max-width: 359px) { .hero-follow > span { display: none; } }
