@@ -167,9 +167,13 @@ footer p { margin: 0; }
 
 footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: var(--muted); }
 
+/* Ordinateur : titre sur une ligne, « au cœur de » toujours collé à la ville. */
 @media (min-width: 720px) {
+  .hero-inner { max-width: 780px; }
   .card { padding: 40px 36px; }
-  .card h1 { font-size: 40px; }
+  .card h1 { font-size: 44px; white-space: nowrap; }
+  .card p { max-width: none; }
+  .keep { white-space: nowrap; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn, .socials a { transition: transform 0.15s; }
@@ -216,7 +220,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
       <div class="hero-center">
         <div class="card">
           <h1>Rejoignez l’aventure</h1>
-          <p>Soutenez un lieu tremplin pour les femmes, au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
+          <p>Soutenez un lieu tremplin pour les femmes, <span class="keep">au cœur de <span class="city" aria-hidden="true"><span id="city">Marseille</span><span class="city-cursor">|</span></span></span><span class="sr-only">Marseille, Nice, Avignon, Paris, Angers ou La Ciotat</span>.</p>
           <div class="actions">
             <a class="btn btn-primary" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
             <a class="btn btn-outline" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
