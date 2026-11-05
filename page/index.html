@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chez Marthe — Faisons vivre le lieu</title>
+<meta name="description" content="Chez Marthe, des lieux tremplins pour les femmes à Marseille. Faire un don, adhérer, louer un espace.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap">
+<style>
+/* Charte chezmarthe.org — variante 1 : bandeau violet, carte blanche transparente sur la photo. */
+@font-face { font-family: "Amiamie"; font-weight: 400 900; font-display: swap; src: url(assets/Amiamie-Black.otf) format("opentype"); }
+:root {
+  --violet: #662B80;
+  --violet-dark: #57256d;
+  --pink: #F2A1AB;
+  --night: #1B1319;
+  --cream: #F6F5F4;
+  --muted: #5e5360;
+  --display: "Amiamie", "Raleway", system-ui, sans-serif;
+  --body: "Raleway", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--body); color: var(--night); background: var(--cream); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+.bar {
+  position: sticky; top: 0; z-index: 10;
+  height: 72px; padding: 0 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--violet);
+  box-shadow: 0 4px 16px rgba(27, 19, 25, 0.18);
+}
+.menu-button {
+  width: 48px; height: 48px; border: 0; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14); color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.bar .logo img { height: 52px; width: auto; display: block; }
+.menu {
+  position: fixed; top: 72px; left: 0; right: 0; z-index: 9;
+  display: none; flex-direction: column;
+  background: var(--violet); padding: 8px 14px 16px;
+}
+.menu.open { display: flex; }
+.menu a { color: #fff; text-decoration: none; font-weight: 700; font-size: 18px; padding: 14px 6px; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+
+.hero { position: relative; min-height: calc(100svh - 72px); display: flex; }
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero::after { content: ""; position: absolute; inset: 0; background: rgba(27, 19, 25, 0.30); }
+.hero-inner {
+  position: relative; z-index: 1; width: 100%; max-width: 480px; margin: 0 auto;
+  padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 16px;
+}
+.hero-center { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.card {
+  /* Plus transparente que la maquette : on voit davantage la cour derrière. */
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px; padding: 30px 22px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
+}
+.card h1 { margin: 0; font-family: var(--display); font-size: 32px; line-height: 1.05; color: var(--violet); text-wrap: balance; }
+.card p { margin: 0; font-size: 17px; line-height: 1.5; font-weight: 500; max-width: 26em; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 4px; }
+.btn { display: inline-block; border-radius: 999px; font-weight: 700; text-decoration: none; text-align: center; }
+.btn-primary { padding: 14px 22px; background: var(--violet); color: #fff; }
+.btn-primary:hover { background: var(--violet-dark); }
+.btn-outline { padding: 12px 20px; border: 2px solid var(--violet); color: var(--violet); background: rgba(255, 255, 255, 0.5); }
+.btn-rent { display: block; padding: 17px; font-size: 17px; background: var(--pink); color: var(--night); }
+
+.socials { display: flex; justify-content: center; gap: 12px; padding-top: 8px; }
+.socials a { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.ig { background: linear-gradient(45deg, #F58529, #DD2A7B 55%, #8134AF); }
+.fb { background: #1877F2; }
+.li { background: #0A66C2; }
+.tt { background: #000; }
+
+.spaces { max-width: 480px; margin: 0 auto; padding: 28px 16px 48px; display: flex; flex-direction: column; gap: 12px; }
+.spaces h2 { margin: 0; font-family: var(--display); font-size: 26px; color: var(--violet); }
+.space { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
+.space img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
+.space span { display: flex; flex-direction: column; gap: 2px; }
+.space small { font-size: 14px; color: var(--muted); }
+.space .exchange { color: var(--violet); font-weight: 700; }
+
+footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: var(--muted); }
+
+@media (min-width: 720px) {
+  .card { padding: 40px 36px; }
+  .card h1 { font-size: 40px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .socials a { transition: transform 0.15s; }
+  .btn:hover, .socials a:hover { transform: translateY(-1px); }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <button class="menu-button" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <a class="logo" href="#"><img src="assets/logo-fond-violet.png" alt="Chez Marthe"></a>
+</header>
+<nav id="menu" class="menu" aria-label="Menu">
+  <a href="#espaces">Nos espaces</a>
+  <a href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
+  <a href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <img src="assets/cour.jpg" alt="">
+    <div class="hero-inner">
+      <div class="hero-center">
+        <div class="card">
+          <h1>Faisons vivre Chez Marthe</h1>
+          <p>Votre don aménage les espaces. Votre adhésion fait grandir le projet.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://www.helloasso.com/associations/chez-marthe/formulaires/3">Faire un don</a>
+            <a class="btn btn-outline" href="https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe">Adhérer</a>
+          </div>
+          <nav class="socials" aria-label="Réseaux sociaux">
+            <a class="ig" href="#" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="#fff" stroke="none"/></svg></a>
+            <a class="fb" href="#" aria-label="Facebook"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21z"/></svg></a>
+            <a class="li" href="#" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M4.5 9h3v11h-3zM6 3.8a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6zM10 9h2.9v1.5c.4-.8 1.4-1.7 3-1.7 3.1 0 3.7 2 3.7 4.7V20h-3v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H10z"/></svg></a>
+            <a class="tt" href="#" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.6 3c.4 2.1 1.7 3.5 3.9 3.7v3.1c-1.4 0-2.7-.4-3.9-1.2v6.3c0 3.3-2.5 5.6-5.6 5.6S5.4 18.2 5.4 15c0-3.3 2.8-5.7 6.2-5.3v3.2c-1.5-.4-3 .6-3 2.1 0 1.3 1 2.3 2.4 2.3 1.5 0 2.4-1 2.4-2.6V3z"/></svg></a>
+          </nav>
+        </div>
+      </div>
+      <a class="btn btn-rent" href="#espaces">Louer un espace</a>
+    </div>
+  </section>
+
+  <section id="espaces" class="spaces" aria-labelledby="espaces-titre">
+    <h2 id="espaces-titre">Nos espaces</h2>
+    <a class="space" href="#"><img src="assets/panneaux.webp" alt=""><span><strong>La Chapelle</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#"><img src="assets/sororite.webp" alt=""><span><strong>Salon collectif / Séminaire</strong><small>[capacité] pers. · [prix]</small></span></a>
+    <a class="space" href="#"><img src="assets/facade.webp" alt=""><span><strong>L'Atelier</strong><small class="exchange">Échange de services</small></span></a>
+  </section>
+</main>
+
+<footer>Chez Marthe · Marseille — maquette de travail</footer>
+
+<script>
+  const button = document.querySelector('.menu-button');
+  const menu = document.getElementById('menu');
+  button.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    button.setAttribute('aria-expanded', String(open));
+    button.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  });
+  menu.addEventListener('click', event => {
+    if (event.target.closest('a')) { menu.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); }
+  });
+</script>
+</body>
+</html>
