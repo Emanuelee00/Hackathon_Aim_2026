@@ -366,13 +366,12 @@
    le reste de la photo reste net. */
 @media (max-width: 959px) {
   .cm-home .hero-media::after { display: none; }
-  /* Fascia viola sfumata a tutta larghezza dietro il titolo e la frase : niente bordi, svanisce in alto e in basso. */
+  /* Fascia viola sfumata (senza sfocatura) a tutta larghezza dietro il titolo e la frase : niente bordi, svanisce in alto e in basso. */
   .cm-home .hero-headline { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 8px 0; }
   .cm-home .hero-headline::before {
     content: ""; position: absolute; z-index: -1; pointer-events: none;
     top: -56px; bottom: -56px; left: calc(50% - 50vw); width: 100vw;
     background: rgba(87, 37, 109, 0.62);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 32%, #000 68%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, #000 32%, #000 68%, transparent 100%);
   }
