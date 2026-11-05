@@ -98,8 +98,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 @media (prefers-reduced-motion: reduce) { .menu, .menu.open, .scrim, .menu-button svg .line { transition: none; } }
 
 .hero { position: relative; margin-top: calc(-1 * var(--bar)); padding-top: var(--bar); min-height: 100vh; box-sizing: border-box; display: flex; background: var(--night); overflow: hidden; }
-/* Téléphone : la vidéo remplit tout l'écran, même quand la barre d'adresse du navigateur se cache. */
-@supports (height: 100lvh) { .hero { min-height: 100lvh; } }
+/* Hauteur réellement visible (dvh) : la vidéo s'adapte quand les barres du navigateur
+   apparaissent ou disparaissent, sans que le bas soit caché dessous. */
+@supports (height: 100dvh) { .hero { min-height: 100dvh; } }
 /* Les 3 vidéos s'enchaînent en fondu (voir le script en bas de page). */
 .hero-media { position: absolute; inset: 0; background: var(--night); }
 /* Pas de voile : la vidéo garde ses couleurs d'origine. */
