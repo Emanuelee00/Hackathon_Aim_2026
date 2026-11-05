@@ -144,6 +144,18 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--pink); outline-
 .involve { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
 .involve strong { font-size: 18px; color: var(--violet); }
 .legal { padding-bottom: 24px; }
+.team { display: flex; flex-direction: column; gap: 10px; }
+.member { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 18px; background: #fff; }
+/* Initiales en attendant les photos. */
+.avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--violet); font-family: var(--display); font-size: 26px; }
+.member h3 { margin: 0; font-size: 18px; }
+.member .role { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #A25889; }
+.member p { font-size: 15px; line-height: 1.5; }
+.subtitle { margin: 18px 0 2px; font-family: var(--display); font-size: 22px; color: var(--violet); scroll-margin-top: calc(var(--bar) + 12px); }
+.values { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .values { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.value { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 18px; background: var(--violet); color: #fff; font-size: 14px; line-height: 1.45; }
+.value strong { font-size: 17px; color: var(--pink); }
 .audiences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .audience { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 18px; background: #fff; font-size: 14px; line-height: 1.4; }
 .audience strong { font-size: 16px; color: var(--violet); }
@@ -216,6 +228,7 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
     <p class="menu-group">Découvrir</p>
     <a class="menu-link" href="#plateforme"><span><strong>La plateforme</strong><small>Un espace pour chacune et chacun</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     <a class="menu-link" href="#le-lieu"><span><strong>Notre premier lieu</strong><small>Chez Marthe, Saint-Savournin</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    <a class="menu-link" href="#equipe"><span><strong>Notre équipe</strong><small>Les visages de Chez Marthe et nos valeurs</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
     <a class="menu-link" href="#evenements"><span><strong>Nos évènements</strong><small>La programmation</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
   </div>
   <div class="menu-section">
@@ -287,6 +300,31 @@ footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: va
       <figure><img src="assets/sororite.webp" alt=""><figcaption><strong>Se reconstruire</strong>Un lieu d’écoute, sans jugement, à son rythme.</figcaption></figure>
       <figure><img src="assets/cantine.webp" alt=""><figcaption><strong>Se nourrir</strong>Des repas partagés à prix libre avec la cantine.</figcaption></figure>
       <figure><img src="assets/jardin.webp" alt=""><figcaption><strong>Rayonner</strong>Des rencontres et des projets avec tout le quartier.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="equipe" class="block" aria-labelledby="equipe-titre">
+    <p class="eyebrow">NOTRE ÉQUIPE</p>
+    <h2 id="equipe-titre">Les visages de Chez Marthe</h2>
+    <div class="team">
+      <article class="member">
+        <span class="avatar" aria-hidden="true">V</span>
+        <div><h3>Véronique</h3><p class="role">Présidente</p><p>[Une ou deux phrases de présentation]</p></div>
+      </article>
+      <article class="member">
+        <span class="avatar" aria-hidden="true">J</span>
+        <div><h3>Joria</h3><p class="role">[Rôle]</p><p>[Une ou deux phrases de présentation]</p></div>
+      </article>
+      <article class="member">
+        <span class="avatar" aria-hidden="true">F</span>
+        <div><h3>Flora</h3><p class="role">[Rôle]</p><p>[Une ou deux phrases de présentation]</p></div>
+      </article>
+    </div>
+    <h3 id="valeurs" class="subtitle">Nos valeurs</h3>
+    <div class="values">
+      <div class="value"><strong>[Valeur 1]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
+      <div class="value"><strong>[Valeur 2]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
+      <div class="value"><strong>[Valeur 3]</strong><span>[Ce qu’elle veut dire concrètement chez Marthe]</span></div>
     </div>
   </section>
 
