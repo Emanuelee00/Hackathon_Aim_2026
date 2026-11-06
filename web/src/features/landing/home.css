@@ -415,7 +415,7 @@
 .cm-home .block-wall::before {
   content: ""; position: absolute; z-index: -1; pointer-events: none;
   top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw;
-  background: linear-gradient(rgba(246, 245, 244, 0.8), rgba(246, 245, 244, 0.72)), url('/home/mur-des-mots.jpg') center / cover no-repeat;
+  background: linear-gradient(rgba(246, 245, 244, 0.8), rgba(246, 245, 244, 0.72)), url('/foto/mur-des-mots.jpg') center / cover no-repeat;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
 }

@@ -32,19 +32,19 @@ function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 }
 }
 
 const pillars = [
-  { title: 'Se loger', photo: '/chezmarthe/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité.' },
-  { title: 'Se reconstruire', photo: '/chezmarthe/sororite.webp', text: 'Un lieu d’écoute, sans jugement, à son rythme.' },
-  { title: 'Se nourrir', photo: '/chezmarthe/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine.' },
-  { title: 'Rayonner', photo: '/chezmarthe/jardin.webp', text: 'Des rencontres et des projets avec tout le quartier.' },
+  { title: 'Se loger', photo: '/foto/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité.' },
+  { title: 'Se reconstruire', photo: '/foto/sororite.webp', text: 'Un lieu d’écoute, sans jugement, à son rythme.' },
+  { title: 'Se nourrir', photo: '/foto/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine.' },
+  { title: 'Rayonner', photo: '/foto/jardin.webp', text: 'Des rencontres et des projets avec tout le quartier.' },
 ];
 
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
 const publicSpaces = [
-  { id: 'chapelle', name: 'La Chapelle', photo: '/home/chapelle.jpg', info: '80 à 150 personnes · 114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 150 € · journée 300 €', note: 'Sonorisation (micro + enceinte) : 50 €' },
-  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/home/salon.jpg', info: 'Max. 20 personnes · 28 m² · séminaires et réunions', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
-  { id: 'reunion', name: 'Le Bureau', photo: '/home/bureau.jpg', info: 'Max. 6 personnes · 16 m² · réunions en petit comité', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
-  { id: 'atelier', name: 'L’Atelier', photo: '/home/bienvenue.jpg', exchange: 'Échange de services : vous créez ici, vous animez un atelier pour nous' },
+  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', info: '80 à 150 personnes · 114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 150 € · journée 300 €', note: 'Sonorisation (micro + enceinte) : 50 €' },
+  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', info: 'Max. 20 personnes · 28 m² · séminaires et réunions', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
+  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', info: 'Max. 6 personnes · 16 m² · réunions en petit comité', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
+  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', exchange: 'Échange de services : vous créez ici, vous animez un atelier pour nous' },
 ];
 const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
@@ -81,7 +81,7 @@ function Hero() {
   const city = useTypewriter(cities);
   return <section className="home-hero">
     <div className="hero-inner">
-      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/chezmarthe/cour.jpg" alt="" /></div>
+      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/foto/haut-de-page.jpg" alt="" /></div>
       <div className="hero-text">
         <div className="hero-headline">
           <h1>Rejoignez l’aventure</h1>
@@ -110,7 +110,7 @@ export default function Landing() {
       <section id="le-lieu" className="block" aria-labelledby="lieu-titre">
         <p className="kicker">NOTRE PREMIER LIEU</p>
         <h2 id="lieu-titre">Chez Marthe, Saint-Savournin</h2>
-        <img className="wide" src="/chezmarthe/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" />
+        <img className="wide" src="/foto/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" />
         <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
         <ul className="facts">
           <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
@@ -142,7 +142,7 @@ export default function Landing() {
       <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
         <p className="kicker">ILS FONT VIVRE LE LIEU</p>
         <h2 id="partenaires-titre">Nos partenaires</h2>
-        <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/chezmarthe/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+        <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
       </section>
 
       <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">

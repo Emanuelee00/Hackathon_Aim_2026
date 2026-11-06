@@ -3,9 +3,9 @@ import HomeShell from '../landing/HomeShell.jsx';
 // « Notre équipe » (/equipe), reached from the menu. To complete: roles, photos (add `photo`), presentations, values.
 const members = [
   { name: 'Véronique', role: 'Présidente' },
-  { name: 'Joria', role: '[Rôle]', photo: '/equipe/joria.jpg' },
+  { name: 'Joria', role: '[Rôle]', photo: '/foto/equipe/joria.jpg' },
   { name: 'Flora', role: '[Rôle]' },
-  { name: 'Sarah', role: '[Rôle]', photo: '/equipe/sarah.jpg' },
+  { name: 'Sarah', role: '[Rôle]', photo: '/foto/equipe/sarah.jpg' },
 ];
 
 export default function Team() {

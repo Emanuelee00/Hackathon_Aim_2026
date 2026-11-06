@@ -1,5 +1,8 @@
 # Lavorare sulle immagini del sito (Canva, Figma…)
 
+Tutte le foto del sito sono in **`web/public/foto/`** (con le sottocartelle `partenaires/` e `equipe/`).
+Gli originali pesanti restano in `design/originaux/` (non vanno su GitHub).
+
 ## 1. Vedere le pagine in Canva
 `make canva-pdf` (con il sito acceso su http://localhost:8010) crea in `design/canva/`
 un PDF per ogni pagina, in versione telefono e computer:

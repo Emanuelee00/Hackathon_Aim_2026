@@ -10,10 +10,10 @@ const requestSignUp = ['residents', 'partenaires'];
 
 // Left panel of the page: a photo of the place and a word for each audience.
 const welcome = {
-  residents: { photo: '/chezmarthe/sororite.webp', title: 'Votre espace, à votre rythme', text: 'Vos propositions d’activités, votre parcours et votre plan emploi, au même endroit.' },
-  equipe: { photo: '/chezmarthe/panneaux.webp', title: 'Coordonner la vie du lieu', text: 'Les demandes, le calendrier, les espaces et les bilans de Chez Marthe.' },
-  benevoles: { photo: '/chezmarthe/jardin.webp', title: 'Merci pour le coup de main', text: 'Choisissez les missions qui vous plaisent, l’équipe vous confirme la veille.' },
-  partenaires: { photo: '/chezmarthe/cantine.webp', title: 'Un seul agenda pour tout le lieu', text: 'Vos créneaux, votre agenda synchronisé et vos réservations d’espaces.' },
+  residents: { photo: '/foto/sororite.webp', title: 'Votre espace, à votre rythme', text: 'Vos propositions d’activités, votre parcours et votre plan emploi, au même endroit.' },
+  equipe: { photo: '/foto/panneaux.webp', title: 'Coordonner la vie du lieu', text: 'Les demandes, le calendrier, les espaces et les bilans de Chez Marthe.' },
+  benevoles: { photo: '/foto/jardin.webp', title: 'Merci pour le coup de main', text: 'Choisissez les missions qui vous plaisent, l’équipe vous confirme la veille.' },
+  partenaires: { photo: '/foto/cantine.webp', title: 'Un seul agenda pour tout le lieu', text: 'Vos créneaux, votre agenda synchronisé et vos réservations d’espaces.' },
 };
 
 function Fields({ spaceId, signingUp, form, change }) {
