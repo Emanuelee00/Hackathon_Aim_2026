@@ -8,7 +8,8 @@ export OPENAI_API OPENAI_MODEL
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
+# images: photos from design/images → site; canva-pdf: pages in PDF for Canva (needs the site on :8010).
+.PHONY: images canva-pdf all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
 
 all: install
 	@set -eu; \
@@ -89,3 +90,11 @@ tunnel:
 # Come `tunnel`, ma lo rilancia da solo se si ferma o perde la connessione.
 tunnel-forever:
 	./cloudflare/tunnel-forever.sh
+
+# Photos exportées de Canva (ou d'ailleurs) → site, voir design/README.md.
+images:
+	uv run --with pillow python scripts/import_images.py
+
+# Pages du site en PDF (téléphone et ordinateur) à importer dans Canva. Le site doit tourner sur :8010.
+canva-pdf:
+	node scripts/canva_pdf.cjs

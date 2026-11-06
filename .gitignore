@@ -15,3 +15,5 @@ qr-demo.png
 /public/
 marthe.db
 !.env.example
+design/canva/*.pdf
+design/images/done/
