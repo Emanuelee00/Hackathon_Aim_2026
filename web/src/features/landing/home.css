@@ -384,30 +384,43 @@
   background: rgba(0, 0, 0, 0.3);
 }
 @media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
-.cm-home .place-bg h2, .cm-home .place-bg .eyebrow, .cm-home .place-bg p:not(.eyebrow) { color: #fff; }
+.cm-home .place-bg .eyebrow, .cm-home .place-bg p:not(.eyebrow) { color: #fff; }
+.cm-home .place-bg h2 { color: var(--violet); }
 
 /* « Notre premier lieu » : deux chiffres. */
-.cm-home .place-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (max-width: 520px) { .cm-home .place-facts { grid-template-columns: 1fr; } }
+.cm-home .place-facts { display: flex; gap: 40px; margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.45); }
+.cm-home .place-facts li { flex: 1 1 0; min-width: 0; padding: 0; border-radius: 0; background: none; }
+.cm-home .place-facts strong { display: block; margin-bottom: 6px; color: var(--pink); font-size: 56px; }
+.cm-home .place-facts span { color: #fff; font-size: 15px; line-height: 1.4; }
+@media (max-width: 520px) { .cm-home .place-facts { gap: 24px; } .cm-home .place-facts strong { font-size: 46px; } }
 
-/* « Louer un espace » : une bande rose pleine largeur (comme la bande violette des piliers, mais rose),
-   avec des cartes blanches : photo, caractéristiques, tarifs ligne par ligne. */
+/* « Louer un espace » : bande rose pleine largeur ; chaque lieu est une grande photo avec son titre dans un
+   riquadro orange (l'orange des marguerites) et un panneau de verre (photo floutée dessous) pour la partie à lire. */
 .cm-home #espaces { isolation: isolate; padding-bottom: 64px; }
 .cm-home #espaces::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; background: var(--pink); }
 .cm-home #espaces .kicker { color: var(--violet-dark); }
 .cm-home #espaces h2 { color: var(--violet); }
-.cm-home .home-spaces { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 8px; }
-@media (min-width: 720px) { .cm-home .home-spaces { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .cm-home .home-spaces { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.cm-home .space { display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #fff; color: var(--night); text-decoration: none; box-shadow: 0 10px 30px rgba(27, 19, 25, 0.14); }
-.cm-home .space img { display: block; width: 100%; height: 190px; object-fit: cover; object-position: center 35%; }
-.cm-home .space-body { display: flex; flex-direction: column; gap: 10px; flex-grow: 1; padding: 18px 20px 20px; }
-.cm-home .space-body h3 { margin: 0; font-size: 20px; line-height: 1.2; color: var(--violet); }
+.cm-home .home-spaces { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
+@media (min-width: 760px) { .cm-home .home-spaces { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; } }
+.cm-home .space { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 540px; overflow: hidden; isolation: isolate; border-radius: 28px; color: #fff; text-decoration: none; box-shadow: 0 14px 36px rgba(27, 19, 25, 0.22); }
+.cm-home .space > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.cm-home .space:hover > img { transform: scale(1.03); }
+.cm-home .space-title {
+  position: absolute; top: 18px; left: 18px; margin: 0; padding: 10px 18px 9px; max-width: calc(100% - 36px);
+  border-radius: 14px; border: 2px solid var(--night); background: #F28C38; color: var(--night);
+  font-family: var(--display); font-size: 21px; font-weight: 400; line-height: 1.15;
+  box-shadow: 5px 5px 0 var(--violet); transform: rotate(-1.5deg);
+}
+.cm-home .space-body {
+  display: flex; flex-direction: column; gap: 12px; margin: 14px; padding: 18px 20px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 20px;
+  background: rgba(27, 19, 25, 0.42); backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
 .cm-home .space-details { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.45; }
-.cm-home .space-prices { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-top: 12px; border-top: 1px solid var(--line); }
+.cm-home .space-prices { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
 .cm-home .space-prices div { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
 .cm-home .space-prices dt { margin: 0; }
-.cm-home .space-prices dd { margin: 0; font-weight: 700; color: var(--violet); }
-.cm-home .space-body p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
-.cm-home .space-body .space-exchange { font-size: 15px; color: var(--night); }
-.cm-home .space-cta { margin-top: auto; padding-top: 6px; font-weight: 700; color: var(--violet); }
+.cm-home .space-prices dd { margin: 0; font-weight: 700; color: #F28C38; }
+.cm-home .space-body p { margin: 0; font-size: 14px; line-height: 1.5; color: #f1e6f3; }
+.cm-home .space-body .space-exchange { font-size: 15px; color: #fff; }
+.cm-home .space-cta { font-weight: 700; color: #fff; }

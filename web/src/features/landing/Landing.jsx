@@ -46,10 +46,10 @@ function Wave({ className }) {
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
 const publicSpaces = [
-  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', details: ['80 à 150 personnes', '114 m²', 'Concerts, spectacles, danse, yoga'], prices: [['2 heures', '40 €'], ['Demi-journée', '150 €'], ['Journée', '300 €']], note: 'Sonorisation (micro + enceinte) : 50 € en plus.' },
-  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
+  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', focus: 'center 14%', details: ['80 à 150 personnes', '114 m²', 'Concerts, spectacles, danse, yoga'], prices: [['2 heures', '40 €'], ['Demi-journée', '150 €'], ['Journée', '300 €']], note: 'Sonorisation (micro + enceinte) : 50 € en plus.' },
+  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', focus: 'center 45%', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
+  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', focus: 'center 50%', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
+  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', focus: 'center 30%', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
 ];
 const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
@@ -149,9 +149,9 @@ export default function Landing() {
         <p className="kicker">LOUER UN ESPACE</p>
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
         <div className="home-spaces">{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
-          <img src={space.photo} alt="" loading="lazy" />
+          <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
+          <h3 className="space-title">{space.name}</h3>
           <div className="space-body">
-            <h3>{space.name}</h3>
             <ul className="space-details">{space.details.map(detail => <li key={detail}>{detail}</li>)}</ul>
             {space.prices && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
             {space.note && <p>{space.note}</p>}
