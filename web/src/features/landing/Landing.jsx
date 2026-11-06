@@ -32,11 +32,16 @@ function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 }
 }
 
 const pillars = [
-  { title: 'Se loger', photo: '/foto/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité.' },
-  { title: 'Se reconstruire', photo: '/foto/sororite.webp', text: 'Un lieu d’écoute, sans jugement, à son rythme.' },
-  { title: 'Se nourrir', photo: '/foto/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine.' },
-  { title: 'Rayonner', photo: '/foto/jardin.webp', text: 'Des rencontres et des projets avec tout le quartier.' },
+  { title: 'Se loger', photo: '/foto/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité avant la prochaine étape.' },
+  { title: 'Se reconstruire', photo: '/foto/sororite.webp', text: 'Un lieu d’écoute, sans jugement, pour prendre soin de soi à son rythme.' },
+  { title: 'Se nourrir', photo: '/foto/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine et le jardin.' },
+  { title: 'Rayonner', photo: '/foto/jardin.webp', text: 'Des rencontres, des projets et des coups de main avec tout le quartier.' },
 ];
+
+// Violet wave closing the band above and below (same as the platform's public site).
+function Wave({ className }) {
+  return <svg className={className} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 48 C 240 8 480 8 720 40 S 1200 80 1440 30 V80 H0 Z" /></svg>;
+}
 
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
@@ -107,17 +112,31 @@ export default function Landing() {
     <main>
       <Hero />
 
-      <section id="le-lieu" className="block" aria-labelledby="lieu-titre">
-        <p className="kicker">NOTRE PREMIER LIEU</p>
-        <h2 id="lieu-titre">Chez Marthe, Saint-Savournin</h2>
-        <img className="wide" src="/foto/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" />
-        <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
-        <ul className="facts">
-          <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
-          <li><strong>~20</strong><span>étudiantes en situation de précarité</span></li>
-          <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
-        </ul>
-        <div className="home-pillars">{pillars.map(p => <figure key={p.title}><img src={p.photo} alt="" loading="lazy" /><figcaption><strong>{p.title}</strong>{p.text}</figcaption></figure>)}</div>
+      <section className="landing-band" aria-labelledby="pillars-title">
+        <Wave className="wave wave-top" />
+        <div className="landing-wrap">
+          <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
+          <div className="pillars">{pillars.map(pillar => <article key={pillar.title} className="pillar">
+            <img src={pillar.photo} alt="" loading="lazy" />
+            <h3>{pillar.title}</h3>
+            <p>{pillar.text}</p>
+          </article>)}</div>
+        </div>
+        <Wave className="wave wave-bottom" />
+      </section>
+
+      <section id="le-lieu" className="landing-section landing-wrap place">
+        <img src="/foto/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" loading="lazy" />
+        <div>
+          <p className="eyebrow">NOTRE PREMIER LIEU</p>
+          <h2>Chez Marthe, Saint-Savournin</h2>
+          <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
+          <ul className="place-facts">
+            <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
+            <li><strong>~20</strong><span>étudiantes en situation de précarité</span></li>
+            <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
+          </ul>
+        </div>
       </section>
 
       <section id="evenements" className="block block-wall" aria-labelledby="evenements-titre">

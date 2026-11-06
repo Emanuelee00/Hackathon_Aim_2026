@@ -172,14 +172,6 @@
 .cm-home .block .btn { align-self: flex-start; }
 .cm-home .kicker { margin: 0; font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #A25889; }
 .cm-home .small { font-size: 14px; color: var(--muted); }
-.cm-home .wide { width: 100%; height: 220px; object-fit: cover; border-radius: 22px; }
-.cm-home .facts { list-style: none; margin: 4px 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.cm-home .facts li { display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.35; }
-.cm-home .facts strong { font-family: var(--display); font-size: 30px; color: #A25889; }
-.cm-home .home-pillars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.cm-home .home-pillars figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.cm-home .home-pillars img { width: 100%; height: 120px; object-fit: cover; border-radius: 16px; }
-.cm-home .home-pillars figcaption { font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
 .cm-home .home-partners { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
 .cm-home .home-partners a { display: flex; align-items: center; justify-content: center; height: 88px; padding: 12px; background: #fff; border-radius: 16px; }
 .cm-home .home-partners img { max-width: 100%; max-height: 64px; object-fit: contain; }
@@ -281,13 +273,6 @@
   .cm-home .audience strong { font-size: 19px; }
 
   /* Notre premier lieu : photo à gauche, texte et chiffres à droite, piliers en dessous. */
-  .cm-home #le-lieu { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; row-gap: 16px; align-content: start; }
-  .cm-home #le-lieu > * { grid-column: 2; }
-  .cm-home #le-lieu .wide { grid-column: 1; grid-row: 1 / span 5; height: 100%; min-height: 420px; }
-  .cm-home #le-lieu .home-pillars { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
-  .cm-home .home-pillars img { height: 180px; }
-  .cm-home .facts strong { font-size: 40px; }
-  .cm-home .facts li { font-size: 15px; }
 
   .cm-home .team { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
   .cm-home .member { flex-direction: column; align-items: center; text-align: center; padding: 28px 22px; }
