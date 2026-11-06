@@ -3,7 +3,7 @@ import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import { ContactForm } from '../site-pages/Contact.jsx';
-import HomeShell, { LINKS, SocialLinks } from './HomeShell.jsx';
+import HomeShell, { LINKS } from './HomeShell.jsx';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
 
@@ -96,7 +96,6 @@ function Hero() {
         </div>
         <div className="actions"><a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a></div>
         <a className="btn btn-rent" href="#espaces">Louer un espace <span aria-hidden="true">→</span></a>
-        <div className="hero-follow"><span>Suivez-nous</span><SocialLinks className="hero-social-mini" /></div>
       </div>
     </div>
   </section>;

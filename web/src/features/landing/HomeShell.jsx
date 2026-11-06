@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './home.css';
 
 // Shared frame of the public site (home, Nos espaces, Notre équipe): violet bar with a pink wave,
-// side menu with three daisies, "Suivez-nous" footer. Everything is scoped under .cm-home.
+// side menu, "Suivez-nous" footer. Everything is scoped under .cm-home.
 
 export const LINKS = {
   donate: 'https://www.helloasso.com/associations/chez-marthe/formulaires/3',
@@ -21,23 +21,6 @@ export function SocialLinks({ className }) {
   return <nav className={className} aria-label="Réseaux sociaux">
     {socials.map(s => <a key={s.name} className={s.className} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>{s.icon}</a>)}
   </nav>;
-}
-
-function Daisy({ className }) {
-  return <svg className={`daisy ${className}`} aria-hidden="true"><use href="#daisy" /></svg>;
-}
-
-// Drawn once, reused by the three daisies of the menu.
-function DaisySymbol() {
-  return <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-    <symbol id="daisy" viewBox="0 0 100 100">
-      <g style={{ fill: 'var(--daisy-petal, #8E4FA6)', stroke: 'var(--daisy-edge, #662B80)' }} strokeWidth="1.5">
-        {Array.from({ length: 12 }, (_, i) => <ellipse key={i} cx="50" cy="24" rx="9" ry="21" transform={`rotate(${i * 30} 50 50)`} />)}
-      </g>
-      <circle cx="50" cy="50" r="15" fill="#F28C38" />
-      <circle cx="45" cy="46" r="2.2" fill="#D9701F" /><circle cx="55" cy="49" r="2.2" fill="#D9701F" /><circle cx="48" cy="56" r="2.2" fill="#D9701F" />
-    </symbol>
-  </svg>;
 }
 
 const chevron = <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>;
@@ -74,7 +57,6 @@ export default function HomeShell({ home = false, children }) {
 
   const close = () => setOpen(false);
   return <div className="cm-home">
-    <DaisySymbol />
     <header className={`bar${solid ? ' solid' : ''}${open ? ' menu-open' : ''}`}>
       <a className="logo" href="/"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <a className="login-button" href="/connexion" aria-label="Connexion à nos espaces">
@@ -89,20 +71,20 @@ export default function HomeShell({ home = false, children }) {
     <nav id="menu" ref={menuRef} className={`menu${open ? ' open' : ''}`} aria-label="Menu">
       <div className="menu-scroll">
         <div className="menu-section">
-          <p className="menu-group">Découvrir<Daisy className="daisy-1" /></p>
+          <p className="menu-group">Découvrir</p>
           <MenuLink href={`${at}#le-lieu`} title="Notre premier lieu" text="Chez Marthe, Saint-Savournin" onPick={close} />
           <MenuLink href="/equipe" title="Notre équipe" text="Les visages de Chez Marthe et nos valeurs" onPick={close} />
           <MenuLink href={`${at}#evenements`} title="Nos évènements" text="La programmation" onPick={close} />
         </div>
         <div className="menu-section">
-          <p className="menu-group">Participer<Daisy className="daisy-2" /></p>
+          <p className="menu-group">Participer</p>
           <MenuLink href={`${at}#espaces`} title="Louer un espace" text="Chapelle, salon, atelier, bureau" onPick={close} />
           <MenuLink href={`${at}#partenaires`} title="Nos partenaires" text="Ils font vivre le lieu" onPick={close} />
           <MenuLink href={`${at}#s-impliquer`} title="Rejoindre le mouvement" text="Don, adhésion, communauté" onPick={close} />
         </div>
       </div>
       <div className="menu-fixed">
-        <Daisy className="daisy-3" />
+        
         <div className="menu-section">
           <p className="menu-group">Soutenir</p>
           <div className="menu-support">
@@ -116,7 +98,6 @@ export default function HomeShell({ home = false, children }) {
     {children}
     <footer>
       <div className="follow">
-        <p className="follow-title">Suivez-nous</p>
         <p>Toute la programmation et la vie du lieu sur nos réseaux.</p>
         <SocialLinks className="social footer-social" />
       </div>
