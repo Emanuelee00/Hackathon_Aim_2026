@@ -32,20 +32,9 @@ function MenuLink({ href, title, text, onPick }) {
 // `home` is true on the home page: its sections are reached with #anchors, elsewhere with /#anchors.
 export default function HomeShell({ home = false, children }) {
   const [open, setOpen] = useState(false);
-  const [solid, setSolid] = useState(!home);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const at = home ? '' : '/';
-
-  useEffect(() => {
-    if (!home) return undefined;
-    const hero = document.querySelector('.cm-home .home-hero');
-    const update = () => setSolid(window.scrollY > (hero?.offsetHeight ?? 0) - 98);
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update); };
-  }, [home]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -57,7 +46,7 @@ export default function HomeShell({ home = false, children }) {
 
   const close = () => setOpen(false);
   return <div className="cm-home">
-    <header className={`bar${solid ? ' solid' : ''}${open ? ' menu-open' : ''}`}>
+    <header className={`bar${open ? ' menu-open' : ''}`}>
       <a className="logo" href="/"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <a className="login-button" href="/connexion" aria-label="Connexion à nos espaces">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>

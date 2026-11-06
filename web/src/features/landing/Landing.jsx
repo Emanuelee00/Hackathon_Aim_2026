@@ -113,7 +113,6 @@ export default function Landing() {
       <Hero />
 
       <section className="landing-band" aria-labelledby="pillars-title">
-        <Wave className="wave wave-top" />
         <div className="landing-wrap">
           <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
           <div className="pillars">{pillars.map(pillar => <article key={pillar.title} className="pillar">
