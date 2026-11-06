@@ -42,12 +42,12 @@
   },
   "espace-bureau": {
     "target": "web/public/foto/bureau.jpg",
-    "width": 900,
+    "width": 1100,
     "where": "Scheda « Le Bureau »."
   },
   "espace-atelier": {
-    "target": "web/public/foto/bienvenue.jpg",
-    "width": 900,
+    "target": "web/public/foto/atelier.jpg",
+    "width": 1100,
     "where": "Scheda « L'Atelier »."
   },
   "logo": {

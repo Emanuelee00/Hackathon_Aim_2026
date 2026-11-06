@@ -324,6 +324,9 @@
   .cm-home .hero-text h1 { color: #fff; font-size: 44px; }
   .cm-home .hero-text p { font-size: 19px; }
   .cm-home .hero-text .city { color: var(--pink); }
+  /* Contour violet autour des lettres (le trait passe sous le remplissage : il ne grignote pas le texte). */
+  .cm-home .hero-text h1 { -webkit-text-stroke: 8px var(--violet); paint-order: stroke fill; }
+  .cm-home .hero-text p { -webkit-text-stroke: 5px var(--violet); paint-order: stroke fill; }
 }
 
 /* Téléphone et tablette : pas de voile ni de bande derrière le titre ; la photo reste nette. */
@@ -372,7 +375,7 @@
   .cm-home .landing-band { margin-top: 0; }
 }
 
-/* « Notre premier lieu » : la photo des panneaux en fond, nette, sous un voile noir très léger ; textes blancs ; bord bas net. */
+/* « Notre premier lieu » : la photo des panneaux en fond, nette, sous un voile noir léger, plus sombre en bas (là où sont les chiffres) ; textes blancs ; bord bas net. */
 .cm-home .place-bg { position: relative; isolation: isolate; grid-template-columns: minmax(0, 1fr); padding-bottom: 72px; }
 .cm-home .place-bg::before, .cm-home .place-bg::after { content: ""; position: absolute; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; }
 .cm-home .place-bg::before {
@@ -381,7 +384,7 @@
 }
 .cm-home .place-bg::after {   /* le voile noir */
   z-index: -1;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.46) 50%, rgba(0, 0, 0, 0.6) 100%);
 }
 @media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
 .cm-home .place-bg .eyebrow, .cm-home .place-bg p:not(.eyebrow) { color: #fff; }
@@ -394,12 +397,12 @@
 .cm-home .place-facts span { color: #fff; font-size: 15px; line-height: 1.4; }
 @media (max-width: 520px) { .cm-home .place-facts { gap: 24px; } .cm-home .place-facts strong { font-size: 46px; } }
 
-/* « Louer un espace » : bande rose pleine largeur ; chaque lieu est une grande photo avec son titre dans un
+/* « Louer un espace » : bande sombre pleine largeur ; chaque lieu est une grande photo avec son titre dans un
    riquadro orange (l'orange des marguerites) et un panneau de verre (photo floutée dessous) pour la partie à lire. */
 .cm-home #espaces { isolation: isolate; padding-bottom: 64px; }
-.cm-home #espaces::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; background: var(--pink); }
-.cm-home #espaces .kicker { color: var(--violet-dark); }
-.cm-home #espaces h2 { color: var(--violet); }
+.cm-home #espaces::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; background: var(--night); }
+.cm-home #espaces .kicker { color: var(--pink); }
+.cm-home #espaces h2 { color: #fff; }
 .cm-home .home-spaces { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
 @media (min-width: 760px) { .cm-home .home-spaces { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; } }
 .cm-home .space { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 540px; overflow: hidden; isolation: isolate; border-radius: 28px; color: #fff; text-decoration: none; box-shadow: 0 14px 36px rgba(27, 19, 25, 0.22); }
@@ -412,15 +415,19 @@
   box-shadow: 5px 5px 0 var(--violet); transform: rotate(-1.5deg);
 }
 .cm-home .space-body {
-  display: flex; flex-direction: column; gap: 12px; margin: 14px; padding: 18px 20px 18px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 22px; margin: 12px; padding: 14px 18px 16px;
   border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 20px;
   background: rgba(27, 19, 25, 0.42); backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
 }
 .cm-home .space-details { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.45; }
-.cm-home .space-prices { display: flex; flex-direction: column; gap: 6px; margin: 0; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
+.cm-home .space-prices { display: flex; flex-direction: column; gap: 5px; margin: 0; }
 .cm-home .space-prices div { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
 .cm-home .space-prices dt { margin: 0; }
 .cm-home .space-prices dd { margin: 0; font-weight: 700; color: #F28C38; }
+.cm-home .space-body p, .cm-home .space-cta { grid-column: 1 / -1; }
 .cm-home .space-body p { margin: 0; font-size: 14px; line-height: 1.5; color: #f1e6f3; }
 .cm-home .space-body .space-exchange { font-size: 15px; color: #fff; }
 .cm-home .space-cta { font-weight: 700; color: #fff; }
+
+.cm-home .space-prices div { white-space: nowrap; gap: 12px; }
+.cm-home .space-prices dt { white-space: nowrap; }

@@ -48,8 +48,8 @@ function Wave({ className }) {
 const publicSpaces = [
   { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', focus: 'center 14%', details: ['80 à 150 personnes', '114 m²', 'Concerts, spectacles, danse, yoga'], prices: [['2 heures', '40 €'], ['Demi-journée', '150 €'], ['Journée', '300 €']], note: 'Sonorisation (micro + enceinte) : 50 € en plus.' },
   { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', focus: 'center 45%', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', focus: 'center 50%', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', focus: 'center 30%', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
+  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', focus: 'center 40%', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
+  { id: 'atelier', name: 'L’Atelier', photo: '/foto/atelier.jpg', focus: 'center 55%', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
 ];
 const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
@@ -100,7 +100,7 @@ function Hero() {
           </p>
         </div>
         <div className="actions"><a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a></div>
-        <a className="btn btn-rent" href="#espaces">Louer un espace <span aria-hidden="true">→</span></a>
+        <a className="btn btn-rent" href="#espaces">Louer un espace</a>
       </div>
     </div>
   </section>;
