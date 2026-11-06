@@ -41,9 +41,9 @@ const pillars = [
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
 const publicSpaces = [
-  { id: 'chapelle', name: 'La Chapelle', photo: '/home/chapelle.jpg', info: '114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
-  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/home/salon.jpg', info: '28 m² · séminaires et réunions', price: '½ journée 80 € · journée 150 €' },
-  { id: 'reunion', name: 'Le Bureau', photo: '/home/bureau.jpg', info: '16 m² · réunions en petit comité', price: 'Tarif sur demande' },
+  { id: 'chapelle', name: 'La Chapelle', photo: '/home/chapelle.jpg', info: '80 à 150 personnes · 114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 150 € · journée 300 €', note: 'Sonorisation (micro + enceinte) : 50 €' },
+  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/home/salon.jpg', info: 'Max. 20 personnes · 28 m² · séminaires et réunions', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
+  { id: 'reunion', name: 'Le Bureau', photo: '/home/bureau.jpg', info: 'Max. 6 personnes · 16 m² · réunions en petit comité', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
   { id: 'atelier', name: 'L’Atelier', photo: '/home/bienvenue.jpg', exchange: 'Échange de services : vous créez ici, vous animez un atelier pour nous' },
 ];
 const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
@@ -133,7 +133,7 @@ export default function Landing() {
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
         <div className="home-spaces">{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
           <img src={space.photo} alt="" loading="lazy" />
-          <span><strong>{space.name}</strong>{space.info && <small>{space.info}</small>}{space.price && <small className="price">{space.price}</small>}{space.exchange && <small className="exchange">{space.exchange}</small>}</span>
+          <span><strong>{space.name}</strong>{space.info && <small>{space.info}</small>}{space.price && <small className="price">{space.price}</small>}{space.note && <small>{space.note}</small>}{space.exchange && <small className="exchange">{space.exchange}</small>}</span>
         </a>)}</div>
       </section>
 

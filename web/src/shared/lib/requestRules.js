@@ -22,8 +22,11 @@ export function estimatePrice(event) {
   const key = durationKeyFor(event);
   const base = space.prices?.[key] ?? (key === '2h' ? space.prices?.half : null) ?? (space.rate != null ? space.rate * durations[key][1] : null);
   if (base == null) return { amount: null, label: 'Sur devis', note: 'Tarif à définir avec l’équipe.' };
-  if (event.privatisation) return { amount: Math.round(base * PRIVATISATION_RATE), label: `${Math.round(base * PRIVATISATION_RATE)} €`, note: 'Majoration privatisation, confirmée après étude.' };
-  return { amount: base, label: `${base} €`, note: key === 'weekly' ? 'Par séance, pour un créneau régulier.' : 'Tarif indicatif, confirmé après étude.' };
+  // Chapel only: microphone and speaker are charged on top.
+  const sound = space.soundFee && event.technical?.includes('sound') ? space.soundFee : 0;
+  const extra = sound ? ` Dont ${sound} € de sonorisation (micro + enceinte).` : '';
+  if (event.privatisation) { const total = Math.round(base * PRIVATISATION_RATE) + sound; return { amount: total, label: `${total} €`, note: `Majoration privatisation, confirmée après étude.${extra}` }; }
+  return { amount: base + sound, label: `${base + sound} €`, note: (key === 'weekly' ? 'Par séance, pour un créneau régulier.' : 'Tarif indicatif, confirmé après étude.') + extra };
 }
 
 // Live warnings shown while a request is being written, and reused by the pre-analysis.
