@@ -62,6 +62,7 @@ const partners = [
 ];
 
 const involvement = [
+  { title: 'Nous proposer un lieu', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
   { title: 'Faire un don', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
   { title: 'Adhérer', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
   { title: 'Les amies de Chez Marthe', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
@@ -90,7 +91,11 @@ function Hero() {
       <div className="hero-text">
         <div className="hero-headline">
           <h1>Rejoignez l’aventure</h1>
-          <p>Soutenez un lieu tremplin pour les femmes, <span className="keep">au cœur de{' '}
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
+            <a className="btn btn-rent" href="#espaces">Louer un espace</a>
+          </div>
+          <p>Soutenez un lieu tremplin pour les femmes,<br /><span className="keep">au cœur de{' '}
             {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so « au cœur de » never moves. */}
             <span className="city" aria-hidden="true">
               <span className="city-sizer">{cities.map(c => <span key={c}>{c}|.</span>)}</span>
@@ -99,8 +104,6 @@ function Hero() {
             <span className="sr-only">{cities.join(', ')}.</span>
           </p>
         </div>
-        <div className="actions"><a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a></div>
-        <a className="btn btn-rent" href="#espaces">Louer un espace</a>
       </div>
     </div>
   </section>;
@@ -173,7 +176,7 @@ export default function Landing() {
         <p className="kicker">REJOINDRE LE MOUVEMENT</p>
         <h2 id="impliquer-titre">Nous soutenir</h2>
         <p>Faites un don, adhérez à l’association ou rejoignez la communauté : chaque soutien fait vivre Chez Marthe.</p>
-        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target="_blank" rel="noreferrer"><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
+        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target={item.url.startsWith('http') ? '_blank' : undefined} rel={item.url.startsWith('http') ? 'noreferrer' : undefined}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
       </section>
 
       <section id="contact" className="block" aria-labelledby="contact-titre">

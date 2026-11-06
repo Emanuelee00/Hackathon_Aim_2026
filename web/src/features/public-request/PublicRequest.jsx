@@ -58,7 +58,7 @@ export default function PublicRequest({ spaces, hidePicker = false, picked }) {
     }
   };
   return <section className="public-request" aria-labelledby="public-request-title">
-    <div className="landing-hero"><p className="eyebrow">UN LIEU À PARTAGER</p><h2 id="public-request-title">Proposer une activité ou louer un espace</h2><p>L’équipe étudie chaque demande en comité, chaque vendredi.</p></div>
+    <div className="landing-hero"><p className="eyebrow">UN LIEU À PARTAGER</p><h2 id="public-request-title">Louer un espace ou proposer une activité</h2><p>L’équipe étudie chaque demande en comité, chaque vendredi.</p></div>
     {!hidePicker && <SpacePicker value={form.space} onPick={pick} />}
     {sendError && <p className="form-error" role="alert">{sendError}</p>}
     {sent ? <Done request={sent} onAgain={() => { setForm(emptyForm); setSent(null); }} /> : <div className="request-layout">
