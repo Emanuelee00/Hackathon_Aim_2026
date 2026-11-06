@@ -402,32 +402,20 @@
   .cm-home .landing-band { margin-top: 0; }
 }
 
-/* « Notre premier lieu » : la photo des panneaux en fond, un peu floue, avec ses couleurs naturelles (sans voile). */
+/* « Notre premier lieu » : la photo des panneaux en fond, nette, sous un voile noir très léger ; textes blancs. */
 .cm-home .place-bg { position: relative; isolation: isolate; grid-template-columns: minmax(0, 1fr); padding-bottom: 72px; }
-.cm-home .place-bg::before {   /* la photo, floutée et débordante pour que le flou ne laisse pas de bords clairs */
-  content: ""; position: absolute; pointer-events: none; z-index: -1; top: -16px; bottom: -16px; left: calc(50% - 50vw - 16px); width: calc(100vw + 32px);
+.cm-home .place-bg::before, .cm-home .place-bg::after { content: ""; position: absolute; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; }
+.cm-home .place-bg::before {
+  z-index: -2;
   background: url('/foto/panneaux.webp') center 38% / cover no-repeat;
-  filter: blur(5px);
+}
+.cm-home .place-bg::after {   /* le voile noir */
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.3);
+}
+.cm-home .place-bg::before, .cm-home .place-bg::after {   /* le bas se fond dans la section suivante */
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
 }
 @media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
-/* Derrière le texte seulement : bande violette en fondu (comme le titre du haut), pour qu'il se lise sans voiler la photo. */
-.cm-home .place-bg::after {
-  content: ""; position: absolute; pointer-events: none; z-index: -1;
-  top: 56px; bottom: 28px; left: calc(50% - 50vw); width: 100vw;
-  background: rgba(87, 37, 109, 0.66);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
-}
-@media (min-width: 960px) {
-  .cm-home .place-bg::after {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%), linear-gradient(to right, #000 0%, #000 52%, transparent 86%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%), linear-gradient(to right, #000 0%, #000 52%, transparent 86%);
-    mask-composite: intersect;
-  }
-}
-.cm-home .place-bg h2 { color: #fff; }
-.cm-home .place-bg .eyebrow { color: var(--pink); }
-.cm-home .place-bg p:not(.eyebrow) { color: #f1e6f3; }
+.cm-home .place-bg h2, .cm-home .place-bg .eyebrow, .cm-home .place-bg p:not(.eyebrow) { color: #fff; }
