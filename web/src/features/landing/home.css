@@ -401,3 +401,6 @@
 /* Formulaire de demande (composant de la plateforme) dans la page d'accueil. */
 .cm-home .request-block { max-width: 1140px; }
 .cm-home .request-block .landing-hero h2 { font-family: var(--display); color: var(--violet); }
+
+/* Icônes des réseaux : symbole blanc dans le cercle coloré (les liens du pied de page sont violets). */
+.cm-home .social a, .cm-home footer .social a { color: #fff; }
