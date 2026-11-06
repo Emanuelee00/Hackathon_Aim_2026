@@ -121,6 +121,7 @@ export default function Landing() {
             <p>{pillar.text}</p>
           </article>)}</div>
         </div>
+        <Wave className="wave wave-bottom" />
       </section>
 
       {/* La photo des panneaux peints (chapelle, jardin, espaces personnels, associations) est le fond de la section : voir home.css. */}

@@ -32,12 +32,11 @@
 .cm-home .bar .logo { margin-right: auto; display: flex; }
 .cm-home .bar .logo img { height: 56px; width: auto; display: block; filter: drop-shadow(0 1px 3px rgba(27, 19, 25, 0.35)); }
 .cm-home .social { display: flex; flex-wrap: wrap; gap: 10px; }
-/* Réseaux aux couleurs de Chez Marthe (pas celles des réseaux). */
+/* Réseaux aux couleurs d'origine de chaque réseau. */
 .cm-home .social a { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-.cm-home .social .ig { background: linear-gradient(45deg, #F28C38, #A25889 55%, #662B80); }
-.cm-home .social .fb { background: var(--violet); }
-.cm-home .social .li { background: #A25889; }
-.cm-home .menu-social .fb { background: rgba(255, 255, 255, 0.2); }
+.cm-home .social .ig { background: radial-gradient(circle at 30% 107%, #FDF497 0%, #FDF497 5%, #FD5949 45%, #D6249F 60%, #285AEB 90%); }
+.cm-home .social .fb { background: #1877F2; }
+.cm-home .social .li { background: #0A66C2; }
 .cm-home .footer-social { justify-content: center; }
 .cm-home .footer-social a { width: 44px; height: 44px; box-shadow: 0 4px 12px rgba(102, 43, 128, 0.25); }
 .cm-home .follow { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 24px; }
@@ -363,8 +362,8 @@
   content: ""; position: absolute; z-index: -1; pointer-events: none;
   top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw;
   background: linear-gradient(rgba(246, 245, 244, 0.8), rgba(246, 245, 244, 0.72)), url('/foto/mur-des-mots.jpg') center / cover no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
 }
 
 /* La bande violette touche directement la photo du haut ; seule la vague du bas est gardée. */
@@ -373,7 +372,7 @@
   .cm-home .landing-band { margin-top: 0; }
 }
 
-/* « Notre premier lieu » : la photo des panneaux en fond, nette, sous un voile noir très léger ; textes blancs. */
+/* « Notre premier lieu » : la photo des panneaux en fond, nette, sous un voile noir très léger ; textes blancs ; bord bas net. */
 .cm-home .place-bg { position: relative; isolation: isolate; grid-template-columns: minmax(0, 1fr); padding-bottom: 72px; }
 .cm-home .place-bg::before, .cm-home .place-bg::after { content: ""; position: absolute; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; }
 .cm-home .place-bg::before {
@@ -384,18 +383,12 @@
   z-index: -1;
   background: rgba(0, 0, 0, 0.3);
 }
-.cm-home .place-bg::before, .cm-home .place-bg::after {   /* le bas se fond dans la section suivante */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
-}
 @media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
 .cm-home .place-bg h2, .cm-home .place-bg .eyebrow, .cm-home .place-bg p:not(.eyebrow) { color: #fff; }
 
 /* « Notre premier lieu » : deux chiffres. */
 .cm-home .place-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 520px) { .cm-home .place-facts { grid-template-columns: 1fr; } }
-/* Sans la vague en dessous, la section commence juste sous la bande violette. */
-.cm-home .place-bg { padding-top: 72px; }
 
 /* « Louer un espace » : une bande rose pleine largeur (comme la bande violette des piliers, mais rose),
    avec des cartes blanches : photo, caractéristiques, tarifs ligne par ligne. */
