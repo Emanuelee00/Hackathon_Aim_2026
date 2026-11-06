@@ -125,8 +125,8 @@ export default function Landing() {
         <Wave className="wave wave-bottom" />
       </section>
 
-      <section id="le-lieu" className="landing-section landing-wrap place">
-        <img src="/foto/panneaux.webp" alt="Panneaux peints indiquant la chapelle, le jardin, les espaces personnels et les associations du lieu" loading="lazy" />
+      {/* La photo des panneaux peints (chapelle, jardin, espaces personnels, associations) est le fond de la section : voir home.css. */}
+      <section id="le-lieu" className="landing-section landing-wrap place place-bg">
         <div>
           <p className="eyebrow">NOTRE PREMIER LIEU</p>
           <h2>Chez Marthe, Saint-Savournin</h2>
