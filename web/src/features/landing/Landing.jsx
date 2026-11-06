@@ -46,10 +46,10 @@ function Wave({ className }) {
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
 const publicSpaces = [
-  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', info: '80 à 150 personnes · 114 m² · concerts, spectacles, danse, yoga', price: '2 h 40 € · ½ journée 150 € · journée 300 €', note: 'Sonorisation (micro + enceinte) : 50 €' },
-  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', info: 'Max. 20 personnes · 28 m² · séminaires et réunions', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
-  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', info: 'Max. 6 personnes · 16 m² · réunions en petit comité', price: '2 h 40 € · ½ journée 100 € · journée 200 €' },
-  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', exchange: 'Échange de services : vous créez ici, vous animez un atelier pour nous' },
+  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', details: ['80 à 150 personnes', '114 m²', 'Concerts, spectacles, danse, yoga'], prices: [['2 heures', '40 €'], ['Demi-journée', '150 €'], ['Journée', '300 €']], note: 'Sonorisation (micro + enceinte) : 50 € en plus.' },
+  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
+  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
+  { id: 'atelier', name: 'L’Atelier', photo: '/foto/bienvenue.jpg', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
 ];
 const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
@@ -121,7 +121,6 @@ export default function Landing() {
             <p>{pillar.text}</p>
           </article>)}</div>
         </div>
-        <Wave className="wave wave-bottom" />
       </section>
 
       {/* La photo des panneaux peints (chapelle, jardin, espaces personnels, associations) est le fond de la section : voir home.css. */}
@@ -132,7 +131,6 @@ export default function Landing() {
           <p>Un ancien couvent de 1 500 m² dans le quartier des Réformés : trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
           <ul className="place-facts">
             <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
-            <li><strong>~20</strong><span>étudiantes en situation de précarité</span></li>
             <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
           </ul>
         </div>
@@ -151,7 +149,14 @@ export default function Landing() {
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
         <div className="home-spaces">{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
           <img src={space.photo} alt="" loading="lazy" />
-          <span><strong>{space.name}</strong>{space.info && <small>{space.info}</small>}{space.price && <small className="price">{space.price}</small>}{space.note && <small>{space.note}</small>}{space.exchange && <small className="exchange">{space.exchange}</small>}</span>
+          <div className="space-body">
+            <h3>{space.name}</h3>
+            <ul className="space-details">{space.details.map(detail => <li key={detail}>{detail}</li>)}</ul>
+            {space.prices && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
+            {space.note && <p>{space.note}</p>}
+            {space.exchange && <p className="space-exchange">{space.exchange}</p>}
+            <span className="space-cta">Faire une demande →</span>
+          </div>
         </a>)}</div>
       </section>
 
