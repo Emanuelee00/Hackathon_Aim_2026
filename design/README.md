@@ -22,6 +22,8 @@ Serve per provare idee e preparare le foto: il sito vero resta nel codice.
 | `lieu-panneaux` | « Notre premier lieu », foto grande |
 | `pilier-se-loger`, `pilier-se-reconstruire`, `pilier-se-nourrir`, `pilier-rayonner` | I 4 pilastri |
 | `espace-chapelle`, `espace-salon`, `espace-bureau`, `espace-atelier` | Schede « Louer un espace » |
+| `fond-evenements` | Sfondo di « La programmation » (muro di parole) |
+| `equipe-joria`, `equipe-sarah` | Ritratti nella pagina « Notre équipe » (per un nuovo ritratto: aggiungi `photo:` al membro in `web/src/features/site-pages/Team.jsx`) |
 | `logo` | Logo nella barra (PNG trasparente) |
 | `partenaire-has`, `partenaire-just`, `partenaire-petites-cantines`, `partenaire-sista4good`, `partenaire-benenova` | Loghi dei partner |
 

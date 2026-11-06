@@ -120,7 +120,7 @@ export default function Landing() {
         <div className="home-pillars">{pillars.map(p => <figure key={p.title}><img src={p.photo} alt="" loading="lazy" /><figcaption><strong>{p.title}</strong>{p.text}</figcaption></figure>)}</div>
       </section>
 
-      <section id="evenements" className="block" aria-labelledby="evenements-titre">
+      <section id="evenements" className="block block-wall" aria-labelledby="evenements-titre">
         <p className="kicker">NOS ÉVÈNEMENTS</p>
         <h2 id="evenements-titre">La programmation</h2>
         {/* To fill with the real programme. */}

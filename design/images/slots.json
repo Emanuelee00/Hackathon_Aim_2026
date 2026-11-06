@@ -1,19 +1,98 @@
 {
   "_comment": "Spazi foto del sito pubblico. Nome del file da mettere in design/images (jpg, png o webp) → dove finisce nel sito.",
-  "haut-de-page":      { "target": "web/public/chezmarthe/cour.jpg",      "width": 1440, "where": "Grande foto in alto (telefono: tutto lo schermo; computer: cornice a destra). Verticale." },
-  "lieu-panneaux":     { "target": "web/public/chezmarthe/panneaux.webp", "width": 962,  "where": "« Notre premier lieu » : grande foto accanto al testo. Verticale." },
-  "pilier-se-loger":   { "target": "web/public/chezmarthe/facade.webp",   "width": 690,  "where": "Pilastro « Se loger »." },
-  "pilier-se-reconstruire": { "target": "web/public/chezmarthe/sororite.webp", "width": 690, "where": "Pilastro « Se reconstruire »." },
-  "pilier-se-nourrir": { "target": "web/public/chezmarthe/cantine.webp",  "width": 690,  "where": "Pilastro « Se nourrir »." },
-  "pilier-rayonner":   { "target": "web/public/chezmarthe/jardin.webp",   "width": 690,  "where": "Pilastro « Rayonner »." },
-  "espace-chapelle":   { "target": "web/public/home/chapelle.jpg",        "width": 1200, "where": "Scheda « La Chapelle » in « Louer un espace »." },
-  "espace-salon":      { "target": "web/public/home/salon.jpg",           "width": 900,  "where": "Scheda « Salon collectif / Séminaire »." },
-  "espace-bureau":     { "target": "web/public/home/bureau.jpg",          "width": 900,  "where": "Scheda « Le Bureau »." },
-  "espace-atelier":    { "target": "web/public/home/bienvenue.jpg",       "width": 900,  "where": "Scheda « L'Atelier »." },
-  "logo":              { "target": "web/public/logo-chez-marthe.png",     "width": 667,  "where": "Logo nella barra in alto (PNG con fondo trasparente)." },
-  "partenaire-has":    { "target": "web/public/chezmarthe/partenaires/has.webp", "width": 400, "where": "Logo partner Habitat Alternatif Social." },
-  "partenaire-just":   { "target": "web/public/chezmarthe/partenaires/just.webp", "width": 400, "where": "Logo partner JUST." },
-  "partenaire-petites-cantines": { "target": "web/public/chezmarthe/partenaires/petites-cantines.webp", "width": 400, "where": "Logo partner Les Petites Cantines." },
-  "partenaire-sista4good": { "target": "web/public/chezmarthe/partenaires/sista4good.webp", "width": 400, "where": "Logo partner Sister4Good." },
-  "partenaire-benenova": { "target": "web/public/chezmarthe/partenaires/benenova.webp", "width": 400, "where": "Logo partner Benenova." }
+  "haut-de-page": {
+    "target": "web/public/chezmarthe/cour.jpg",
+    "width": 1440,
+    "where": "Grande foto in alto (telefono: tutto lo schermo; computer: cornice a destra). Verticale."
+  },
+  "lieu-panneaux": {
+    "target": "web/public/chezmarthe/panneaux.webp",
+    "width": 962,
+    "where": "« Notre premier lieu » : grande foto accanto al testo. Verticale."
+  },
+  "pilier-se-loger": {
+    "target": "web/public/chezmarthe/facade.webp",
+    "width": 690,
+    "where": "Pilastro « Se loger »."
+  },
+  "pilier-se-reconstruire": {
+    "target": "web/public/chezmarthe/sororite.webp",
+    "width": 690,
+    "where": "Pilastro « Se reconstruire »."
+  },
+  "pilier-se-nourrir": {
+    "target": "web/public/chezmarthe/cantine.webp",
+    "width": 690,
+    "where": "Pilastro « Se nourrir »."
+  },
+  "pilier-rayonner": {
+    "target": "web/public/chezmarthe/jardin.webp",
+    "width": 690,
+    "where": "Pilastro « Rayonner »."
+  },
+  "espace-chapelle": {
+    "target": "web/public/home/chapelle.jpg",
+    "width": 1200,
+    "where": "Scheda « La Chapelle » in « Louer un espace »."
+  },
+  "espace-salon": {
+    "target": "web/public/home/salon.jpg",
+    "width": 900,
+    "where": "Scheda « Salon collectif / Séminaire »."
+  },
+  "espace-bureau": {
+    "target": "web/public/home/bureau.jpg",
+    "width": 900,
+    "where": "Scheda « Le Bureau »."
+  },
+  "espace-atelier": {
+    "target": "web/public/home/bienvenue.jpg",
+    "width": 900,
+    "where": "Scheda « L'Atelier »."
+  },
+  "logo": {
+    "target": "web/public/logo-chez-marthe.png",
+    "width": 667,
+    "where": "Logo nella barra in alto (PNG con fondo trasparente)."
+  },
+  "partenaire-has": {
+    "target": "web/public/chezmarthe/partenaires/has.webp",
+    "width": 400,
+    "where": "Logo partner Habitat Alternatif Social."
+  },
+  "partenaire-just": {
+    "target": "web/public/chezmarthe/partenaires/just.webp",
+    "width": 400,
+    "where": "Logo partner JUST."
+  },
+  "partenaire-petites-cantines": {
+    "target": "web/public/chezmarthe/partenaires/petites-cantines.webp",
+    "width": 400,
+    "where": "Logo partner Les Petites Cantines."
+  },
+  "partenaire-sista4good": {
+    "target": "web/public/chezmarthe/partenaires/sista4good.webp",
+    "width": 400,
+    "where": "Logo partner Sister4Good."
+  },
+  "partenaire-benenova": {
+    "target": "web/public/chezmarthe/partenaires/benenova.webp",
+    "width": 400,
+    "where": "Logo partner Benenova."
+  },
+  "fond-evenements": {
+    "target": "web/public/home/mur-des-mots.jpg",
+    "width": 1400,
+    "where": "Sfondo della sezione « La programmation » (foto del muro di parole, orizzontale), sotto un velo chiaro."
+  },
+  "equipe-joria": {
+    "target": "web/public/equipe/joria.jpg",
+    "width": 640,
+    "where": "Ritratto di Joria nella pagina « Notre équipe » (verticale, viso nella parte alta)."
+  },
+  "equipe-sarah": {
+    "target": "web/public/equipe/sarah.jpg",
+    "width": 640,
+    "where": "Ritratto di Sarah nella pagina « Notre équipe » (verticale, viso nella parte alta)."
+  }
 }

@@ -189,7 +189,7 @@
 .cm-home .team { display: flex; flex-direction: column; gap: 10px; }
 .cm-home .member { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 18px; background: #fff; }
 /* Initiales en attendant les photos. */
-.cm-home .member-avatar { flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--violet); font-family: var(--display); font-size: 26px; }
+.cm-home .member-avatar { flex-shrink: 0; overflow: hidden; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--violet); font-family: var(--display); font-size: 26px; }
 .cm-home .member h3 { margin: 0; font-size: 18px; }
 .cm-home .member .role { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #A25889; }
 .cm-home .member p { font-size: 15px; line-height: 1.5; }
@@ -289,9 +289,9 @@
   .cm-home .facts strong { font-size: 40px; }
   .cm-home .facts li { font-size: 15px; }
 
-  .cm-home .team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .team { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
   .cm-home .member { flex-direction: column; align-items: center; text-align: center; padding: 28px 22px; }
-  .cm-home .member-avatar { width: 96px; height: 96px; font-size: 38px; }
+  .cm-home .member-avatar { width: 128px; height: 128px; font-size: 44px; }
   .cm-home .value { padding: 24px; font-size: 15px; }
 
   .cm-home .events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -404,3 +404,18 @@
 
 /* Icônes des réseaux : symbole blanc dans le cercle coloré (les liens du pied de page sont violets). */
 .cm-home .social a, .cm-home footer .social a { color: #fff; }
+
+/* Portraits dans les cartes de l'équipe. */
+.cm-home .member-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+
+/* « La programmation » : photo du mur de mots en fond, sur toute la largeur, sous un voile clair
+   qui s'efface en haut et en bas pour se fondre avec les sections voisines. */
+.cm-home { overflow-x: clip; }
+.cm-home .block-wall { isolation: isolate; }
+.cm-home .block-wall::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw;
+  background: linear-gradient(rgba(246, 245, 244, 0.8), rgba(246, 245, 244, 0.72)), url('/home/mur-des-mots.jpg') center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
