@@ -61,6 +61,14 @@ const partners = [
   { name: 'Benenova Marseille', logo: 'benenova.webp', url: 'https://www.benenova.fr/' },
 ];
 
+// Villes, écoles et programmes qui accompagnent le projet (logos recadrés depuis la capture fournie par l'équipe).
+const supporters = [
+  { name: 'Ville de Marseille', logo: 'ville-de-marseille.webp', url: 'https://www.marseille.fr/' },
+  { name: 'KEDGE Entrepreneurship', logo: 'kedge-entrepreneurship.webp', url: 'https://kedge.edu/' },
+  { name: 'Gagnante Be a Boss Women Tour 2025', logo: 'be-a-boss-women-tour.webp' },
+  { name: 'HEC Paris – Stand Up', logo: 'hec-paris-stand-up.webp', url: 'https://www.hec.edu/' },
+];
+
 // Financeurs publics : le logo vient de la page Wikipédia de la Métropole.
 const funders = [
   { name: 'Métropole Aix-Marseille-Provence', logo: 'metropole-aix-marseille-provence.svg', url: 'https://www.ampmetropole.fr/' },
@@ -225,6 +233,8 @@ export default function Landing() {
         <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
         <h3 className="partners-subtitle">Nos partenaires financiers</h3>
         <ul className="home-partners funders">{funders.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+        <h3 className="partners-subtitle">Ils nous accompagnent</h3>
+        <ul className="home-partners funders">{supporters.map(p => <li key={p.name}><a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={p.name} title={p.name} loading="lazy" /></a></li>)}</ul>
       </section>
 
       <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
