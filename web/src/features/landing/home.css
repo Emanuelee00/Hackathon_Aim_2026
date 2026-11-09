@@ -743,9 +743,10 @@
 .cm-home .map-float { position: absolute; inset: 0; transform-style: preserve-3d; animation: map-float 14s ease-in-out infinite; }
 .cm-home .map-float img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cm-home .map-lines { opacity: 0.68; }
-.cm-home .map-spot { transform: translateZ(36px); filter: drop-shadow(0 0 22px rgba(242, 161, 171, 0.75)); animation: map-glow 4.5s ease-in-out infinite; }
+.cm-home .map-spot { transform: translateZ(36px); filter: drop-shadow(0 0 14px rgba(255, 190, 205, 0.9)) drop-shadow(0 0 34px rgba(247, 150, 175, 0.75)); animation: map-glow 3.2s ease-in-out infinite; }
+.cm-home .map-spot-lines { transform: translateZ(40px); }
 @keyframes map-float { 0%, 100% { transform: rotateX(1.2deg) rotateY(-1.6deg); } 50% { transform: rotateX(-1deg) rotateY(1.6deg); } }
-@keyframes map-glow { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+@keyframes map-glow { 0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 190, 205, 0.7)) drop-shadow(0 0 22px rgba(247, 150, 175, 0.5)) brightness(1); } 50% { filter: drop-shadow(0 0 18px rgba(255, 205, 218, 1)) drop-shadow(0 0 46px rgba(247, 150, 175, 0.95)) brightness(1.08); } }
 @media (max-width: 1299px) {
   .cm-home .place-bg::after { background: linear-gradient(180deg, rgba(70, 26, 96, 0.4) 0%, rgba(70, 26, 96, 0.2) 60%, rgba(70, 26, 96, 0) 100%); }
   .cm-home .place-bg { padding-bottom: calc(min(100vw, 1000px) * 0.64 + 40px); }
@@ -759,8 +760,8 @@
 }
 
 /* Flèche rose à boucles : de « Rue Saint-Savournin » jusqu'au lieu. Elle se dessine à l'arrivée sur la section. */
-.cm-home .map-arrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(26px); filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
-.cm-home .map-arrow path { stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.cm-home .map-arrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(56px); filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
+.cm-home .map-arrow path { stroke: #FFC2CD; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
 .cm-home .map-arrow-line { stroke-dasharray: 1; stroke-dashoffset: 0; animation: map-arrow-loop 7s ease-in-out infinite; }
 .cm-home .map-arrow-head { animation: map-head-loop 7s ease-in-out infinite; }
 /* Toujours animée : la flèche se dessine, reste visible, s'estompe, puis recommence. */
@@ -775,5 +776,5 @@
   .cm-home .map-arrow { display: none; }
 }
 @media (max-width: 1299px) { .cm-home .map-title-arrow { display: none; } }
-.cm-home .map-title-arrow { position: absolute; left: 0; top: 0; overflow: visible; filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
-.cm-home .map-title-arrow path { stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.cm-home .place-bg > .map-title-arrow { position: absolute; z-index: 0; left: 0; top: 0; overflow: visible; pointer-events: none; filter: drop-shadow(0 0 5px rgba(255, 190, 205, 0.55)); }
+.cm-home .map-title-arrow path { stroke: #FFC2CD; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }

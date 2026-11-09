@@ -117,7 +117,7 @@ export function SiteFooter() {
   </footer>;
 }
 
-// Carte du quartier : le dessin est séparé en deux calques (traits et tache du lieu) + une flèche vers le lieu, inclinés en 3D selon la souris
+// Carte du quartier : le dessin est séparé en trois calques (traits, fond rose du lieu, traits sombres du lieu) + une flèche vers le lieu, inclinés en 3D selon la souris
 // (ou qui flottent doucement sur téléphone). Purement décoratif.
 function PlaceMap() {
   const ref = useRef(null);
@@ -131,7 +131,7 @@ function PlaceMap() {
     if (!stage || !title) return undefined;
     const compute = () => {
       if (window.innerWidth < 1300) { setTitleArrow(null); return; }
-      const frame = stage.parentElement.getBoundingClientRect();
+      const frame = section.getBoundingClientRect();
       const st = stage.getBoundingClientRect();
       const range = document.createRange();
       range.selectNodeContents(title);
@@ -143,14 +143,14 @@ function PlaceMap() {
       const ty = st.top + st.height * 0.452 - frame.top;
       // Part de la fin de la première ligne du titre, file vers la droite, fait un rond, puis descend en diagonale sur le bord du lieu.
       const dx = tx - sx;
-      const r = 21;
+      const r = 17;
       const lx = sx + dx * 0.62;
       const ly = sy + (ty - sy) * 0.08;
       const c2x = tx - 34;
       const c2y = ty - 32;
       const d = `M ${sx} ${sy} C ${sx + dx * 0.2} ${sy - 5}, ${lx - dx * 0.2} ${ly - r - 6}, ${lx} ${ly - r} A ${r} ${r} 0 1 1 ${lx} ${ly + r} A ${r} ${r} 0 0 1 ${lx} ${ly - r} C ${lx + 38} ${ly - r + 6}, ${c2x} ${c2y}, ${tx} ${ty}`;
       const angle = Math.atan2(ty - c2y, tx - c2x);
-      const wing = (turn) => `${tx - 21 * Math.cos(angle + turn)} ${ty - 21 * Math.sin(angle + turn)}`;
+      const wing = (turn) => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
       const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
       setTitleArrow({ d, head, width: frame.width, height: frame.height });
     };
@@ -178,11 +178,13 @@ function PlaceMap() {
     section.addEventListener('pointerleave', reset);
     return () => { cancelAnimationFrame(frame); section.removeEventListener('pointermove', move); section.removeEventListener('pointerleave', reset); };
   }, []);
-  return <div className="place-map" aria-hidden="true">
+  return <>
+    <div className="place-map" aria-hidden="true">
     <div className="map-stage" ref={ref}>
       <div className="map-float">
-        <img className="map-lines" src="/foto/carte-lignes.webp?v=5" alt="" loading="lazy" />
-        <img className="map-spot" src="/foto/carte-lieu.webp?v=5" alt="" loading="lazy" />
+        <img className="map-lines" src="/foto/carte-lignes.webp?v=6" alt="" loading="lazy" />
+        <img className="map-spot" src="/foto/carte-lieu.webp?v=6" alt="" loading="lazy" />
+        <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=6" alt="" loading="lazy" />
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
@@ -190,11 +192,12 @@ function PlaceMap() {
         </svg>
       </div>
     </div>
+    </div>
     {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
       <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
       <path className="map-arrow-head" d={titleArrow.head} />
     </svg>}
-  </div>;
+  </>;
 }
 
 function Hero() {
