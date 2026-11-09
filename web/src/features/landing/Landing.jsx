@@ -67,7 +67,7 @@ const funders = [
 ];
 
 const involvement = [
-  { title: 'Nous proposer un lieu', photo: '/foto/facade.webp', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
+  { title: 'Proposer un lieu d’accueil', photo: '/foto/facade.webp', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
   { title: 'Faire un don', photo: '/foto/jardin.webp', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
   { title: 'Adhérer', photo: '/foto/sororite.webp', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
   { title: 'Les amies de Chez Marthe', photo: '/foto/cantine.webp', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
