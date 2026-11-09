@@ -75,10 +75,10 @@ _weeks: dict = {}
 MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
 
 
-def week_public(monday: date, ttl: int = 600) -> list[dict]:
+def week_public(monday: date, ttl: int = 60) -> list[dict]:
     """Évènements publics d'une semaine (du lundi au dimanche) : titre, date, heures, lieu. Jamais la description (notes internes).
 
-    Garde chaque semaine en mémoire `ttl` secondes ; si Google est injoignable, renvoie la dernière version connue.
+    Garde chaque semaine en mémoire `ttl` secondes (1 minute) ; si Google est injoignable, renvoie la dernière version connue.
     """
     cached = _weeks.get(monday)
     if cached and time.time() - cached[0] < ttl:
@@ -120,7 +120,7 @@ def team_calendars() -> list[dict]:
     return json.loads(file.read_text(encoding="utf-8")) if file.is_file() else []
 
 
-def team_range(first: date, last: date, ttl: int = 300) -> dict:
+def team_range(first: date, last: date, ttl: int = 60) -> dict:
     """Évènements de tous les agendas entre deux dates (incluses), pour l'équipe connectée.
 
     Un agenda illisible n'empêche pas les autres : son nom est renvoyé dans `errors`.
