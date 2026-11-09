@@ -683,3 +683,25 @@
   .cm-home #s-impliquer .home-involve span { font-size: 15px; line-height: 1.5; }
   .cm-home #s-impliquer .home-involve::after { top: auto; bottom: 18px; transform: none; }
 }
+
+/* Téléphone : « Contactez-nous » compact, pour que toute la section tienne sur un écran. */
+@media (max-width: 719px) {
+  .cm-home #contact { padding-top: 18px; padding-bottom: 14px; }
+  .cm-home #contact .kicker { margin: 0 0 2px; }
+  .cm-home #contact h2 { margin: 0 0 4px; font-size: 26px; line-height: 1.1; }
+  .cm-home #contact > p:not(.kicker) { margin: 2px 0 8px; font-size: 13.5px; line-height: 1.35; }
+  .cm-home #contact .contact-layout { gap: 8px; margin-top: 0; }
+  .cm-home #contact .contact-layout form { gap: 8px; padding: 12px; }
+  .cm-home #contact .contact-layout .form-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cm-home #contact .field-full { grid-column: 1 / -1; }
+  .cm-home #contact .field > span { font-size: 12px; margin-bottom: 2px; }
+  .cm-home #contact .field input { height: 38px; min-height: 0; padding: 4px 10px; }
+  .cm-home #contact .field textarea { height: 62px; min-height: 0; padding: 6px 10px; }
+  .cm-home #contact .contact-privacy { font-size: 11.5px; line-height: 1.3; }
+  .cm-home #contact .form-actions { padding-top: 6px; margin-top: 0; }
+  .cm-home #contact .contact-layout form { padding-bottom: 10px; }
+  .cm-home #contact .form-actions .button { min-height: 40px; }
+  .cm-home #contact .contact-details { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 8px 12px; font-size: 12.5px; line-height: 1.25; }
+  .cm-home #contact .contact-details h2 { display: none; }
+  .cm-home #contact .contact-details p { margin: 0; }
+}
