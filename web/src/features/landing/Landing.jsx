@@ -72,6 +72,7 @@ const supporters = [
 // Financeurs publics : le logo vient de la page Wikipédia de la Métropole.
 const funders = [
   { name: 'Métropole Aix-Marseille-Provence', logo: 'metropole-aix-marseille-provence.svg', url: 'https://www.ampmetropole.fr/' },
+  { name: 'Fondation de France', logo: 'fondation-de-france.webp', url: 'https://www.fondationdefrance.org/fr/' },
 ];
 
 const involvement = [
