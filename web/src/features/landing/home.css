@@ -576,25 +576,18 @@
   width: 135px; max-width: 100%; aspect-ratio: 1; height: auto; max-height: none; object-fit: contain; padding: 10px;
   border-radius: 10px; background: rgba(255, 255, 255, 0.96);
 }
-.cm-home #s-impliquer { color: #fff; counter-reset: support-card; }
+.cm-home #s-impliquer { color: #fff; }
 .cm-home #s-impliquer .kicker { color: var(--pink); }
 .cm-home #s-impliquer h2 { color: #fff; }
 .cm-home #s-impliquer .home-involve {
   position: relative; isolation: isolate; overflow: hidden;
-  counter-increment: support-card;
-  min-height: 152px; padding: 28px 56px 26px 24px;
+  min-height: 200px; justify-content: flex-end; padding: 28px 56px 26px 24px;
   border: 1px solid rgba(255, 255, 255, 0.24); border-left: 4px solid var(--pink);
   border-radius: 20px;
-  background: linear-gradient(145deg, rgba(87, 37, 109, 0.78), rgba(47, 21, 60, 0.68));
+  background: linear-gradient(100deg, rgba(60, 22, 82, 0.93) 0%, rgba(87, 37, 109, 0.74) 60%, rgba(102, 43, 128, 0.4) 100%), var(--photo) center / cover;
   color: #fff;
   box-shadow: 0 12px 26px rgba(37, 14, 48, 0.24), inset 0 1px rgba(255, 255, 255, 0.1);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
-}
-.cm-home #s-impliquer .home-involve::before {
-  content: counter(support-card, decimal-leading-zero);
-  position: absolute; z-index: -1; top: -20px; right: 14px;
-  color: rgba(255, 255, 255, 0.08); font-family: var(--display);
-  font-size: 104px; line-height: 1;
 }
 .cm-home #s-impliquer .home-involve::after {
   content: "↗"; position: absolute; right: 18px; bottom: 18px;
@@ -606,11 +599,12 @@
 .cm-home #s-impliquer .home-involve:hover {
   transform: translateY(-5px);
   border-color: rgba(242, 161, 171, 0.72);
-  background: linear-gradient(145deg, rgba(102, 43, 128, 0.9), rgba(47, 21, 60, 0.78));
+  background: linear-gradient(100deg, rgba(60, 22, 82, 0.8) 0%, rgba(102, 43, 128, 0.5) 55%, rgba(120, 55, 150, 0.25) 100%), var(--photo) center / cover;
   box-shadow: 0 18px 34px rgba(37, 14, 48, 0.34), inset 0 1px rgba(255, 255, 255, 0.16);
 }
 .cm-home #s-impliquer .home-involve strong { color: #fff; font-size: 19px; }
-.cm-home #s-impliquer .home-involve span { color: rgba(255, 255, 255, 0.8); line-height: 1.5; }
+.cm-home #s-impliquer .home-involve span { color: rgba(255, 255, 255, 0.92); line-height: 1.5; }
+.cm-home #s-impliquer .home-involve strong, .cm-home #s-impliquer .home-involve span { text-shadow: 0 1px 4px rgba(30, 8, 45, 0.5); }
 @media (prefers-reduced-motion: reduce) {
   .cm-home #partenaires .home-partners a,
   .cm-home #s-impliquer .home-involve { transition: none; }
