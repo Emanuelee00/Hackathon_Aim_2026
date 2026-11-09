@@ -150,7 +150,7 @@ function WeekProgramme() {
         <span className="event-date"><strong>{day.getDate()}</strong>{dayNames[n].slice(0, 3)}</span>
         <div className="week-events">
           {dayEvents.length
-            ? dayEvents.map(event => <p key={event.title + event.start} className="week-event"><strong>{event.title}</strong><small>{[event.start && `${event.start}${event.end ? `–${event.end}` : ''}`, event.place].filter(Boolean).join(' · ') || 'Toute la journée'}</small></p>)
+            ? dayEvents.map((event, index) => <p key={event.title + event.start} className={`week-event shade-${Math.min(index, 3)}`}><strong>{event.title}</strong><small>{[event.start && `${event.start}${event.end ? `–${event.end}` : ''}`, event.place].filter(Boolean).join(' · ') || 'Toute la journée'}</small></p>)
             : <p className="week-empty">{events === null ? '…' : 'Rien de prévu'}</p>}
         </div>
       </li>;
