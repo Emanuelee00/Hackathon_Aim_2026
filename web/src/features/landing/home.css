@@ -581,7 +581,7 @@
 .cm-home #s-impliquer h2 { color: #fff; }
 .cm-home #s-impliquer .home-involve {
   position: relative; isolation: isolate; overflow: hidden;
-  min-height: 200px; justify-content: flex-end; padding: 28px 56px 26px 24px;
+  min-height: 88px; justify-content: center; padding: 12px 56px 12px 20px;
   border: 1px solid rgba(255, 255, 255, 0.24); border-left: 4px solid var(--pink);
   border-radius: 20px;
   background: linear-gradient(100deg, rgba(60, 22, 82, 0.93) 0%, rgba(87, 37, 109, 0.74) 60%, rgba(102, 43, 128, 0.4) 100%), var(--photo) center / cover;
@@ -672,3 +672,14 @@
 
 .cm-home .insta-link { color: var(--violet); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
 .cm-home .insta-link:hover { color: var(--violet-dark); }
+
+/* Téléphone : cartes basses pour que toute la section « Nous soutenir » tienne sur un écran. */
+.cm-home #s-impliquer .home-involve strong { font-size: 17px; }
+.cm-home #s-impliquer .home-involve span { font-size: 13.5px; line-height: 1.35; }
+.cm-home #s-impliquer .home-involve::after { top: 50%; bottom: auto; transform: translateY(-50%); }
+@media (min-width: 720px) {
+  .cm-home #s-impliquer .home-involve { min-height: 200px; justify-content: flex-end; padding: 28px 56px 26px 24px; }
+  .cm-home #s-impliquer .home-involve strong { font-size: 19px; }
+  .cm-home #s-impliquer .home-involve span { font-size: 15px; line-height: 1.5; }
+  .cm-home #s-impliquer .home-involve::after { top: auto; bottom: 18px; transform: none; }
+}
