@@ -724,46 +724,11 @@
 .cm-home .marquee-still { -webkit-mask-image: none; mask-image: none; }
 .cm-home #partenaires .marquee-still .home-partners.marquee-track { animation: none; width: auto; padding: 0; justify-content: center; }
 
-/* « La programmation » alignée sur le reste de la page : bande sombre (la photo du mur de mots reste visible sous un voile nuit),
-   riquadri en verre à liseré rose, flèches roses. */
-.cm-home .block-wall { color: #fff; }
-.cm-home .block-wall::before {
-  background: linear-gradient(rgba(27, 19, 25, 0.9), rgba(27, 19, 25, 0.84)), url('/foto/mur-des-mots.jpg') center / cover no-repeat;
-  -webkit-mask-image: none; mask-image: none;
-}
-.cm-home .block-wall .kicker { color: var(--pink); }
-.cm-home .block-wall h2 { color: #fff; }
-.cm-home .block-wall .small { color: rgba(255, 255, 255, 0.78); }
-.cm-home .insta-link { color: var(--pink); }
-.cm-home .insta-link:hover { color: #fff; }
-
-.cm-home .week-head { padding: 6px; border: 1px solid rgba(242, 161, 171, 0.3); border-radius: 999px; background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.12); }
-.cm-home .week-label { color: #fff; }
-.cm-home .week-arrow { background: var(--pink); color: var(--night); border: 1px solid rgba(255, 255, 255, 0.24); }
-.cm-home .week-note { color: rgba(255, 255, 255, 0.78); }
-
-.cm-home .week-day, .cm-home .week-day.has-events {
-  border: 1px solid rgba(242, 161, 171, 0.3); border-radius: 20px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-}
-.cm-home .week-day.has-events { border-color: rgba(242, 161, 171, 0.55); }
-.cm-home .week-day .event-date { background: rgba(242, 161, 171, 0.3); color: #fff; }
-.cm-home .week-day.has-events .event-date { background: var(--pink); color: var(--night); }
-.cm-home .week-empty { color: rgba(255, 255, 255, 0.55); }
-.cm-home .week-event { border-top-color: rgba(255, 255, 255, 0.3); }
-.cm-home .week-event.shade-0 { --shade-a: rgba(176, 112, 210, 0.9); --shade-b: rgba(150, 84, 188, 0.92); }
-.cm-home .week-event.shade-1 { --shade-a: rgba(146, 80, 182, 0.92); --shade-b: rgba(120, 56, 156, 0.94); }
-.cm-home .week-event.shade-2 { --shade-a: rgba(120, 54, 154, 0.94); --shade-b: rgba(98, 40, 132, 0.96); }
-.cm-home .week-event.shade-3 { --shade-a: rgba(96, 36, 130, 0.96); --shade-b: rgba(72, 24, 104, 0.98); }
-
-/* Programmation : cartes et barre à angles droits (les couleurs violettes ne changent pas). */
-.cm-home .week-day, .cm-home .week-day.has-events { border-radius: 0; }
-.cm-home .week-head { border-radius: 0; padding: 6px 8px; }
-.cm-home .week-day .event-date { border-radius: 0; }
 
 /* Programmation : la phrase sous le calendrier est un peu plus grande que le texte courant, mais reste plus petite que les titres. */
-.cm-home .block-wall .small { font-size: clamp(18px, 2.2vw, 20px); line-height: 1.5; color: rgba(255, 255, 255, 0.9); margin-top: 18px; }
+.cm-home .block-wall .small { font-size: clamp(18px, 2.2vw, 20px); line-height: 1.5; margin-top: 18px; }
 
 @media (min-width: 960px) { .cm-home .marquee { --gap: 28px; } }
+
+/* Programmation : la barre de la semaine est arrondie comme les cartes. */
+.cm-home .week-head { padding: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); }
