@@ -11,3 +11,15 @@ marthe.db
 /docs/
 /chezmarthe/
 /cloudflare/
+
+# Segreti e materiale di lavoro : mai caricati su Vercel
+secrets/
+comptes.txt
+deploy/.env
+.env
+.env.*
+design/
+TODO.md
+CHEZMARTHE.png
+qr-*.png
+*.db

@@ -22,3 +22,5 @@ design/originaux/
 # Chiavi e credenziali: mai nel repo
 secrets/
 chezmarthe-*.json
+.vercel
+.env*
