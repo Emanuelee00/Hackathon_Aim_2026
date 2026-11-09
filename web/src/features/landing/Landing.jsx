@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
@@ -121,6 +121,36 @@ export function SiteFooter() {
 // (ou qui flottent doucement sur téléphone). Purement décoratif.
 function PlaceMap() {
   const ref = useRef(null);
+  const [titleArrow, setTitleArrow] = useState(null);
+  // Grand écran : une flèche à boucles part du titre « Chez Marthe, Saint-Savournin » et arrive sur le lieu en rose.
+  // Ses points sont calculés d'après la position réelle du titre et de la carte ; en dessous de 1300 px (carte sous le texte), c'est la flèche du dessin qui sert.
+  useLayoutEffect(() => {
+    const stage = ref.current;
+    const section = stage?.closest('section');
+    const title = section?.querySelector('h2');
+    if (!stage || !title) return undefined;
+    const compute = () => {
+      if (window.innerWidth < 1300) { setTitleArrow(null); return; }
+      const frame = stage.parentElement.getBoundingClientRect();
+      const st = stage.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(title);
+      const first = range.getClientRects()[0];
+      if (!first) return;
+      const sx = first.right - frame.left + 14;
+      const sy = first.top + first.height * 0.52 - frame.top;
+      const tx = st.left + st.width * 0.186 - frame.left;
+      const ty = st.top + st.height * 0.5 - frame.top;
+      const d = `M ${sx} ${sy} C ${sx + 70} ${sy - 34}, ${sx + 150} ${sy - 30}, ${sx + 150} ${sy + 10} C ${sx + 150} ${sy + 52}, ${sx + 88} ${sy + 50}, ${sx + 96} ${sy + 14} C ${sx + 104} ${sy - 22}, ${tx - 30} ${sy - 30}, ${tx - 12} ${sy + 22} C ${tx - 4} ${sy + 84}, ${tx - 26} ${ty - 74}, ${tx - 4} ${ty - 10}`;
+      const head = `M ${tx - 20} ${ty - 24} L ${tx - 4} ${ty - 2} L ${tx + 14} ${ty - 22}`;
+      setTitleArrow({ d, head, width: frame.width, height: frame.height });
+    };
+    compute();
+    const observer = new ResizeObserver(compute);
+    observer.observe(section);
+    document.fonts?.ready.then(compute);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const stage = ref.current;
     const section = stage?.closest('section');
@@ -142,8 +172,8 @@ function PlaceMap() {
   return <div className="place-map" aria-hidden="true">
     <div className="map-stage" ref={ref}>
       <div className="map-float">
-        <img className="map-lines" src="/foto/carte-lignes.webp" alt="" loading="lazy" />
-        <img className="map-spot" src="/foto/carte-lieu.webp" alt="" loading="lazy" />
+        <img className="map-lines" src="/foto/carte-lignes.webp?v=3" alt="" loading="lazy" />
+        <img className="map-spot" src="/foto/carte-lieu.webp?v=3" alt="" loading="lazy" />
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
@@ -151,6 +181,10 @@ function PlaceMap() {
         </svg>
       </div>
     </div>
+    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+      <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
+      <path className="map-arrow-head" d={titleArrow.head} />
+    </svg>}
   </div>;
 }
 

@@ -736,7 +736,7 @@
 /* « Notre premier lieu » : carte dessinée du quartier en fond, traits crème et tache rose, avec un léger effet 3D. */
 .cm-home .place-bg > .place-map { position: absolute; z-index: -2; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; max-width: none; overflow: hidden; pointer-events: none; perspective: 1400px; }
 .cm-home .map-stage {
-  position: absolute; height: 108%; aspect-ratio: 1600 / 1024; top: -6%; right: -17%;
+  position: absolute; height: 86%; aspect-ratio: 1600 / 1024; top: 7%; right: 0;
   transform-style: preserve-3d; transition: transform 0.25s ease-out;
   transform: rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 6deg));
 }
@@ -746,10 +746,10 @@
 .cm-home .map-spot { transform: translateZ(36px); filter: drop-shadow(0 0 22px rgba(242, 161, 171, 0.75)); animation: map-glow 4.5s ease-in-out infinite; }
 @keyframes map-float { 0%, 100% { transform: rotateX(1.2deg) rotateY(-1.6deg); } 50% { transform: rotateX(-1deg) rotateY(1.6deg); } }
 @keyframes map-glow { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
-@media (max-width: 1099px) {
+@media (max-width: 1299px) {
   .cm-home .place-bg::after { background: linear-gradient(180deg, rgba(70, 26, 96, 0.4) 0%, rgba(70, 26, 96, 0.2) 60%, rgba(70, 26, 96, 0) 100%); }
-  .cm-home .place-bg { padding-bottom: 250px; }
-  .cm-home .map-stage { height: auto; width: min(160vw, 1100px); right: auto; left: max(-8vw, calc(50% - 560px)); top: auto; bottom: -9%; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%); mask-image: linear-gradient(180deg, transparent 0%, #000 22%); }
+  .cm-home .place-bg { padding-bottom: calc(min(100vw, 1000px) * 0.64 + 40px); }
+  .cm-home .map-stage { height: auto; width: min(100vw, 1000px); right: auto; left: 50%; margin-left: calc(min(100vw, 1000px) / -2); top: auto; bottom: 14px; -webkit-mask-image: none; mask-image: none; }
   .cm-home .map-lines { opacity: 0.75; }
   .cm-home .map-lines, .cm-home .map-spot { -webkit-mask-image: none; mask-image: none; }
 }
@@ -766,3 +766,13 @@
 @keyframes map-arrow-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes map-arrow-head { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .cm-home .map-arrow-line, .cm-home .map-arrow-head { animation: none; } }
+
+/* Grand écran : section plus haute, carte entière à droite (rien n'est coupé) ; la flèche du titre remplace celle du dessin. */
+@media (min-width: 1300px) {
+  .cm-home .place-bg { min-height: clamp(560px, 46vw, 720px); align-content: center; }
+  .cm-home .place-bg > div:not(.place-map) { max-width: 540px; }
+  .cm-home .map-arrow { display: none; }
+}
+@media (max-width: 1299px) { .cm-home .map-title-arrow { display: none; } }
+.cm-home .map-title-arrow { position: absolute; left: 0; top: 0; overflow: visible; filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
+.cm-home .map-title-arrow path { stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
