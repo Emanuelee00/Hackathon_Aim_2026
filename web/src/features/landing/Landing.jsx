@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
@@ -117,6 +117,38 @@ export function SiteFooter() {
   </footer>;
 }
 
+// Carte du quartier : le dessin est séparé en deux calques (traits + tache du lieu), inclinés en 3D selon la souris
+// (ou qui flottent doucement sur téléphone). Purement décoratif.
+function PlaceMap() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const stage = ref.current;
+    const section = stage?.closest('section');
+    if (!stage || !section || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let frame;
+    const tilt = (x, y) => { stage.style.setProperty('--rx', x); stage.style.setProperty('--ry', y); };
+    const move = event => {
+      const box = section.getBoundingClientRect();
+      const x = ((event.clientX - box.left) / box.width - 0.5) * 2;
+      const y = ((event.clientY - box.top) / box.height - 0.5) * 2;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => tilt(x.toFixed(3), y.toFixed(3)));
+    };
+    const reset = () => tilt(0, 0);
+    section.addEventListener('pointermove', move);
+    section.addEventListener('pointerleave', reset);
+    return () => { cancelAnimationFrame(frame); section.removeEventListener('pointermove', move); section.removeEventListener('pointerleave', reset); };
+  }, []);
+  return <div className="place-map" aria-hidden="true">
+    <div className="map-stage" ref={ref}>
+      <div className="map-float">
+        <img className="map-lines" src="/foto/carte-lignes.webp" alt="" loading="lazy" />
+        <img className="map-spot" src="/foto/carte-lieu.webp" alt="" loading="lazy" />
+      </div>
+    </div>
+  </div>;
+}
+
 function Hero() {
   const city = useTypewriter(cities);
   return <section className="home-hero">
@@ -210,8 +242,9 @@ export default function Landing() {
         <Wave className="wave wave-bottom" />
       </section>
 
-      {/* La photo des panneaux peints (chapelle, jardin, espaces personnels, associations) est le fond de la section : voir home.css. */}
+      {/* Le fond de la section est la carte dessinée du quartier (PlaceMap) : voir home.css. */}
       <section id="le-lieu" className="landing-section landing-wrap place place-bg">
+        <PlaceMap />
         <div>
           <p className="eyebrow">NOTRE PREMIER LIEU</p>
           <h2>Chez Marthe, Saint-Savournin</h2>

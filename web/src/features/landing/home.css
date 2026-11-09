@@ -441,10 +441,11 @@
   content: ""; position: absolute; pointer-events: none; top: 0; bottom: 0;
   left: calc(50% - 50vw); width: 100vw;
 }
-.cm-home .place-bg::before { z-index: -2; background: url('/foto/panneaux.webp') 35% 52% / cover no-repeat; }
+.cm-home .place-bg::before { z-index: -3; background: radial-gradient(120% 90% at 70% 45%, #7a3a98 0%, #5a2475 45%, #33163f 100%); }
 .cm-home .place-bg::after {
   z-index: -1;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.58));
+  /* Dégradé qui garde le texte lisible à gauche et laisse la carte visible à droite. */
+  background: linear-gradient(90deg, rgba(38, 14, 52, 0.82) 0%, rgba(38, 14, 52, 0.55) 45%, rgba(38, 14, 52, 0) 78%);
 }
 .cm-home .place-bg > div { position: relative; z-index: 1; max-width: 640px; }
 .cm-home .place-bg .eyebrow { color: var(--pink); }
@@ -457,7 +458,6 @@
 .cm-home .place-facts strong { display: block; margin-bottom: 6px; color: var(--pink); font-size: 56px; }
 .cm-home .place-facts span { color: #fff; font-size: 15px; line-height: 1.4; }
 @media (max-width: 520px) { .cm-home .place-facts { gap: 24px; } .cm-home .place-facts strong { font-size: 46px; } }
-@media (max-width: 520px) { .cm-home .place-bg::before { background-size: cover; background-position: 35% 52%; } }
 @media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
 
 /* « Louer un espace » : bande sombre, grande photo, titre encadré rose et détails sur un panneau de verre. */
@@ -732,3 +732,28 @@
 
 /* Programmation : la barre de la semaine est arrondie comme les cartes. */
 .cm-home .week-head { padding: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); }
+
+/* « Notre premier lieu » : carte dessinée du quartier en fond, traits crème et tache rose, avec un léger effet 3D. */
+.cm-home .place-bg > .place-map { position: absolute; z-index: -2; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; max-width: none; overflow: hidden; pointer-events: none; perspective: 1400px; }
+.cm-home .map-stage {
+  position: absolute; height: 124%; aspect-ratio: 1600 / 1024; top: -12%; right: -14%;
+  transform-style: preserve-3d; transition: transform 0.25s ease-out;
+  transform: rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 6deg));
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+}
+.cm-home .map-float { position: absolute; inset: 0; transform-style: preserve-3d; animation: map-float 14s ease-in-out infinite; }
+.cm-home .map-float img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cm-home .map-lines { opacity: 0.5; }
+.cm-home .map-spot { transform: translateZ(36px); filter: drop-shadow(0 0 22px rgba(242, 161, 171, 0.75)); animation: map-glow 4.5s ease-in-out infinite; }
+@keyframes map-float { 0%, 100% { transform: rotateX(1.2deg) rotateY(-1.6deg); } 50% { transform: rotateX(-1deg) rotateY(1.6deg); } }
+@keyframes map-glow { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+@media (max-width: 719px) {
+  .cm-home .place-bg::after { background: linear-gradient(180deg, rgba(38, 14, 52, 0.6) 0%, rgba(38, 14, 52, 0.35) 60%, rgba(38, 14, 52, 0) 100%); }
+  .cm-home .place-bg { padding-bottom: 290px; }
+  .cm-home .map-stage { height: auto; width: 160vw; right: auto; left: -8vw; top: auto; bottom: 0; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%); mask-image: linear-gradient(180deg, transparent 0%, #000 22%); }
+  .cm-home .map-lines { opacity: 0.62; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-home .map-stage { transition: none; transform: none; }
+  .cm-home .map-float, .cm-home .map-spot { animation: none; }
+}
