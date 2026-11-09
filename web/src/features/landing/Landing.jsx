@@ -3,7 +3,7 @@ import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import { ContactForm } from '../site-pages/Contact.jsx';
-import HomeShell, { LINKS } from './HomeShell.jsx';
+import HomeShell, { LINKS, socials } from './HomeShell.jsx';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
 
@@ -198,7 +198,7 @@ export default function Landing() {
         <p className="kicker">NOS ÉVÈNEMENTS</p>
         <h2 id="evenements-titre">La programmation</h2>
         <WeekProgramme />
-        <p className="small">Toute la programmation et les inscriptions sur notre Instagram.</p>
+        <p className="small">Toute la programmation et les inscriptions sur notre <a className="insta-link" href={socials[0].url} target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
       </section>
 
       <section id="espaces" className="block" aria-labelledby="espaces-titre">

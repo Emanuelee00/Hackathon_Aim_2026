@@ -675,3 +675,6 @@
 .cm-home .partners-subtitle { margin: 32px 0 12px; text-align: center; font-family: var(--display); font-size: 22px; color: #fff; }
 .cm-home .home-partners.funders { grid-template-columns: repeat(auto-fit, minmax(140px, 220px)); justify-content: center; }
 @media (min-width: 960px) { .cm-home #partenaires .home-partners img { width: 150px; } }
+
+.cm-home .insta-link { color: var(--violet); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+.cm-home .insta-link:hover { color: var(--violet-dark); }
