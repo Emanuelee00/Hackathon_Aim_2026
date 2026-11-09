@@ -1,13 +1,16 @@
 import os
 from contextlib import asynccontextmanager
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from threading import Thread
+from zoneinfo import ZoneInfo
 
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 
+import gcal
 from accounts.routes import router as accounts_router
 from agents.routes import router as agents_router
 from ai import AI_ENABLED, warm_up
@@ -30,6 +33,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
+PARIS = ZoneInfo("Europe/Paris")
 app = FastAPI(title="Marthe", version="0.1.0", lifespan=lifespan)
 app.include_router(ai_router)
 app.include_router(matching_router)
@@ -71,6 +75,17 @@ async def redirect_to_canonical(request: Request, call_next):
         status = 301 if request.method in ("GET", "HEAD") else 308
         return RedirectResponse(str(url), status_code=status)
     return await call_next(request)
+
+
+@app.get("/api/programmation")
+def programmation(semaine: str = "") -> dict:
+    """Évènements du Google Agenda de l'association pour la semaine qui contient `semaine` (AAAA-MM-JJ, défaut : aujourd'hui)."""
+    try:
+        day = date.fromisoformat(semaine) if semaine else datetime.now(PARIS).date()
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Date invalide : AAAA-MM-JJ attendu") from None
+    monday = day - timedelta(days=day.weekday())
+    return {"monday": monday.isoformat(), "events": gcal.week_public(monday)}
 
 
 @app.get("/api/health")

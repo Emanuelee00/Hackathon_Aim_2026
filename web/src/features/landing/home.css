@@ -625,3 +625,28 @@
   .cm-home #partenaires,
   .cm-home #s-impliquer { padding: 48px 40px; }
 }
+
+/* Programmation : calendrier d'une semaine (mêmes pastilles violettes et cartes blanches qu'avant). */
+.cm-home .week-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.cm-home .week-label { margin: 0; flex: 1; text-align: center; font-family: var(--display); font-size: 18px; color: var(--violet); }
+.cm-home .week-arrow { width: 46px; height: 46px; flex-shrink: 0; border: 0; border-radius: 50%; background: var(--violet); color: #fff; font-size: 30px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 0 4px; transition: transform 0.15s, opacity 0.15s; }
+.cm-home .week-arrow:hover:not(:disabled) { transform: scale(1.08); }
+.cm-home .week-arrow:disabled { opacity: 0.3; cursor: default; }
+.cm-home .week-note { margin: 0 0 10px; font-size: 14px; color: var(--muted); }
+.cm-home .week-days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.cm-home .week-day { display: flex; gap: 14px; align-items: center; padding: 10px 12px; border-radius: 18px; background: rgba(255, 255, 255, 0.72); }
+.cm-home .week-day.has-events { background: #fff; }
+.cm-home .week-day .event-date { background: rgba(104, 44, 130, 0.45); }
+.cm-home .week-day.has-events .event-date { background: var(--violet); }
+.cm-home .week-events { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cm-home .week-event { margin: 0; display: flex; flex-direction: column; gap: 2px; }
+.cm-home .week-event strong { color: var(--night); }
+.cm-home .week-event small { font-size: 14px; color: var(--muted); }
+.cm-home .week-empty { margin: 0; font-size: 14px; color: var(--muted); }
+@media (min-width: 960px) {
+  .cm-home .week-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+  .cm-home .week-day { flex-direction: column; align-items: stretch; text-align: center; padding: 12px 10px 14px; min-height: 180px; }
+  .cm-home .week-day .event-date { align-self: center; }
+  .cm-home .week-events { align-items: center; }
+  .cm-home .week-event strong { font-size: 15px; }
+}

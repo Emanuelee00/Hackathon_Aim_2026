@@ -18,3 +18,7 @@ marthe.db
 design/canva/*.pdf
 design/images/done/
 design/originaux/
+
+# Chiavi e credenziali: mai nel repo
+secrets/
+chezmarthe-*.json

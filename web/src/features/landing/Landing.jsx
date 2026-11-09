@@ -109,6 +109,55 @@ function Hero() {
   </section>;
 }
 
+const dayNames = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+const monthNames = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const isoDate = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+function mondayOf(date) {
+  const monday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12);
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  return monday;
+}
+
+// Programmation : une semaine du Google Agenda de l'association (via /api/programmation), avec une flèche pour la semaine suivante.
+function WeekProgramme() {
+  const [monday, setMonday] = useState(() => mondayOf(new Date()));
+  const [events, setEvents] = useState(null);
+  const start = isoDate(monday);
+  useEffect(() => {
+    let current = true;
+    setEvents(null);
+    fetch(`/api/programmation?semaine=${start}`)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error('indisponible'))))
+      .then(data => current && setEvents(data.events))
+      .catch(() => current && setEvents(false));
+    return () => { current = false; };
+  }, [start]);
+  const days = Array.from({ length: 7 }, (_, n) => { const day = new Date(monday); day.setDate(monday.getDate() + n); return day; });
+  const shift = weeks => { const next = new Date(monday); next.setDate(monday.getDate() + weeks * 7); setMonday(next); };
+  const thisWeek = start === isoDate(mondayOf(new Date()));
+  const last = days[6];
+  const label = `${monday.getDate()}${monday.getMonth() === last.getMonth() ? '' : ` ${monthNames[monday.getMonth()]}`} – ${last.getDate()} ${monthNames[last.getMonth()]}`;
+  return <div className="week">
+    <div className="week-head">
+      <button type="button" className="week-arrow" onClick={() => shift(-1)} disabled={thisWeek} aria-label="Semaine précédente">‹</button>
+      <p className="week-label" aria-live="polite">Semaine du {label}</p>
+      <button type="button" className="week-arrow" onClick={() => shift(1)} aria-label="Semaine suivante">›</button>
+    </div>
+    {events === false && <p className="week-note">La programmation n’est pas disponible pour le moment. Retrouvez-la sur notre Instagram.</p>}
+    <ol className="week-days">{days.map((day, n) => {
+      const dayEvents = (events || []).filter(event => event.date === isoDate(day));
+      return <li key={isoDate(day)} className={`week-day${dayEvents.length ? ' has-events' : ''}`}>
+        <span className="event-date"><strong>{day.getDate()}</strong>{dayNames[n].slice(0, 3)}</span>
+        <div className="week-events">
+          {dayEvents.length
+            ? dayEvents.map(event => <p key={event.title + event.start} className="week-event"><strong>{event.title}</strong><small>{[event.start && `${event.start}${event.end ? `–${event.end}` : ''}`, event.place].filter(Boolean).join(' · ') || 'Toute la journée'}</small></p>)
+            : <p className="week-empty">{events === null ? '…' : 'Rien de prévu'}</p>}
+        </div>
+      </li>;
+    })}</ol>
+  </div>;
+}
+
 export default function Landing() {
   const [picked, setPicked] = useState(null);
   return <HomeShell home>
@@ -143,8 +192,7 @@ export default function Landing() {
       <section id="evenements" className="block block-wall" aria-labelledby="evenements-titre">
         <p className="kicker">NOS ÉVÈNEMENTS</p>
         <h2 id="evenements-titre">La programmation</h2>
-        {/* To fill with the real programme. */}
-        <ol className="events">{[1, 2, 3].map(n => <li key={n} className="event"><span className="event-date"><strong>jj</strong>mois</span><span className="event-body"><strong>[Titre de l’évènement]</strong><small>[heure] · [espace] · [gratuit / prix]</small></span></li>)}</ol>
+        <WeekProgramme />
         <p className="small">Toute la programmation et les inscriptions sur notre Instagram.</p>
       </section>
 
