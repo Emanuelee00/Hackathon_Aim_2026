@@ -117,7 +117,7 @@ export function SiteFooter() {
   </footer>;
 }
 
-// Carte du quartier : le dessin est séparé en deux calques (traits et tache du lieu), inclinés en 3D selon la souris
+// Carte du quartier : le dessin est séparé en deux calques (traits et tache du lieu) + une flèche vers le lieu, inclinés en 3D selon la souris
 // (ou qui flottent doucement sur téléphone). Purement décoratif.
 function PlaceMap() {
   const ref = useRef(null);
@@ -144,6 +144,11 @@ function PlaceMap() {
       <div className="map-float">
         <img className="map-lines" src="/foto/carte-lignes.webp" alt="" loading="lazy" />
         <img className="map-spot" src="/foto/carte-lieu.webp" alt="" loading="lazy" />
+        {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
+        <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
+          <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
+          <path className="map-arrow-head" d="M 321 648 L 334 624 L 354 640" />
+        </svg>
       </div>
     </div>
   </div>;
