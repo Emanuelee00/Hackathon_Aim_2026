@@ -555,7 +555,7 @@
 }
 .cm-home #partenaires .home-partners a {
   position: relative; isolation: isolate; overflow: hidden;
-  min-height: 112px; height: auto; padding: 18px;
+  min-height: 190px; height: auto; padding: 18px;
   border: 1px solid rgba(242, 161, 171, 0.3); border-radius: 20px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.12);
@@ -573,7 +573,7 @@
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.18);
 }
 .cm-home #partenaires .home-partners img {
-  max-width: min(100%, 180px); max-height: 58px; padding: 8px 12px;
+  width: 135px; max-width: 100%; aspect-ratio: 1; height: auto; max-height: none; object-fit: contain; padding: 10px;
   border-radius: 10px; background: rgba(255, 255, 255, 0.96);
 }
 .cm-home #s-impliquer { color: #fff; counter-reset: support-card; }
@@ -671,5 +671,6 @@
 }
 
 /* Partenaires financiers : sous-titre et logos alignés à gauche, de la même taille que les autres. */
-.cm-home .partners-subtitle { margin: 28px 0 12px; font-family: var(--display); font-size: 22px; color: #fff; }
-.cm-home .home-partners.funders { grid-template-columns: repeat(auto-fit, minmax(140px, 220px)); justify-content: start; }
+.cm-home .partners-subtitle { margin: 32px 0 12px; text-align: center; font-family: var(--display); font-size: 22px; color: #fff; }
+.cm-home .home-partners.funders { grid-template-columns: repeat(auto-fit, minmax(140px, 220px)); justify-content: center; }
+@media (min-width: 960px) { .cm-home #partenaires .home-partners img { width: 150px; } }
