@@ -19,5 +19,5 @@ Les autres photos sont celles de l'association (PDF « Espaces Chez Marthe », v
 
 ## foto/carte-lignes.webp et foto/carte-lieu.webp (carte du quartier, section « Notre premier lieu »)
 - Dessin fourni par l'équipe (CHEZMARTHE.png, original conservé dans `design/originaux/carte-chez-marthe.png`, non versionné).
-- Séparé en deux calques (traits crème, tache rose du lieu) ; le logo « Chez Marthe » et la flèche en bas à gauche ont été retirés du calque.
+- Séparé en deux calques (traits crème, tache rose du lieu) ; le logo « Chez Marthe » et la flèche en bas à gauche ont été retirés (seuls ces tracés sont effacés, le reste du dessin est intact).
 - À vérifier : le droit de réutiliser ce dessin sur le site (signature de l'illustratrice visible sur l'original).

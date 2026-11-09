@@ -117,7 +117,7 @@ export function SiteFooter() {
   </footer>;
 }
 
-// Carte du quartier : le dessin est séparé en trois calques (traits, tache du lieu, logo), inclinés en 3D selon la souris
+// Carte du quartier : le dessin est séparé en deux calques (traits et tache du lieu), inclinés en 3D selon la souris
 // (ou qui flottent doucement sur téléphone). Purement décoratif.
 function PlaceMap() {
   const ref = useRef(null);
@@ -144,7 +144,6 @@ function PlaceMap() {
       <div className="map-float">
         <img className="map-lines" src="/foto/carte-lignes.webp" alt="" loading="lazy" />
         <img className="map-spot" src="/foto/carte-lieu.webp" alt="" loading="lazy" />
-        <img className="map-logo" src="/foto/carte-logo.webp" alt="" loading="lazy" />
       </div>
     </div>
   </div>;
