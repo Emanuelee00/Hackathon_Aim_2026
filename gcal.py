@@ -29,6 +29,10 @@ def _b64(data: bytes) -> bytes:
 
 
 def _credentials(path: str | None = None) -> dict:
+    """Clé du compte de service : variable GOOGLE_CREDENTIALS_JSON (hébergeur sans fichiers, ex. Vercel) ou fichier JSON."""
+    raw = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    if raw and not path:
+        return json.loads(raw)
     file = Path(path or os.environ.get("GOOGLE_CREDENTIALS_FILE", "secrets/google-calendar.json"))
     if not file.is_file():
         raise GoogleCalendarError(f"Clé Google introuvable : {file}")
@@ -115,7 +119,10 @@ _ranges: dict = {}
 
 
 def team_calendars() -> list[dict]:
-    """Agendas montrés dans le calendrier de l'équipe : clé, nom, couleurs, identifiant (fichier hors Git)."""
+    """Agendas montrés dans le calendrier de l'équipe : clé, nom, couleurs, identifiant (variable GOOGLE_CALENDARS_JSON ou fichier hors Git)."""
+    raw = os.environ.get("GOOGLE_CALENDARS_JSON")
+    if raw:
+        return json.loads(raw)
     file = Path(os.environ.get("GOOGLE_CALENDARS_FILE", "secrets/calendars.json"))
     return json.loads(file.read_text(encoding="utf-8")) if file.is_file() else []
 
