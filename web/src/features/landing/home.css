@@ -731,7 +731,7 @@
 }
 
 /* Défilement des logos partenaires, de droite à gauche. */
-.cm-home .marquee { --gap: 14px; overflow: hidden; padding: 12px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.cm-home .marquee { --gap: 22px; overflow: hidden; padding: 12px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
 .cm-home #partenaires .home-partners.marquee-track { display: flex; flex-wrap: nowrap; gap: var(--gap); width: max-content; padding: 0 var(--gap) 0 0; grid-template-columns: none; animation: partners-scroll var(--duration, 40s) linear infinite; }
 .cm-home .marquee-track li { flex: 0 0 auto; width: 190px; }
 .cm-home .marquee-track li a { width: 100%; }
@@ -789,3 +789,5 @@
 
 /* Programmation : la phrase sous le calendrier est un peu plus grande que le texte courant, mais reste plus petite que les titres. */
 .cm-home .block-wall .small { font-size: clamp(18px, 2.2vw, 20px); line-height: 1.5; color: rgba(255, 255, 255, 0.9); margin-top: 18px; }
+
+@media (min-width: 960px) { .cm-home .marquee { --gap: 28px; } }
