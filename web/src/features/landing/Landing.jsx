@@ -139,10 +139,19 @@ function PlaceMap() {
       if (!first) return;
       const sx = first.right - frame.left + 14;
       const sy = first.top + first.height * 0.52 - frame.top;
-      const tx = st.left + st.width * 0.186 - frame.left;
-      const ty = st.top + st.height * 0.5 - frame.top;
-      const d = `M ${sx} ${sy} C ${sx + 70} ${sy - 34}, ${sx + 150} ${sy - 30}, ${sx + 150} ${sy + 10} C ${sx + 150} ${sy + 52}, ${sx + 88} ${sy + 50}, ${sx + 96} ${sy + 14} C ${sx + 104} ${sy - 22}, ${tx - 30} ${sy - 30}, ${tx - 12} ${sy + 22} C ${tx - 4} ${sy + 84}, ${tx - 26} ${ty - 74}, ${tx - 4} ${ty - 10}`;
-      const head = `M ${tx - 20} ${ty - 24} L ${tx - 4} ${ty - 2} L ${tx + 14} ${ty - 22}`;
+      const tx = st.left + st.width * 0.285 - frame.left;
+      const ty = st.top + st.height * 0.452 - frame.top;
+      // Part de la fin de la première ligne du titre, file vers la droite, fait un rond, puis descend en diagonale sur le bord du lieu.
+      const dx = tx - sx;
+      const r = 21;
+      const lx = sx + dx * 0.62;
+      const ly = sy + (ty - sy) * 0.08;
+      const c2x = tx - 34;
+      const c2y = ty - 32;
+      const d = `M ${sx} ${sy} C ${sx + dx * 0.2} ${sy - 5}, ${lx - dx * 0.2} ${ly - r - 6}, ${lx} ${ly - r} A ${r} ${r} 0 1 1 ${lx} ${ly + r} A ${r} ${r} 0 0 1 ${lx} ${ly - r} C ${lx + 38} ${ly - r + 6}, ${c2x} ${c2y}, ${tx} ${ty}`;
+      const angle = Math.atan2(ty - c2y, tx - c2x);
+      const wing = (turn) => `${tx - 21 * Math.cos(angle + turn)} ${ty - 21 * Math.sin(angle + turn)}`;
+      const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
       setTitleArrow({ d, head, width: frame.width, height: frame.height });
     };
     compute();
@@ -172,8 +181,8 @@ function PlaceMap() {
   return <div className="place-map" aria-hidden="true">
     <div className="map-stage" ref={ref}>
       <div className="map-float">
-        <img className="map-lines" src="/foto/carte-lignes.webp?v=3" alt="" loading="lazy" />
-        <img className="map-spot" src="/foto/carte-lieu.webp?v=3" alt="" loading="lazy" />
+        <img className="map-lines" src="/foto/carte-lignes.webp?v=5" alt="" loading="lazy" />
+        <img className="map-spot" src="/foto/carte-lieu.webp?v=5" alt="" loading="lazy" />
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
