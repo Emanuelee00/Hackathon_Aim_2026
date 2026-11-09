@@ -82,6 +82,20 @@ const involvement = [
   { title: 'Les amies de Chez Marthe', photo: '/foto/cantine.webp', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
 ];
 
+// Rangée de logos qui défile de droite à gauche en boucle : l'ensemble est répété pour remplir la largeur,
+// puis le tout est doublé pour que la boucle soit continue. Seule la première série est lue par les lecteurs d'écran.
+function PartnerRow({ items }) {
+  const set = Array.from({ length: Math.max(1, Math.ceil(8 / items.length)) }, () => items).flat();
+  return <div className="marquee" style={{ '--duration': `${set.length * 6}s` }}>
+    <ul className="home-partners marquee-track">{[0, 1].flatMap(round => set.map((p, i) => {
+      const copy = round === 1 || i >= items.length;
+      return <li key={`${round}-${i}`} aria-hidden={copy ? 'true' : undefined}>
+        <a href={p.url} tabIndex={copy ? -1 : undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={copy ? '' : p.name} title={p.name} loading="lazy" /></a>
+      </li>;
+    }))}</ul>
+  </div>;
+}
+
 export function Brand() {
   return <a href={spaceUrl(null)} className="landing-brand"><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>;
 }
@@ -231,11 +245,11 @@ export default function Landing() {
       <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
         <p className="kicker">ILS FONT VIVRE LE LIEU</p>
         <h2 id="partenaires-titre">Nos partenaires</h2>
-        <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+        <PartnerRow items={partners} />
         <h3 className="partners-subtitle">Nos partenaires financiers</h3>
-        <ul className="home-partners funders">{funders.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+        <PartnerRow items={funders} />
         <h3 className="partners-subtitle">Ils nous accompagnent</h3>
-        <ul className="home-partners funders">{supporters.map(p => <li key={p.name}><a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={p.name} title={p.name} loading="lazy" /></a></li>)}</ul>
+        <PartnerRow items={supporters} />
       </section>
 
       <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
