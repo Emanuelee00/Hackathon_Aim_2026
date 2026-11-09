@@ -135,22 +135,33 @@ function PlaceMap() {
       const st = stage.getBoundingClientRect();
       const range = document.createRange();
       range.selectNodeContents(title);
-      const first = range.getClientRects()[0];
-      if (!first) return;
-      const sx = first.right - frame.left + 14;
-      const sy = first.top + first.height * 0.52 - frame.top;
-      const tx = st.left + st.width * 0.285 - frame.left;
-      const ty = st.top + st.height * 0.452 - frame.top;
-      // Part de la fin de la première ligne du titre, file vers la droite, fait un rond, puis descend en diagonale sur le bord du lieu.
+      const rects = range.getClientRects();
+      const last = rects[rects.length - 1];
+      if (!last) return;
+      // Départ : fin de la dernière ligne du titre (« Savournin »). Arrivée : bord gauche du lieu en rose.
+      const sx = last.right - frame.left + 12;
+      const sy = last.top + last.height * 0.55 - frame.top;
+      const tx = st.left + st.width * 0.178 - frame.left;
+      const ty = st.top + st.height * 0.545 - frame.top;
       const dx = tx - sx;
-      const r = 17;
-      const lx = sx + dx * 0.62;
-      const ly = sy + (ty - sy) * 0.08;
-      const c2x = tx - 34;
-      const c2y = ty - 32;
-      const d = `M ${sx} ${sy} C ${sx + dx * 0.2} ${sy - 5}, ${lx - dx * 0.2} ${ly - r - 6}, ${lx} ${ly - r} A ${r} ${r} 0 1 1 ${lx} ${ly + r} A ${r} ${r} 0 0 1 ${lx} ${ly - r} C ${lx + 38} ${ly - r + 6}, ${c2x} ${c2y}, ${tx} ${ty}`;
+      const dy = ty - sy;
+      // La flèche descend derrière le texte, dessine un cœur, puis file vers le lieu.
+      const hx = sx + dx * 0.56;
+      const hy = sy + dy * 0.5;
+      const k = 1.5;
+      const bx = hx;
+      const by = hy + 26 * k;
+      const heart = [
+        `C ${hx - 14 * k} ${hy + 16 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
+        `C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
+        `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
+        `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${bx} ${by}`,
+      ].join(' ');
+      const c2x = tx - 46;
+      const c2y = ty - 16;
+      const d = `M ${sx} ${sy} C ${sx + 8} ${sy + 56}, ${bx - 90} ${by + 8}, ${bx - 6} ${by + 1} ${heart} C ${bx + 36} ${by + 14}, ${c2x} ${c2y}, ${tx} ${ty}`;
       const angle = Math.atan2(ty - c2y, tx - c2x);
-      const wing = (turn) => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
+      const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
       const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
       setTitleArrow({ d, head, width: frame.width, height: frame.height });
     };
@@ -182,9 +193,9 @@ function PlaceMap() {
     <div className="place-map" aria-hidden="true">
     <div className="map-stage" ref={ref}>
       <div className="map-float">
-        <img className="map-lines" src="/foto/carte-lignes.webp?v=6" alt="" loading="lazy" />
-        <img className="map-spot" src="/foto/carte-lieu.webp?v=6" alt="" loading="lazy" />
-        <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=6" alt="" loading="lazy" />
+        <img className="map-lines" src="/foto/carte-lignes.webp?v=7" alt="" loading="lazy" />
+        <img className="map-spot" src="/foto/carte-lieu.webp?v=7" alt="" loading="lazy" />
+        <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=7" alt="" loading="lazy" />
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
