@@ -67,10 +67,10 @@ const funders = [
 ];
 
 const involvement = [
-  { title: 'Proposer un lieu d’accueil', photo: '/foto/soutien-lieu.jpg', focus: 'center 62%', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
-  { title: 'Faire un don', photo: '/foto/soutien-don.jpg', focus: 'center 55%', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
-  { title: 'Adhérer', photo: '/foto/soutien-adherer.jpg', focus: 'center 60%', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
-  { title: 'Les amies de Chez Marthe', photo: '/foto/soutien-amies.jpg', focus: 'center 45%', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
+  { title: 'Proposer un lieu d’accueil', photo: '/foto/facade.webp', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
+  { title: 'Faire un don', photo: '/foto/jardin.webp', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
+  { title: 'Adhérer', photo: '/foto/sororite.webp', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
+  { title: 'Les amies de Chez Marthe', photo: '/foto/cantine.webp', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
 ];
 
 export function Brand() {
@@ -231,7 +231,7 @@ export default function Landing() {
         <p className="kicker">REJOINDRE LE MOUVEMENT</p>
         <h2 id="impliquer-titre">Nous soutenir</h2>
         <p>Faites un don, adhérez à l’association ou rejoignez la communauté : chaque soutien fait vivre Chez Marthe.</p>
-        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target={item.url.startsWith('http') ? '_blank' : undefined} rel={item.url.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})`, '--focus': item.focus }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
+        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target={item.url.startsWith('http') ? '_blank' : undefined} rel={item.url.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})` }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
       </section>
 
       <section id="contact" className="block" aria-labelledby="contact-titre">
