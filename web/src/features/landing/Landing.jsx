@@ -85,6 +85,12 @@ const involvement = [
 // Rangée de logos qui défile de droite à gauche en boucle : l'ensemble est répété pour remplir la largeur,
 // puis le tout est doublé pour que la boucle soit continue. Seule la première série est lue par les lecteurs d'écran.
 function PartnerRow({ items }) {
+  // Moins de 4 logos : pas de défilement, ils restent fixes et centrés.
+  if (items.length < 4) return <div className="marquee marquee-still">
+    <ul className="home-partners marquee-track">{items.map(p => <li key={p.name}>
+      <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={p.name} title={p.name} loading="lazy" /></a>
+    </li>)}</ul>
+  </div>;
   const set = Array.from({ length: Math.max(1, Math.ceil(8 / items.length)) }, () => items).flat();
   return <div className="marquee" style={{ '--duration': `${set.length * 6}s` }}>
     <ul className="home-partners marquee-track">{[0, 1].flatMap(round => set.map((p, i) => {
