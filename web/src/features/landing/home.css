@@ -106,28 +106,30 @@
 .cm-home .menu-info a:hover { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .cm-home .menu, .cm-home .menu.open, .cm-home .scrim, .cm-home .menu-button svg .line { transition: none; } }
 
-.cm-home .home-hero { position: relative; min-height: calc(100vh - var(--bar)); box-sizing: border-box; display: flex; background: var(--night); overflow: hidden; }
-/* Hauteur réellement visible (dvh) : la vidéo s'adapte quand les barres du navigateur
-   apparaissent ou disparaissent, sans que le bas soit caché dessous. */
-@supports (height: 100dvh) { .cm-home .home-hero { min-height: calc(100dvh - var(--bar)); } }
-/* Photo de la cour en fond du haut de page. */
+.cm-home .home-hero { position: relative; min-height: min(88vh, 760px); box-sizing: border-box; display: grid; align-items: end; background: var(--night); overflow: hidden; }
+@supports (height: 100svh) { .cm-home .home-hero { min-height: min(88svh, 760px); } }
 .cm-home .hero-media { position: absolute; inset: 0; background: var(--night); }
-/* Pas de voile : la photo garde ses couleurs d'origine. */
-.cm-home .hero-media::after { display: none; }
-.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
+.cm-home .hero-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: transparent;
+}
+.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: blur(1px); transform: scale(1.008); transition: opacity 0.7s ease; }
 .cm-home .clip.is-on { opacity: 1; }
 .cm-home .hero-inner {
-  width: 100%; max-width: 520px; margin: 0 auto;
-  padding: 20px 18px 24px; display: flex; flex-direction: column; gap: 18px;
+  width: min(100%, 1120px); max-width: none; margin: 0 auto;
+  padding: 120px clamp(16px, 4vw, 48px) 120px; display: flex; flex-direction: column;
 }
 .cm-home .hero-text {
-  position: relative; z-index: 1; flex-grow: 1;
-  display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px;
-  color: var(--night);
+  position: relative; z-index: 1; max-width: 760px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; text-align: left; gap: 18px;
+  color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
-.cm-home .hero-text h1 { margin: 0; color: var(--violet); font-family: var(--display); font-size: 40px; line-height: 1.02; text-wrap: balance; }
-.cm-home .hero-text p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; max-width: 24em; }
-.cm-home .hero-text .city { color: var(--violet); }
+.cm-home .hero-text h1 { max-width: 12ch; margin: 0; color: #fff; font-family: var(--display); font-size: clamp(36px, 6.4vw, 72px); line-height: 0.98; text-wrap: balance; }
+.cm-home .hero-text p { margin: 0; font-size: clamp(20px, 2.5vw, 24px); line-height: 1.5; font-weight: 700; max-width: 36rem; }
+.cm-home .hero-headline { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.cm-home .hero-headline > p { margin-top: 6px; }
+.cm-home .hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 0; }
+.cm-home .hero-text .city { color: var(--pink); }
 /* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
 .cm-home .city { font-weight: 700; white-space: nowrap; }
 /* Largeur réservée pour la ville la plus longue (voir le script) : « au cœur de » ne bouge plus. */
@@ -200,29 +202,12 @@
 
 .cm-home footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: var(--muted); }
 
-/* Ordinateur : titre sur une ligne, « au cœur de » toujours collé à la ville. */
+/* La ville reste collée à « au cœur de », comme dans la page d'origine. */
 @media (min-width: 720px) {
-  .cm-home .hero-text h1 { font-size: 48px; white-space: nowrap; }
-  .cm-home .hero-text p { max-width: none; }
   .cm-home .keep { white-space: nowrap; }
 }
-/* Grand écran : texte à gauche sur fond violet, vidéo verticale dans un cadre à droite. */
 @media (min-width: 960px) {
-  .cm-home .home-hero { background: var(--cream); align-items: center; }
-  .cm-home .hero-inner {
-    max-width: 1180px; padding: 48px 40px; gap: 28px 64px;
-    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "text media"; align-items: center;
-  }
-  .cm-home .hero-media {
-    position: relative; grid-area: media;
-    height: min(calc(100svh - var(--bar) - 96px), 680px); aspect-ratio: 9 / 16;
-    border-radius: 32px; overflow: hidden; box-shadow: 0 24px 60px rgba(27, 19, 25, 0.35);
-  }
-  .cm-home .hero-media::after { display: none; }
-  .cm-home .hero-text { grid-area: text; align-items: flex-start; text-align: left; text-shadow: none; justify-content: flex-end; }
-  .cm-home .hero-text h1 { font-size: 60px; }
-  .cm-home .hero-text p { font-size: 20px; }
-  .cm-home .hero-text .actions { justify-content: flex-start; }
+  .cm-home .hero-inner { padding: 120px 40px 120px; }
 }
 /* Trois marguerites décoratives (pétales violets, cœur orange), éparpillées dans le menu. */
 .cm-home .block { position: relative; }
@@ -318,24 +303,15 @@
 @media (max-width: 359px) { .cm-home .hero-follow > span { display: none; } }
 
 
-/* Téléphone et tablette : texte blanc en bas de la photo (proposition C retenue). */
+/* Sur petits écrans aussi, le texte reste posé sur la photo, comme dans la page d'origine. */
 @media (max-width: 959px) {
-  .cm-home .hero-text { justify-content: center; color: #fff; }
+  .cm-home .hero-text { justify-content: flex-end; color: #fff; }
   .cm-home .hero-text h1 { color: #fff; font-size: 44px; }
   .cm-home .hero-text p { font-size: 19px; }
   .cm-home .hero-text .city { color: var(--pink); }
-  /* Contour violet autour des lettres (le trait passe sous le remplissage : il ne grignote pas le texte). */
-  .cm-home .hero-text h1 { -webkit-text-stroke: 8px var(--violet); paint-order: stroke fill; }
-  .cm-home .hero-text p { -webkit-text-stroke: 5px var(--violet); paint-order: stroke fill; }
 }
 
-/* Téléphone et tablette : pas de voile ni de bande derrière le titre ; la photo reste nette. */
-@media (max-width: 959px) {
-  .cm-home .hero-media::after { display: none; }
-  .cm-home .hero-headline { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-}
-@media (min-width: 960px) { .cm-home .hero-headline { display: contents; } }
-
+/* Le voile fait partie de la composition originale et garde le texte lisible. */
 /* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
 .cm-home .btn-rent span[aria-hidden="true"] { color: #F6A55C; transition: transform 0.15s; display: inline-block; }
 .cm-home .btn-rent:hover span[aria-hidden="true"] { transform: translateX(3px); }
