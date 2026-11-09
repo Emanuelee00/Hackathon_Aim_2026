@@ -786,3 +786,6 @@
 .cm-home .week-day, .cm-home .week-day.has-events { border-radius: 0; }
 .cm-home .week-head { border-radius: 0; padding: 6px 8px; }
 .cm-home .week-day .event-date { border-radius: 0; }
+
+/* Programmation : la phrase sous le calendrier est un peu plus grande que le texte courant, mais reste plus petite que les titres. */
+.cm-home .block-wall .small { font-size: clamp(18px, 2.2vw, 20px); line-height: 1.5; color: rgba(255, 255, 255, 0.9); margin-top: 18px; }
