@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
-    allowedHosts: process.env.VITE_ALLOWED_HOST ? [process.env.VITE_ALLOWED_HOST] : [],
+    allowedHosts: process.env.VITE_ALLOWED_HOST ? [process.env.VITE_ALLOWED_HOST, '.trycloudflare.com'] : ['.trycloudflare.com'],
     proxy: { '/api': process.env.API_PROXY_TARGET || 'http://127.0.0.1:8000' },
     watch: { usePolling: process.env.VITE_USE_POLLING === 'true' },
   },
