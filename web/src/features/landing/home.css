@@ -733,34 +733,28 @@
 /* Programmation : la barre de la semaine est arrondie comme les cartes. */
 .cm-home .week-head { padding: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); }
 
-/* « Notre premier lieu » : carte dessinée du quartier en fond, traits crème et tache rose, avec un léger effet 3D. */
-.cm-home .place-bg > .place-map { position: absolute; z-index: -2; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; max-width: none; overflow: hidden; pointer-events: none; perspective: 1400px; }
+/* « Notre premier lieu » : carte dessinée du quartier en fond, traits crème et tache rose, sans effet 3D ; à chaque chargement elle se construit en points. */
+.cm-home .place-bg > .place-map { position: absolute; z-index: -2; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; max-width: none; overflow: hidden; pointer-events: none; }
 .cm-home .map-stage {
   position: absolute; height: 86%; aspect-ratio: 1600 / 1024; top: 7%; right: 0;
-  transform-style: preserve-3d; transition: transform 0.25s ease-out;
-  transform: rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 6deg));
 }
-.cm-home .map-float { position: absolute; inset: 0; transform-style: preserve-3d; animation: map-float 14s ease-in-out infinite; }
+.cm-home .map-float { position: absolute; inset: 0; }
 .cm-home .map-float img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cm-home .map-lines { opacity: 0.68; }
-.cm-home .map-spot { transform: translateZ(36px); filter: drop-shadow(0 0 14px rgba(255, 190, 205, 0.9)) drop-shadow(0 0 34px rgba(247, 150, 175, 0.75)); animation: map-glow 3.2s ease-in-out infinite; }
-.cm-home .map-spot-lines { transform: translateZ(40px); }
-@keyframes map-float { 0%, 100% { transform: rotateX(1.2deg) rotateY(-1.6deg); } 50% { transform: rotateX(-1deg) rotateY(1.6deg); } }
-@keyframes map-glow { 0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 190, 205, 0.7)) drop-shadow(0 0 22px rgba(247, 150, 175, 0.5)) brightness(1); } 50% { filter: drop-shadow(0 0 18px rgba(255, 205, 218, 1)) drop-shadow(0 0 46px rgba(247, 150, 175, 0.95)) brightness(1.08); } }
+.cm-home .map-spot-lines { filter: drop-shadow(0 0 5px rgba(255, 134, 168, 0.95)) drop-shadow(0 0 16px rgba(255, 110, 150, 0.8)); animation: map-glow 3.2s ease-in-out infinite; }
+@keyframes map-glow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 134, 168, 0.8)) drop-shadow(0 0 9px rgba(255, 110, 150, 0.55)); } 50% { filter: drop-shadow(0 0 7px rgba(255, 170, 195, 1)) drop-shadow(0 0 24px rgba(255, 110, 150, 0.95)); } }
 @media (max-width: 1299px) {
   .cm-home .place-bg::after { background: linear-gradient(180deg, rgba(70, 26, 96, 0.4) 0%, rgba(70, 26, 96, 0.2) 60%, rgba(70, 26, 96, 0) 100%); }
   .cm-home .place-bg { padding-bottom: calc(min(100vw, 1000px) * 0.64 + 40px); }
   .cm-home .map-stage { height: auto; width: min(100vw, 1000px); right: auto; left: 50%; margin-left: calc(min(100vw, 1000px) / -2); top: auto; bottom: 14px; -webkit-mask-image: none; mask-image: none; }
   .cm-home .map-lines { opacity: 0.75; }
-  .cm-home .map-lines, .cm-home .map-spot { -webkit-mask-image: none; mask-image: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cm-home .map-stage { transition: none; transform: none; }
-  .cm-home .map-float, .cm-home .map-spot { animation: none; }
+  .cm-home .map-spot-lines { animation: none; }
 }
 
 /* Flèche rose à boucles : de « Rue Saint-Savournin » jusqu'au lieu. Elle se dessine à l'arrivée sur la section. */
-.cm-home .map-arrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(56px); filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
+.cm-home .map-arrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 1px 4px rgba(30, 8, 45, 0.55)); }
 .cm-home .map-arrow path { stroke: #FFC2CD; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
 .cm-home .map-arrow-line { stroke-dasharray: 1; stroke-dashoffset: 0; animation: map-arrow-loop 7s ease-in-out infinite; }
 .cm-home .map-arrow-head { animation: map-head-loop 7s ease-in-out infinite; }
@@ -778,3 +772,14 @@
 @media (max-width: 1299px) { .cm-home .map-title-arrow { display: none; } }
 .cm-home .place-bg > .map-title-arrow { position: absolute; z-index: 0; left: 0; top: 0; overflow: visible; pointer-events: none; filter: drop-shadow(0 0 5px rgba(255, 190, 205, 0.55)); }
 .cm-home .map-title-arrow path { stroke: #FFC2CD; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Première visite : la carte se construit en points ; les calques ne paraissent qu'à la fin (la maison en rose apparaît dès le début). */
+.cm-home .map-dots { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 1s ease; }
+.cm-home .map-dots.is-fading { opacity: 0; }
+.cm-home .map-lines { transition: opacity 1s ease; }
+.cm-home .map-spot-lines { transition: opacity 0.9s ease; }
+.cm-home .map-stage.is-building .map-lines { opacity: 0; }
+.cm-home .map-stage.is-building:not(.house-on) .map-spot-lines { opacity: 0; }
+.cm-home .map-stage.is-building .map-arrow { opacity: 0; }
+.cm-home .map-title-arrow { transition: opacity 1s ease; }
+.cm-home .map-title-arrow.is-waiting { opacity: 0; }

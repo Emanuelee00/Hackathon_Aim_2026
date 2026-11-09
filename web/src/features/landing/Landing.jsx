@@ -117,8 +117,12 @@ export function SiteFooter() {
   </footer>;
 }
 
-// Carte du quartier : le dessin est séparé en trois calques (traits, fond rose du lieu, traits sombres du lieu) + une flèche vers le lieu, inclinés en 3D selon la souris
-// (ou qui flottent doucement sur téléphone). Purement décoratif.
+// Carte du quartier : le dessin est séparé en deux calques (traits crème, murs du lieu en rose) + une flèche vers le lieu. Purement décoratif.
+// La construction à points se joue à chaque chargement de la page (sauf si les animations sont désactivées).
+function shouldBuildMap() {
+  return typeof window !== 'undefined' && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+}
+
 function PlaceMap() {
   const ref = useRef(null);
   const [titleArrow, setTitleArrow] = useState(null);
@@ -171,31 +175,88 @@ function PlaceMap() {
     document.fonts?.ready.then(compute);
     return () => observer.disconnect();
   }, []);
+  // À chaque chargement : la carte se construit en points, de la maison de Chez Marthe jusqu'à la cathédrale.
+  const [building, setBuilding] = useState(shouldBuildMap);
+  const [houseOn, setHouseOn] = useState(false);
+  const [fading, setFading] = useState(false);
+  const canvasRef = useRef(null);
   useEffect(() => {
+    if (!building) return undefined;
     const stage = ref.current;
+    const canvas = canvasRef.current;
     const section = stage?.closest('section');
-    if (!stage || !section || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
-    let frame;
-    const tilt = (x, y) => { stage.style.setProperty('--rx', x); stage.style.setProperty('--ry', y); };
-    const move = event => {
-      const box = section.getBoundingClientRect();
-      const x = ((event.clientX - box.left) / box.width - 0.5) * 2;
-      const y = ((event.clientY - box.top) / box.height - 0.5) * 2;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => tilt(x.toFixed(3), y.toFixed(3)));
+    if (!stage || !canvas || !section) return undefined;
+    let frame; let observer; let cancelled = false; let timer;
+    const image = new Image();
+    image.src = '/foto/carte-lignes.webp?v=8';
+    const houseImage = new Image();
+    houseImage.src = '/foto/carte-lieu-lignes.webp?v=8';
+    const finish = () => {
+      setBuilding(false); setFading(true); timer = setTimeout(() => setFading(false), 1200);
     };
-    const reset = () => tilt(0, 0);
-    section.addEventListener('pointermove', move);
-    section.addEventListener('pointerleave', reset);
-    return () => { cancelAnimationFrame(frame); section.removeEventListener('pointermove', move); section.removeEventListener('pointerleave', reset); };
-  }, []);
+    const play = () => {
+      // Points = pixels du dessin (un sur trois). Chaque point apparaît selon sa distance à la maison, la cathédrale est la dernière.
+      const W = 1600; const H = 1024; const STEP = 3;
+      const sample = document.createElement('canvas'); sample.width = W; sample.height = H;
+      const sctx = sample.getContext('2d', { willReadFrequently: true });
+      const xs = []; const ys = []; const delay = []; const angle = []; const spread = []; const house = [];
+      const hx = 522; const hy = 538; const maxD = 1010;
+      [[image, false], [houseImage, true]].forEach(([source, isHouse]) => {
+        sctx.clearRect(0, 0, W, H); sctx.drawImage(source, 0, 0, W, H);
+        const data = sctx.getImageData(0, 0, W, H).data;
+        for (let y = 0; y < H; y += STEP) for (let x = 0; x < W; x += STEP) {
+          if (data[(y * W + x) * 4 + 3] < 70) continue;
+          xs.push(x); ys.push(y); house.push(isHouse);
+          delay.push(Math.min(1, Math.hypot(x - hx, (y - hy) * 1.3) / maxD) * 0.92 + Math.random() * 0.04);
+          angle.push(Math.random() * Math.PI * 2); spread.push(10 + Math.random() * 26);
+        }
+      });
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const box = stage.getBoundingClientRect();
+      canvas.width = Math.round(box.width * dpr); canvas.height = Math.round(box.height * dpr);
+      const ctx = canvas.getContext('2d');
+      const k = canvas.width / W;
+      const DURATION = 6500;
+      const start = performance.now();
+      const draw = now => {
+        if (cancelled) return;
+        const p = (now - start) / DURATION;
+        if (p > 0.03) setHouseOn(true);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let pass = 0; pass < 3; pass += 1) {
+          ctx.fillStyle = ['#FFC2CD', 'rgba(250, 228, 238, 0.8)', '#FF86A8'][pass];
+          for (let i = 0; i < xs.length; i += 1) {
+            const t = Math.min(1, Math.max(0, (p - delay[i] * 0.74) / 0.26));
+            if (t <= 0) continue;
+            const group = house[i] ? 2 : (t < 0.55 ? 0 : 1);
+            if (group !== pass) continue;
+            const e = 1 - (1 - t) ** 3;
+            const off = (1 - e) * spread[i];
+            const size = (1.7 + 0.8 * e) * k * 1.25;
+            ctx.fillRect((xs[i] + Math.cos(angle[i]) * off) * k - size / 2, (ys[i] + Math.sin(angle[i]) * off) * k - size / 2, size, size);
+          }
+        }
+        if (p < 1.02) frame = requestAnimationFrame(draw); else finish();
+      };
+      frame = requestAnimationFrame(draw);
+    };
+    const start = () => {
+      const ready = () => (image.complete && houseImage.complete ? play() : undefined);
+      image.onload = ready; houseImage.onload = ready; ready();
+    };
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); start(); }
+    }, { threshold: 0.4 });
+    observer.observe(section);
+    return () => { cancelled = true; cancelAnimationFrame(frame); clearTimeout(timer); observer?.disconnect(); };
+  }, [building]);
   return <>
     <div className="place-map" aria-hidden="true">
-    <div className="map-stage" ref={ref}>
+    <div className={`map-stage${building ? ' is-building' : ''}${houseOn ? ' house-on' : ''}`} ref={ref}>
       <div className="map-float">
-        <img className="map-lines" src="/foto/carte-lignes.webp?v=7" alt="" loading="lazy" />
-        <img className="map-spot" src="/foto/carte-lieu.webp?v=7" alt="" loading="lazy" />
-        <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=7" alt="" loading="lazy" />
+        <img className="map-lines" src="/foto/carte-lignes.webp?v=8" alt="" loading="lazy" />
+        <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=8" alt="" loading="lazy" />
+        {(building || fading) && <canvas className={`map-dots${fading ? ' is-fading' : ''}`} ref={canvasRef} />}
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
@@ -204,7 +265,7 @@ function PlaceMap() {
       </div>
     </div>
     </div>
-    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+    {titleArrow && <svg className={`map-title-arrow${building ? ' is-waiting' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
       <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
       <path className="map-arrow-head" d={titleArrow.head} />
     </svg>}
