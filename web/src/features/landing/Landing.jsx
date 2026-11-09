@@ -125,11 +125,7 @@ function Hero() {
       <div className="hero-text">
         <div className="hero-headline">
           <h1>Rejoignez l’aventure</h1>
-          <div className="hero-actions">
-            <a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
-            <a className="btn btn-rent" href="#espaces">Louer un espace</a>
-          </div>
-          <p>Soutenez un lieu tremplin pour les femmes,<br /><span className="keep">au cœur de{' '}
+          <p>Soutenez un lieu tremplin pour les femmes, <span className="keep">au cœur de{' '}
             {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so « au cœur de » never moves. */}
             <span className="city" aria-hidden="true">
               <span className="city-sizer">{cities.map(c => <span key={c}>{c}|.</span>)}</span>
@@ -138,6 +134,8 @@ function Hero() {
             <span className="sr-only">{cities.join(', ')}.</span>
           </p>
         </div>
+        <div className="actions"><a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a></div>
+        <a className="btn btn-rent" href="#espaces">Louer un espace</a>
       </div>
     </div>
   </section>;
