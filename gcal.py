@@ -109,3 +109,50 @@ def week_public(monday: date, ttl: int = 600) -> list[dict]:
         })
     _weeks[monday] = (time.time(), items)
     return items
+
+
+_ranges: dict = {}
+
+
+def team_calendars() -> list[dict]:
+    """Agendas montrés dans le calendrier de l'équipe : clé, nom, couleurs, identifiant (fichier hors Git)."""
+    file = Path(os.environ.get("GOOGLE_CALENDARS_FILE", "secrets/calendars.json"))
+    return json.loads(file.read_text(encoding="utf-8")) if file.is_file() else []
+
+
+def team_range(first: date, last: date, ttl: int = 300) -> dict:
+    """Évènements de tous les agendas entre deux dates (incluses), pour l'équipe connectée.
+
+    Un agenda illisible n'empêche pas les autres : son nom est renvoyé dans `errors`.
+    """
+    cached = _ranges.get((first, last))
+    if cached and time.time() - cached[0] < ttl:
+        return cached[1]
+    start = (first - timedelta(days=1)).isoformat() + "T00:00:00Z"
+    end = (last + timedelta(days=2)).isoformat() + "T00:00:00Z"
+    items, errors = [], []
+    for calendar in team_calendars():
+        try:
+            events = list_events(start, end, calendar_id=calendar["id"])
+        except (GoogleCalendarError, httpx.HTTPError, OSError):
+            errors.append(calendar["name"])
+            continue
+        for event in events:
+            begin, finish = event.get("start", {}), event.get("end", {})
+            stamp = begin.get("dateTime") or begin.get("date")
+            if not stamp or not first.isoformat() <= stamp[:10] <= last.isoformat():
+                continue
+            timed = "dateTime" in begin
+            items.append({
+                "calendar": calendar["key"],
+                "title": (event.get("summary") or "(sans titre)").strip(),
+                "date": stamp[:10],
+                "start": stamp[11:16] if timed else "",
+                "end": (finish.get("dateTime") or "")[11:16] if timed else "",
+                "place": (event.get("location") or "").split(",")[0].strip(),
+            })
+    result = {"calendars": [{k: c[k] for k in ("key", "name", "color", "bg")} for c in team_calendars()], "events": sorted(items, key=lambda e: (e["date"], e["start"])), "errors": errors}
+    if errors and cached:
+        return cached[1]
+    _ranges[(first, last)] = (time.time(), result)
+    return result

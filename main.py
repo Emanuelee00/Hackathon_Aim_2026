@@ -3,15 +3,18 @@ from contextlib import asynccontextmanager
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from threading import Thread
+from typing import Annotated
 from zoneinfo import ZoneInfo
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 
 import gcal
+from accounts.models import User
 from accounts.routes import router as accounts_router
+from accounts.sessions import team_member
 from agents.routes import router as agents_router
 from ai import AI_ENABLED, warm_up
 from ai import router as ai_router
@@ -86,6 +89,18 @@ def programmation(semaine: str = "") -> dict:
         raise HTTPException(status_code=422, detail="Date invalide : AAAA-MM-JJ attendu") from None
     monday = day - timedelta(days=day.weekday())
     return {"monday": monday.isoformat(), "events": gcal.week_public(monday)}
+
+
+@app.get("/api/agenda")
+def agenda(du: str, au: str, _: Annotated[User, Depends(team_member)]) -> dict:
+    """Agendas Google de l'association pour le calendrier de l'équipe (connexion équipe requise)."""
+    try:
+        first, last = date.fromisoformat(du), date.fromisoformat(au)
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Dates invalides : AAAA-MM-JJ attendu") from None
+    if not first <= last <= first + timedelta(days=62):
+        raise HTTPException(status_code=422, detail="Période de 62 jours maximum")
+    return gcal.team_range(first, last)
 
 
 @app.get("/api/health")

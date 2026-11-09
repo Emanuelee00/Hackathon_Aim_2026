@@ -61,6 +61,11 @@ const partners = [
   { name: 'Benenova Marseille', logo: 'benenova.webp', url: 'https://www.benenova.fr/' },
 ];
 
+// Financeurs publics : le logo vient de la page Wikipédia de la Métropole.
+const funders = [
+  { name: 'Métropole Aix-Marseille-Provence', logo: 'metropole-aix-marseille-provence.svg', url: 'https://www.ampmetropole.fr/' },
+];
+
 const involvement = [
   { title: 'Nous proposer un lieu', text: 'Vous connaissez un lieu qui pourrait accueillir le projet ? Parlons-en.', url: '#contact' },
   { title: 'Faire un don', text: 'Aménager les espaces et faire durer le lieu.', url: LINKS.donate },
@@ -218,6 +223,8 @@ export default function Landing() {
         <p className="kicker">ILS FONT VIVRE LE LIEU</p>
         <h2 id="partenaires-titre">Nos partenaires</h2>
         <ul className="home-partners">{partners.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
+        <h3 className="partners-subtitle">Nos partenaires financiers</h3>
+        <ul className="home-partners funders">{funders.map(p => <li key={p.name}><a href={p.url} target="_blank" rel="noreferrer"><img src={`/foto/partenaires/${p.logo}`} alt={p.name} loading="lazy" /></a></li>)}</ul>
       </section>
 
       <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">

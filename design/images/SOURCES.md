@@ -5,3 +5,7 @@
 | `web/public/foto/atelier.jpg` | « Lucie Rie pottery workshop, V&A London 01 » par 14GTR, Wikimedia Commons : https://commons.wikimedia.org/wiki/File:Lucie_Rie_pottery_workshop,_V%26A_London_01.jpg (recadrée) | CC0 (domaine public), aucune mention obligatoire |
 
 Les autres photos sont celles de l'association (PDF « Espaces Chez Marthe », vidéos, photos fournies).
+
+## partenaires/metropole-aix-marseille-provence.svg
+- Logo de la Métropole Aix-Marseille-Provence, récupéré sur fr.wikipedia.org (fichier « Logo Métropole Aix Marseille Provence.svg »), le 2026-11-09.
+- Logo institutionnel : à utiliser pour citer la Métropole comme partenaire financier ; vérifier la charte graphique et l'accord de la Métropole si besoin.
