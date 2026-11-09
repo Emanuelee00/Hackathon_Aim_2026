@@ -740,7 +740,6 @@
   transform-style: preserve-3d; transition: transform 0.25s ease-out;
   transform: rotateX(calc(var(--ry, 0) * -4deg)) rotateY(calc(var(--rx, 0) * 6deg));
 }
-.cm-home .map-lines, .cm-home .map-spot { -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%); mask-image: linear-gradient(90deg, transparent 0%, #000 16%); }
 .cm-home .map-float { position: absolute; inset: 0; transform-style: preserve-3d; animation: map-float 14s ease-in-out infinite; }
 .cm-home .map-float img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cm-home .map-lines { opacity: 0.68; }
