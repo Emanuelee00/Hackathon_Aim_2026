@@ -757,3 +757,8 @@
 .cm-home .week-event.shade-1 { --shade-a: rgba(146, 80, 182, 0.92); --shade-b: rgba(120, 56, 156, 0.94); }
 .cm-home .week-event.shade-2 { --shade-a: rgba(120, 54, 154, 0.94); --shade-b: rgba(98, 40, 132, 0.96); }
 .cm-home .week-event.shade-3 { --shade-a: rgba(96, 36, 130, 0.96); --shade-b: rgba(72, 24, 104, 0.98); }
+
+/* Programmation : cartes et barre à angles droits (les couleurs violettes ne changent pas). */
+.cm-home .week-day, .cm-home .week-day.has-events { border-radius: 0; }
+.cm-home .week-head { border-radius: 0; padding: 6px 8px; }
+.cm-home .week-day .event-date { border-radius: 0; }
