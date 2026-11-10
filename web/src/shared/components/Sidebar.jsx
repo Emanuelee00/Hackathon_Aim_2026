@@ -19,9 +19,10 @@ export const navigation = [
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
   { id: 'messages', label: 'Messages', icon: 'mail' },
+  { id: 'quotes', label: 'Devis', icon: 'file' },
 ];
 
-export default function Sidebar({ page, navigate, mobile, close, onCollapse, collapsed, help, newQuestions, accessRequests }) {
+export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();
   const pending = events.filter(event => event.status === 'pending').length;
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
@@ -45,6 +46,6 @@ export default function Sidebar({ page, navigate, mobile, close, onCollapse, col
         <div className="profile"><span className="avatar">CM</span><div><strong>L’équipe Chez Marthe</strong><small>Espace coordination</small></div><span className="live-dot" /></div>
       </div>
     </aside>
-    <button type="button" className="sidebar-handle" aria-controls="sidebar" aria-expanded={!collapsed} aria-label={collapsed ? 'Afficher le menu' : 'Masquer le menu'} title={collapsed ? 'Afficher le menu' : 'Masquer le menu'} onClick={onCollapse}><Icon name={collapsed ? 'right' : 'left'} size={18} /></button>
+    <button type="button" className="sidebar-handle" aria-controls="sidebar" aria-expanded={expanded} aria-label={expanded ? 'Masquer le menu' : 'Afficher le menu'} title={expanded ? 'Masquer le menu' : 'Afficher le menu'} onClick={onCollapse}><Icon name={expanded ? 'left' : 'right'} size={18} /></button>
   </>;
 }
