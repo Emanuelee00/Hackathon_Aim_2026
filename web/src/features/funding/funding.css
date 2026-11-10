@@ -158,3 +158,8 @@
   .funding-task-edit { grid-template-columns: 18px 1fr 32px; }
   .funding-search { width: 100%; margin-left: 0; }
 }
+
+/* Relance : le délai en mois (11 par défaut) et, dessous, le jour où le courriel de rappel part à l'équipe. */
+.funding-followup { display: flex; flex-direction: column; gap: 1px; }
+.funding-cell-number { width: 72px; }
+.funding-followup small { padding-left: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
