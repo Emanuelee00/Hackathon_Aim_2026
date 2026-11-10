@@ -58,3 +58,5 @@
   .request-done h2 { font-size: 26px; }
   .request-done .button { width: 100%; }
 }
+
+.request-confirmation { margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; background: #f3e8f7; color: #4a1f60; }

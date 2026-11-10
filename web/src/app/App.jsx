@@ -12,6 +12,8 @@ import Spaces from '../features/spaces/Spaces.jsx';
 import Reports from '../features/reports/Reports.jsx';
 import Stats from '../features/stats/Stats.jsx';
 import Funding from '../features/funding/Funding.jsx';
+import Messages from '../features/messages/Messages.jsx';
+import Quotes from '../features/quotes/Quotes.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
@@ -39,6 +41,8 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
   if (page === 'stats') return <Stats />;
   if (page === 'funding') return <Funding />;
+  if (page === 'messages') return <Messages />;
+  if (page === 'quotes') return <Quotes />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 
@@ -57,6 +61,25 @@ export default function App() {
     return () => window.removeEventListener('hashchange', follow);
   }, []);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Grand écran : le panneau latéral se replie pour voir la page en entier ; le choix est gardé pour la prochaine visite.
+  const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem('marthe-sidebar') === 'collapsed'; } catch { return false; } });
+  const isNarrow = () => window.matchMedia('(max-width: 820px)').matches;
+  // Petit écran : le menu est un tiroir. On suit la taille de la fenêtre pour que la linguette (flèche) montre le bon sens.
+  const [narrow, setNarrow] = useState(isNarrow);
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 820px)');
+    const update = () => setNarrow(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+  const toggleMenu = () => {
+    if (isNarrow()) { setMenuOpen(open => !open); return; }
+    setCollapsed(current => {
+      const next = !current;
+      try { localStorage.setItem('marthe-sidebar', next ? 'collapsed' : 'open'); } catch { /* le choix vaut pour cette visite */ }
+      return next;
+    });
+  };
   const [modal, setModal] = useState(null);
   const questions = useQuestions();
   const access = useAccessRequests();
@@ -90,18 +113,20 @@ export default function App() {
   const openEvent = eventId => setModal({ type: 'event', eventId });
   const openNew = () => setModal({ type: 'new' });
 
-  return <div className="app-shell">
+  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`}>
     <Sidebar
       page={page}
       navigate={navigate}
       mobile={menuOpen}
       close={() => setMenuOpen(false)}
+      onCollapse={toggleMenu}
+      expanded={narrow ? menuOpen : !collapsed}
       help={() => setModal({ type: 'help' })}
       newQuestions={questions.questions.filter(question => question.status === 'new').length}
       accessRequests={access.requests.length}
     />
     <div className="app-content">
-      <Header page={page} onMenu={() => setMenuOpen(true)} onNew={openNew} />
+      <Header page={page} onMenu={toggleMenu} expanded={narrow ? menuOpen : !collapsed} onNew={openNew} />
       <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} questions={questions} access={access} /></main>
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}

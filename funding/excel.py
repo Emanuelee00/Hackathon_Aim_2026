@@ -26,7 +26,27 @@ FIELDS = (
     "progress",
 )
 # Columns P to T, added by the site's own Excel file so a round trip loses nothing.
-SITE_FIELDS = ("siteStatus", "siteDeadline", "siteOwner", "siteId", "siteColor")
+SITE_FIELDS = (
+    "siteStatus",
+    "siteDeadline",
+    "siteOwner",
+    "siteId",
+    "siteColor",
+    "siteObtained",
+    "siteFollowup",
+    "siteFollowupOn",
+)
+# Months between the day a funding is obtained and the reminder to ask again: a year, a month early.
+DEFAULT_FOLLOWUP_MONTHS = 11
+
+
+def followup_months(value) -> int:
+    """The delay written in the Excel cell, or the default when it is empty or invalid."""
+    try:
+        months = int(float(text(value)))
+    except ValueError:
+        return DEFAULT_FOLLOWUP_MONTHS
+    return months if 0 < months <= 120 else DEFAULT_FOLLOWUP_MONTHS
 
 
 def new_card(cells: dict) -> dict:
@@ -48,6 +68,9 @@ def new_card(cells: dict) -> dict:
             "color": text(cells["siteColor"])
             if text(cells["siteColor"]) in ROW_COLORS
             else "",
+            "obtainedOn": iso_date(cells["siteObtained"]),
+            "followupMonths": followup_months(cells["siteFollowup"]),
+            "followupOn": iso_date(cells["siteFollowupOn"]),
         }
     deadline = iso_date(cells["deadlineNote"])
     return card | {
@@ -55,6 +78,9 @@ def new_card(cells: dict) -> dict:
         "status": status(card),
         "deadline": deadline,
         "owner": "",
+        "obtainedOn": "",
+        "followupMonths": DEFAULT_FOLLOWUP_MONTHS,
+        "followupOn": "",
     }
 
 

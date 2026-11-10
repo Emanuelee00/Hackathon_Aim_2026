@@ -47,3 +47,28 @@ a.nav-item { text-decoration: none; }
 .demo-label > span { width: 6px; height: 6px; border-radius: 50%; background: #ab62ba; }
 .mobile-menu { display: none !important; }
 
+
+/* Panneau latéral repliable : bouton à trois lignes dans la barre du haut, flèche dans le panneau, choix gardé. */
+.menu-toggle { display: inline-grid; place-items: center; width: 36px; height: 36px; margin-right: 6px; }
+.sidebar-close { position: absolute; top: 20px; right: 14px; z-index: 2; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 9px; color: #f0e8f2; background: rgba(255, 255, 255, 0.1); cursor: pointer; transition: background 0.2s; }
+.sidebar-close:hover, .sidebar-close:focus-visible { background: rgba(255, 255, 255, 0.22); }
+@media (min-width: 821px) {
+  .app-content { transition: margin-left 0.28s ease; }
+  .sidebar { transition: transform 0.28s ease, visibility 0s; }
+  .app-shell.is-collapsed .sidebar { transform: translateX(-100%); visibility: hidden; box-shadow: none; transition: transform 0.28s ease, visibility 0s 0.28s; }
+  .app-shell.is-collapsed .app-content { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .app-content, .sidebar { transition: none !important; } }
+
+/* Linguette pour replier/déplier le menu : à mi-hauteur, à cheval sur le bord du panneau, toujours visible (le panneau défile, pas elle). */
+.sidebar-close { display: none; }
+.sidebar-handle { position: fixed; top: 50%; left: 254px; z-index: 40; display: grid; place-items: center; width: 32px; height: 60px; padding: 0; border: 1px solid rgba(102, 43, 128, 0.28); border-radius: 12px; color: var(--violet, #662B80); background: #fff; box-shadow: 0 6px 20px rgba(53, 18, 60, 0.22); cursor: pointer; transform: translateY(-50%); transition: left 0.28s ease, background 0.2s, color 0.2s; }
+.sidebar-handle:hover, .sidebar-handle:focus-visible { color: #fff; background: var(--violet, #662B80); }
+.app-shell.is-collapsed .sidebar-handle { left: 0; border-left: 0; border-radius: 0 12px 12px 0; }
+/* Petit écran (menu en tiroir) : la linguette reste à mi-hauteur, collée au bord de l'écran quand le menu est fermé, au bord du tiroir quand il est ouvert. */
+@media (max-width: 820px) {
+  .sidebar-handle { z-index: 41; transition: left 0.25s ease; }
+  .app-shell:not(.menu-open) .sidebar-handle { left: 0; border-left: 0; border-radius: 0 12px 12px 0; }
+  .app-shell.menu-open .sidebar-handle { left: 254px; border-left: 1px solid rgba(102, 43, 128, 0.28); border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .sidebar-handle { transition: none; } }

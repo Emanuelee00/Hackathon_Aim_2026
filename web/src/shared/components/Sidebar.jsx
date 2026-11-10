@@ -18,16 +18,18 @@ export const navigation = [
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
+  { id: 'messages', label: 'Messages', icon: 'mail' },
+  { id: 'quotes', label: 'Devis', icon: 'file' },
 ];
 
-export default function Sidebar({ page, navigate, mobile, close, help, newQuestions, accessRequests }) {
+export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();
   const pending = events.filter(event => event.status === 'pending').length;
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
   const site = sites.find(candidate => candidate.id === siteId) ?? sites[0];
   return <>
     {mobile && <button className="nav-scrim" aria-label="Fermer le menu" onClick={close} />}
-    <aside className={`sidebar ${mobile ? 'is-open' : ''}`}>
+    <aside id="sidebar" className={`sidebar ${mobile ? 'is-open' : ''}`}>
       <a href="#dashboard" className="brand" onClick={close}><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <p className="brand-caption">Le compagnon des lieux vivants</p>
       <div className="place-switch-wrap" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setSiteMenuOpen(false); }} onKeyDown={event => { if (event.key === 'Escape') { setSiteMenuOpen(false); event.currentTarget.querySelector('.place-switch').focus(); } }}>
@@ -44,5 +46,6 @@ export default function Sidebar({ page, navigate, mobile, close, help, newQuesti
         <div className="profile"><span className="avatar">CM</span><div><strong>L’équipe Chez Marthe</strong><small>Espace coordination</small></div><span className="live-dot" /></div>
       </div>
     </aside>
+    <button type="button" className="sidebar-handle" aria-controls="sidebar" aria-expanded={expanded} aria-label={expanded ? 'Masquer le menu' : 'Afficher le menu'} title={expanded ? 'Masquer le menu' : 'Afficher le menu'} onClick={onCollapse}><Icon name={expanded ? 'left' : 'right'} size={18} /></button>
   </>;
 }

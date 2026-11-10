@@ -158,3 +158,24 @@
   .funding-task-edit { grid-template-columns: 18px 1fr 32px; }
   .funding-search { width: 100%; margin-left: 0; }
 }
+
+/* Relance : le délai en mois (11 par défaut) et, dessous, le jour où le courriel de rappel part à l'équipe. */
+.funding-followup { display: flex; flex-direction: column; gap: 1px; }
+.funding-cell-number { width: 72px; }
+.funding-followup small { padding-left: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+.funding-sheet-top { align-items: start; }
+
+/* Test d'envoi de l'e-mail de rappel, dans la fiche du financeur. */
+.funding-test-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 4px 0 14px; }
+.funding-test-ok { color: #1d7a46; font-weight: 700; font-size: 14px; }
+.funding-test-error { color: #b3261e; font-weight: 700; font-size: 14px; }
+
+.funding-sheet-top { align-items: start; }
+
+/* Adresse des e-mails de rappel, sous les boutons du haut de la page. */
+.funding-actions { flex-wrap: wrap; justify-content: flex-end; }
+.funding-mail-button { flex-basis: 100%; justify-content: center; max-width: max-content; margin-left: auto; }
+.funding-mail-button b { font-weight: 800; }
+.funding-mail-form { display: grid; gap: 14px; }
+.funding-mail-form p { margin: 0; color: var(--muted, #5e5360); line-height: 1.5; }

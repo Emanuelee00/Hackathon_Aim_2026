@@ -15,8 +15,10 @@ from ai import router as ai_router
 from db import migrate
 from demo import DEMO_MODE
 from employment.routes import router as employment_router
+from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
 from matching import router as matching_router
+from messages import router as messages_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
@@ -25,6 +27,7 @@ from sharing.routes import router as sharing_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     migrate()
+    start_reminders()
     if AI_ENABLED and not DEMO_MODE:
         Thread(target=warm_up, daemon=True).start()
     yield
@@ -40,6 +43,7 @@ app.include_router(qr_router)
 app.include_router(accounts_router)
 app.include_router(agents_router)
 app.include_router(funding_router)
+app.include_router(messages_router)
 
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the

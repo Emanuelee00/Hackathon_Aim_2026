@@ -10,6 +10,7 @@ import FundingPanels from './components/FundingPanels.jsx';
 import FundersTable from './components/FundersTable.jsx';
 import FunderSheet from './components/FunderSheet.jsx';
 import ImportConfirm from './components/ImportConfirm.jsx';
+import ReminderMail from './components/ReminderMail.jsx';
 import ServerCopies from './components/ServerCopies.jsx';
 
 async function readTracker(file) {
@@ -80,7 +81,8 @@ export default function Funding() {
     <PageIntro eyebrow="ESPACE ÉQUIPE · FINANCEMENTS" title="Tableau de bord des financements" description={`${funders.length} pistes suivies · chaque modification est enregistrée automatiquement`}>
       <div className="funding-actions"><input ref={fileInput} type="file" accept=".xlsx" hidden onChange={importFile} />{importButton}
         <button className="button button-quiet button-small" disabled={!funders.length} onClick={() => saveTracker(funders).then(() => notify('Fichier Excel enregistré dans vos téléchargements.'), error => notify(error.message))}><Icon name="download" size={16} />Enregistrer dans Excel</button>
-        <button className="button button-dark button-small" onClick={addFunder}><Icon name="plus" size={16} />Nouvelle piste</button></div>
+        <button className="button button-dark button-small" onClick={addFunder}><Icon name="plus" size={16} />Nouvelle piste</button>
+        <ReminderMail notify={notify} /></div>
     </PageIntro>
     {!funders.length ? <EmptyState title="Aucune piste pour l’instant" text="Importez votre fichier de suivi (onglet « Retroplanning » et « feuille de route ») ou ajoutez une première piste." action={importButton} /> : <>
       {urgent && <UrgentBanner funder={urgent} today={today} onOpen={setOpenId} />}

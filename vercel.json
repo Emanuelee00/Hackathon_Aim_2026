@@ -1,4 +1,10 @@
 {
   "framework": "fastapi",
-  "buildCommand": "npm --prefix web ci && npm --prefix web run build"
+  "buildCommand": "npm --prefix web ci && npm --prefix web run build",
+  "crons": [
+    {
+      "path": "/api/funders/reminders/cron",
+      "schedule": "0 7 * * *"
+    }
+  ]
 }

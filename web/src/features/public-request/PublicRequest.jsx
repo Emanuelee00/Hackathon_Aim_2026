@@ -19,6 +19,7 @@ function Done({ request, onAgain }) {
   return <div className="panel request-done" tabIndex={-1} ref={ref}>
     <span className="verdict ok">Demande reçue</span><h2>Merci, {request.organizer}</h2>
     <p>Votre demande « {request.title} » est enregistrée sous la référence CM-{request.id.slice(-6)}. Vous recevrez une réponse après le comité de vendredi.</p>
+    {request.confirmation && <p className="request-confirmation" role="status">✉ Un e-mail de confirmation vient d’être envoyé à <b>{request.email}</b>.</p>}
     <ol className="request-steps"><li className="done">Demande reçue et enregistrée</li><li className="done">Pré-analyse par l’équipe</li><li>Passage au comité de coordination, vendredi</li><li>Réponse par e-mail et proposition de visite</li></ol>
     <button className="button button-quiet" onClick={onAgain}>Faire une autre demande</button>
   </div>;
@@ -46,8 +47,8 @@ export default function PublicRequest() {
     const request = buildRequest(form);
     setSending(true); setSendError('');
     try {
-      const { id } = await submitRequest(request);
-      setSent({ ...request, id });
+      const { id, confirmation } = await submitRequest(request);
+      setSent({ ...request, id, confirmation });
     } catch (failure) {
       setSendError(failure.message);
     } finally {

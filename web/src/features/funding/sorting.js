@@ -1,4 +1,4 @@
-import { fundingStatuses } from './funding.js';
+import { followupDate, fundingStatuses } from './funding.js';
 
 const statusOrder = Object.keys(fundingStatuses);
 
@@ -16,6 +16,8 @@ export function amountValue(text) {
 const sortValues = {
   amount: funder => amountValue(funder.amount),
   deadline: funder => funder.deadline || null,
+  obtained: funder => funder.obtainedOn || null,
+  followup: funder => followupDate(funder) || null,
   status: funder => statusOrder.indexOf(funder.status),
 };
 export const sortableColumns = Object.keys(sortValues);

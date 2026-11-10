@@ -1,0 +1,45 @@
+/* Page « Messages » : les e-mails automatiques, modifiables. */
+.message-sender { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; margin-bottom: 26px; }
+.message-sender p { margin: 2px 0 0; color: var(--muted, #6b5f6d); font-size: 14px; }
+.message-group { display: grid; gap: 18px; margin-bottom: 30px; }
+.message-group > h2 { margin: 6px 0 0; font-size: 22px; }
+.message-card { display: grid; gap: 14px; }
+.message-card > header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.message-card h3 { margin: 0; font-size: 19px; }
+.message-meta { display: grid; gap: 6px; margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(102, 43, 128, 0.06); font-size: 14px; }
+.message-meta div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; }
+.message-meta dt { color: var(--muted, #6b5f6d); font-weight: 700; }
+.message-meta dd { margin: 0; }
+.message-card textarea { min-height: 220px; font-family: inherit; line-height: 1.5; }
+.message-variables { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: var(--muted, #6b5f6d); }
+.message-variables .chip { font-family: ui-monospace, monospace; font-size: 13px; }
+.message-preview { padding: 14px 16px; border: 1px dashed rgba(102, 43, 128, 0.4); border-radius: 12px; background: #fff; }
+.message-preview-head { margin: 0 0 10px; }
+.message-preview pre { margin: 0; white-space: pre-wrap; font: inherit; line-height: 1.55; }
+.message-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.message-state { margin-left: auto; color: #a55a00; font-weight: 700; font-size: 14px; }
+.message-badge { padding: 4px 11px; border-radius: 999px; background: #ece7ef; color: #5e5360; font-size: 12.5px; font-weight: 800; }
+.message-badge.custom { background: #f2d9ec; color: #7a1f5c; }
+.message-badge.on { background: #dcf2e6; color: #1d6b43; }
+.message-badge.off { background: #fdf0d2; color: #8a5a00; }
+.message-confirm { display: grid; gap: 14px; }
+.message-confirm p { margin: 0; line-height: 1.5; }
+.message-error { color: #b3261e; font-weight: 700; }
+@media (max-width: 700px) { .message-sender { grid-template-columns: 1fr; } .message-meta div { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Cartes : marges intérieures, fond blanc et bord, comme les autres panneaux. */
+.message-card, .message-sender { padding: 22px 24px; background: #fff; border: 1px solid rgba(102, 43, 128, 0.14); border-radius: 18px; box-shadow: 0 6px 18px rgba(102, 43, 128, 0.06); }
+.message-sender { padding: 16px 22px; }
+.message-card .field { display: grid; gap: 6px; }
+.message-card .field input, .message-card .field textarea { width: 100%; padding: 11px 13px; border: 1px solid rgba(102, 43, 128, 0.28); border-radius: 10px; font: inherit; }
+.message-card .field input:focus, .message-card .field textarea:focus { outline: 2px solid #f2a1ab; outline-offset: 1px; }
+/* Une police où les accolades { } se distinguent bien des crochets. */
+.message-card .field input, .message-card .field textarea { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px; }
+
+/* Adresse « Bonjour Chez Marthe » qui répond aux formulaires. */
+.message-identity { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 16px 22px; background: #fff; border: 1px solid rgba(242, 161, 171, 0.8); border-radius: 18px; box-shadow: 0 6px 18px rgba(102, 43, 128, 0.06); }
+.message-identity p { margin: 2px 0 0; color: var(--muted, #6b5f6d); font-size: 14px; }
+.message-hint { color: var(--muted, #6b5f6d); font-size: 13.5px; }
+.message-sure { display: grid; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #fdf0d2; }
+.message-sure p { margin: 0; }
+@media (max-width: 700px) { .message-identity { grid-template-columns: 1fr; } }

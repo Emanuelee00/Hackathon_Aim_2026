@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { localToday, nextTask, overdueTasks, urgentDeadline } from './funding.js';
+import { addMonths, defaultFollowupDate, emptyFunder, followupDate, followupMonths, localToday, nextTask, overdueTasks, urgentDeadline } from './funding.js';
 import { calendarEvents, calendarMonths } from './calendar.js';
 import { importChanges } from './importing.js';
 import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tableMath.js';
@@ -86,4 +86,26 @@ test('resizing a column changes its neighbour, never the table; the last one cov
   assert.deepEqual(resizeWithNeighbour(widths, order, 'amount', 190), { name: 200, type: 100, amount: 190, card: 60 });
   assert.deepEqual(resizeWithNeighbour(widths, order, 'amount', 400), { name: 200, type: 100, amount: 200, card: 50 });
   assert.equal(totalWidth(resizeWithNeighbour(widths, order, 'type', 10)), totalWidth(widths));
+});
+
+test('the reminder falls 11 months after the funding is obtained, unless the delay is changed', () => {
+  assert.equal(emptyFunder().followupMonths, 11);
+  assert.equal(followupDate({ obtainedOn: '2026-01-10' }), '2026-12-10');
+  assert.equal(followupDate({ obtainedOn: '2026-01-10', followupMonths: 6 }), '2026-07-10');
+  assert.equal(followupMonths({ followupMonths: 0 }), 11);
+  assert.equal(followupDate({ followupMonths: 11 }), '');
+});
+
+test('months are added to the last day of a shorter month', () => {
+  assert.equal(addMonths('2026-01-31', 1), '2026-02-28');
+  assert.equal(addMonths('2026-03-15', 11), '2027-02-15');
+  assert.equal(addMonths('2026-12-01', 1), '2027-01-01');
+});
+
+test('the reminder day can be chosen by hand, and goes back to 11 months after the obtention', () => {
+  const funder = { obtainedOn: '2026-01-10', followupMonths: 11, followupOn: '' };
+  assert.equal(followupDate(funder), '2026-12-10');
+  assert.equal(followupDate({ ...funder, followupOn: '2026-10-05' }), '2026-10-05');
+  assert.equal(defaultFollowupDate({ ...funder, followupOn: '2026-10-05' }), '2026-12-10');
+  assert.equal(emptyFunder().followupOn, '');
 });

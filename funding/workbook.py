@@ -7,7 +7,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
 from .cells import ROW_COLORS, STATUS_LABELS
-from .excel import FIELDS
+from .excel import DEFAULT_FOLLOWUP_MONTHS, FIELDS
 
 TRACKER = (
     "Object pertinence pour chez Marthe",
@@ -30,6 +30,9 @@ TRACKER = (
     "Responsable (site)",
     "Identifiant (site)",
     "Couleur (site)",
+    "Obtenu le (site)",
+    "Relance en mois (site)",
+    "Relance le (site)",
 )
 ROADMAP = (
     "Qui",
@@ -78,7 +81,19 @@ def tracker_row(funder: dict) -> list:
     status = STATUS_LABELS.get(funder.get("status"), "")
     deadline = day(funder.get("deadline"))
     owner, color = funder.get("owner") or "", funder.get("color") or ""
-    return [*values, status, deadline, owner, funder.get("id"), color]
+    obtained = day(funder.get("obtainedOn"))
+    months = funder.get("followupMonths") or DEFAULT_FOLLOWUP_MONTHS
+    return [
+        *values,
+        status,
+        deadline,
+        owner,
+        funder.get("id"),
+        color,
+        obtained,
+        months,
+        day(funder.get("followupOn")),
+    ]
 
 
 def write_tracker(funders: list[dict]) -> bytes:
