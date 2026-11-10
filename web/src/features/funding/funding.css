@@ -170,3 +170,12 @@
 .funding-test-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 4px 0 14px; }
 .funding-test-ok { color: #1d7a46; font-weight: 700; font-size: 14px; }
 .funding-test-error { color: #b3261e; font-weight: 700; font-size: 14px; }
+
+.funding-sheet-top { align-items: start; }
+
+/* Adresse des e-mails de rappel, sous les boutons du haut de la page. */
+.funding-actions { flex-wrap: wrap; justify-content: flex-end; }
+.funding-mail-button { flex-basis: 100%; justify-content: center; max-width: max-content; margin-left: auto; }
+.funding-mail-button b { font-weight: 800; }
+.funding-mail-form { display: grid; gap: 14px; }
+.funding-mail-form p { margin: 0; color: var(--muted, #5e5360); line-height: 1.5; }

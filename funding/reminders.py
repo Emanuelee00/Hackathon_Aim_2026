@@ -23,6 +23,10 @@ from .excel import DEFAULT_FOLLOWUP_MONTHS
 
 log = logging.getLogger("marthe.reminders")
 PARIS = ZoneInfo("Europe/Paris")
+SETTINGS_KEY = (
+    "funding_notify_email"  # the address chosen on the page, in a one-item list
+)
+CONTACT = os.getenv("CONTACT_EMAIL", "contact@chezmarthe.org")
 SENT_KEY = (
     "funding_reminders"  # "funder id:reminder day", so a reminder leaves only once
 )
@@ -66,13 +70,27 @@ def due(funders: list[dict], today: date, sent: set[str]) -> list[tuple[dict, da
     return result
 
 
+def default_notify_email() -> str:
+    return os.getenv("REMINDER_TO", CONTACT)
+
+
+def notify_email() -> str:
+    """Where the reminders go: the address chosen on the funding page, else REMINDER_TO, else the contact address."""
+    saved = store.load_document(SETTINGS_KEY) or []
+    return (saved[0] if saved else "") or default_notify_email()
+
+
+def save_notify_email(email: str) -> None:
+    """Empty goes back to the default address."""
+    store.save_document(SETTINGS_KEY, [email] if email else [])
+
+
 def french(day: date) -> str:
     return day.strftime("%d/%m/%Y")
 
 
 def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
     name = funder.get("name") or funder.get("type") or "Financeur sans nom"
-    team = os.getenv("REMINDER_TO", "contact@chezmarthe.org")
     try:
         obtained = date.fromisoformat(str(funder.get("obtainedOn") or ""))
     except ValueError:  # a test on a funder whose obtention date is still empty
@@ -107,7 +125,7 @@ def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
             lines.append(f"{label} : {value}")
     lines += [
         "",
-        f"Contact Chez Marthe : {team}",
+        f"Contact Chez Marthe : {CONTACT}",
         "",
         "— Intranet financements, Chez Marthe",
     ]
@@ -115,8 +133,8 @@ def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
     mail["Subject"] = (
         f"{'[TEST] ' if test else ''}Rappel : recontacter {name} pour un nouveau financement"
     )
-    mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{team}>")
-    mail["To"] = team
+    mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{CONTACT}>")
+    mail["To"] = notify_email()
     mail.set_content("\n".join(lines))
     return mail
 

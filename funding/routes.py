@@ -16,13 +16,20 @@ from fastapi import (
     UploadFile,
 )
 from openpyxl.utils.exceptions import InvalidFileException
+from pydantic import BaseModel, ConfigDict, Field
 
 from accounts.models import User
 from accounts.sessions import team_member
 
 from .backup import copy_days, load_copy
 from .excel import read_tracker
-from .reminders import NotConfigured, send_test
+from .reminders import (
+    NotConfigured,
+    default_notify_email,
+    notify_email,
+    save_notify_email,
+    send_test,
+)
 from .reminders import run as run_reminders
 from .workbook import write_tracker
 
@@ -101,3 +108,27 @@ def reminders_cron(request: Request) -> dict[str, list[dict]]:
     if not secret or request.headers.get("authorization") != f"Bearer {secret}":
         raise HTTPException(401, "Accès refusé.")
     return {"reminders": run_reminders()}
+
+
+class NotifyEmail(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    email: str = Field(
+        default="", max_length=254, pattern=r"^([^@\s]+@[^@\s]+\.[^@\s]+)?$"
+    )
+
+
+def notify_settings() -> dict:
+    return {"email": notify_email(), "default": default_notify_email()}
+
+
+@router.get("/reminders/settings")
+def read_notify_settings(user: Team) -> dict:
+    """The address the reminder e-mails go to (editable on the funding page)."""
+    return notify_settings()
+
+
+@router.put("/reminders/settings")
+def change_notify_settings(settings: NotifyEmail, user: Team) -> dict:
+    """Changes the address; an empty one goes back to the default address."""
+    save_notify_email(settings.email.strip().lower())
+    return notify_settings()

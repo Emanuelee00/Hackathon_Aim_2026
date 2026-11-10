@@ -205,3 +205,41 @@ def test_only_the_team_sends_a_test_and_the_cron_needs_its_secret(
     assert team.get(
         "/api/funders/reminders/cron", headers={"Authorization": "Bearer secret"}
     ).json() == {"reminders": []}
+
+
+def test_the_team_chooses_where_the_reminders_go(client_as, memory, monkeypatch):  # noqa: F811
+    team = client_as("equipe")
+    team.app.include_router(funding_router)
+    assert team.get("/api/funders/reminders/settings").json() == {
+        "email": "contact@chezmarthe.org",
+        "default": "contact@chezmarthe.org",
+    }
+    assert (
+        team.put(
+            "/api/funders/reminders/settings", json={"email": "pas une adresse"}
+        ).status_code
+        == 422
+    )
+    chosen = team.put(
+        "/api/funders/reminders/settings", json={"email": " Caro@Chezmarthe.org "}
+    ).json()
+    assert chosen["email"] == "caro@chezmarthe.org"
+    assert (
+        reminders.message(funder(obtainedOn="2026-01-10"), date(2026, 12, 10))["To"]
+        == "caro@chezmarthe.org"
+    )
+    assert (
+        client_as("residents")
+        .put("/api/funders/reminders/settings", json={"email": "x@y.fr"})
+        .status_code
+        == 403
+    )
+    assert (
+        team.put("/api/funders/reminders/settings", json={"email": ""}).json()["email"]
+        == "contact@chezmarthe.org"
+    )
+    monkeypatch.setenv("REMINDER_TO", "equipe@chezmarthe.org")
+    assert (
+        team.get("/api/funders/reminders/settings").json()["email"]
+        == "equipe@chezmarthe.org"
+    )
