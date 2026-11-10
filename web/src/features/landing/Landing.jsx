@@ -149,15 +149,19 @@ function PlaceMap() {
       const tx = st.left + st.width * (stacked ? 0.3 : 0.285) - frame.left;
       const ty = st.top + st.height * (stacked ? 0.405 : 0.452) - frame.top;
       if (stacked) {
-        // Téléphone / tablette : un fil de points dans la marge gauche (il ne traverse pas le texte), un cœur plein posé sur le fil,
-        // puis la pointe sur le toit du lieu.
+        // Téléphone / tablette : un fil de points dans la marge gauche (il ne traverse pas le texte), un cœur dessiné en points
+        // posé sur le fil (le fil s'arrête avant le cœur et repart après), puis la pointe sur le toit du lieu.
         const edge = Math.max(6, title.getBoundingClientRect().left - frame.left - 10);
         const hx = tx + 10;
         const hy = ty - 88;
+        const k = 0.95;
         const yRail = Math.max(sy + 60, hy - 34);
+        const toHeart = `M ${edge} ${sy} L ${edge} ${yRail} C ${edge} ${yRail + 30}, ${hx - 100} ${hy}, ${hx - 33} ${hy}`;
+        const fromHeart = `M ${hx} ${hy + 26 * k + 9} C ${hx} ${hy + 26 * k + 36}, ${tx + 2} ${ty - 52}, ${tx} ${ty - 8}`;
         const d = `M ${edge} ${sy} L ${edge} ${yRail} C ${edge} ${yRail + 30}, ${hx - 100} ${hy}, ${hx - 14} ${hy} L ${hx + 14} ${hy} C ${hx + 46} ${hy}, ${tx + 2} ${ty - 58}, ${tx} ${ty - 8}`;
+        const heartD = `M ${hx} ${hy + 26 * k} C ${hx - 14 * k} ${hy + 16 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k} C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k} C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k} C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k} Z`;
         const head = `M ${tx - 11} ${ty - 17} L ${tx} ${ty - 2} L ${tx + 11} ${ty - 17}`;
-        setTitleArrow({ mode: 'rail', d, head, node: [edge, sy], heart: [hx, hy], width: frame.width, height: frame.height });
+        setTitleArrow({ mode: 'rail', d, dots: [toHeart, fromHeart], heartD, head, node: [edge, sy], width: frame.width, height: frame.height });
         return;
       }
       // Grand écran : la flèche part de la fin de la PREMIÈRE ligne du titre, reste au-dessus du texte (elle ne le traverse jamais),
@@ -294,10 +298,10 @@ function PlaceMap() {
     {titleArrow && <svg className={`map-title-arrow${titleArrow.mode === 'rail' ? ' is-rail' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
       {titleArrow.mode === 'rail' ? <>
         <defs><mask id="rail-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width={titleArrow.width} height={titleArrow.height}><path className="map-arrow-line" pathLength="1" d={titleArrow.d} /></mask></defs>
-        <path className="rail-dots" d={titleArrow.d} mask="url(#rail-reveal)" />
+        {titleArrow.dots.map(piece => <path key={piece} className="rail-dots" d={piece} mask="url(#rail-reveal)" />)}
         <circle className="map-arrow-head" cx={titleArrow.node[0]} cy={titleArrow.node[1]} r="5" fill="#FFC2CD" />
         <path className="map-arrow-head" d={titleArrow.head} />
-        <path className="rail-heart map-arrow-head" transform={`translate(${titleArrow.heart[0] - 21} ${titleArrow.heart[1] - 22}) scale(1.75)`} d="M12 21s-7.5-4.6-9.8-9.2C0.7 8.7 2.3 5 5.6 5c2 0 3.4 1.1 4.4 2.5C11 6.1 12.4 5 14.4 5c3.3 0 4.9 3.7 3.4 6.8C19.5 16.4 12 21 12 21z" />
+        <path className="rail-heart map-arrow-head" d={titleArrow.heartD} />
       </> : <>
         <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
         <path className="map-arrow-head" d={titleArrow.head} />

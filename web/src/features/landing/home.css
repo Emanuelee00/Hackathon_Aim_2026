@@ -784,4 +784,4 @@
 .cm-home .map-title-arrow.is-rail .rail-dots { stroke: #FFC2CD; stroke-width: 3.6; stroke-linecap: round; stroke-dasharray: 0.1 9.5; }
 .cm-home .map-title-arrow.is-rail mask path { stroke: #fff; stroke-width: 16; }
 .cm-home .map-title-arrow.is-rail .map-arrow-head { stroke-width: 3.4; }
-.cm-home .map-title-arrow.is-rail .rail-heart { fill: #FF86A8; stroke: #7b3b99; stroke-width: 3.5; paint-order: stroke fill; stroke-linejoin: round; }
+.cm-home .map-title-arrow.is-rail .rail-heart { fill: none; stroke: #FF86A8; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0.1 8.4; }
