@@ -11,6 +11,7 @@ from accounts.sessions import team_member
 
 from .backup import copy_days, load_copy
 from .excel import read_tracker
+from .reminders import run as run_reminders
 from .workbook import write_tracker
 
 router = APIRouter(prefix="/api/funders")
@@ -55,3 +56,9 @@ def download_backup(day: Day, user: Team) -> Response:
     if funders is None:
         raise HTTPException(404, "Aucune copie ce jour-là.")
     return excel_file(funders, f"AAP retroplanning - {day}.xlsx")
+
+
+@router.post("/reminders/run")
+def reminders(user: Team, dry: bool = True) -> dict[str, list[dict]]:
+    """The follow-up reminders due today; with `dry=false` they are also sent (once each)."""
+    return {"reminders": run_reminders(dry=dry)}

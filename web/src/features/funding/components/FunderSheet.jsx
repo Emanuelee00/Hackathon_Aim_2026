@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '../../../shared/components/Icon.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
-import { funderFields, fundingStatuses } from '../funding.js';
+import { followupDate, followupMonths, funderFields, fundingStatuses } from '../funding.js';
 
 const shortFields = new Set(['name', 'type', 'contact', 'email', 'phone']);
 // Name, type, contact, mail, phone and informations, above the tasks.
@@ -36,6 +36,9 @@ export default function FunderSheet({ funder, onSave, onRemove, onClose }) {
       <label className="field"><span>État</span><select value={draft.status} onChange={event => set('status', event.target.value)}>{Object.entries(fundingStatuses).map(([key, status]) => <option key={key} value={key}>{status.mark} {status.label}</option>)}</select></label>
       <label className="field"><span>Responsable</span><input value={draft.owner} placeholder="Véro, Caro…" onChange={event => set('owner', event.target.value)} /></label>
       <label className="field"><span>Date limite</span><input type="date" value={draft.deadline} onChange={event => set('deadline', event.target.value)} /></label>
+      <label className="field"><span>Financement obtenu le</span><input type="date" value={draft.obtainedOn || ''} onChange={event => set('obtainedOn', event.target.value)} /></label>
+      <label className="field"><span>Relance (mois après)</span><input type="number" min="1" max="120" value={followupMonths(draft)} onChange={event => set('followupMonths', Math.max(1, Math.min(120, Number(event.target.value) || 11)))} />
+        <small className="funding-muted">{followupDate(draft) ? `Courriel de rappel à l’équipe le ${new Date(`${followupDate(draft)}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}.` : 'Renseignez la date d’obtention pour programmer le rappel.'}</small></label>
     </div>
     <div className="funding-sheet-grid">{funderFields.slice(0, IDENTITY).map(field)}</div>
     <TaskList tasks={draft.tasks} onChange={tasks => set('tasks', tasks)} />

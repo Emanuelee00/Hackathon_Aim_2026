@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tableMath.js';
 
-const KEY = 'marthe-funding-table-v3';
+const KEY = 'marthe-funding-table-v4';
 // The table's columns: key, heading, starting share of the width (in pixels at 1212 px).
-export const columns = [['name', 'Financeur', 230], ['type', 'Type', 130], ['amount', 'Montant', 180], ['deadline', 'Échéance', 140], ['status', 'État', 160], ['owner', 'Resp.', 80], ['next', 'Prochaine action', 240], ['card', '', 120]];
+export const columns = [['name', 'Financeur', 230], ['type', 'Type', 130], ['amount', 'Montant', 180], ['deadline', 'Échéance', 140], ['obtained', 'Obtenu le', 130], ['followup', 'Relance (mois)', 150], ['status', 'État', 160], ['owner', 'Resp.', 80], ['next', 'Prochaine action', 240], ['card', '', 120]];
 const defaults = Object.fromEntries(columns.map(([key, , width]) => [key, width]));
 const movable = columns.map(([key]) => key).filter(key => key !== 'card');
 const MIN_TABLE = 480;

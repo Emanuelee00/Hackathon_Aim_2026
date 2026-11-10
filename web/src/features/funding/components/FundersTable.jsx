@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Icon from '../../../shared/components/Icon.jsx';
-import { closedStatuses, fundingStatuses, nextTask, rowColors } from '../funding.js';
+import { closedStatuses, followupDate, followupMonths, fundingStatuses, nextTask, rowColors } from '../funding.js';
 import { sortFunders } from '../sorting.js';
 import { totalWidth } from '../tableMath.js';
 import useTableLayout, { PANEL_CHROME, columns } from '../useTableLayout.js';
@@ -36,6 +36,20 @@ function NextAction({ funder, today, onSave, onOpen }) {
   </span>;
 }
 
+// The delay before the reminder to ask the funder again (11 months unless changed), and the day it falls on.
+function Followup({ funder, onSave }) {
+  const months = followupMonths(funder);
+  const when = followupDate(funder);
+  const save = event => {
+    const value = Number(event.target.value);
+    if (Number.isInteger(value) && value > 0 && value <= 120) { if (value !== months) onSave({ ...funder, followupMonths: value }); } else event.target.value = months;
+  };
+  return <span className="funding-followup">
+    <input key={months} type="number" min="1" max="120" className="funding-cell funding-cell-number" aria-label={`Relance en mois · ${funder.name}`} defaultValue={months} onBlur={save} onKeyDown={event => { if (event.key === 'Enter') event.target.blur(); }} />
+    <small title="Un courriel de rappel part à l’équipe ce jour-là">{when ? `→ ${new Date(`${when}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'date d’obtention ?'}</small>
+  </span>;
+}
+
 // Deleting a funder asks first, in red, next to the row.
 function RemoveButton({ funder, onRemove }) {
   return <Popover label={`Supprimer la piste ${funder.name}`} icon="trash" up danger>{close => <div className="funding-remove">
@@ -45,9 +59,9 @@ function RemoveButton({ funder, onRemove }) {
 }
 
 function Row({ funder, today, layout, onSave, onOpen, onRemove }) {
-  const cell = (field, type) => <Cell funder={funder} field={field} label={labels[field] || 'Responsable'} type={type} onSave={onSave} onOpen={onOpen} />;
+  const cell = (field, type) => <Cell funder={funder} field={field} label={labels[field === 'obtainedOn' ? 'obtained' : field] || 'Responsable'} type={type} onSave={onSave} onOpen={onOpen} />;
   const content = {
-    name: cell('name'), type: cell('type'), amount: cell('amount'), deadline: cell('deadline', 'date'), owner: cell('owner'),
+    name: cell('name'), type: cell('type'), amount: cell('amount'), deadline: cell('deadline', 'date'), obtained: cell('obtainedOn', 'date'), followup: <Followup funder={funder} onSave={onSave} />, owner: cell('owner'),
     status: <select className={`funding-status ${funder.status}`} aria-label={`État · ${funder.name}`} value={funder.status} onChange={event => onSave({ ...funder, status: event.target.value })}>{Object.entries(fundingStatuses).map(([key, status]) => <option key={key} value={key}>{status.mark} {status.label}</option>)}</select>,
     next: <NextAction funder={funder} today={today} onSave={onSave} onOpen={onOpen} />,
     card: <div className="funding-row-actions"><Popover label={`Couleur de la ligne ${funder.name}`} icon="palette" up>{close => <Swatches value={funder.color} onPick={color => { onSave({ ...funder, color }); close(); }} />}</Popover>

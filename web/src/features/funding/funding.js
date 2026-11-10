@@ -24,7 +24,22 @@ export const funderFields = [
   ['firstContact', 'Premier contact effectué'], ['potential', 'Potentialité (texte d’origine)'], ['progress', 'État d’avancement de la candidature'],
 ];
 
-export const emptyFunder = () => ({ ...Object.fromEntries(funderFields.map(([key]) => [key, ''])), id: crypto.randomUUID(), status: 'qualify', deadline: '', owner: '', color: '', tasks: [] });
+// Once a funding is obtained, a reminder is sent to the team to ask the funder again: a year later, a month early (11 months, editable).
+export const DEFAULT_FOLLOWUP_MONTHS = 11;
+export const followupMonths = funder => (Number.isInteger(funder.followupMonths) && funder.followupMonths > 0 ? funder.followupMonths : DEFAULT_FOLLOWUP_MONTHS);
+
+// The same day `months` later, or the last day of a shorter month (31 January + 1 month = 28 February).
+export function addMonths(day, months) {
+  const [year, month, date] = day.split('-').map(Number);
+  const index = month - 1 + months;
+  const target = [year + Math.floor(index / 12), index % 12];
+  const last = new Date(Date.UTC(target[0], target[1] + 1, 0)).getUTCDate();
+  return `${target[0]}-${String(target[1] + 1).padStart(2, '0')}-${String(Math.min(date, last)).padStart(2, '0')}`;
+}
+
+export const followupDate = funder => (funder.obtainedOn ? addMonths(funder.obtainedOn, followupMonths(funder)) : '');
+
+export const emptyFunder = () => ({ ...Object.fromEntries(funderFields.map(([key]) => [key, ''])), id: crypto.randomUUID(), status: 'qualify', deadline: '', owner: '', color: '', obtainedOn: '', followupMonths: DEFAULT_FOLLOWUP_MONTHS, tasks: [] });
 
 export function localToday(now = new Date()) {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
