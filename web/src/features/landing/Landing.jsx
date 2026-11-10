@@ -192,48 +192,63 @@ function PlaceMap() {
     const houseImage = new Image();
     houseImage.src = '/foto/carte-lieu-lignes.webp?v=8';
     const play = () => {
-      // Points = pixels du dessin (un sur trois). Chaque point apparaît selon sa distance à la maison, la cathédrale est la dernière.
-      const W = 1600; const H = 1024; const STEP = 3;
+      // Points = pixels du dessin (un sur deux, de la taille d'un trait). Chaque point apparaît selon sa distance à la maison,
+      // la cathédrale est la dernière. Les points déjà posés sont gardés dans un calque (un seul drawImage par image).
+      const W = 1600; const H = 1024; const STEP = 2;
       const sample = document.createElement('canvas'); sample.width = W; sample.height = H;
       const sctx = sample.getContext('2d', { willReadFrequently: true });
-      const xs = []; const ys = []; const delay = []; const angle = []; const spread = []; const house = [];
+      const raw = [];
       const hx = 522; const hy = 538; const maxD = 1010;
-      [[image, false], [houseImage, true]].forEach(([source, isHouse]) => {
+      [[image, 0], [houseImage, 1]].forEach(([source, isHouse]) => {
         sctx.clearRect(0, 0, W, H); sctx.drawImage(source, 0, 0, W, H);
         const data = sctx.getImageData(0, 0, W, H).data;
         for (let y = 0; y < H; y += STEP) for (let x = 0; x < W; x += STEP) {
           if (data[(y * W + x) * 4 + 3] < 70) continue;
-          xs.push(x); ys.push(y); house.push(isHouse);
-          delay.push(Math.min(1, Math.hypot(x - hx, (y - hy) * 1.3) / maxD) * 0.92 + Math.random() * 0.04);
-          angle.push(Math.random() * Math.PI * 2); spread.push(10 + Math.random() * 26);
+          raw.push([x, y, isHouse, Math.min(1, Math.hypot(x - hx, (y - hy) * 1.3) / maxD) * 0.92 + Math.random() * 0.04, Math.random() * Math.PI * 2, 10 + Math.random() * 26]);
         }
       });
+      raw.sort((a, b) => a[3] - b[3]);
+      const n = raw.length;
+      const xs = new Float32Array(n); const ys = new Float32Array(n); const delay = new Float32Array(n);
+      const angle = new Float32Array(n); const spread = new Float32Array(n); const house = new Uint8Array(n);
+      raw.forEach(([x, y, isHouse, d, a, sp], i) => { xs[i] = x; ys[i] = y; house[i] = isHouse; delay[i] = d; angle[i] = a; spread[i] = sp; });
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const box = stage.getBoundingClientRect();
       canvas.width = Math.round(box.width * dpr); canvas.height = Math.round(box.height * dpr);
       const ctx = canvas.getContext('2d');
+      const layer = document.createElement('canvas'); layer.width = canvas.width; layer.height = canvas.height;
+      const lctx = layer.getContext('2d');
       const k = canvas.width / W;
+      const full = (1.15 + 0.55) * k * 1.25;
+      const COLORS = ['#FFC2CD', 'rgba(250, 228, 238, 0.68)', '#FF86A8'];
       const DURATION = 6500;
       const start = performance.now();
+      let started = 0; let settled = 0;
       const draw = now => {
         if (cancelled) return;
         const p = (now - start) / DURATION;
         if (p > 0.03) setHouseOn(true);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Fin de l'animation : le vrai dessin apparaît pendant que les points rétrécissent et s'éteignent (pas de changement brusque).
+        // Fin de l'animation : le vrai dessin apparaît pendant que les points s'éteignent (pas de changement brusque).
         const melt = Math.min(1, Math.max(0, (p - 0.88) / 0.24));
         if (melt > 0 && !revealed) { revealed = true; setPhase('reveal'); }
+        while (started < n && delay[started] * 0.74 <= p) started += 1;
+        while (settled < started && (p - delay[settled] * 0.74) / 0.26 >= 1) {
+          lctx.fillStyle = COLORS[house[settled] ? 2 : 1];
+          lctx.fillRect(xs[settled] * k - full / 2, ys[settled] * k - full / 2, full, full);
+          settled += 1;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.globalAlpha = 1 - melt;
+        ctx.drawImage(layer, 0, 0);
         for (let pass = 0; pass < 3; pass += 1) {
-          ctx.fillStyle = ['#FFC2CD', 'rgba(250, 228, 238, 0.8)', '#FF86A8'][pass];
-          for (let i = 0; i < xs.length; i += 1) {
-            const t = Math.min(1, Math.max(0, (p - delay[i] * 0.74) / 0.26));
-            if (t <= 0) continue;
+          ctx.fillStyle = COLORS[pass];
+          for (let i = settled; i < started; i += 1) {
+            const t = Math.min(1, (p - delay[i] * 0.74) / 0.26);
             const group = house[i] ? 2 : (t < 0.55 ? 0 : 1);
             if (group !== pass) continue;
             const e = 1 - (1 - t) ** 3;
             const off = (1 - e) * spread[i];
-            const size = (1.7 + 0.8 * e) * k * 1.25 * (1 - 0.55 * melt);
+            const size = (1.15 + 0.55 * e) * k * 1.25;
             ctx.fillRect((xs[i] + Math.cos(angle[i]) * off) * k - size / 2, (ys[i] + Math.sin(angle[i]) * off) * k - size / 2, size, size);
           }
         }
