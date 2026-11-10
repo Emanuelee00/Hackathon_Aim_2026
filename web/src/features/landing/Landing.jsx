@@ -156,7 +156,11 @@ function PlaceMap() {
         const hx = tx + 10;
         const hy = ty - 90;
         const k = 1.05;
-        const yRail = Math.max(sy + 60, hy - 34);
+        const by = hy + 26 * k;
+        // La ligne reste dans la marge jusqu'au-dessous du dernier texte de la section (les chiffres), puis seulement elle glisse vers le cœur.
+        const facts = section.querySelector('.place-facts');
+        const textBottom = facts ? facts.getBoundingClientRect().bottom - frame.top + 14 : by - 90;
+        const yRail = Math.max(sy + 60, Math.min(textBottom, by - 30));
         let wave = `M ${edge} ${sy}`;
         for (let y = sy, n = 0; y < yRail - 1; n += 1) {
           const len = Math.min(64, yRail - y);
@@ -164,16 +168,17 @@ function PlaceMap() {
           wave += ` C ${edge + sign * amp} ${y + len / 3}, ${edge - sign * amp} ${y + (2 * len) / 3}, ${edge} ${y + len}`;
           y += len;
         }
-        const lx = hx - 30 * k;
-        const ly = hy - 10 * k;
+        // La ligne descend dans la marge, glisse sous le texte et remonte vers la POINTE du cœur ; le cœur est fermé (côté gauche, lobes, côté droit),
+        // puis la ligne repart de la même pointe, sans angle brusque, vers le toit du lieu.
         const heart = [
+          `C ${hx - 7 * k} ${hy + 12 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
           `C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
           `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
-          `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k}`,
+          `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 7 * k} ${hy + 12 * k}, ${hx} ${by}`,
         ].join(' ');
         const c2x = tx + 2;
         const c2y = ty - 54;
-        const d = `${wave} C ${edge} ${yRail + 34}, ${lx - 70} ${ly + 6}, ${lx} ${ly} ${heart} C ${hx} ${hy + 26 * k + 32}, ${c2x} ${c2y}, ${tx} ${ty - 4}`;
+        const d = `${wave} C ${edge} ${yRail + 48}, ${hx - 6} ${by + 62}, ${hx} ${by} ${heart} C ${hx - 12} ${by + 40}, ${c2x} ${c2y}, ${tx} ${ty - 4}`;
         const angle = Math.atan2(ty - 4 - c2y, tx - c2x);
         const wing = turn => `${tx - 20 * Math.cos(angle + turn)} ${ty - 4 - 20 * Math.sin(angle + turn)}`;
         const head = `M ${wing(0.5)} L ${tx} ${ty - 4} L ${wing(-0.5)}`;
