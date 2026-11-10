@@ -57,7 +57,14 @@ def test_unknown_pages_of_the_old_site_go_home():
 
 def test_site_pages_and_old_addresses():
     client = TestClient(main.app, follow_redirects=False)
-    for page in ("contact", "mentions-legales", "politique-de-confidentialite"):
+    for page in (
+        "contact",
+        "mentions-legales",
+        "politique-de-confidentialite",
+        "connexion",
+        "equipe",
+        "on-parle-de-nous",
+    ):
         response = client.get(f"/{page}")
         assert response.status_code == 200
         assert response.headers["content-type"].startswith("text/html")

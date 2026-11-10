@@ -10,13 +10,13 @@ function Field({ id, label, error, full, children }) {
   return <label className={`field ${full ? 'field-full' : 'field-wide'}`} htmlFor={`contact-${id}`}><span>{label}</span>{children}{error && <p className="form-error" id={`contact-${id}-error`}>{error}</p>}</label>;
 }
 
-export default function Contact() {
+// The form and the association's details, also shown on the home page.
+export function ContactForm() {
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState('');
   const [sent, setSent] = useState(false);
-  const [confirmed, setConfirmed] = useState(false);
   const props = name => ({
     id: `contact-${name}`,
     value: form[name],
@@ -30,8 +30,7 @@ export default function Contact() {
     if (Object.keys(found).length) { setErrors(found); return document.getElementById(`contact-${Object.keys(found)[0]}`)?.focus(); }
     setSending(true); setSendError('');
     try {
-      const result = await sendContact(form);
-      setConfirmed(Boolean(result?.confirmation));
+      await sendContact(form);
       setSent(true);
     } catch (failure) {
       setSendError(failure.message);
@@ -40,11 +39,9 @@ export default function Contact() {
     }
   };
 
-  return <SitePage eyebrow="CONTACT" title="Contactez-nous">
-    <p>Une question, une idée, l’envie de vous impliquer ? Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
-    <div className="contact-layout">
+  return <div className="contact-layout">
       {sent
-        ? <div className="panel request-done" role="status"><span className="verdict ok">Message envoyé</span><h2>Merci, {form.name}</h2><p>Nous vous répondrons à {form.email}.</p>{confirmed && <p role="status">✉ Un e-mail de confirmation vient d’être envoyé à cette adresse.</p>}<button className="button button-quiet" onClick={() => { setForm(emptyForm); setSent(false); }}>Écrire un autre message</button></div>
+        ? <div className="panel request-done" role="status"><span className="verdict ok">Message envoyé</span><h2>Merci, {form.name}</h2><p>Nous vous répondrons à {form.email}.</p><button className="button button-quiet" onClick={() => { setForm(emptyForm); setSent(false); }}>Écrire un autre message</button></div>
         : <form className="panel event-form" onSubmit={submit} noValidate>
           {sendError && <p className="form-error" role="alert">{sendError}</p>}
           <div className="form-grid">
@@ -64,6 +61,12 @@ export default function Contact() {
         <p><a href={`mailto:${association.email}`}>{association.email}</a></p>
         <p>Siège social :<br />{association.address}</p>
       </aside>
-    </div>
+  </div>;
+}
+
+export default function Contact() {
+  return <SitePage eyebrow="CONTACT" title="Contactez-nous">
+    <p>Une question, une idée, l’envie de vous impliquer ? Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
+    <ContactForm />
   </SitePage>;
 }
