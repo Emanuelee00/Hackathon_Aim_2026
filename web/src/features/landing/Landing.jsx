@@ -171,9 +171,12 @@ function PlaceMap() {
         const fact = facts?.querySelector('li')?.getBoundingClientRect();
         const last = rects[rects.length - 1];
         const sx = fact ? fact.left - frame.left + Math.min(52, fact.width * 0.2) : Math.max(6, (title.parentElement || title).getBoundingClientRect().left - frame.left - 10);
-        const sy = fact ? fact.bottom - frame.top + 42 : last.top + last.height * 0.55 - frame.top;
-        const k = 1.0;
-        const textBottom = (facts ? facts.getBoundingClientRect().bottom - frame.top : ty - 150) + 14;
+        // Le bouton « On parle de nous » est sous les cartes : la ligne naît sous lui, avec un peu d'espace.
+        const press = section.querySelector('.place-press-text');
+        const pressRect = press?.offsetParent ? press.getBoundingClientRect() : null;
+        const sy = fact ? (pressRect ? pressRect.bottom - frame.top + 26 : fact.bottom - frame.top + 42) : last.top + last.height * 0.55 - frame.top;
+        const textBottom = (facts ? (pressRect || facts.getBoundingClientRect()).bottom - frame.top : ty - 150) + 14;
+        const k = Math.max(1, Math.min(1.3, (ty - textBottom) / 170)); // le cœur s'agrandit un peu quand il y a de la place
         const hx = tx + 6;
         const hy = Math.max(ty - 78, textBottom + 26 * k + 14);
         const L = heartAt(hx, hy, k);
@@ -348,7 +351,7 @@ function Hero() {
   const city = useTypewriter(cities);
   return <section className="home-hero">
     <div className="hero-inner">
-      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/foto/haut-de-page.jpg" alt="" /></div>
+      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/foto/haut-de-page-hd.webp" srcSet="/foto/haut-de-page.jpg 1200w, /foto/haut-de-page-hd.webp 2400w" sizes="100vw" alt="" fetchPriority="high" decoding="async" /></div>
       <div className="hero-text">
         <div className="hero-headline">
           <p className="hero-eyebrow">Chez Marthe · {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so the line never moves. */}
@@ -446,7 +449,7 @@ function WeekProgramme() {
   const [weeks, setWeeks] = useState(4);
   const [events, setEvents] = useState(null); // null = chargement, false = indisponible
   const [query, setQuery] = useState('');
-  const [visible, setVisible] = useState(4); // jours montrés : 4 au plus, puis 4 de plus à chaque « Voir la suite »
+  const [limit, setLimit] = useState(5); // évènements montrés : 5 au plus, puis 5 de plus à chaque « Voir la suite » (la page s'allonge)
   const [base] = useState(() => mondayOf(new Date()));
   useEffect(() => {
     let current = true;
@@ -473,11 +476,15 @@ function WeekProgramme() {
     const last = groups[groups.length - 1];
     if (last && last.date === event.date) last.list.push(event); else groups.push({ date: event.date, list: [event] });
   }
-  const hasMore = groups.length > visible || weeks < 12;
-  const more = () => { setVisible(visible + 4); if (groups.length <= visible + 4) setWeeks(weeks + 4); };
+  const hasMore = rest.length > limit || weeks < 12;
+  const more = () => { setLimit(limit + 5); if (rest.length <= limit + 5) setWeeks(weeks + 4); };
   const items = [];
   let month = '';
-  for (const group of groups.slice(0, visible)) {
+  let left = limit;
+  for (const group of groups) {
+    if (left <= 0) break;
+    const list = group.list.slice(0, left);
+    left -= list.length;
     const day = new Date(`${group.date}T12:00:00`);
     const name = `${fullMonths[day.getMonth()]} ${day.getFullYear()}`;
     if (name !== month) { month = name; items.push(<li key={`m-${name}`} className="pg-month">{name}</li>); }
@@ -487,7 +494,7 @@ function WeekProgramme() {
         <strong className="pg-num">{day.getDate()}</strong>
         {group.date === today && <em className="pg-badge">Aujourd’hui</em>}
       </div>
-      <div className="pg-events">{group.list.map(event => {
+      <div className="pg-events">{list.map(event => {
         const [c1, c2] = colorOf(cleanTitle(event.title));
         return <p key={event.title + event.start} className="pg-event" style={{ '--c1': c1, '--c2': c2 }}>
           <time>{event.start ? `${event.start}${event.end ? `–${event.end}` : ''}` : 'Toute la journée'}</time>
@@ -522,6 +529,14 @@ const AUTO_SCROLL_SECONDS = 10;
 
 export default function Landing() {
   const [picked, setPicked] = useState(null);
+  const spacesRef = useRef(null);
+  const [spaceActive, setSpaceActive] = useState(0);
+  // Téléphone : les espaces se font défiler de côté, un à la fois ; les points montrent lequel est devant.
+  const onSpacesScroll = () => {
+    const el = spacesRef.current;
+    const first = el?.children[0];
+    if (first) setSpaceActive(Math.min(publicSpaces.length - 1, Math.round(el.scrollLeft / (first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 0)))));
+  };
 
   // Start of the page. A reload always starts at the first section, even when the address still carries the #section of an earlier menu click
   // (the browser would otherwise jump there or bring back the old scroll position). Arriving from another page with /#section goes to that
@@ -565,7 +580,7 @@ export default function Landing() {
             <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
             <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
           </ul>
-          <a className="place-press" href="/on-parle-de-nous">On parle de nous</a>
+          <a className="place-press place-press-text" href="/on-parle-de-nous">On parle de nous</a>
         </div>
       </section>
 
@@ -588,7 +603,7 @@ export default function Landing() {
       <section id="espaces" className="block" aria-labelledby="espaces-titre">
         <p className="kicker">LOUER UN ESPACE</p>
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
-        <div className="home-spaces">{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
+        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
           <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
           <h3 className="space-title">{space.name}</h3>
           <div className="space-body">
@@ -599,6 +614,7 @@ export default function Landing() {
             <span className="space-cta">Faire une demande →</span>
           </div>
         </a>)}</div>
+        <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>
       </section>
 
       <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>
