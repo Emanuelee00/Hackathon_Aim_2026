@@ -151,14 +151,13 @@ function PlaceMap() {
       const sin = Math.sin(tilt);
       const heartAt = (hx, hy, k) => (lx, ly) => [hx + (lx * cos - ly * sin) * k, hy + (lx * sin + ly * cos) * k];
       const str = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
-      // Gancio stretto a destra (la riga passa sopra, gira intorno al lobo destro), poi il cuore dal lato destro verso sinistra e giù fino alla punta.
+      // Cuore chiuso, tracciato a mano : parte dalla punta, SALE lungo il lato destro, passa sopra i due lobi e RITORNA scendendo dal lato sinistro
+      // fino a richiudersi sulla punta, da cui la freccia prosegue.
       const heartStroke = L => [
-        `C ${str(L(55, -50))}, ${str(L(64, -41))}, ${str(L(64, -30))}`,
-        `C ${str(L(64, -19))}, ${str(L(55, -10))}, ${str(L(44, -10))}`,
-        `L ${str(L(30, -10))}`,
+        `C ${str(L(7, 12))}, ${str(L(34, 4))}, ${str(L(30, -10))}`,
         `C ${str(L(27, -26))}, ${str(L(8, -26))}, ${str(L(0, -10))}`,
         `C ${str(L(-8, -26))}, ${str(L(-27, -26))}, ${str(L(-30, -10))}`,
-        `C ${str(L(-34, 4))}, ${str(L(-14, 16))}, ${str(L(0, 26))}`,
+        `C ${str(L(-34, 4))}, ${str(L(-7, 12))}, ${str(L(0, 26))}`,
       ].join(' ');
       let d;
       let c2x;
@@ -171,15 +170,14 @@ function PlaceMap() {
         const sy = last.top + last.height * 0.55 - frame.top;
         const edge = Math.max(6, title.getBoundingClientRect().left - frame.left - 10);
         const amp = 3.5;
-        const k = 0.9;
+        const k = 1.0;
         const facts = section.querySelector('.place-facts');
         const textBottom = (facts ? facts.getBoundingClientRect().bottom - frame.top : ty - 150) + 14;
-        const hx = tx + 14;
-        const hy = Math.max(ty - 84, textBottom + 50 * k + 12);
+        const hx = tx + 6;
+        const hy = Math.max(ty - 78, textBottom + 26 * k + 14);
         const L = heartAt(hx, hy, k);
-        const X1 = L(44, -50);
         const B = L(0, 26);
-        const yRail = Math.min(textBottom, X1[1] - 24);
+        const yRail = Math.min(textBottom, B[1] - 40);
         let wave = `M ${edge} ${sy}`;
         for (let y = sy, n = 0; y < yRail - 1; n += 1) {
           const len = Math.min(64, yRail - y);
@@ -190,7 +188,7 @@ function PlaceMap() {
         c2x = tx;
         c2y = ty - 40;
         endY = ty - 4;
-        d = `${wave} C ${edge} ${yRail + 36}, ${X1[0] - 110} ${X1[1]}, ${str(X1)} ${heartStroke(L)} C ${B[0] - 4} ${B[1] + 30}, ${c2x} ${c2y}, ${tx} ${endY}`;
+        d = `${wave} C ${edge} ${yRail + 34}, ${B[0] - 70} ${B[1] + 36}, ${str(B)} ${heartStroke(L)} C ${B[0] + 8} ${B[1] + 26}, ${c2x} ${c2y}, ${tx} ${endY}`;
       } else {
         // Grand écran : la flèche part un peu au-dessus de la fin de la PREMIÈRE ligne du titre et file vers la droite (elle ne traverse jamais
         // le texte) ; le cœur est au bout de la ligne, à sa hauteur ; enfin la ligne descend en courbe sur le bord du lieu.
@@ -198,12 +196,11 @@ function PlaceMap() {
         const fx = first.right - frame.left + 36;
         const fy = first.top - frame.top - 34;
         const k = 1.2;
-        const L = heartAt(fx + 160, fy + 58, k);
-        const X1 = L(44, -50);
+        const L = heartAt(fx + 150, fy + 4, k);
         const B = L(0, 26);
         c2x = tx - 46;
         c2y = ty - 16;
-        d = `M ${fx} ${fy} C ${fx + 60} ${fy - 8}, ${X1[0] - 50} ${X1[1]}, ${str(X1)} ${heartStroke(L)} C ${B[0] - 16} ${B[1] + 30}, ${c2x} ${c2y}, ${tx} ${ty}`;
+        d = `M ${fx} ${fy} C ${fx + 70} ${fy + 4}, ${B[0] - 56} ${B[1] + 34}, ${str(B)} ${heartStroke(L)} C ${B[0] + 14} ${B[1] + 30}, ${c2x} ${c2y}, ${tx} ${ty}`;
       }
       const angle = Math.atan2(endY - c2y, tx - c2x);
       const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${endY - 22 * Math.sin(angle + turn)}`;
