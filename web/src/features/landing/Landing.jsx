@@ -148,6 +148,18 @@ function PlaceMap() {
       // Grand écran : arrivée sur le bord gauche du lieu. Carte sous le texte : arrivée sur le toit du lieu, par le haut.
       const tx = st.left + st.width * (stacked ? 0.3 : 0.178) - frame.left;
       const ty = st.top + st.height * (stacked ? 0.405 : 0.545) - frame.top;
+      if (stacked) {
+        // Téléphone / tablette : un fil de points dans la marge gauche (il ne traverse pas le texte), un cœur plein posé sur le fil,
+        // puis la pointe sur le toit du lieu.
+        const edge = Math.max(6, title.getBoundingClientRect().left - frame.left - 10);
+        const hx = tx + 10;
+        const hy = ty - 88;
+        const yRail = Math.max(sy + 60, hy - 34);
+        const d = `M ${edge} ${sy} L ${edge} ${yRail} C ${edge} ${yRail + 30}, ${hx - 100} ${hy}, ${hx - 14} ${hy} L ${hx + 14} ${hy} C ${hx + 46} ${hy}, ${tx + 2} ${ty - 58}, ${tx} ${ty - 8}`;
+        const head = `M ${tx - 11} ${ty - 17} L ${tx} ${ty - 2} L ${tx + 11} ${ty - 17}`;
+        setTitleArrow({ mode: 'rail', d, head, node: [edge, sy], heart: [hx, hy], width: frame.width, height: frame.height });
+        return;
+      }
       const dx = tx - sx;
       const dy = ty - sy;
       // La flèche descend derrière le texte, dessine un cœur, puis file vers le lieu.
@@ -280,9 +292,17 @@ function PlaceMap() {
       </div>
     </div>
     </div>
-    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
-      <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
-      <path className="map-arrow-head" d={titleArrow.head} />
+    {titleArrow && <svg className={`map-title-arrow${titleArrow.mode === 'rail' ? ' is-rail' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+      {titleArrow.mode === 'rail' ? <>
+        <defs><mask id="rail-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width={titleArrow.width} height={titleArrow.height}><path className="map-arrow-line" pathLength="1" d={titleArrow.d} /></mask></defs>
+        <path className="rail-dots" d={titleArrow.d} mask="url(#rail-reveal)" />
+        <circle className="map-arrow-head" cx={titleArrow.node[0]} cy={titleArrow.node[1]} r="5" fill="#FFC2CD" />
+        <path className="map-arrow-head" d={titleArrow.head} />
+        <path className="rail-heart map-arrow-head" transform={`translate(${titleArrow.heart[0] - 21} ${titleArrow.heart[1] - 22}) scale(1.75)`} d="M12 21s-7.5-4.6-9.8-9.2C0.7 8.7 2.3 5 5.6 5c2 0 3.4 1.1 4.4 2.5C11 6.1 12.4 5 14.4 5c3.3 0 4.9 3.7 3.4 6.8C19.5 16.4 12 21 12 21z" />
+      </> : <>
+        <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
+        <path className="map-arrow-head" d={titleArrow.head} />
+      </>}
     </svg>}
   </>;
 }

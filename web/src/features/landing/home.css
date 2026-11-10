@@ -778,4 +778,10 @@
 .cm-home .map-stage.is-building .map-lines { opacity: 0; }
 .cm-home .map-stage.is-building:not(.house-on) .map-spot-lines { opacity: 0; }
 .cm-home .map-title-arrow { transition: opacity 1s ease; }
-@media (max-width: 1299px) { .cm-home .map-title-arrow path { stroke-width: 2.6; } }
+
+/* Téléphone / tablette : fil de points + cœur plein + pointe (voir PlaceMap). */
+.cm-home .map-title-arrow.is-rail path { fill: none; }
+.cm-home .map-title-arrow.is-rail .rail-dots { stroke: #FFC2CD; stroke-width: 3.6; stroke-linecap: round; stroke-dasharray: 0.1 9.5; }
+.cm-home .map-title-arrow.is-rail mask path { stroke: #fff; stroke-width: 16; }
+.cm-home .map-title-arrow.is-rail .map-arrow-head { stroke-width: 3.4; }
+.cm-home .map-title-arrow.is-rail .rail-heart { fill: #FF86A8; stroke: #7b3b99; stroke-width: 3.5; paint-order: stroke fill; stroke-linejoin: round; }
