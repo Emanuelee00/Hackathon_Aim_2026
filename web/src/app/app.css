@@ -47,3 +47,15 @@ a.nav-item { text-decoration: none; }
 .demo-label > span { width: 6px; height: 6px; border-radius: 50%; background: #ab62ba; }
 .mobile-menu { display: none !important; }
 
+
+/* Panneau latéral repliable : bouton à trois lignes dans la barre du haut, flèche dans le panneau, choix gardé. */
+.menu-toggle { display: inline-grid; place-items: center; width: 36px; height: 36px; margin-right: 6px; }
+.sidebar-close { position: absolute; top: 20px; right: 14px; z-index: 2; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 9px; color: #f0e8f2; background: rgba(255, 255, 255, 0.1); cursor: pointer; transition: background 0.2s; }
+.sidebar-close:hover, .sidebar-close:focus-visible { background: rgba(255, 255, 255, 0.22); }
+@media (min-width: 821px) {
+  .app-content { transition: margin-left 0.28s ease; }
+  .sidebar { transition: transform 0.28s ease, visibility 0s; }
+  .app-shell.is-collapsed .sidebar { transform: translateX(-100%); visibility: hidden; box-shadow: none; transition: transform 0.28s ease, visibility 0s 0.28s; }
+  .app-shell.is-collapsed .app-content { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .app-content, .sidebar { transition: none !important; } }

@@ -57,6 +57,17 @@ export default function App() {
     return () => window.removeEventListener('hashchange', follow);
   }, []);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Grand écran : le panneau latéral se replie pour voir la page en entier ; le choix est gardé pour la prochaine visite.
+  const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem('marthe-sidebar') === 'collapsed'; } catch { return false; } });
+  const isNarrow = () => window.matchMedia('(max-width: 820px)').matches;
+  const toggleMenu = () => {
+    if (isNarrow()) { setMenuOpen(open => !open); return; }
+    setCollapsed(current => {
+      const next = !current;
+      try { localStorage.setItem('marthe-sidebar', next ? 'collapsed' : 'open'); } catch { /* le choix vaut pour cette visite */ }
+      return next;
+    });
+  };
   const [modal, setModal] = useState(null);
   const questions = useQuestions();
   const access = useAccessRequests();
@@ -90,18 +101,19 @@ export default function App() {
   const openEvent = eventId => setModal({ type: 'event', eventId });
   const openNew = () => setModal({ type: 'new' });
 
-  return <div className="app-shell">
+  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}`}>
     <Sidebar
       page={page}
       navigate={navigate}
       mobile={menuOpen}
       close={() => setMenuOpen(false)}
+      onCollapse={toggleMenu}
       help={() => setModal({ type: 'help' })}
       newQuestions={questions.questions.filter(question => question.status === 'new').length}
       accessRequests={access.requests.length}
     />
     <div className="app-content">
-      <Header page={page} onMenu={() => setMenuOpen(true)} onNew={openNew} />
+      <Header page={page} onMenu={toggleMenu} expanded={isNarrow() ? menuOpen : !collapsed} onNew={openNew} />
       <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} questions={questions} access={access} /></main>
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}
