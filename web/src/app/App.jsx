@@ -12,6 +12,7 @@ import Spaces from '../features/spaces/Spaces.jsx';
 import Reports from '../features/reports/Reports.jsx';
 import Stats from '../features/stats/Stats.jsx';
 import Funding from '../features/funding/Funding.jsx';
+import Messages from '../features/messages/Messages.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
@@ -39,6 +40,7 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
   if (page === 'stats') return <Stats />;
   if (page === 'funding') return <Funding />;
+  if (page === 'messages') return <Messages />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 

@@ -10,6 +10,7 @@ from datetime import date
 from email.message import EmailMessage
 
 import mailer
+import messages
 
 log = logging.getLogger("marthe.confirmations")
 PER_ADDRESS_PER_DAY = 3
@@ -73,76 +74,66 @@ def french_date(day: str) -> str:
     return f"{DAYS[when.weekday()]} {when.day} {MONTHS[when.month - 1]} {when.year}"
 
 
-def _mail(to: str, subject: str, lines: list[str]) -> EmailMessage:
+def _mail(to: str, subject: str, body: str) -> EmailMessage:
     mail = EmailMessage()
     mail["Subject"] = subject
     mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{contact_address()}>")
     mail["To"] = to
     mail["Reply-To"] = contact_address()
-    mail.set_content("\n".join(lines))
+    mail.set_content(body)
     return mail
 
 
-def _footer() -> list[str]:
-    return [
-        "",
-        f"Une question ? Écrivez-nous à {contact_address()}.",
-        "",
-        "Si vous n’êtes pas à l’origine de cette démarche, vous pouvez ignorer ce message.",
-        "— Chez Marthe, un réseau de lieux tremplins pour les femmes",
-    ]
-
-
 def request_message(draft) -> EmailMessage:
-    """Request for an activity or a space (the landing page's form)."""
+    """Request for an activity or a space (the landing page's form), written from the team's text (« Messages » page)."""
     kind = (
         "programmation d’une activité"
         if draft.requestType == "programming"
         else "location d’un espace"
     )
-    lines = [
-        f"Bonjour {draft.organizer},",
-        "",
-        "Merci ! Nous avons bien reçu votre demande et tout est bien enregistré. Voici ce que nous avons noté :",
-        "",
+    when = french_date(draft.date)
+    recap = [
         f"• Projet : {draft.title}",
         f"• Type de demande : {kind}",
         f"• Espace : {SPACE_NAMES.get(draft.space, draft.space)}",
-        f"• Date : {french_date(draft.date)}, de {draft.start} à {draft.end}",
+        f"• Date : {when}, de {draft.start} à {draft.end}",
     ]
     if draft.participants:
-        lines.append(f"• Nombre de personnes : {draft.participants}")
-    lines += [
-        "",
-        (
-            "L’équipe étudie votre demande et vous répond rapidement à cette adresse. Ce message confirme seulement la bonne réception : "
-            "la demande n’est pas encore acceptée."
-        ),
-        *_footer(),
-    ]
-    return _mail(draft.email, "Chez Marthe : nous avons bien reçu votre demande", lines)
+        recap.append(f"• Nombre de personnes : {draft.participants}")
+    values = {
+        "nom": draft.organizer,
+        "projet": draft.title,
+        "type": kind,
+        "espace": SPACE_NAMES.get(draft.space, draft.space),
+        "date": when,
+        "heure_debut": draft.start,
+        "heure_fin": draft.end,
+        "participants": str(draft.participants or ""),
+        "recapitulatif": "\n".join(recap),
+        "contact": contact_address(),
+    }
+    subject, body = messages.current("request")
+    return _mail(
+        draft.email, messages.render(subject, values), messages.render(body, values)
+    )
 
 
 def contact_message(message) -> EmailMessage:
-    """Message from the contact page."""
+    """Message from the contact page, written from the team's text (« Messages » page)."""
     text = (
         message.message
         if len(message.message) <= 600
         else message.message[:600].rstrip() + "…"
     )
-    lines = [
-        f"Bonjour {message.name},",
-        "",
-        "Merci ! Nous avons bien reçu votre message. Voici ce que vous nous avez écrit :",
-        "",
-        f"Sujet : {message.subject}",
-        text,
-        "",
-        "Nous vous répondons dès que possible à cette adresse.",
-        *_footer(),
-    ]
+    values = {
+        "nom": message.name,
+        "sujet": message.subject,
+        "message": text,
+        "contact": contact_address(),
+    }
+    subject, body = messages.current("contact")
     return _mail(
-        message.email, "Chez Marthe : nous avons bien reçu votre message", lines
+        message.email, messages.render(subject, values), messages.render(body, values)
     )
 
 

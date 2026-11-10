@@ -18,6 +18,7 @@ export const navigation = [
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
+  { id: 'messages', label: 'Messages', icon: 'mail' },
 ];
 
 export default function Sidebar({ page, navigate, mobile, close, onCollapse, help, newQuestions, accessRequests }) {

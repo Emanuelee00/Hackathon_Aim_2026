@@ -14,6 +14,7 @@ from email.message import EmailMessage
 from threading import Thread
 from zoneinfo import ZoneInfo
 
+import messages
 import store
 from mailer import configured, deliver
 
@@ -88,52 +89,49 @@ def french(day: date) -> str:
 
 
 def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
+    """The reminder e-mail, written from the team's text (« Messages » page)."""
     name = funder.get("name") or funder.get("type") or "Financeur sans nom"
     try:
         obtained = date.fromisoformat(str(funder.get("obtainedOn") or ""))
     except ValueError:  # a test on a funder whose obtention date is still empty
         obtained = add_months(when, -DEFAULT_FOLLOWUP_MONTHS)
     months = (when.year - obtained.year) * 12 + when.month - obtained.month
-    lines = [
-        "Bonjour,",
-        "",
-        *(
-            [
-                "[E-mail de test : cet envoi a été demandé à la main depuis la fiche du financeur.]",
-                "",
-            ]
-            if test
-            else []
-        ),
-        f"Rappel automatique : le financement de « {name} » a été obtenu le {french(obtained)}, il y a {months} mois.",
-        "C'est le moment de les recontacter pour demander un nouveau financement.",
-        "",
-        f"Financeur : {name}" + (f" ({funder['type']})" if funder.get("type") else ""),
-    ]
     amount = str(funder.get("amount") or "").strip().split("\n")[0]
-    for label, key in (
-        ("Aide obtenue", None),
-        ("Contact", "contact"),
-        ("Courriel", "email"),
-        ("Téléphone", "phone"),
-        ("Responsable", "owner"),
-    ):
-        value = amount if key is None else str(funder.get(key) or "").strip()
-        if value:
-            lines.append(f"{label} : {value}")
-    lines += [
-        "",
-        f"Contact Chez Marthe : {CONTACT}",
-        "",
-        "— Intranet financements, Chez Marthe",
+    details = {
+        "Aide obtenue": amount,
+        "Contact": str(funder.get("contact") or "").strip(),
+        "Courriel": str(funder.get("email") or "").strip(),
+        "Téléphone": str(funder.get("phone") or "").strip(),
+        "Responsable": str(funder.get("owner") or "").strip(),
+    }
+    recap = [
+        f"Financeur : {name}" + (f" ({funder['type']})" if funder.get("type") else "")
     ]
+    recap += [f"{label} : {value}" for label, value in details.items() if value]
+    values = {
+        "financeur": name,
+        "date_obtention": french(obtained),
+        "mois": str(months),
+        "montant": amount,
+        "contact_financeur": details["Contact"],
+        "courriel_financeur": details["Courriel"],
+        "telephone": details["Téléphone"],
+        "responsable": details["Responsable"],
+        "recapitulatif": "\n".join(recap),
+        "contact": CONTACT,
+    }
+    subject, body = messages.current("funding-reminder")
+    text = messages.render(body, values)
+    if test:
+        text = (
+            "[E-mail de test : cet envoi a été demandé à la main depuis la fiche du financeur.]\n\n"
+            + text
+        )
     mail = EmailMessage()
-    mail["Subject"] = (
-        f"{'[TEST] ' if test else ''}Rappel : recontacter {name} pour un nouveau financement"
-    )
+    mail["Subject"] = ("[TEST] " if test else "") + messages.render(subject, values)
     mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{CONTACT}>")
     mail["To"] = notify_email()
-    mail.set_content("\n".join(lines))
+    mail.set_content(text)
     return mail
 
 
