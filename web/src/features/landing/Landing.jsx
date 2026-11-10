@@ -149,40 +149,55 @@ function PlaceMap() {
       const tx = st.left + st.width * (stacked ? 0.3 : 0.285) - frame.left;
       const ty = st.top + st.height * (stacked ? 0.405 : 0.452) - frame.top;
       if (stacked) {
-        // Téléphone / tablette : un fil de points dans la marge gauche (il ne traverse pas le texte), un cœur dessiné en points
-        // posé sur le fil (le fil s'arrête avant le cœur et repart après), puis la pointe sur le toit du lieu.
+        // Téléphone / tablette : une seule ligne continue qui descend dans la marge gauche en ondulant à peine (elle n'entre jamais dans le texte),
+        // dessine le cœur dans le prolongement de la ligne, puis file jusqu'à la pointe sur le toit du lieu.
         const edge = Math.max(6, title.getBoundingClientRect().left - frame.left - 10);
+        const amp = 3.5;
         const hx = tx + 10;
-        const hy = ty - 88;
-        const k = 0.95;
+        const hy = ty - 90;
+        const k = 1.05;
         const yRail = Math.max(sy + 60, hy - 34);
-        const toHeart = `M ${edge} ${sy} L ${edge} ${yRail} C ${edge} ${yRail + 30}, ${hx - 100} ${hy}, ${hx - 33} ${hy}`;
-        const fromHeart = `M ${hx} ${hy + 26 * k + 9} C ${hx} ${hy + 26 * k + 36}, ${tx + 2} ${ty - 52}, ${tx} ${ty - 8}`;
-        const d = `M ${edge} ${sy} L ${edge} ${yRail} C ${edge} ${yRail + 30}, ${hx - 100} ${hy}, ${hx - 14} ${hy} L ${hx + 14} ${hy} C ${hx + 46} ${hy}, ${tx + 2} ${ty - 58}, ${tx} ${ty - 8}`;
-        const heartD = `M ${hx} ${hy + 26 * k} C ${hx - 14 * k} ${hy + 16 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k} C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k} C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k} C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k} Z`;
-        const head = `M ${tx - 11} ${ty - 17} L ${tx} ${ty - 2} L ${tx + 11} ${ty - 17}`;
-        setTitleArrow({ mode: 'rail', d, dots: [toHeart, fromHeart], heartD, head, node: [edge, sy], width: frame.width, height: frame.height });
+        let wave = `M ${edge} ${sy}`;
+        for (let y = sy, n = 0; y < yRail - 1; n += 1) {
+          const len = Math.min(64, yRail - y);
+          const sign = n % 2 ? -1 : 1;
+          wave += ` C ${edge + sign * amp} ${y + len / 3}, ${edge - sign * amp} ${y + (2 * len) / 3}, ${edge} ${y + len}`;
+          y += len;
+        }
+        const lx = hx - 30 * k;
+        const ly = hy - 10 * k;
+        const heart = [
+          `C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
+          `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
+          `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k}`,
+        ].join(' ');
+        const c2x = tx + 2;
+        const c2y = ty - 54;
+        const d = `${wave} C ${edge} ${yRail + 34}, ${lx - 70} ${ly + 6}, ${lx} ${ly} ${heart} C ${hx} ${hy + 26 * k + 32}, ${c2x} ${c2y}, ${tx} ${ty - 4}`;
+        const angle = Math.atan2(ty - 4 - c2y, tx - c2x);
+        const wing = turn => `${tx - 20 * Math.cos(angle + turn)} ${ty - 4 - 20 * Math.sin(angle + turn)}`;
+        const head = `M ${wing(0.5)} L ${tx} ${ty - 4} L ${wing(-0.5)}`;
+        setTitleArrow({ d, head, width: frame.width, height: frame.height });
         return;
       }
-      // Grand écran : la flèche part de la fin de la PREMIÈRE ligne du titre, reste au-dessus du texte (elle ne le traverse jamais),
-      // dessine un cœur dans l'espace libre à droite du titre, puis descend en diagonale sur le bord du lieu.
+      // Grand écran : la flèche part un peu au-dessus de la fin de la PREMIÈRE ligne du titre, file vers la droite (elle ne traverse jamais
+      // le texte), puis le cœur se trace en partant de la droite, vers la gauche, et redescend en bas ; enfin elle descend sur le bord du lieu.
       const first = rects[0];
-      const fx = first.right - frame.left + 14;
-      const fy = first.top + first.height * 0.52 - frame.top;
-      const k = 1.5;
-      const hx = fx + 92;
-      const hy = fy + 40;
+      const fx = first.right - frame.left + 36;
+      const fy = first.top - frame.top - 34;
+      const k = 1.15;
+      const hx = fx + 160;
+      const hy = fy + 26;
+      const heart = [
+        `C ${hx + 27 * k} ${hy - 26 * k}, ${hx + 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
+        `C ${hx - 8 * k} ${hy - 26 * k}, ${hx - 27 * k} ${hy - 26 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
+        `C ${hx - 34 * k} ${hy + 4 * k}, ${hx - 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k}`,
+      ].join(' ');
       const bx = hx;
       const by = hy + 26 * k;
-      const heart = [
-        `C ${hx - 14 * k} ${hy + 16 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
-        `C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
-        `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
-        `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${bx} ${by}`,
-      ].join(' ');
-      const c2x = tx - 34;
-      const c2y = ty - 34;
-      const d = `M ${fx} ${fy} C ${fx + 36} ${fy - 4}, ${bx - 70} ${by - 8}, ${bx - 6} ${by + 1} ${heart} C ${bx + 40} ${by + 6}, ${c2x} ${c2y}, ${tx} ${ty}`;
+      const c2x = tx - 30;
+      const c2y = ty - 36;
+      const d = `M ${fx} ${fy} C ${fx + 56} ${fy - 14}, ${hx + 46 * k} ${hy - 40 * k}, ${hx + 30 * k} ${hy - 10 * k} ${heart} C ${bx + 12} ${by + 20}, ${c2x} ${c2y}, ${tx} ${ty}`;
       const angle = Math.atan2(ty - c2y, tx - c2x);
       const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
       const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
@@ -295,17 +310,9 @@ function PlaceMap() {
       </div>
     </div>
     </div>
-    {titleArrow && <svg className={`map-title-arrow${titleArrow.mode === 'rail' ? ' is-rail' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
-      {titleArrow.mode === 'rail' ? <>
-        <defs><mask id="rail-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width={titleArrow.width} height={titleArrow.height}><path className="map-arrow-line" pathLength="1" d={titleArrow.d} /></mask></defs>
-        {titleArrow.dots.map(piece => <path key={piece} className="rail-dots" d={piece} mask="url(#rail-reveal)" />)}
-        <circle className="map-arrow-head" cx={titleArrow.node[0]} cy={titleArrow.node[1]} r="5" fill="#FFC2CD" />
-        <path className="map-arrow-head" d={titleArrow.head} />
-        <path className="rail-heart map-arrow-head" d={titleArrow.heartD} />
-      </> : <>
-        <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
-        <path className="map-arrow-head" d={titleArrow.head} />
-      </>}
+    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+      <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
+      <path className="map-arrow-head" d={titleArrow.head} />
     </svg>}
   </>;
 }
