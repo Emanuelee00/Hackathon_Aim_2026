@@ -47,6 +47,7 @@ def test_a_request_gets_a_confirmation_at_the_address_given(client_as, monkeypat
     assert "Nombre de personnes : 25" in body
     assert "pas encore acceptée" in body
     assert "contact@chezmarthe.org" in body
+    assert mail["From"] == "Bonjour Chez Marthe <contact@chezmarthe.org>"
     assert mail["Reply-To"] == "contact@chezmarthe.org"
 
 

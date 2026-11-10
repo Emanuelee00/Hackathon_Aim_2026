@@ -17,7 +17,7 @@ async function call(path, options) {
 }
 
 // One automatic e-mail: its subject and message can be edited, and saving asks to confirm so nothing changes by accident.
-function MessageCard({ template, sender, onChanged }) {
+function MessageCard({ template, onChanged }) {
   const [subject, setSubject] = useState(template.subject);
   const [body, setBody] = useState(template.body);
   const [showPreview, setShowPreview] = useState(false);
@@ -51,10 +51,10 @@ function MessageCard({ template, sender, onChanged }) {
       {template.custom ? <span className="message-badge custom">Texte modifié</span> : <span className="message-badge">Texte d’origine</span>}
     </header>
     <dl className="message-meta">
-      <div><dt>Service</dt><dd>{template.group}</dd></div>
+      <div><dt>Service</dt><dd>{template.service}</dd></div>
       <div><dt>Quand</dt><dd>{template.trigger}</dd></div>
       <div><dt>Envoyé à</dt><dd>{template.recipient}</dd></div>
-      <div><dt>E-mail utilisé</dt><dd>{sender.from}</dd></div>
+      <div><dt>E-mail utilisé</dt><dd>{template.from}</dd></div>
     </dl>
     <label className="field"><span>Objet</span><input value={subject} maxLength={150} onChange={event => setSubject(event.target.value)} /></label>
     <label className="field"><span>Message</span><textarea ref={area} rows={template.body.split('\n').length + 2} value={body} onChange={event => setBody(event.target.value)} /></label>
@@ -85,6 +85,42 @@ function MessageCard({ template, sender, onChanged }) {
   </article>;
 }
 
+// The address « Bonjour Chez Marthe » answers the forms from, shown above its messages and editable (saving asks to confirm).
+function FormsSender({ forms, onChanged }) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const save = async address => {
+    setBusy(true); setError('');
+    try {
+      const next = await call('/sender/forms', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: address }) });
+      onChanged(next);
+      setConfirming(false); setOpen(false);
+    } catch (failure) { setError(failure.message.includes('valide') || failure.message.includes('échoué') ? 'Cette adresse e-mail n’est pas valide.' : failure.message); setConfirming(false); } finally { setBusy(false); }
+  };
+  return <div className="message-identity">
+    <span className="metric-icon sage"><Icon name="mail" size={20} /></span>
+    <div><b>E-mail utilisé pour répondre aux formulaires : {forms.from}</b><p>Quand quelqu’un remplit un formulaire, la confirmation part de cette adresse, et sa réponse arrive dans cette boîte.</p></div>
+    <button type="button" className="button button-quiet button-small" onClick={() => { setValue(forms.address); setError(''); setConfirming(false); setOpen(true); }}><Icon name="edit" size={15} />Changer l’adresse</button>
+    {open && <Modal title="Adresse « Bonjour Chez Marthe »" subtitle="E-MAIL D’ENVOI" onClose={() => setOpen(false)}>
+      <form className="message-confirm" onSubmit={event => { event.preventDefault(); setConfirming(true); }}>
+        <label className="field"><span>Adresse e-mail</span><input type="email" required autoFocus value={value} onChange={event => { setValue(event.target.value); setConfirming(false); }} placeholder={forms.default} /></label>
+        <p className="message-hint">Cette adresse doit être celle du compte relié au service d’envoi (par exemple le Gmail dont vous avez créé la « mot de passe d’application »), sinon le service la remplace.</p>
+        {error && <p role="alert" className="message-error">{error}</p>}
+        {confirming
+          ? <div className="message-sure" role="alert"><p>Les prochaines réponses aux formulaires partiront de <b>{value.trim().toLowerCase()}</b>. Confirmer ?</p>
+            <div className="form-actions"><button type="button" className="button button-quiet" onClick={() => setConfirming(false)}>Non</button><button type="button" className="button button-dark" disabled={busy} onClick={() => save(value.trim())}>{busy ? 'Un instant…' : 'Oui, enregistrer'}</button></div></div>
+          : <div className="form-actions">
+            {forms.address !== forms.default && <button type="button" className="button button-quiet" disabled={busy} onClick={() => save('')}>Revenir à {forms.default}</button>}
+            <button type="button" className="button button-quiet" onClick={() => setOpen(false)}>Annuler</button>
+            <button className="button button-dark" disabled={!value.trim() || value.trim().toLowerCase() === forms.address}>Enregistrer</button></div>}
+      </form>
+    </Modal>}
+  </div>;
+}
+
 export default function Messages() {
   const { notify } = useStore();
   const [data, setData] = useState(null);
@@ -97,14 +133,15 @@ export default function Messages() {
     {failure && <p className="form-error" role="alert">{failure}</p>}
     {!data && !failure && <p className="funding-muted">Chargement…</p>}
     {data && <>
-      <section className="panel message-sender" aria-label="E-mail d’envoi">
-        <span className="metric-icon sage"><Icon name="mail" size={20} /></span>
-        <div><b>E-mail utilisé pour l’envoi : {data.sender.from}</b><p>Les réponses des personnes arrivent à {data.sender.replyTo}.</p></div>
-        <span className={`message-badge ${data.sender.configured ? 'on' : 'off'}`}>{data.sender.configured ? 'Envoi actif' : 'Service d’envoi à brancher : rien n’est envoyé pour l’instant'}</span>
+      <section className="panel message-sender" aria-label="Service d’envoi">
+        <span className="metric-icon sage"><Icon name="send" size={20} /></span>
+        <div><b>Service d’envoi des e-mails</b><p>Branché une seule fois sur le serveur (Gmail avec mot de passe d’application, ou Resend) : ensuite tout part automatiquement.</p></div>
+        <span className={`message-badge ${data.senders.configured ? 'on' : 'off'}`}>{data.senders.configured ? 'Envoi actif' : 'À brancher : rien n’est envoyé pour l’instant'}</span>
       </section>
       {groups.map(group => <section key={group} className="message-group" aria-label={group}>
         <h2>{group}</h2>
-        {data.templates.filter(template => template.group === group).map(template => <MessageCard key={template.id} template={template} sender={data.sender} onChanged={changed} />)}
+        {group === 'Bonjour Chez Marthe' && <FormsSender forms={data.senders.forms} onChanged={next => setData(current => ({ ...current, senders: next, templates: current.templates.map(item => (item.group === 'Bonjour Chez Marthe' ? { ...item, from: next.forms.from } : item)) }))} />}
+        {data.templates.filter(template => template.group === group).map(template => <MessageCard key={template.id} template={template} onChanged={changed} />)}
       </section>)}
     </>}
   </>;

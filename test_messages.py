@@ -102,7 +102,13 @@ def test_only_the_team_edits_the_messages_and_bad_texts_are_refused(client_as): 
         "contact",
         "funding-reminder",
     ]
-    assert listed["sender"]["replyTo"] == "contact@chezmarthe.org"
+    assert (
+        listed["senders"]["forms"]["from"]
+        == "Bonjour Chez Marthe <contact@chezmarthe.org>"
+    )
+    assert (
+        listed["templates"][0]["from"] == "Bonjour Chez Marthe <contact@chezmarthe.org>"
+    )
     request = listed["templates"][0]
     assert request["preview"]["subject"] == request["subject"]
     assert "Bonjour Awa," in request["preview"]["body"]
@@ -162,4 +168,35 @@ def test_a_form_then_sends_the_edited_text(client_as, monkeypatch):  # noqa: F81
     assert (sent[0]["Subject"], sent[0].get_content().strip()) == (
         "Merci Awa",
         "On a lu : Peut-on visiter ?",
+    )
+
+
+def test_the_team_chooses_the_address_that_answers_the_forms(client_as, monkeypatch):  # noqa: F811
+    team = client_as("equipe")
+    team.app.include_router(messages.router)
+    changed = team.put(
+        "/api/messages/sender/forms", json={"email": " Bonjour.ChezMarthe@gmail.com "}
+    ).json()
+    assert changed["forms"]["address"] == "bonjour.chezmarthe@gmail.com"
+    assert (
+        team.put(
+            "/api/messages/sender/forms", json={"email": "pas une adresse"}
+        ).status_code
+        == 422
+    )
+    mail = confirmations.request_message(DRAFT)
+    assert mail["From"] == "Bonjour Chez Marthe <bonjour.chezmarthe@gmail.com>"
+    assert mail["Reply-To"] == "bonjour.chezmarthe@gmail.com"
+    assert "bonjour.chezmarthe@gmail.com" in mail.get_content()
+    assert (
+        client_as("residents")
+        .put("/api/messages/sender/forms", json={"email": "x@y.fr"})
+        .status_code
+        == 403
+    )
+    assert (
+        team.put("/api/messages/sender/forms", json={"email": ""}).json()["forms"][
+            "address"
+        ]
+        == "contact@chezmarthe.org"
     )

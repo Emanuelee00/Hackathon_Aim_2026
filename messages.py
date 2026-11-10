@@ -22,14 +22,34 @@ router = APIRouter(prefix="/api/messages")
 Team = Annotated[User, Depends(team_member)]
 
 
+FORMS_NAME = "Bonjour Chez Marthe"  # the e-mail identity that answers the forms
+FORMS_KEY = "message_sender_forms"  # the address chosen on the page, in a one-item list
+
+
 def contact_address() -> str:
     return os.getenv("CONTACT_EMAIL", "contact@chezmarthe.org")
+
+
+def forms_address() -> str:
+    """The address « Bonjour Chez Marthe » answers the forms from: the one chosen on the page, else FORMS_MAIL, else the contact address."""
+    chosen = store.load_document(FORMS_KEY) or []
+    return (chosen[0] if chosen else "") or os.getenv("FORMS_MAIL") or contact_address()
+
+
+def forms_from() -> str:
+    return f"{FORMS_NAME} <{forms_address()}>"
+
+
+def funding_from() -> str:
+    return os.getenv("MAIL_FROM", f"Chez Marthe <{contact_address()}>")
 
 
 @dataclass(frozen=True)
 class Template:
     id: str
     group: str
+    service: str  # what it is
+    sender: str  # whose address it comes from: "forms" or "funding"
     title: str
     trigger: str  # when it is sent
     recipient: str  # who gets it
@@ -47,6 +67,8 @@ TEMPLATES: tuple[Template, ...] = (
     Template(
         id="request",
         group="Bonjour Chez Marthe",
+        service="Réponse automatique après un formulaire",
+        sender="forms",
         title="Réponse automatique à une demande d’activité ou de location",
         trigger="Envoyée tout de suite après le formulaire de demande d’activité ou d’espace, si la personne a donné son e-mail.",
         recipient="La personne qui a rempli le formulaire",
@@ -81,6 +103,8 @@ TEMPLATES: tuple[Template, ...] = (
     Template(
         id="contact",
         group="Bonjour Chez Marthe",
+        service="Réponse automatique après un formulaire",
+        sender="forms",
         title="Réponse automatique à un message de contact",
         trigger="Envoyée tout de suite après le formulaire de la page Contact, si la personne a donné son e-mail.",
         recipient="La personne qui a écrit",
@@ -101,6 +125,8 @@ TEMPLATES: tuple[Template, ...] = (
     Template(
         id="funding-reminder",
         group="Financements",
+        service="Rappel automatique pour l’équipe",
+        sender="funding",
         title="Rappel pour recontacter un financeur",
         trigger="Envoyé chaque matin, à la date de relance d’un financement (11 mois après l’obtention par défaut).",
         recipient="L’adresse choisie sur la page Financements",
@@ -165,6 +191,8 @@ def describe(template: Template) -> dict:
     return {
         "id": template.id,
         "group": template.group,
+        "service": template.service,
+        "from": forms_from() if template.sender == "forms" else funding_from(),
         "title": template.title,
         "trigger": template.trigger,
         "recipient": template.recipient,
@@ -206,19 +234,24 @@ def find(template_id: str) -> Template:
     return BY_ID[template_id]
 
 
-def sender() -> dict:
+def senders() -> dict:
     mailing = bool(os.getenv("RESEND_API_KEY") or os.getenv("SMTP_HOST"))
     return {
-        "from": os.getenv("MAIL_FROM", f"Chez Marthe <{contact_address()}>"),
-        "replyTo": contact_address(),
         "configured": mailing,
+        "forms": {
+            "name": FORMS_NAME,
+            "address": forms_address(),
+            "from": forms_from(),
+            "default": os.getenv("FORMS_MAIL") or contact_address(),
+        },
+        "funding": {"from": funding_from()},
     }
 
 
 @router.get("")
 def list_messages(user: Team) -> dict:
     return {
-        "sender": sender(),
+        "senders": senders(),
         "templates": [describe(template) for template in TEMPLATES],
     }
 
@@ -249,3 +282,18 @@ def reset_message(template_id: str, user: Team) -> dict:
     ]
     store.save_document(STORE_KEY, others)
     return describe(template)
+
+
+class SenderDraft(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    email: str = Field(
+        default="", max_length=254, pattern=r"^([^@\s]+@[^@\s]+\.[^@\s]+)?$"
+    )
+
+
+@router.put("/sender/forms")
+def change_forms_sender(draft: SenderDraft, user: Team) -> dict:
+    """Changes the address « Bonjour Chez Marthe » answers the forms from; empty goes back to the default one."""
+    email = draft.email.lower()
+    store.save_document(FORMS_KEY, [email] if email else [])
+    return senders()

@@ -77,9 +77,11 @@ def french_date(day: str) -> str:
 def _mail(to: str, subject: str, body: str) -> EmailMessage:
     mail = EmailMessage()
     mail["Subject"] = subject
-    mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{contact_address()}>")
+    mail["From"] = messages.forms_from()
     mail["To"] = to
-    mail["Reply-To"] = contact_address()
+    mail["Reply-To"] = (
+        messages.forms_address()
+    )  # a reply reaches the « Bonjour Chez Marthe » inbox
     mail.set_content(body)
     return mail
 
@@ -110,7 +112,7 @@ def request_message(draft) -> EmailMessage:
         "heure_fin": draft.end,
         "participants": str(draft.participants or ""),
         "recapitulatif": "\n".join(recap),
-        "contact": contact_address(),
+        "contact": messages.forms_address(),
     }
     subject, body = messages.current("request")
     return _mail(

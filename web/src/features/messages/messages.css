@@ -35,3 +35,11 @@
 .message-card .field input:focus, .message-card .field textarea:focus { outline: 2px solid #f2a1ab; outline-offset: 1px; }
 /* Une police où les accolades { } se distinguent bien des crochets. */
 .message-card .field input, .message-card .field textarea { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px; }
+
+/* Adresse « Bonjour Chez Marthe » qui répond aux formulaires. */
+.message-identity { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 16px 22px; background: #fff; border: 1px solid rgba(242, 161, 171, 0.8); border-radius: 18px; box-shadow: 0 6px 18px rgba(102, 43, 128, 0.06); }
+.message-identity p { margin: 2px 0 0; color: var(--muted, #6b5f6d); font-size: 14px; }
+.message-hint { color: var(--muted, #6b5f6d); font-size: 13.5px; }
+.message-sure { display: grid; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #fdf0d2; }
+.message-sure p { margin: 0; }
+@media (max-width: 700px) { .message-identity { grid-template-columns: 1fr; } }
