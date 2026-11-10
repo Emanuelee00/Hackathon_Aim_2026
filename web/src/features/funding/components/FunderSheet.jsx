@@ -25,6 +25,16 @@ function TaskList({ tasks, onChange }) {
 export default function FunderSheet({ funder, onSave, onRemove, onClose }) {
   const [draft, setDraft] = useState(funder);
   const [removing, setRemoving] = useState(false);
+  // Test d'envoi : un e-mail de rappel part tout de suite à l'équipe, pour vérifier que les e-mails arrivent.
+  const [test, setTest] = useState({ busy: false, text: '', ok: false });
+  const sendTest = async () => {
+    setTest({ busy: true, text: '', ok: false });
+    try {
+      const response = await fetch('/api/funders/reminders/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(draft) });
+      const data = await response.json().catch(() => ({}));
+      setTest(response.ok ? { busy: false, ok: true, text: `E-mail de test envoyé à ${data.to}.` } : { busy: false, ok: false, text: typeof data.detail === 'string' ? data.detail : 'L’envoi a échoué.' });
+    } catch { setTest({ busy: false, ok: false, text: 'Le serveur est injoignable.' }); }
+  };
   const set = (key, value) => setDraft(current => ({ ...current, [key]: value }));
   const close = () => { if (JSON.stringify(draft) !== JSON.stringify(funder)) onSave(draft); onClose(); };
   const remove = () => { onRemove(funder.id); onClose(); };
@@ -40,6 +50,8 @@ export default function FunderSheet({ funder, onSave, onRemove, onClose }) {
       <label className="field"><span>Relance le (e-mail de rappel)</span><input type="date" value={followupDate(draft)} onChange={event => { if (event.target.value) set('followupOn', event.target.value); }} />
         <small className="funding-muted">{draft.followupOn ? <>Date choisie à la main. <button type="button" className="text-link" onClick={() => set('followupOn', '')}>Revenir à {followupMonths(draft)} mois après l’obtention</button></> : defaultFollowupDate(draft) ? `Par défaut : ${followupMonths(draft)} mois après l’obtention. Vous pouvez la changer.` : 'Renseignez la date d’obtention : la relance sera programmée 11 mois après (modifiable).'}</small></label>
     </div>
+    <div className="funding-test-mail"><button type="button" className="button button-quiet button-small" disabled={test.busy} onClick={sendTest}>{test.busy ? 'Envoi…' : 'Envoyer un e-mail de test'}</button>
+      {test.text && <span role="status" className={test.ok ? 'funding-test-ok' : 'funding-test-error'}>{test.text}</span>}</div>
     <div className="funding-sheet-grid">{funderFields.slice(0, IDENTITY).map(field)}</div>
     <TaskList tasks={draft.tasks} onChange={tasks => set('tasks', tasks)} />
     <div className="funding-sheet-grid">{funderFields.slice(IDENTITY).map(field)}</div>

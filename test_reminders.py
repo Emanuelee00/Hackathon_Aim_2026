@@ -7,7 +7,9 @@ from openpyxl import load_workbook
 import store
 from funding import reminders
 from funding.excel import read_tracker
+from funding.routes import router as funding_router
 from funding.workbook import write_tracker
+from test_store import client_as  # noqa: F401  (pytest fixture)
 
 
 @pytest.fixture
@@ -160,3 +162,46 @@ def test_the_chosen_reminder_day_survives_the_excel_file():
         ]
         == ""
     )
+
+
+def test_a_test_email_is_sent_at_once_even_without_an_obtention_date(
+    memory, monkeypatch
+):
+    monkeypatch.setenv("SMTP_HOST", "smtp.test")
+    outbox = []
+    monkeypatch.setattr(reminders, "deliver", lambda mail: outbox.append(mail))
+    assert reminders.send_test(funder()) == "contact@chezmarthe.org"
+    assert outbox[0]["Subject"].startswith("[TEST] ")
+    assert "E-mail de test" in outbox[0].get_content()
+
+
+def test_a_test_email_needs_a_mail_service(memory):
+    with pytest.raises(reminders.NotConfigured):
+        reminders.send_test(funder())
+
+
+def test_only_the_team_sends_a_test_and_the_cron_needs_its_secret(
+    client_as,  # noqa: F811
+    memory,
+    monkeypatch,
+):
+    team = client_as("equipe")
+    team.app.include_router(funding_router)
+    assert team.post("/api/funders/reminders/test", json=funder()).status_code == 503
+    monkeypatch.setenv("SMTP_HOST", "smtp.test")
+    monkeypatch.setattr(reminders, "deliver", lambda mail: True)
+    assert team.post("/api/funders/reminders/test", json=funder()).json() == {
+        "sent": True,
+        "to": "contact@chezmarthe.org",
+    }
+    assert (
+        client_as("residents")
+        .post("/api/funders/reminders/test", json=funder())
+        .status_code
+        == 403
+    )
+    monkeypatch.setenv("CRON_SECRET", "secret")
+    assert team.get("/api/funders/reminders/cron").status_code == 401
+    assert team.get(
+        "/api/funders/reminders/cron", headers={"Authorization": "Bearer secret"}
+    ).json() == {"reminders": []}

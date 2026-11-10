@@ -165,3 +165,8 @@
 .funding-followup small { padding-left: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
 
 .funding-sheet-top { align-items: start; }
+
+/* Test d'envoi de l'e-mail de rappel, dans la fiche du financeur. */
+.funding-test-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 4px 0 14px; }
+.funding-test-ok { color: #1d7a46; font-weight: 700; font-size: 14px; }
+.funding-test-error { color: #b3261e; font-weight: 700; font-size: 14px; }

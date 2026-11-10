@@ -70,14 +70,25 @@ def french(day: date) -> str:
     return day.strftime("%d/%m/%Y")
 
 
-def message(funder: dict, when: date) -> EmailMessage:
+def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
     name = funder.get("name") or funder.get("type") or "Financeur sans nom"
     team = os.getenv("REMINDER_TO", "contact@chezmarthe.org")
-    obtained = date.fromisoformat(funder["obtainedOn"])
+    try:
+        obtained = date.fromisoformat(str(funder.get("obtainedOn") or ""))
+    except ValueError:  # a test on a funder whose obtention date is still empty
+        obtained = add_months(when, -DEFAULT_FOLLOWUP_MONTHS)
     months = (when.year - obtained.year) * 12 + when.month - obtained.month
     lines = [
         "Bonjour,",
         "",
+        *(
+            [
+                "[E-mail de test : cet envoi a été demandé à la main depuis la fiche du financeur.]",
+                "",
+            ]
+            if test
+            else []
+        ),
         f"Rappel automatique : le financement de « {name} » a été obtenu le {french(obtained)}, il y a {months} mois.",
         "C'est le moment de les recontacter pour demander un nouveau financement.",
         "",
@@ -101,7 +112,9 @@ def message(funder: dict, when: date) -> EmailMessage:
         "— Intranet financements, Chez Marthe",
     ]
     mail = EmailMessage()
-    mail["Subject"] = f"Rappel : recontacter {name} pour un nouveau financement"
+    mail["Subject"] = (
+        f"{'[TEST] ' if test else ''}Rappel : recontacter {name} pour un nouveau financement"
+    )
     mail["From"] = os.getenv("MAIL_FROM", f"Chez Marthe <{team}>")
     mail["To"] = team
     mail.set_content("\n".join(lines))
@@ -140,6 +153,21 @@ def deliver(mail: EmailMessage) -> bool:
             server.send_message(mail)
         return True
     return False
+
+
+class NotConfigured(Exception):
+    """No mail service is set (RESEND_API_KEY or SMTP_HOST)."""
+
+
+def send_test(funder: dict) -> str:
+    """Sends right now the reminder of one funder, marked [TEST]; returns the address it went to."""
+    if not configured():
+        raise NotConfigured
+    mail = message(
+        funder, reminder_date(funder) or datetime.now(PARIS).date(), test=True
+    )
+    deliver(mail)
+    return mail["To"]
 
 
 def run(today: date | None = None, dry: bool = False) -> list[dict]:
