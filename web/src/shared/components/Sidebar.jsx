@@ -21,7 +21,7 @@ export const navigation = [
   { id: 'messages', label: 'Messages', icon: 'mail' },
 ];
 
-export default function Sidebar({ page, navigate, mobile, close, onCollapse, help, newQuestions, accessRequests }) {
+export default function Sidebar({ page, navigate, mobile, close, onCollapse, collapsed, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();
   const pending = events.filter(event => event.status === 'pending').length;
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
@@ -29,7 +29,6 @@ export default function Sidebar({ page, navigate, mobile, close, onCollapse, hel
   return <>
     {mobile && <button className="nav-scrim" aria-label="Fermer le menu" onClick={close} />}
     <aside id="sidebar" className={`sidebar ${mobile ? 'is-open' : ''}`}>
-      <button type="button" className="sidebar-close" aria-label="Masquer le menu" title="Masquer le menu" onClick={onCollapse}><Icon name="left" size={18} /></button>
       <a href="#dashboard" className="brand" onClick={close}><img src="/logo-chez-marthe.png" alt="Chez Marthe" /></a>
       <p className="brand-caption">Le compagnon des lieux vivants</p>
       <div className="place-switch-wrap" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setSiteMenuOpen(false); }} onKeyDown={event => { if (event.key === 'Escape') { setSiteMenuOpen(false); event.currentTarget.querySelector('.place-switch').focus(); } }}>
@@ -46,5 +45,6 @@ export default function Sidebar({ page, navigate, mobile, close, onCollapse, hel
         <div className="profile"><span className="avatar">CM</span><div><strong>L’équipe Chez Marthe</strong><small>Espace coordination</small></div><span className="live-dot" /></div>
       </div>
     </aside>
+    <button type="button" className="sidebar-handle" aria-controls="sidebar" aria-expanded={!collapsed} aria-label={collapsed ? 'Afficher le menu' : 'Masquer le menu'} title={collapsed ? 'Afficher le menu' : 'Masquer le menu'} onClick={onCollapse}><Icon name={collapsed ? 'right' : 'left'} size={18} /></button>
   </>;
 }

@@ -110,6 +110,7 @@ export default function App() {
       mobile={menuOpen}
       close={() => setMenuOpen(false)}
       onCollapse={toggleMenu}
+      collapsed={collapsed}
       help={() => setModal({ type: 'help' })}
       newQuestions={questions.questions.filter(question => question.status === 'new').length}
       accessRequests={access.requests.length}
