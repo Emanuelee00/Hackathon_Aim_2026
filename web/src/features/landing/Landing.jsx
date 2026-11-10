@@ -145,9 +145,9 @@ function PlaceMap() {
       // Départ : fin de la dernière ligne du titre (« Savournin »). Arrivée : bord gauche du lieu en rose.
       const sx = last.right - frame.left + 12;
       const sy = last.top + last.height * 0.55 - frame.top;
-      // Grand écran : arrivée sur le bord gauche du lieu. Carte sous le texte : arrivée sur le toit du lieu, par le haut.
-      const tx = st.left + st.width * (stacked ? 0.3 : 0.178) - frame.left;
-      const ty = st.top + st.height * (stacked ? 0.405 : 0.545) - frame.top;
+      // Grand écran : arrivée sur le bord haut du lieu. Carte sous le texte : arrivée sur le toit du lieu, par le haut.
+      const tx = st.left + st.width * (stacked ? 0.3 : 0.285) - frame.left;
+      const ty = st.top + st.height * (stacked ? 0.405 : 0.452) - frame.top;
       if (stacked) {
         // Téléphone / tablette : un fil de points dans la marge gauche (il ne traverse pas le texte), un cœur plein posé sur le fil,
         // puis la pointe sur le toit du lieu.
@@ -160,12 +160,14 @@ function PlaceMap() {
         setTitleArrow({ mode: 'rail', d, head, node: [edge, sy], heart: [hx, hy], width: frame.width, height: frame.height });
         return;
       }
-      const dx = tx - sx;
-      const dy = ty - sy;
-      // La flèche descend derrière le texte, dessine un cœur, puis file vers le lieu.
-      const k = stacked ? 1.1 : 1.5;
-      const hx = stacked ? tx + 4 : sx + dx * 0.56;
-      const hy = stacked ? ty - 112 : sy + dy * 0.5;
+      // Grand écran : la flèche part de la fin de la PREMIÈRE ligne du titre, reste au-dessus du texte (elle ne le traverse jamais),
+      // dessine un cœur dans l'espace libre à droite du titre, puis descend en diagonale sur le bord du lieu.
+      const first = rects[0];
+      const fx = first.right - frame.left + 14;
+      const fy = first.top + first.height * 0.52 - frame.top;
+      const k = 1.5;
+      const hx = fx + 92;
+      const hy = fy + 40;
       const bx = hx;
       const by = hy + 26 * k;
       const heart = [
@@ -174,12 +176,9 @@ function PlaceMap() {
         `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
         `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${bx} ${by}`,
       ].join(' ');
-      const c2x = stacked ? tx + 4 : tx - 46;
-      const c2y = stacked ? ty - 26 : ty - 16;
-      const enter = stacked
-        ? `C ${sx + 4} ${sy + dy * 0.3}, ${bx - 70} ${by - dy * 0.3}, ${bx - 6} ${by + 1}`
-        : `C ${sx + 8} ${sy + 56}, ${bx - 90} ${by + 8}, ${bx - 6} ${by + 1}`;
-      const d = `M ${sx} ${sy} ${enter} ${heart} C ${bx + (stacked ? 8 : 36)} ${by + (stacked ? 16 : 14)}, ${c2x} ${c2y}, ${tx} ${ty}`;
+      const c2x = tx - 34;
+      const c2y = ty - 34;
+      const d = `M ${fx} ${fy} C ${fx + 36} ${fy - 4}, ${bx - 70} ${by - 8}, ${bx - 6} ${by + 1} ${heart} C ${bx + 40} ${by + 6}, ${c2x} ${c2y}, ${tx} ${ty}`;
       const angle = Math.atan2(ty - c2y, tx - c2x);
       const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
       const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
