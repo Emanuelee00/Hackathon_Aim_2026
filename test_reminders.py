@@ -131,3 +131,32 @@ def test_the_obtained_day_and_the_delay_survive_the_excel_file():
     assert sheet["U1"].value == "Obtenu le (site)"
     fresh = read_tracker(write_tracker([funder(id="x2", tasks=[], color="")]))[0]
     assert (fresh["obtainedOn"], fresh["followupMonths"]) == ("", 11)
+
+
+def test_a_date_chosen_by_hand_replaces_the_eleven_months():
+    item = funder(obtainedOn="2026-01-10", followupOn="2026-10-05")
+    assert reminders.reminder_date(item) == date(2026, 10, 5)
+    assert reminders.reminder_date(funder(followupOn="2026-10-05")) == date(2026, 10, 5)
+    assert reminders.reminder_date(
+        funder(obtainedOn="2026-01-10", followupOn="")
+    ) == date(2026, 12, 10)
+    found = reminders.due(
+        [funder(obtainedOn="2026-01-10", followupOn="2026-10-05")],
+        date(2026, 10, 5),
+        set(),
+    )
+    assert len(found) == 1
+
+
+def test_the_chosen_reminder_day_survives_the_excel_file():
+    card = funder(
+        id="x3", obtainedOn="2026-01-10", followupOn="2026-10-05", tasks=[], color=""
+    )
+    again = read_tracker(write_tracker([card]))[0]
+    assert again["followupOn"] == "2026-10-05"
+    assert (
+        read_tracker(write_tracker([funder(id="x4", tasks=[], color="")]))[0][
+            "followupOn"
+        ]
+        == ""
+    )

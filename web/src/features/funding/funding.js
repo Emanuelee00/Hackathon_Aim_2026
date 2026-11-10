@@ -37,9 +37,11 @@ export function addMonths(day, months) {
   return `${target[0]}-${String(target[1] + 1).padStart(2, '0')}-${String(Math.min(date, last)).padStart(2, '0')}`;
 }
 
-export const followupDate = funder => (funder.obtainedOn ? addMonths(funder.obtainedOn, followupMonths(funder)) : '');
+// The day the reminder leaves: the one chosen by hand (followupOn), else the obtention day + 11 months.
+export const defaultFollowupDate = funder => (funder.obtainedOn ? addMonths(funder.obtainedOn, followupMonths(funder)) : '');
+export const followupDate = funder => funder.followupOn || defaultFollowupDate(funder);
 
-export const emptyFunder = () => ({ ...Object.fromEntries(funderFields.map(([key]) => [key, ''])), id: crypto.randomUUID(), status: 'qualify', deadline: '', owner: '', color: '', obtainedOn: '', followupMonths: DEFAULT_FOLLOWUP_MONTHS, tasks: [] });
+export const emptyFunder = () => ({ ...Object.fromEntries(funderFields.map(([key]) => [key, ''])), id: crypto.randomUUID(), status: 'qualify', deadline: '', owner: '', color: '', obtainedOn: '', followupMonths: DEFAULT_FOLLOWUP_MONTHS, followupOn: '', tasks: [] });
 
 export function localToday(now = new Date()) {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;

@@ -39,6 +39,11 @@ def add_months(start: date, months: int) -> date:
 
 
 def reminder_date(funder: dict) -> date | None:
+    """The day the reminder leaves: the date chosen by hand (`followupOn`), or else the obtention day + `followupMonths` (11)."""
+    try:
+        return date.fromisoformat(str(funder.get("followupOn") or ""))
+    except ValueError:
+        pass
     try:
         obtained = date.fromisoformat(str(funder.get("obtainedOn") or ""))
     except ValueError:

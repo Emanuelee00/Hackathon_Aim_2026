@@ -36,17 +36,18 @@ function NextAction({ funder, today, onSave, onOpen }) {
   </span>;
 }
 
-// The delay before the reminder to ask the funder again (11 months unless changed), and the day it falls on.
+// The day the reminder e-mail leaves: 11 months after the funding is obtained, written by default but editable (day, month, year).
 function Followup({ funder, onSave }) {
-  const months = followupMonths(funder);
   const when = followupDate(funder);
+  const custom = Boolean(funder.followupOn);
   const save = event => {
-    const value = Number(event.target.value);
-    if (Number.isInteger(value) && value > 0 && value <= 120) { if (value !== months) onSave({ ...funder, followupMonths: value }); } else event.target.value = months;
+    const value = event.target.value;
+    if (value === when) return;
+    onSave({ ...funder, followupOn: value });
   };
   return <span className="funding-followup">
-    <input key={months} type="number" min="1" max="120" className="funding-cell funding-cell-number" aria-label={`Relance en mois · ${funder.name}`} defaultValue={months} onBlur={save} onKeyDown={event => { if (event.key === 'Enter') event.target.blur(); }} />
-    <small title="Un courriel de rappel part à l’équipe ce jour-là">{when ? `→ ${new Date(`${when}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'date d’obtention ?'}</small>
+    <input key={when} type="date" className="funding-cell" aria-label={`Relance · ${funder.name}`} defaultValue={when} onBlur={save} onKeyDown={event => { if (event.key === 'Enter') event.target.blur(); }} />
+    <small title="Un courriel de rappel part à l’équipe ce jour-là">{custom ? 'date choisie' : when ? `${followupMonths(funder)} mois après` : 'date d’obtention ?'}</small>
   </span>;
 }
 

@@ -163,3 +163,5 @@
 .funding-followup { display: flex; flex-direction: column; gap: 1px; }
 .funding-cell-number { width: 72px; }
 .funding-followup small { padding-left: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+.funding-sheet-top { align-items: start; }

@@ -3,7 +3,7 @@ import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tabl
 
 const KEY = 'marthe-funding-table-v4';
 // The table's columns: key, heading, starting share of the width (in pixels at 1212 px).
-export const columns = [['name', 'Financeur', 200], ['type', 'Type', 100], ['amount', 'Montant', 140], ['deadline', 'Échéance', 160], ['obtained', 'Obtenu le', 160], ['followup', 'Relance (mois)', 150], ['status', 'État', 150], ['owner', 'Resp.', 70], ['next', 'Prochaine action', 170], ['card', '', 110]];
+export const columns = [['name', 'Financeur', 200], ['type', 'Type', 100], ['amount', 'Montant', 140], ['deadline', 'Échéance', 160], ['obtained', 'Obtenu le', 160], ['followup', 'Relance le', 160], ['status', 'État', 150], ['owner', 'Resp.', 70], ['next', 'Prochaine action', 170], ['card', '', 110]];
 const defaults = Object.fromEntries(columns.map(([key, , width]) => [key, width]));
 const movable = columns.map(([key]) => key).filter(key => key !== 'card');
 const MIN_TABLE = 480;

@@ -34,6 +34,7 @@ SITE_FIELDS = (
     "siteColor",
     "siteObtained",
     "siteFollowup",
+    "siteFollowupOn",
 )
 # Months between the day a funding is obtained and the reminder to ask again: a year, a month early.
 DEFAULT_FOLLOWUP_MONTHS = 11
@@ -69,6 +70,7 @@ def new_card(cells: dict) -> dict:
             else "",
             "obtainedOn": iso_date(cells["siteObtained"]),
             "followupMonths": followup_months(cells["siteFollowup"]),
+            "followupOn": iso_date(cells["siteFollowupOn"]),
         }
     deadline = iso_date(cells["deadlineNote"])
     return card | {
@@ -78,6 +80,7 @@ def new_card(cells: dict) -> dict:
         "owner": "",
         "obtainedOn": "",
         "followupMonths": DEFAULT_FOLLOWUP_MONTHS,
+        "followupOn": "",
     }
 
 

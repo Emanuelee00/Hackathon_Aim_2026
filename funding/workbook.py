@@ -32,6 +32,7 @@ TRACKER = (
     "Couleur (site)",
     "Obtenu le (site)",
     "Relance en mois (site)",
+    "Relance le (site)",
 )
 ROADMAP = (
     "Qui",
@@ -82,7 +83,17 @@ def tracker_row(funder: dict) -> list:
     owner, color = funder.get("owner") or "", funder.get("color") or ""
     obtained = day(funder.get("obtainedOn"))
     months = funder.get("followupMonths") or DEFAULT_FOLLOWUP_MONTHS
-    return [*values, status, deadline, owner, funder.get("id"), color, obtained, months]
+    return [
+        *values,
+        status,
+        deadline,
+        owner,
+        funder.get("id"),
+        color,
+        obtained,
+        months,
+        day(funder.get("followupOn")),
+    ]
 
 
 def write_tracker(funders: list[dict]) -> bytes:

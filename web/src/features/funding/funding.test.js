@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addMonths, emptyFunder, followupDate, followupMonths, localToday, nextTask, overdueTasks, urgentDeadline } from './funding.js';
+import { addMonths, defaultFollowupDate, emptyFunder, followupDate, followupMonths, localToday, nextTask, overdueTasks, urgentDeadline } from './funding.js';
 import { calendarEvents, calendarMonths } from './calendar.js';
 import { importChanges } from './importing.js';
 import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tableMath.js';
@@ -100,4 +100,12 @@ test('months are added to the last day of a shorter month', () => {
   assert.equal(addMonths('2026-01-31', 1), '2026-02-28');
   assert.equal(addMonths('2026-03-15', 11), '2027-02-15');
   assert.equal(addMonths('2026-12-01', 1), '2027-01-01');
+});
+
+test('the reminder day can be chosen by hand, and goes back to 11 months after the obtention', () => {
+  const funder = { obtainedOn: '2026-01-10', followupMonths: 11, followupOn: '' };
+  assert.equal(followupDate(funder), '2026-12-10');
+  assert.equal(followupDate({ ...funder, followupOn: '2026-10-05' }), '2026-10-05');
+  assert.equal(defaultFollowupDate({ ...funder, followupOn: '2026-10-05' }), '2026-12-10');
+  assert.equal(emptyFunder().followupOn, '');
 });
