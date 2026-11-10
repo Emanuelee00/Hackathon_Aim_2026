@@ -176,24 +176,21 @@ function PlaceMap() {
     return () => observer.disconnect();
   }, []);
   // À chaque chargement : la carte se construit en points, de la maison de Chez Marthe jusqu'à la cathédrale.
-  const [building, setBuilding] = useState(shouldBuildMap);
+  const [phase, setPhase] = useState(() => (shouldBuildMap() ? 'build' : 'done'));
   const [houseOn, setHouseOn] = useState(false);
-  const [fading, setFading] = useState(false);
+  const building = phase === 'build';
   const canvasRef = useRef(null);
   useEffect(() => {
-    if (!building) return undefined;
+    if (phase !== 'build') return undefined;
     const stage = ref.current;
     const canvas = canvasRef.current;
     const section = stage?.closest('section');
     if (!stage || !canvas || !section) return undefined;
-    let frame; let observer; let cancelled = false; let timer;
+    let frame; let observer; let cancelled = false; let revealed = false;
     const image = new Image();
     image.src = '/foto/carte-lignes.webp?v=8';
     const houseImage = new Image();
     houseImage.src = '/foto/carte-lieu-lignes.webp?v=8';
-    const finish = () => {
-      setBuilding(false); setFading(true); timer = setTimeout(() => setFading(false), 1200);
-    };
     const play = () => {
       // Points = pixels du dessin (un sur trois). Chaque point apparaît selon sa distance à la maison, la cathédrale est la dernière.
       const W = 1600; const H = 1024; const STEP = 3;
@@ -223,6 +220,10 @@ function PlaceMap() {
         const p = (now - start) / DURATION;
         if (p > 0.03) setHouseOn(true);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Fin de l'animation : le vrai dessin apparaît pendant que les points rétrécissent et s'éteignent (pas de changement brusque).
+        const melt = Math.min(1, Math.max(0, (p - 0.88) / 0.24));
+        if (melt > 0 && !revealed) { revealed = true; setPhase('reveal'); }
+        ctx.globalAlpha = 1 - melt;
         for (let pass = 0; pass < 3; pass += 1) {
           ctx.fillStyle = ['#FFC2CD', 'rgba(250, 228, 238, 0.8)', '#FF86A8'][pass];
           for (let i = 0; i < xs.length; i += 1) {
@@ -232,11 +233,11 @@ function PlaceMap() {
             if (group !== pass) continue;
             const e = 1 - (1 - t) ** 3;
             const off = (1 - e) * spread[i];
-            const size = (1.7 + 0.8 * e) * k * 1.25;
+            const size = (1.7 + 0.8 * e) * k * 1.25 * (1 - 0.55 * melt);
             ctx.fillRect((xs[i] + Math.cos(angle[i]) * off) * k - size / 2, (ys[i] + Math.sin(angle[i]) * off) * k - size / 2, size, size);
           }
         }
-        if (p < 1.02) frame = requestAnimationFrame(draw); else finish();
+        if (p < 1.12) frame = requestAnimationFrame(draw); else setPhase('done');
       };
       frame = requestAnimationFrame(draw);
     };
@@ -248,15 +249,15 @@ function PlaceMap() {
       if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); start(); }
     }, { threshold: 0.4 });
     observer.observe(section);
-    return () => { cancelled = true; cancelAnimationFrame(frame); clearTimeout(timer); observer?.disconnect(); };
-  }, [building]);
+    return () => { cancelled = true; cancelAnimationFrame(frame); observer?.disconnect(); };
+  }, []);
   return <>
     <div className="place-map" aria-hidden="true">
     <div className={`map-stage${building ? ' is-building' : ''}${houseOn ? ' house-on' : ''}`} ref={ref}>
       <div className="map-float">
         <img className="map-lines" src="/foto/carte-lignes.webp?v=8" alt="" loading="lazy" />
         <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=8" alt="" loading="lazy" />
-        {(building || fading) && <canvas className={`map-dots${fading ? ' is-fading' : ''}`} ref={canvasRef} />}
+        {phase !== 'done' && <canvas className="map-dots" ref={canvasRef} />}
         {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
         <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
           <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
@@ -265,7 +266,7 @@ function PlaceMap() {
       </div>
     </div>
     </div>
-    {titleArrow && <svg className={`map-title-arrow${building ? ' is-waiting' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
       <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
       <path className="map-arrow-head" d={titleArrow.head} />
     </svg>}
