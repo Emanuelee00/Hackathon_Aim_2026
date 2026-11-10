@@ -140,27 +140,46 @@ function PlaceMap() {
       const range = document.createRange();
       range.selectNodeContents(title);
       const rects = range.getClientRects();
-      const last = rects[rects.length - 1];
-      if (!last) return;
-      // Départ : fin de la dernière ligne du titre (« Savournin »). Arrivée : bord gauche du lieu en rose.
-      const sx = last.right - frame.left + 12;
-      const sy = last.top + last.height * 0.55 - frame.top;
-      // Grand écran : arrivée sur le bord haut du lieu. Carte sous le texte : arrivée sur le toit du lieu, par le haut.
+      if (!rects.length) return;
+      // Arrivée : bord haut du lieu (grand écran) ou toit du lieu, par le haut (carte sous le texte).
       const tx = st.left + st.width * (stacked ? 0.3 : 0.285) - frame.left;
       const ty = st.top + st.height * (stacked ? 0.405 : 0.452) - frame.top;
+      // Le cœur : incliné vers la droite, tracé en partant du côté DROIT (la ligne passe au-dessus, tourne autour du lobe droit et y rentre),
+      // puis vers la gauche en haut, et il redescend à gauche jusqu'à la pointe. La dernière ligne repart de la pointe en courbe douce.
+      const tilt = (14 * Math.PI) / 180;
+      const cos = Math.cos(tilt);
+      const sin = Math.sin(tilt);
+      const heartAt = (hx, hy, k) => (lx, ly) => [hx + (lx * cos - ly * sin) * k, hy + (lx * sin + ly * cos) * k];
+      const str = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
+      // Gancio stretto a destra (la riga passa sopra, gira intorno al lobo destro), poi il cuore dal lato destro verso sinistra e giù fino alla punta.
+      const heartStroke = L => [
+        `C ${str(L(55, -50))}, ${str(L(64, -41))}, ${str(L(64, -30))}`,
+        `C ${str(L(64, -19))}, ${str(L(55, -10))}, ${str(L(44, -10))}`,
+        `L ${str(L(30, -10))}`,
+        `C ${str(L(27, -26))}, ${str(L(8, -26))}, ${str(L(0, -10))}`,
+        `C ${str(L(-8, -26))}, ${str(L(-27, -26))}, ${str(L(-30, -10))}`,
+        `C ${str(L(-34, 4))}, ${str(L(-14, 16))}, ${str(L(0, 26))}`,
+      ].join(' ');
+      let d;
+      let c2x;
+      let c2y;
+      let endY = ty;
       if (stacked) {
         // Téléphone / tablette : une seule ligne continue qui descend dans la marge gauche en ondulant à peine (elle n'entre jamais dans le texte),
-        // dessine le cœur dans le prolongement de la ligne, puis file jusqu'à la pointe sur le toit du lieu.
+        // glisse sous le texte, passe au-dessus du cœur et le trace.
+        const last = rects[rects.length - 1];
+        const sy = last.top + last.height * 0.55 - frame.top;
         const edge = Math.max(6, title.getBoundingClientRect().left - frame.left - 10);
         const amp = 3.5;
-        const hx = tx + 10;
-        const hy = ty - 90;
-        const k = 1.05;
-        const by = hy + 26 * k;
-        // La ligne reste dans la marge jusqu'au-dessous du dernier texte de la section (les chiffres), puis seulement elle glisse vers le cœur.
+        const k = 0.9;
         const facts = section.querySelector('.place-facts');
-        const textBottom = facts ? facts.getBoundingClientRect().bottom - frame.top + 14 : by - 90;
-        const yRail = Math.max(sy + 60, Math.min(textBottom, by - 30));
+        const textBottom = (facts ? facts.getBoundingClientRect().bottom - frame.top : ty - 150) + 14;
+        const hx = tx + 14;
+        const hy = Math.max(ty - 84, textBottom + 50 * k + 12);
+        const L = heartAt(hx, hy, k);
+        const X1 = L(44, -50);
+        const B = L(0, 26);
+        const yRail = Math.min(textBottom, X1[1] - 24);
         let wave = `M ${edge} ${sy}`;
         for (let y = sy, n = 0; y < yRail - 1; n += 1) {
           const len = Math.min(64, yRail - y);
@@ -168,44 +187,27 @@ function PlaceMap() {
           wave += ` C ${edge + sign * amp} ${y + len / 3}, ${edge - sign * amp} ${y + (2 * len) / 3}, ${edge} ${y + len}`;
           y += len;
         }
-        // La ligne descend dans la marge, glisse sous le texte et remonte vers la POINTE du cœur ; le cœur est fermé (côté gauche, lobes, côté droit),
-        // puis la ligne repart de la même pointe, sans angle brusque, vers le toit du lieu.
-        const heart = [
-          `C ${hx - 7 * k} ${hy + 12 * k}, ${hx - 34 * k} ${hy + 4 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
-          `C ${hx - 27 * k} ${hy - 26 * k}, ${hx - 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
-          `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
-          `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 7 * k} ${hy + 12 * k}, ${hx} ${by}`,
-        ].join(' ');
-        const c2x = tx + 2;
-        const c2y = ty - 54;
-        const d = `${wave} C ${edge} ${yRail + 48}, ${hx - 6} ${by + 62}, ${hx} ${by} ${heart} C ${hx - 12} ${by + 40}, ${c2x} ${c2y}, ${tx} ${ty - 4}`;
-        const angle = Math.atan2(ty - 4 - c2y, tx - c2x);
-        const wing = turn => `${tx - 20 * Math.cos(angle + turn)} ${ty - 4 - 20 * Math.sin(angle + turn)}`;
-        const head = `M ${wing(0.5)} L ${tx} ${ty - 4} L ${wing(-0.5)}`;
-        setTitleArrow({ d, head, width: frame.width, height: frame.height });
-        return;
+        c2x = tx;
+        c2y = ty - 40;
+        endY = ty - 4;
+        d = `${wave} C ${edge} ${yRail + 36}, ${X1[0] - 110} ${X1[1]}, ${str(X1)} ${heartStroke(L)} C ${B[0] - 4} ${B[1] + 30}, ${c2x} ${c2y}, ${tx} ${endY}`;
+      } else {
+        // Grand écran : la flèche part un peu au-dessus de la fin de la PREMIÈRE ligne du titre et file vers la droite (elle ne traverse jamais
+        // le texte) ; le cœur est au bout de la ligne, à sa hauteur ; enfin la ligne descend en courbe sur le bord du lieu.
+        const first = rects[0];
+        const fx = first.right - frame.left + 36;
+        const fy = first.top - frame.top - 34;
+        const k = 1.2;
+        const L = heartAt(fx + 160, fy + 58, k);
+        const X1 = L(44, -50);
+        const B = L(0, 26);
+        c2x = tx - 46;
+        c2y = ty - 16;
+        d = `M ${fx} ${fy} C ${fx + 60} ${fy - 8}, ${X1[0] - 50} ${X1[1]}, ${str(X1)} ${heartStroke(L)} C ${B[0] - 16} ${B[1] + 30}, ${c2x} ${c2y}, ${tx} ${ty}`;
       }
-      // Grand écran : la flèche part un peu au-dessus de la fin de la PREMIÈRE ligne du titre, file vers la droite (elle ne traverse jamais
-      // le texte), puis le cœur se trace en partant de la droite, vers la gauche, et redescend en bas ; enfin elle descend sur le bord du lieu.
-      const first = rects[0];
-      const fx = first.right - frame.left + 36;
-      const fy = first.top - frame.top - 34;
-      const k = 1.15;
-      const hx = fx + 160;
-      const hy = fy + 26;
-      const heart = [
-        `C ${hx + 27 * k} ${hy - 26 * k}, ${hx + 8 * k} ${hy - 26 * k}, ${hx} ${hy - 10 * k}`,
-        `C ${hx - 8 * k} ${hy - 26 * k}, ${hx - 27 * k} ${hy - 26 * k}, ${hx - 30 * k} ${hy - 10 * k}`,
-        `C ${hx - 34 * k} ${hy + 4 * k}, ${hx - 14 * k} ${hy + 16 * k}, ${hx} ${hy + 26 * k}`,
-      ].join(' ');
-      const bx = hx;
-      const by = hy + 26 * k;
-      const c2x = tx - 30;
-      const c2y = ty - 36;
-      const d = `M ${fx} ${fy} C ${fx + 56} ${fy - 14}, ${hx + 46 * k} ${hy - 40 * k}, ${hx + 30 * k} ${hy - 10 * k} ${heart} C ${bx + 12} ${by + 20}, ${c2x} ${c2y}, ${tx} ${ty}`;
-      const angle = Math.atan2(ty - c2y, tx - c2x);
-      const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
-      const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
+      const angle = Math.atan2(endY - c2y, tx - c2x);
+      const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${endY - 22 * Math.sin(angle + turn)}`;
+      const head = `M ${wing(0.5)} L ${tx} ${endY} L ${wing(-0.5)}`;
       setTitleArrow({ d, head, width: frame.width, height: frame.height });
     };
     compute();
