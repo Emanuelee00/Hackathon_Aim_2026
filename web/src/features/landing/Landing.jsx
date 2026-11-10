@@ -218,6 +218,18 @@ function PlaceMap() {
   const [houseOn, setHouseOn] = useState(false);
   const building = phase === 'build';
   const canvasRef = useRef(null);
+  // La flèche démarre quand la section apparaît à l'écran (une seule fois par chargement de page).
+  const [arrowOn, setArrowOn] = useState(() => !shouldBuildMap());
+  useEffect(() => {
+    if (arrowOn) return undefined;
+    const section = ref.current?.closest('section');
+    if (!section) { setArrowOn(true); return undefined; }
+    const watcher = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { setArrowOn(true); watcher.disconnect(); }
+    }, { threshold: 0.4 });
+    watcher.observe(section);
+    return () => watcher.disconnect();
+  }, [arrowOn]);
   useEffect(() => {
     if (phase !== 'build') return undefined;
     const stage = ref.current;
@@ -314,7 +326,7 @@ function PlaceMap() {
       </div>
     </div>
     </div>
-    {titleArrow && <svg className="map-title-arrow" width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
+    {titleArrow && <svg className={`map-title-arrow${arrowOn ? ' is-on' : ''}`} width={titleArrow.width} height={titleArrow.height} viewBox={`0 0 ${titleArrow.width} ${titleArrow.height}`} fill="none" aria-hidden="true">
       <path className="map-arrow-line" pathLength="1" d={titleArrow.d} />
       <path className="map-arrow-head" d={titleArrow.head} />
     </svg>}
