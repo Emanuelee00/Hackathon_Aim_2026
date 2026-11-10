@@ -767,9 +767,7 @@
 @media (min-width: 1300px) {
   .cm-home .place-bg { min-height: clamp(560px, 46vw, 720px); align-content: center; }
   .cm-home .place-bg > div:not(.place-map) { max-width: 540px; }
-  .cm-home .map-arrow { display: none; }
 }
-@media (max-width: 1299px) { .cm-home .map-title-arrow { display: none; } }
 .cm-home .place-bg > .map-title-arrow { position: absolute; z-index: 0; left: 0; top: 0; overflow: visible; pointer-events: none; filter: drop-shadow(0 0 5px rgba(255, 190, 205, 0.55)); }
 .cm-home .map-title-arrow path { stroke: #FFC2CD; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -780,3 +778,4 @@
 .cm-home .map-stage.is-building .map-lines { opacity: 0; }
 .cm-home .map-stage.is-building:not(.house-on) .map-spot-lines { opacity: 0; }
 .cm-home .map-title-arrow { transition: opacity 1s ease; }
+@media (max-width: 1299px) { .cm-home .map-title-arrow path { stroke-width: 2.6; } }

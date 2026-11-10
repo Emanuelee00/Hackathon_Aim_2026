@@ -127,14 +127,14 @@ function PlaceMap() {
   const ref = useRef(null);
   const [titleArrow, setTitleArrow] = useState(null);
   // Grand écran : une flèche à boucles part du titre « Chez Marthe, Saint-Savournin » et arrive sur le lieu en rose.
-  // Ses points sont calculés d'après la position réelle du titre et de la carte ; en dessous de 1300 px (carte sous le texte), c'est la flèche du dessin qui sert.
+  // Ses points sont calculés d'après la position réelle du titre et de la carte (à gauche du lieu sur grand écran, par le haut quand la carte est sous le texte).
   useLayoutEffect(() => {
     const stage = ref.current;
     const section = stage?.closest('section');
     const title = section?.querySelector('h2');
     if (!stage || !title) return undefined;
     const compute = () => {
-      if (window.innerWidth < 1300) { setTitleArrow(null); return; }
+      const stacked = window.innerWidth < 1300; // carte sous le texte (tablette, téléphone)
       const frame = section.getBoundingClientRect();
       const st = stage.getBoundingClientRect();
       const range = document.createRange();
@@ -145,14 +145,15 @@ function PlaceMap() {
       // Départ : fin de la dernière ligne du titre (« Savournin »). Arrivée : bord gauche du lieu en rose.
       const sx = last.right - frame.left + 12;
       const sy = last.top + last.height * 0.55 - frame.top;
-      const tx = st.left + st.width * 0.178 - frame.left;
-      const ty = st.top + st.height * 0.545 - frame.top;
+      // Grand écran : arrivée sur le bord gauche du lieu. Carte sous le texte : arrivée sur le toit du lieu, par le haut.
+      const tx = st.left + st.width * (stacked ? 0.3 : 0.178) - frame.left;
+      const ty = st.top + st.height * (stacked ? 0.405 : 0.545) - frame.top;
       const dx = tx - sx;
       const dy = ty - sy;
       // La flèche descend derrière le texte, dessine un cœur, puis file vers le lieu.
-      const hx = sx + dx * 0.56;
-      const hy = sy + dy * 0.5;
-      const k = 1.5;
+      const k = stacked ? 1.1 : 1.5;
+      const hx = stacked ? tx + 4 : sx + dx * 0.56;
+      const hy = stacked ? ty - 112 : sy + dy * 0.5;
       const bx = hx;
       const by = hy + 26 * k;
       const heart = [
@@ -161,9 +162,12 @@ function PlaceMap() {
         `C ${hx + 8 * k} ${hy - 26 * k}, ${hx + 27 * k} ${hy - 26 * k}, ${hx + 30 * k} ${hy - 10 * k}`,
         `C ${hx + 34 * k} ${hy + 4 * k}, ${hx + 14 * k} ${hy + 16 * k}, ${bx} ${by}`,
       ].join(' ');
-      const c2x = tx - 46;
-      const c2y = ty - 16;
-      const d = `M ${sx} ${sy} C ${sx + 8} ${sy + 56}, ${bx - 90} ${by + 8}, ${bx - 6} ${by + 1} ${heart} C ${bx + 36} ${by + 14}, ${c2x} ${c2y}, ${tx} ${ty}`;
+      const c2x = stacked ? tx + 4 : tx - 46;
+      const c2y = stacked ? ty - 26 : ty - 16;
+      const enter = stacked
+        ? `C ${sx + 4} ${sy + dy * 0.3}, ${bx - 70} ${by - dy * 0.3}, ${bx - 6} ${by + 1}`
+        : `C ${sx + 8} ${sy + 56}, ${bx - 90} ${by + 8}, ${bx - 6} ${by + 1}`;
+      const d = `M ${sx} ${sy} ${enter} ${heart} C ${bx + (stacked ? 8 : 36)} ${by + (stacked ? 16 : 14)}, ${c2x} ${c2y}, ${tx} ${ty}`;
       const angle = Math.atan2(ty - c2y, tx - c2x);
       const wing = turn => `${tx - 22 * Math.cos(angle + turn)} ${ty - 22 * Math.sin(angle + turn)}`;
       const head = `M ${wing(0.5)} L ${tx} ${ty} L ${wing(-0.5)}`;
@@ -273,11 +277,6 @@ function PlaceMap() {
         <img className="map-lines" src="/foto/carte-lignes.webp?v=8" alt="" loading="lazy" />
         <img className="map-spot-lines" src="/foto/carte-lieu-lignes.webp?v=8" alt="" loading="lazy" />
         {phase !== 'done' && <canvas className="map-dots" ref={canvasRef} />}
-        {/* Flèche à boucles, dessinée dans le repère de la carte (1600 × 1024) : de « Rue Saint-Savournin » jusqu'au lieu en rose. */}
-        <svg className="map-arrow" viewBox="0 0 1600 1024" fill="none" aria-hidden="true">
-          <path className="map-arrow-line" pathLength="1" d="M 518 754 C 468 806 382 794 374 738 C 368 692 434 688 430 726 C 426 762 372 750 360 704 C 352 672 344 648 336 630" />
-          <path className="map-arrow-head" d="M 321 648 L 334 624 L 354 640" />
-        </svg>
       </div>
     </div>
     </div>
