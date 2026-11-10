@@ -10,13 +10,15 @@ from typing import Annotated
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+import mailer
 import store
 from agents.models import Question
 from db import get_session
 
+from . import confirmations
 from .models import ContactMessage, EventDraft, Feedback
 
 router = APIRouter(prefix="/api")
@@ -35,12 +37,17 @@ def feedback_events(events: list[dict]) -> list[dict]:
 
 
 @router.post("/requests", status_code=201)
-def submit_request(draft: EventDraft) -> dict[str, str]:
+def submit_request(
+    draft: EventDraft, background: BackgroundTasks
+) -> dict[str, str | bool]:
     if not (draft.organizer and EMAIL.match(draft.email)):
         raise HTTPException(422, "Indiquez votre nom et une adresse e-mail valide.")
     event = draft.as_event(f"request-{uuid4().hex[:12]}", source="Formulaire en ligne")
     store.save_document("events", [*(store.load_document("events") or []), event])
-    return {"id": event["id"]}
+    background.add_task(
+        confirmations.send_confirmation, confirmations.request_message(draft)
+    )
+    return {"id": event["id"], "confirmation": mailer.configured()}
 
 
 @router.get("/feedback/events")
@@ -79,7 +86,9 @@ def submit_feedback(event_id: str, feedback: Feedback) -> dict[str, str]:
 
 
 @router.post("/contact", status_code=201)
-def send_contact(message: ContactMessage, db: Db) -> dict[str, str]:
+def send_contact(
+    message: ContactMessage, db: Db, background: BackgroundTasks
+) -> dict[str, str | bool]:
     """Lands in the team's "Questions reçues", next to the chatbots' questions."""
     if message.website:
         return {"status": "ok"}  # a robot: it believes it was sent
@@ -96,4 +105,7 @@ def send_contact(message: ContactMessage, db: Db) -> dict[str, str]:
         )
     )
     db.commit()
-    return {"status": "ok"}
+    background.add_task(
+        confirmations.send_confirmation, confirmations.contact_message(message)
+    )
+    return {"status": "ok", "confirmation": mailer.configured()}

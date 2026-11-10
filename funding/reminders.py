@@ -6,18 +6,16 @@ details and the Chez Marthe contact. Without a mail service configured nothing i
 """
 
 import calendar
-import json
 import logging
 import os
-import smtplib
 import time
-import urllib.request
 from datetime import date, datetime
 from email.message import EmailMessage
 from threading import Thread
 from zoneinfo import ZoneInfo
 
 import store
+from mailer import configured, deliver
 
 from .excel import DEFAULT_FOLLOWUP_MONTHS
 
@@ -137,40 +135,6 @@ def message(funder: dict, when: date, test: bool = False) -> EmailMessage:
     mail["To"] = notify_email()
     mail.set_content("\n".join(lines))
     return mail
-
-
-def configured() -> bool:
-    return bool(os.getenv("RESEND_API_KEY") or os.getenv("SMTP_HOST"))
-
-
-def deliver(mail: EmailMessage) -> bool:
-    """Sends through Resend or an SMTP server; False when no mail service is configured."""
-    if key := os.getenv("RESEND_API_KEY"):
-        body = json.dumps(
-            {
-                "from": mail["From"],
-                "to": [mail["To"]],
-                "subject": mail["Subject"],
-                "text": mail.get_content(),
-            }
-        ).encode()
-        request = urllib.request.Request(
-            "https://api.resend.com/emails",
-            body,
-            {"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        )
-        urllib.request.urlopen(request, timeout=20).close()
-        return True
-    if host := os.getenv("SMTP_HOST"):
-        with smtplib.SMTP(
-            host, int(os.getenv("SMTP_PORT", "587")), timeout=20
-        ) as server:
-            server.starttls()
-            if user := os.getenv("SMTP_USER"):
-                server.login(user, os.getenv("SMTP_PASSWORD", ""))
-            server.send_message(mail)
-        return True
-    return False
 
 
 class NotConfigured(Exception):

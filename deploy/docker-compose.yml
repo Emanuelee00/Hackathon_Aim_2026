@@ -26,8 +26,9 @@ services:
       DATABASE_URL: postgresql://marthe:${POSTGRES_PASSWORD}@db:5432/marthe
       CANONICAL_DOMAIN: ${CANONICAL_DOMAIN:-}
       OLD_DOMAINS: ${OLD_DOMAINS:-}
-      # Funding reminders by email: nothing is sent until one of the two services is set (see .env.example).
+      # E-mails (funding reminders and the forms' confirmations): nothing is sent until one of the two services is set (see .env.example).
       REMINDER_TO: ${REMINDER_TO:-contact@chezmarthe.org}
+      CONTACT_EMAIL: ${CONTACT_EMAIL:-contact@chezmarthe.org}
       MAIL_FROM: ${MAIL_FROM:-}
       RESEND_API_KEY: ${RESEND_API_KEY:-}
       SMTP_HOST: ${SMTP_HOST:-}
