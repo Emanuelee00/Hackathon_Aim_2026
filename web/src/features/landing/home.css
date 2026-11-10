@@ -114,7 +114,7 @@
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: transparent;
 }
-.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: blur(1px); transform: scale(1.008); transition: opacity 0.7s ease; }
+.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.008); transition: opacity 0.7s ease; }
 .cm-home .clip.is-on { opacity: 1; }
 .cm-home .hero-inner {
   width: min(100%, 1120px); max-width: none; margin: 0 auto;
@@ -1432,3 +1432,398 @@
   .cm-home .member-card h2 { font-size: clamp(18px, 2.7vh, 26px); }
 }
 @media (max-width: 999px) { .cm-home .team-v2 { padding-bottom: 76px; } .cm-home .team-v2 .scroll-cue-label { bottom: 18px; } }
+
+/* ===== Téléphone seulement (moins de 700 px) : chaque écran tient dans la hauteur du téléphone, comme sur ordinateur. Rien ici ne touche l'ordinateur. ===== */
+@media (max-width: 699px) {
+  /* Notre premier lieu : texte compact, carte plus petite en dessous. */
+  .cm-home .place-bg { box-sizing: border-box; min-height: calc(100svh - var(--bar)); padding-top: clamp(16px, 3svh, 32px); padding-bottom: calc(min(100vw, 1000px) * 0.52 + 18px); display: flex; flex-direction: column; justify-content: center; gap: 0; }
+  .cm-home .place-bg h2 { font-size: clamp(26px, 8vw, 36px); margin-top: 10px; }
+  .cm-home .place-bg p:not(.eyebrow) { font-size: clamp(14px, 4vw, 16px); line-height: 1.45; margin: 8px 0 0; }
+  .cm-home .place-facts { gap: 10px; margin-top: clamp(12px, 2svh, 20px); }
+  .cm-home .place-facts li { padding: 10px 12px 12px; border-radius: 16px; }
+  .cm-home .place-facts strong { font-size: clamp(34px, 10vw, 44px); }
+  .cm-home .place-facts span { font-size: 12.5px; }
+  .cm-home .place-press { margin-top: 10px; padding-top: 12px; padding-bottom: 12px; font-size: 16px; }
+  .cm-home .place-bg > .place-map { top: auto; height: calc(min(100vw, 1000px) * 0.52 + 18px); }
+  .cm-home .map-stage { width: min(100vw, 1000px); }
+
+  /* Les quatre piliers : 2 × 2, photos plus basses. */
+  .cm-home .landing-band { box-sizing: border-box; min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: center; padding: clamp(14px, 3svh, 30px) 0; }
+  .cm-home .pillars { gap: clamp(10px, 2svh, 18px) 14px; }
+  .cm-home .pillar img { aspect-ratio: auto; height: clamp(110px, 24svh, 220px); margin-bottom: 8px; border-radius: 70px 70px 14px 14px; }
+  .cm-home .pillar h3 { font-size: clamp(15px, 4.2vw, 18px); margin-bottom: 4px; }
+  .cm-home .pillar p { font-size: clamp(11.5px, 3.2vw, 13.5px); line-height: 1.35; }
+}
+@media (max-width: 699px) {
+  /* Nos évènements : cartes plus compactes pour que les quatre jours tiennent dans l'écran. */
+  .cm-home .prog { box-sizing: border-box; min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: center; padding-top: clamp(44px, 7svh, 64px); padding-bottom: clamp(10px, 2svh, 24px); }
+  .cm-home .prog h2 { font-size: clamp(24px, 7vw, 32px); }
+  .cm-home .pg-top { margin-bottom: clamp(6px, 1.4svh, 14px); gap: 8px; }
+  .cm-home .pg-agenda { gap: clamp(6px, 1.2svh, 12px); }
+  .cm-home .pg-agenda .pg-day { grid-template-columns: 62px minmax(0, 1fr); gap: 10px; padding: clamp(6px, 1.2svh, 12px) 10px; border-radius: 18px; }
+  .cm-home .pg-agenda .pg-num { font-size: clamp(30px, 9vw, 38px); }
+  .cm-home .pg-agenda .pg-event { padding: 6px 10px 7px 14px; }
+  .cm-home .pg-event strong { font-size: 13.5px; }
+  .cm-home .pg-event time { font-size: 11px; }
+  .cm-home .pg-more { margin-top: clamp(8px, 1.5svh, 18px); padding: 10px 22px; }
+  .cm-home .pg-note { margin-top: clamp(8px, 1.6svh, 18px); font-size: 14px; }
+  .cm-home .pg-alert { margin-bottom: 8px; padding: 8px 12px; }
+
+  /* Nos partenaires : les trois rangées de logos tiennent dans l'écran. */
+  .cm-home #partenaires { --tile: clamp(64px, calc((100svh - var(--bar) - 250px) / 3 - 16px), 128px); box-sizing: border-box; min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: center; padding-top: clamp(12px, 2.4svh, 28px); padding-bottom: clamp(12px, 2.4svh, 28px); }
+  .cm-home #partenaires h2 { font-size: clamp(24px, 7vw, 32px); margin-bottom: 2px; }
+  .cm-home #partenaires .marquee { padding: 4px 0; }
+  .cm-home #partenaires .marquee-track li { width: calc(var(--tile) * 1.12); }
+  .cm-home #partenaires .home-partners a { min-height: var(--tile); padding: calc(var(--tile) * 0.09); }
+  .cm-home #partenaires .home-partners img { width: calc(var(--tile) * 0.72); padding: calc(var(--tile) * 0.05); }
+  .cm-home #partenaires .partners-subtitle { margin: clamp(6px, 1.6svh, 18px) 0 2px; font-size: 16px; }
+}
+@media (max-width: 699px) and (max-height: 780px) {
+  .cm-home .prog { padding-top: 40px; }
+  .cm-home .prog h2 { font-size: 24px; }
+  .cm-home .pg-search input, .cm-home .pg-top input { padding-top: 7px; padding-bottom: 7px; }
+  .cm-home .pg-agenda .pg-day { padding: 5px 10px; }
+  .cm-home .pg-agenda .pg-num { font-size: 28px; }
+  .cm-home .pg-event { padding-top: 4px; padding-bottom: 5px; }
+  .cm-home .pg-note { margin-top: 6px; }
+}
+
+
+.cm-home .team-dots { display: none; }
+/* ===== Téléphone seulement : Notre équipe en cartes à faire défiler, On parle de nous plus soigné. ===== */
+@media (max-width: 639px) {
+  .cm-home .team-v2 { min-height: calc(100svh - var(--bar)); padding: clamp(16px, 3svh, 30px) 0 84px; gap: clamp(10px, 2svh, 18px); }
+  .cm-home .team-head { padding: 0 16px; gap: 10px; }
+  .cm-home .team-v2 h1 { font-size: clamp(28px, 8.4vw, 36px); }
+  .cm-home .team-icon { width: 52px; height: 52px; }
+  .cm-home .team-grid { display: flex; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 6px 16px 10px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .cm-home .team-grid::-webkit-scrollbar { display: none; }
+  .cm-home .member-card { flex: 0 0 82%; scroll-snap-align: center; justify-content: flex-start; gap: 10px; padding: 22px 18px 22px; }
+  .cm-home .member-photo { width: clamp(96px, 26svh, 128px); height: clamp(96px, 26svh, 128px); }
+  .cm-home .member-card h2 { font-size: 26px; }
+  .cm-home .member-role { font-size: 13px; }
+  .cm-home .member-card blockquote { font-size: clamp(14px, 4.1vw, 16px); line-height: 1.5; }
+  .cm-home .team-dots { display: flex; justify-content: center; gap: 8px; }
+  .cm-home .team-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transition: width 0.2s, background 0.2s; }
+  .cm-home .team-dots span.on { width: 24px; border-radius: 8px; background: #ffd3de; }
+
+  .cm-home .press-v2 { padding: 26px 16px 56px; gap: 22px; }
+  .cm-home .press-icon { width: 52px; height: 52px; border-radius: 16px; }
+  .cm-home .press-v2 h1 { font-size: clamp(28px, 8.4vw, 36px); }
+  .cm-home .press-head > p:not(.eyebrow) { font-size: 15px; }
+  .cm-home .press-wall { gap: 20px; }
+  .cm-home .press-clip { gap: 10px; padding: 12px 18px 16px; }
+  .cm-home .clip-masthead b { font-size: 17px; }
+  .cm-home .press-clip strong { font-size: 17px; line-height: 1.3; }
+  .cm-home .clip-read { font-size: 13px; padding: 6px 14px; }
+}
+@media (max-width: 639px) {
+  /* Notre équipe : en-tête sur deux colonnes (icône à gauche) et tailles qui suivent la hauteur du téléphone, pour que « Notre manifeste » ne soit jamais coupé. */
+  .cm-home .team-v2 { padding-bottom: clamp(64px, 10svh, 84px); gap: clamp(8px, 1.6svh, 16px); }
+  .cm-home .team-head { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; row-gap: 4px; align-items: center; }
+  .cm-home .team-icon { grid-row: 1 / span 2; width: 46px; height: 46px; border-radius: 15px; }
+  .cm-home .team-v2 h1 { font-size: clamp(22px, 6.6vw, 28px); }
+  .cm-home .team-head .eyebrow { justify-self: start; padding: 5px 12px; font-size: 11px; }
+  .cm-home .member-card { padding: clamp(12px, 2.4svh, 22px) 16px clamp(12px, 2.4svh, 22px); gap: clamp(6px, 1.2svh, 10px); }
+  .cm-home .member-photo { width: clamp(64px, 17svh, 120px); height: clamp(64px, 17svh, 120px); }
+  .cm-home .member-card h2 { font-size: clamp(21px, 3.4svh, 26px); }
+  .cm-home .member-card blockquote { font-size: clamp(13px, 3.7vw, 15.5px); line-height: 1.42; }
+  .cm-home .team-v2 .scroll-cue-label { bottom: clamp(10px, 2svh, 18px); }
+}
+.cm-home .scroll-cue.scroll-cue-label { white-space: nowrap; }
+@media (max-width: 699px) {
+  /* Notre premier lieu : texte un peu plus serré en haut, carte un peu plus basse, pour laisser de la place à la flèche entre le bouton et l'image. */
+  .cm-home .place-bg { justify-content: flex-start; padding-top: clamp(14px, 2.4svh, 26px); }
+  .cm-home .place-bg .eyebrow { padding: 5px 12px; font-size: 11px; }
+  .cm-home .place-bg h2 { font-size: clamp(24px, 7vw, 30px); margin-top: 8px; line-height: 1.04; }
+  .cm-home .place-bg p:not(.eyebrow) { font-size: clamp(13px, 3.6vw, 14.5px); line-height: 1.4; margin-top: 6px; }
+  .cm-home .place-facts { margin-top: clamp(8px, 1.5svh, 14px); gap: 8px; }
+  .cm-home .place-facts li { padding: 7px 11px 9px; }
+  .cm-home .place-facts strong { font-size: clamp(28px, 8vw, 34px); }
+  .cm-home .place-facts span { font-size: 12px; line-height: 1.3; }
+  .cm-home .place-press { margin-top: 8px; padding-top: 10px; padding-bottom: 10px; font-size: 15px; }
+  .cm-home .place-bg { padding-bottom: calc(min(100vw, 1000px) * 0.52 + 6px); }
+  .cm-home .place-bg > .place-map { bottom: -14px; }
+}
+
+@media (max-width: 699px) {
+  .cm-home .place-bg h2 { font-size: clamp(24px, 3.6svh, 32px); }
+  .cm-home .place-bg p:not(.eyebrow) { font-size: clamp(13px, 1.9svh, 15.5px); }
+  .cm-home .place-facts strong { font-size: clamp(28px, 4.2svh, 38px); }
+  .cm-home .place-facts span { font-size: clamp(12px, 1.5svh, 13.5px); }
+  .cm-home .place-facts li { padding: clamp(7px, 1.2svh, 12px) 12px clamp(9px, 1.4svh, 14px); }
+  .cm-home .place-press { padding-top: clamp(10px, 1.5svh, 14px); padding-bottom: clamp(10px, 1.5svh, 14px); font-size: clamp(15px, 1.9svh, 16.5px); }
+}
+
+.cm-home .manifesto-part { display: contents; }
+.cm-home .manifesto-dots { display: none; }
+/* ===== Téléphone : le manifeste en deux pages à faire défiler (chacune tient dans l'écran) ; l'accueil remplit exactement l'écran. ===== */
+@media (max-width: 899px) {
+  .cm-home .home-hero { min-height: calc(100vh - var(--bar)); }
+}
+@supports (height: 100svh) { @media (max-width: 899px) { .cm-home .home-hero { min-height: calc(100svh - var(--bar)); } } }
+@media (max-width: 639px) {
+  .cm-home .manifesto-v2 { padding: 18px 0 40px; gap: 10px; min-height: calc(100svh - var(--bar)); justify-content: center; }
+  .cm-home .manifesto-v2 h2 { padding: 0 16px; font-size: 28px; }
+  .cm-home .manifesto-v2 .manifesto-body { flex-direction: row; gap: 12px; max-width: none; padding: 4px 16px 10px; background: none; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .cm-home .manifesto-v2 .manifesto-body::-webkit-scrollbar { display: none; }
+  .cm-home .manifesto-part { display: flex; flex-direction: column; justify-content: center; gap: clamp(7px, 1.4svh, 12px); flex: 0 0 88%; scroll-snap-align: center; box-sizing: border-box; padding: clamp(14px, 2.4svh, 22px) 18px; border-radius: 24px; background: rgba(255, 255, 255, 0.09); border: 1px solid rgba(255, 255, 255, 0.24); border-left: 6px solid #f8b4c4; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 18px 40px rgba(20, 5, 35, 0.28); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .cm-home .manifesto-v2 .manifesto-body p { font-size: clamp(13.5px, 3.8vw, 15.5px); line-height: 1.45; }
+  .cm-home .manifesto-v2 .manifesto-body .manifesto-lead { font-size: clamp(18px, 5.2vw, 22px); line-height: 1.18; }
+  .cm-home .manifesto-v2 .manifesto-body .manifesto-welcome { font-size: clamp(22px, 6.4vw, 28px); }
+  .cm-home .manifesto-dots { display: flex; }
+}
+@media (max-width: 639px) {
+  .cm-home .manifesto-part { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+}
+@media (max-width: 699px) {
+  /* Accueil : sur les petits téléphones, les marges du haut et du bas et la taille du titre suivent la hauteur, pour que tout tienne dans l'écran. */
+  .cm-home .hero-inner { padding-top: clamp(18px, 4svh, 72px); padding-bottom: clamp(64px, 10svh, 100px); }
+  .cm-home .hero-text h1.hero-title { font-size: clamp(32px, min(10.5vw, 6.6svh), 64px); }
+  .cm-home .hero-text p.hero-sub { font-size: clamp(16px, min(4.6vw, 2.6svh), 22px); }
+  .cm-home .hero-text { gap: clamp(10px, 1.8svh, 18px); }
+}
+
+/* Notre équipe : « Notre manifeste » suit le contenu (juste sous les cartes et les points) au lieu d'être collé en bas de l'écran. */
+.cm-home .team-v2 .scroll-cue-label { position: static; transform: none; left: auto; bottom: auto; align-self: center; margin: clamp(2px, 0.8svh, 8px) 0 0; }
+@media (min-width: 1000px) {
+  .cm-home .team-v2 { padding-bottom: clamp(14px, 3vh, 56px); }
+}
+@media (max-width: 999px) {
+  .cm-home .team-v2 { padding-bottom: clamp(16px, 3svh, 32px); }
+}
+@media (min-width: 1000px) {
+  .cm-home .member-photo { width: clamp(44px, 7.3vh, 92px); height: clamp(44px, 7.3vh, 92px); }
+  .cm-home .member-card { padding-top: clamp(7px, 1.4vh, 18px); padding-bottom: clamp(7px, 1.4vh, 16px); gap: clamp(3px, 0.7vh, 7px); }
+  .cm-home .team-v2 { gap: clamp(8px, 1.8vh, 24px); }
+  .cm-home .team-grid { gap: clamp(8px, 1.5vh, 16px) 16px; }
+  .cm-home .member-card blockquote { font-size: clamp(11.5px, 1.5vh, 14.5px); line-height: 1.36; }
+}
+
+@media (max-width: 699px) {
+  /* Nos évènements : un peu plus serré pour que la dernière ligne (Instagram) ne soit jamais coupée. */
+  .cm-home .prog { padding-top: clamp(40px, 6svh, 58px); padding-bottom: clamp(14px, 2.4svh, 26px); }
+  .cm-home .pg-top { margin-bottom: clamp(6px, 1.2svh, 12px); }
+  .cm-home .pg-agenda { gap: clamp(6px, 1svh, 10px); }
+  .cm-home .pg-agenda .pg-day { padding-top: clamp(6px, 1svh, 10px); padding-bottom: clamp(6px, 1svh, 10px); }
+  .cm-home .pg-more { margin-top: clamp(6px, 1.2svh, 14px); padding: 8px 20px; font-size: 15px; }
+  .cm-home .pg-note { margin-top: clamp(6px, 1.2svh, 14px); font-size: 13.5px; line-height: 1.35; }
+}
+@media (max-width: 699px) {
+  /* Notre premier lieu : la carte est montrée en entier (le haut n'est plus coupé). */
+  .cm-home .place-bg > .place-map { height: calc(min(100vw, 1000px) * 0.64 + 14px); bottom: -14px; }
+  .cm-home .place-bg { padding-bottom: calc(min(100vw, 1000px) * 0.56); }
+}
+@media (max-width: 699px) {
+  /* Nos évènements : cinq évènements + « Voir la suite » + la phrase Instagram tiennent dans l'écran d'un téléphone de taille courante ; sur un plus petit, la page s'allonge. */
+  .cm-home .prog { padding-top: clamp(36px, 5.2svh, 52px); padding-bottom: clamp(22px, 3.2svh, 34px); }
+  .cm-home .prog h2 { font-size: clamp(22px, 6.2vw, 28px); }
+  .cm-home .pg-top { margin-bottom: clamp(4px, 0.8svh, 10px); gap: 6px; }
+  .cm-home .pg-search input { padding-top: 8px; padding-bottom: 8px; }
+  .cm-home .pg-month { font-size: 20px; }
+  .cm-home .pg-agenda { gap: clamp(5px, 0.8svh, 9px); }
+  .cm-home .pg-agenda .pg-day { padding-top: clamp(5px, 0.8svh, 9px); padding-bottom: clamp(5px, 0.8svh, 9px); }
+  .cm-home .pg-agenda .pg-num { font-size: clamp(26px, 7.4vw, 32px); }
+  .cm-home .pg-agenda .pg-event { padding-top: 4px; padding-bottom: 5px; }
+  .cm-home .pg-event strong { font-size: 13px; line-height: 1.2; }
+  .cm-home .pg-event time { font-size: 10.5px; }
+  .cm-home .pg-more { margin-top: clamp(4px, 1svh, 12px); padding: 7px 18px; font-size: 14px; }
+  .cm-home .pg-note { margin-top: clamp(6px, 1.1svh, 12px); font-size: 13px; }
+}
+@media (max-width: 699px) {
+  /* Nos évènements : moins d'espace entre la dernière carte, « Voir la suite » et la phrase finale ; l'espace gagné éloigne le titre violet du violet de la vague au-dessus. */
+  .cm-home .prog { padding-top: clamp(58px, 8.4svh, 76px); }
+  .cm-home .prog .pg-more { margin: 14px auto 0; }
+  .cm-home .prog .pg-note { margin-top: 12px; }
+}
+@media (max-width: 699px) {
+  /* Rejoindre le mouvement et Contact : chacun remplit l'écran du téléphone, contenu centré ; sur un téléphone bas les marges se resserrent. */
+  .cm-home #s-impliquer, .cm-home #contact { box-sizing: border-box; min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: center; }
+  .cm-home #s-impliquer { padding-top: clamp(16px, 3svh, 36px); padding-bottom: clamp(16px, 3svh, 36px); gap: clamp(8px, 1.6svh, 14px); }
+  .cm-home #s-impliquer .involve-grid { gap: clamp(6px, 1.2svh, 12px); }
+  .cm-home #s-impliquer .home-involve { padding-top: clamp(8px, 1.7svh, 16px); padding-bottom: clamp(8px, 1.7svh, 16px); }
+  .cm-home #contact { padding-top: clamp(12px, 2.4svh, 30px); padding-bottom: clamp(12px, 2.4svh, 30px); }
+  .cm-home #contact .field input { height: clamp(34px, 5svh, 40px); }
+  .cm-home #contact .field textarea { height: clamp(44px, 7.5svh, 64px); }
+}
+@media (max-width: 699px) {
+  /* Contact + pied de page (réseaux, liens, dernière ligne « …pour les femmes ») tiennent ensemble dans l'écran du téléphone. */
+  .cm-home footer { padding: 10px 16px 12px; font-size: 12.5px; }
+  .cm-home footer .follow { gap: 4px; margin-bottom: 6px; }
+  .cm-home footer .follow p { font-size: 12.5px; line-height: 1.3; }
+  .cm-home footer .social { gap: 10px; padding-top: 2px; }
+  .cm-home footer .social a { width: 34px; height: 34px; }
+  .cm-home footer .social a svg { width: 16px; height: 16px; }
+  .cm-home footer nav { gap: 14px; margin-bottom: 4px; }
+  .cm-home footer nav a { font-size: 13px; }
+  .cm-home footer > p { line-height: 1.3; }
+  .cm-home #contact { min-height: calc(100svh - var(--bar) - 150px); padding-top: clamp(8px, 1.6svh, 20px); padding-bottom: clamp(6px, 1.2svh, 14px); gap: 6px; }
+  .cm-home #contact h2 { font-size: 24px; }
+  .cm-home #contact > p:not(.kicker) { font-size: 13px; line-height: 1.35; margin: 0; }
+  .cm-home #contact .field input { height: clamp(32px, 4.4svh, 38px); }
+  .cm-home #contact .field textarea { height: clamp(38px, 6svh, 56px); }
+  .cm-home #contact .contact-layout form { padding: 8px 10px 8px; gap: 6px; }
+  .cm-home #contact .contact-layout .form-grid { gap: 6px 8px; }
+  .cm-home #contact .form-actions .button { min-height: 36px; }
+  .cm-home #contact .contact-details { padding: 6px 12px; font-size: 12px; }
+}
+@media (max-width: 699px) {
+  .cm-home #contact .contact-details, .cm-home #contact .contact-details p, .cm-home #contact .contact-details address { font-size: 12.5px; line-height: 1.3; }
+  .cm-home #contact .contact-details a { font-size: 14px; }
+}
+@media (max-width: 699px) and (max-height: 780px) {
+  .cm-home #contact > p:not(.kicker) { display: none; }
+  .cm-home #contact { padding-top: 6px; }
+}
+@media (max-width: 699px) and (max-height: 780px) {
+  .cm-home footer .follow p { display: none; }
+}
+@media (max-width: 699px) {
+  /* Contact : sans la phrase d'introduction, le modulo respire ; le contenu part du haut (plus de vide sous la barre) et l'espace restant va entre les champs. */
+  .cm-home #contact { justify-content: flex-start; padding-top: clamp(12px, 2svh, 24px); gap: clamp(6px, 1.2svh, 12px); }
+  .cm-home #contact > p:not(.kicker) { display: none; }
+  .cm-home #contact .field input { height: clamp(34px, 5.2svh, 44px); }
+  .cm-home #contact .field textarea { height: clamp(46px, 8.4svh, 74px); }
+  .cm-home #contact .contact-layout { gap: clamp(8px, 1.4svh, 14px); }
+  .cm-home #contact .contact-layout form { padding: clamp(10px, 1.7svh, 16px) 12px; gap: clamp(7px, 1.2svh, 12px); }
+  .cm-home #contact .contact-layout .form-grid { gap: clamp(7px, 1.2svh, 12px) 10px; }
+  .cm-home #contact .form-actions .button { min-height: clamp(38px, 5svh, 44px); }
+  .cm-home #contact .contact-details { padding: clamp(8px, 1.4svh, 14px) 14px; font-size: 13px; }
+  .cm-home #contact .contact-details p, .cm-home #contact .contact-details address { font-size: 13px; line-height: 1.35; }
+  .cm-home #contact .contact-details a { font-size: 14.5px; }
+  .cm-home #contact .contact-privacy { font-size: 12px; }
+}
+@media (max-width: 699px) and (max-height: 780px) {
+  .cm-home #contact { padding-top: 8px; gap: 6px; }
+  .cm-home #contact .field input { height: clamp(31px, 4.4svh, 36px); }
+  .cm-home #contact .field textarea { height: clamp(36px, 5.6svh, 50px); }
+  .cm-home #contact .contact-layout { gap: 6px; }
+  .cm-home #contact .contact-layout form { padding: 8px 10px; gap: 5px; }
+  .cm-home #contact .contact-layout .form-grid { gap: 5px 8px; }
+  .cm-home #contact .form-actions .button { min-height: 34px; }
+  .cm-home #contact .contact-details { padding: 5px 12px; font-size: 12px; }
+  .cm-home #contact .contact-details p, .cm-home #contact .contact-details address { font-size: 12px; line-height: 1.25; }
+  .cm-home #contact .contact-details a { font-size: 13.5px; }
+  .cm-home #contact .contact-privacy { font-size: 11px; line-height: 1.25; }
+}
+@media (max-width: 699px) {
+  /* Rejoindre le mouvement : le contenu occupe vraiment l'écran (plus de grand vide en haut et en bas) ; les tailles suivent la hauteur. */
+  .cm-home #s-impliquer { justify-content: center; padding-top: clamp(14px, 3svh, 30px); padding-bottom: clamp(14px, 3svh, 30px); gap: clamp(8px, 2svh, 18px); }
+  .cm-home #s-impliquer .kicker { font-size: clamp(12px, 1.7svh, 14px); }
+  .cm-home #s-impliquer h2 { font-size: clamp(26px, 4.2svh, 36px); }
+  .cm-home #s-impliquer > p:not(.kicker) { font-size: clamp(14px, 2.05svh, 17.5px); line-height: 1.5; }
+  .cm-home #s-impliquer .involve-grid { gap: clamp(8px, 1.9svh, 16px); margin-top: clamp(2px, 0.8svh, 8px); }
+  .cm-home #s-impliquer .home-involve { padding: clamp(10px, 2.9svh, 26px) 18px clamp(10px, 2.9svh, 26px) 22px; gap: clamp(3px, 0.6svh, 6px); }
+  .cm-home #s-impliquer .home-involve strong { font-size: clamp(16px, 2.5svh, 21px); }
+  .cm-home #s-impliquer .home-involve span:not(.arrow), .cm-home #s-impliquer .home-involve small, .cm-home #s-impliquer .home-involve p { font-size: clamp(12.5px, 1.85svh, 15px); line-height: 1.4; }
+}
+@media (max-width: 699px) {
+  .cm-home #s-impliquer .home-involve { padding-right: 60px; }
+}
+@media (max-width: 699px) {
+  .cm-home #s-impliquer .home-involve { padding-right: 54px; padding-top: clamp(9px, 2.5svh, 24px); padding-bottom: clamp(9px, 2.5svh, 24px); }
+  .cm-home #s-impliquer { padding-top: clamp(12px, 2.4svh, 26px); padding-bottom: clamp(12px, 2.4svh, 26px); }
+}
+@media (max-width: 699px) {
+  /* Fin de page : Contact + pied de page font au moins la hauteur de l'écran, donc rien de « Rejoindre le mouvement » ne reste visible au-dessus quand on arrive en bas. */
+  .cm-home footer { min-height: 150px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+}
+
+.cm-home .press-count { display: none; }
+/* ===== Téléphone : On parle de nous en coupures à faire défiler, une à la fois, dans un seul écran ===== */
+@media (max-width: 639px) {
+  .cm-home .press-v2 { min-height: calc(100svh - var(--bar)); justify-content: center; padding: clamp(14px, 3svh, 28px) 0 clamp(18px, 3.4svh, 34px); gap: clamp(10px, 2.2svh, 22px); }
+  .cm-home .press-head { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; row-gap: 6px; align-items: center; padding: 0 16px; }
+  .cm-home .press-icon { grid-row: 1 / span 2; width: 46px; height: 46px; border-radius: 15px; }
+  .cm-home .press-icon svg { width: 55%; height: 55%; }
+  .cm-home .press-head .eyebrow { justify-self: start; padding: 5px 12px; font-size: 11px; }
+  .cm-home .press-v2 h1 { font-size: clamp(22px, 6.6vw, 28px); }
+  .cm-home .press-head > p:not(.eyebrow) { display: none; }
+  .cm-home .press-wall { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding: 14px 16px 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .cm-home .press-wall::-webkit-scrollbar { display: none; }
+  .cm-home .press-clip { flex: 0 0 80%; scroll-snap-align: center; justify-content: space-between; min-height: clamp(230px, 40svh, 340px); gap: clamp(10px, 2svh, 18px); padding: 14px 20px 20px; }
+  .cm-home .press-clip strong { font-size: clamp(19px, 5.4vw, 23px); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .cm-home .clip-masthead b { font-size: 19px; }
+  .cm-home .clip-read { font-size: 14px; padding: 9px 18px; margin-top: auto; }
+  .cm-home .press-count { display: block; margin: 0; text-align: center; font-size: 13px; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.8); }
+  .cm-home .press-count b { color: #ffd3de; font-size: 18px; }
+  .cm-home .press-count span { opacity: 0.75; letter-spacing: 0.02em; }
+}
+@media (max-width: 639px) {
+  .cm-home .press-clip, .cm-home .press-clip:hover { box-shadow: 0 6px 12px rgba(20, 5, 35, 0.28); }
+  .cm-home .press-wall { padding-top: 18px; }
+}
+
+/* Les titres des articles s'affichent en entier (plus de coupure avec « … ») ; le PC garde les neuf coupures dans l'écran grâce à des caractères un peu plus petits. */
+.cm-home .press-clip strong { display: block; -webkit-line-clamp: unset; overflow: visible; }
+@media (min-width: 1000px) { .cm-home .press-clip strong { font-size: clamp(13px, 2.05vh, 18px); line-height: 1.22; } }
+
+/* ===== Téléphone : Louer un espace, un espace à la fois (on les fait défiler de côté), dans un seul écran ===== */
+@media (max-width: 639px) {
+  .cm-home #espaces { box-sizing: border-box; min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: center; padding-top: clamp(14px, 3svh, 30px); padding-bottom: clamp(12px, 2.4svh, 24px); gap: clamp(6px, 1.4svh, 12px); }
+  .cm-home #espaces h2 { font-size: clamp(24px, 3.6svh, 32px); }
+  .cm-home .home-spaces { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -16px; padding: 6px 16px 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .cm-home .home-spaces::-webkit-scrollbar { display: none; }
+  .cm-home .home-spaces > .space { flex: 0 0 84%; scroll-snap-align: center; min-height: clamp(380px, calc(100svh - var(--bar) - 200px), 620px); box-shadow: 0 8px 16px rgba(20, 5, 35, 0.22); }
+}
+@media (max-width: 639px) {
+  /* Louer un espace : le détail passe en une colonne (descriptif en haut, tarifs dessous), pour être lisible dans la carte étroite. */
+  .cm-home .space-body { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px; }
+  .cm-home .space-details { flex-direction: row; flex-wrap: wrap; gap: 0 10px; font-size: 13.5px; line-height: 1.4; }
+  .cm-home .space-prices { gap: 3px; }
+  .cm-home .space-prices div { font-size: 13.5px; }
+  .cm-home .space-body p { font-size: 12.5px; line-height: 1.4; }
+  .cm-home .space-cta { font-size: 14.5px; }
+}
+
+/* ===== Téléphone : « Nos espaces » (connexion) — les quatre espaces tous visibles d'un coup, 2 × 2, sans défilement ===== */
+@media (max-width: 639px) {
+  .cm-home .portal-v2 { min-height: calc(100svh - var(--bar)); justify-content: center; padding: clamp(14px, 3svh, 30px) 14px clamp(14px, 3svh, 30px); gap: clamp(10px, 2.2svh, 20px); }
+  .cm-home .portal-head { gap: 8px; }
+  .cm-home .portal-v2 .eyebrow { padding: 5px 12px; font-size: 11px; }
+  .cm-home .portal-v2 h1 { font-size: clamp(26px, 7.6vw, 32px); }
+  .cm-home .portal-v2 .portal-head > p:not(.eyebrow) { font-size: 14px; line-height: 1.4; }
+  .cm-home .portal-v2 .portal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 10px; }
+  .cm-home .portal-v2 .portal-card { gap: 6px; padding: clamp(10px, 1.8svh, 16px) 12px clamp(10px, 1.8svh, 16px); border-radius: 18px; }
+  .cm-home .portal-v2 .portal-card:hover { transform: none; }
+  .cm-home .portal-icon { width: 38px; height: 38px; }
+  .cm-home .portal-icon svg { width: 20px; height: 20px; }
+  .cm-home .portal-v2 .portal-card h2 { margin: 2px 0 0; font-size: 18px; }
+  .cm-home .portal-v2 .portal-card p { font-size: 12.5px; line-height: 1.35; }
+  .cm-home .portal-v2 .portal-card .signup { display: none; }
+  .cm-home .portal-v2 .portal-actions { gap: 6px; padding-top: 4px; }
+  .cm-home .portal-v2 .btn { padding: 9px 8px; font-size: 13px; }
+  .cm-home .portal-v2 .btn-outline { font-size: 12px; padding: 7px 6px; }
+}
+@media (max-width: 639px) and (max-height: 780px) {
+  .cm-home .portal-v2 .portal-head > p:not(.eyebrow) { display: none; }
+  .cm-home .portal-v2 .portal-card p:not(.signup) { font-size: 12px; line-height: 1.3; }
+  .cm-home .portal-icon { width: 32px; height: 32px; }
+  .cm-home .portal-v2 .portal-card { padding: 9px 11px; gap: 4px; }
+  .cm-home .portal-v2 .portal-card h2 { font-size: 17px; }
+}
+@media (max-width: 639px) and (max-height: 700px) {
+  .cm-home .portal-v2 .portal-card p:not(.signup) { display: none; }
+}
+@media (max-width: 699px) {
+  /* Accueil sur téléphone : le bloc de texte (alignement à gauche, comme avant) est centré dans la hauteur de l'écran, donc plus haut qu'en bas de l'image. */
+  .cm-home .home-hero { align-items: center; }
+  .cm-home .hero-text { justify-content: center; }
+}
+@media (max-width: 699px) {
+  .cm-home .hero-text p.hero-eyebrow { text-shadow: 0 1px 8px rgba(20, 5, 35, 0.75), 0 0 2px rgba(20, 5, 35, 0.6); }
+}
+
+/* Plus aucun flou sur le site public (ni sur les cartes de verre, ni sur le menu) ; les fonds sont un peu plus opaques là où le texte passe sur une photo. */
+.cm-home, .cm-home *, .cm-home *::before, .cm-home *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.cm-home .space-body { background: rgba(27, 19, 25, 0.58); }
+.cm-home .menu { background: rgba(87, 37, 109, 0.92); }
+@media (min-width: 900px) {
+  /* Accueil sur ordinateur : on cadre la partie nette de la photo (les branches, le mur peint) plutôt que les gros pétales du premier plan, flous dès la prise de vue. */
+  .cm-home .clip { object-position: 50% 36%; }
+}
+
+/* Accueil : plus de halo flou derrière les textes (ombres nettes seulement), et la phrase « Habiter, travailler… » est là tout de suite, sans effet d'apparition. */
+.cm-home .hero-text, .cm-home .hero-text h1, .cm-home .hero-text h1.hero-title, .cm-home .hero-text p, .cm-home .hero-text p.hero-eyebrow, .cm-home .hero-text p.hero-sub, .cm-home .hero-text .hero-eyebrow .city { text-shadow: 0 1px 0 rgba(20, 5, 35, 0.45) !important; }
+.cm-home .hero-title mark.ht-mark, .cm-home .hero-title mark.ht-mark::before { text-shadow: none !important; box-shadow: none !important; }
+.cm-home .hero-text p.hero-sub { animation: none !important; opacity: 1 !important; transform: none !important; }

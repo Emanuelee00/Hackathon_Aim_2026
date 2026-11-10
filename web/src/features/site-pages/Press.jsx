@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import HomeShell from '../landing/HomeShell.jsx';
 
 // « On parle de nous » (/on-parle-de-nous): the press articles that mention Chez Marthe. To add one, add a line here.
@@ -16,6 +17,14 @@ const articles = [
 const paper = <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H17a1 1 0 0 1 1 1v14.5" /><path d="M18 8h1.5A1.5 1.5 0 0 1 21 9.5v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5.5" /><path d="M8 8.5h6M8 12h6M8 15.5h3" /></svg>;
 
 export default function Press() {
+  const wall = useRef(null);
+  const [active, setActive] = useState(0);
+  // Téléphone : les coupures défilent de côté, une à la fois ; le compteur dit laquelle est devant.
+  const onScroll = () => {
+    const el = wall.current;
+    const first = el?.children[0];
+    if (first) setActive(Math.min(articles.length - 1, Math.round(el.scrollLeft / (first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || 0)))));
+  };
   return <HomeShell>
     <main className="press-v2">
       <div className="press-head">
@@ -24,11 +33,12 @@ export default function Press() {
         <h1>Chez Marthe dans la presse</h1>
         <p>Les articles et reportages qui racontent le lieu. Retrouvez aussi nos stories à la une sur Instagram.</p>
       </div>
-      <div className="press-wall">{articles.map((a, index) => <a key={a.url} className={`press-clip${a.source === 'Instagram' ? ' is-insta' : ''}`} href={a.url} target="_blank" rel="noopener noreferrer">
+      <div className="press-wall" ref={wall} onScroll={onScroll}>{articles.map((a, index) => <a key={a.url} className={`press-clip${a.source === 'Instagram' ? ' is-insta' : ''}`} href={a.url} target="_blank" rel="noopener noreferrer">
         <span className="clip-masthead"><b>{a.source}</b><i>N° {String(index + 1).padStart(2, '0')}</i></span>
-        <strong>{a.title}</strong>
+        <strong>{a.title.replace(/«\s/g, '«\u00a0').replace(/\s»/g, '\u00a0»')}</strong>
         <span className="clip-read">{a.source === 'Instagram' ? 'Voir le post' : 'Lire l’article'} <span aria-hidden="true">↗</span></span>
       </a>)}</div>
+      <p className="press-count" aria-hidden="true"><b>{String(active + 1).padStart(2, '0')}</b> / {String(articles.length).padStart(2, '0')} <span>· faites glisser</span></p>
     </main>
   </HomeShell>;
 }
