@@ -115,3 +115,14 @@ cd ~/marthe && git pull && cd deploy && docker compose up -d --build
 ```sh
 docker compose exec db pg_dump -U marthe marthe | gzip > marthe-$(date +%F).sql.gz
 ```
+
+## Google Agenda (programmation du site et calendrier de l'équipe)
+
+Rien n'est nécessaire pour que le site fonctionne : sans agenda, la section « Nos évènements » affiche « programmation indisponible ».
+Pour la brancher :
+
+1. Sur la VM, créer le dossier des clés (hors Git) et y copier les deux fichiers du poste de travail, sans les afficher ni les coller dans un chat :
+   `deploy/secrets/google-calendar.json` (clé du compte de service) et `deploy/secrets/calendars.json` (liste des agendas).
+2. Dans `deploy/.env`, renseigner `GOOGLE_CALENDAR_ID` (l'identifiant du calendrier partagé avec le compte de service).
+3. `docker compose up -d` : seul le conteneur de l'app est recréé.
+4. Contrôle : `curl -s https://<le site>/api/programmation` doit répondre avec des évènements (`"events": [...]`).

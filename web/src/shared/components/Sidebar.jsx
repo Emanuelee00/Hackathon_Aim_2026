@@ -19,7 +19,7 @@ export const navigation = [
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
   { id: 'messages', label: 'Messages', icon: 'mail' },
-  { id: 'quotes', label: 'Devis', icon: 'file' },
+  { id: 'quotes', label: 'Factures et devis', icon: 'file' },
 ];
 
 export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {

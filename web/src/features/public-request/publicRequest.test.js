@@ -16,7 +16,7 @@ test('turns the form into a pending request the team can process', () => {
   assert.equal(request.requestType, 'rental');
   assert.equal(request.privatisation, true);
   assert.equal(request.end, '18:00');
-  assert.equal(request.revenue, 150);
+  assert.equal(request.revenue, 225); // chapel half day 150 € × 1,5 (privatisation)
   assert.equal(request.status, 'pending');
   assert.equal(validateEvent(request, []), '');
 });

@@ -59,4 +59,9 @@
   .request-done .button { width: 100%; }
 }
 
-.request-confirmation { margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; background: #f3e8f7; color: #4a1f60; }
+/* Les deux choix qui ouvrent un formulaire Google : même allure que les autres cartes, avec une petite mention. */
+.kind-picker a.kind-link { display: grid; gap: 2px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: white; color: inherit; text-decoration: none; cursor: pointer; font-size: 14px; transition: border-color 0.15s, background 0.15s; }
+.kind-picker a.kind-link:hover, .kind-picker a.kind-link:focus-visible { border-color: var(--green); background: #f4e6f6; }
+.kind-picker a.kind-link strong { color: var(--green, #662B80); }
+.kind-picker a.kind-link small { color: var(--muted, #5e5360); }
+.kind-picker a.kind-link .kind-open { margin-top: 4px; color: #b3306a; font-size: 12px; font-weight: 700; }

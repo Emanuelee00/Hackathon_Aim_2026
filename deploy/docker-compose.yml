@@ -35,6 +35,13 @@ services:
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      # Google Agenda (programmation on the home page, calendars of the team space): empty = « programmation indisponible », nothing breaks.
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
+      GOOGLE_CREDENTIALS_FILE: /app/secrets/google-calendar.json
+      GOOGLE_CALENDARS_FILE: /app/secrets/calendars.json
+    volumes:
+      # The Google key and the list of calendars: files kept on the VM in deploy/secrets/, never in Git (see README.md).
+      - ./secrets:/app/secrets:ro
     depends_on:
       db:
         condition: service_healthy

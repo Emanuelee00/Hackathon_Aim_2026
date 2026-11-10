@@ -1,12 +1,14 @@
 import { durations, estimatePrice, technicalNeeds } from '../../shared/lib/requestRules.js';
 
+// Les quatre choix, dans l'ordre affiché. « Proposer une activité » et « Coworker » ouvrent un formulaire Google (le troisième champ est
+// l'adresse) ; les deux autres remplissent le formulaire du site.
 export const requestKinds = {
-  programming: ['Proposer une activité', 'Ouverte au public, gratuite ou à prix libre'],
   rental: ['Louer un espace', 'Cours, atelier, réunion'],
   privatisation: ['Privatiser', 'Événement privé'],
-  coworking: ['Coworker', 'Réserver une place'],
+  programming: ['Proposer une activité', 'Ouverte au public, gratuite ou à prix libre', 'https://docs.google.com/forms/d/e/1FAIpQLSfuj-TeA5ajG4COnFuhxGb-KlUOngAbyg2k--GGMufTjA6eSA/viewform?usp=sharing'],
+  coworking: ['Coworker', 'Réserver une place', 'https://docs.google.com/forms/d/e/1FAIpQLScHj5xQYmBR1xO6L73iK6P1swr6RxkSG1iviMQnti4lF0HNuw/viewform?usp=send_form'],
 };
-export const emptyForm = { kind: 'programming', title: '', space: '', date: '', duration: '2h', start: '18:00', participants: 15, description: '', technical: [], openToResidents: true, organizer: '', email: '' };
+export const emptyForm = { kind: 'rental', title: '', space: '', date: '', duration: '2h', start: '18:00', participants: 15, description: '', technical: [], openToResidents: true, organizer: '', email: '' };
 
 function endTime(start, hours) {
   const [h, m] = start.split(':').map(Number);

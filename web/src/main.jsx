@@ -13,6 +13,9 @@ import SpaceAssistant from './features/chatbot/SpaceAssistant.jsx';
 import Contact from './features/site-pages/Contact.jsx';
 import LegalNotice from './features/site-pages/LegalNotice.jsx';
 import PrivacyPolicy from './features/site-pages/PrivacyPolicy.jsx';
+import SpacesPortal from './features/site-pages/SpacesPortal.jsx';
+import Team from './features/site-pages/Team.jsx';
+import Press from './features/site-pages/Press.jsx';
 import { spaceFromHost } from './shared/lib/spaces.js';
 import './styles/index.css';
 
@@ -29,6 +32,9 @@ const sitePages = {
   contact: <Contact />,
   'mentions-legales': <LegalNotice />,
   'politique-de-confidentialite': <PrivacyPolicy />,
+  connexion: <SpacesPortal />,
+  equipe: <Team />,
+  'on-parle-de-nous': <Press />,
 };
 const sitePage = sitePages[window.location.pathname.replace(/^\/|\/$/g, '')];
 

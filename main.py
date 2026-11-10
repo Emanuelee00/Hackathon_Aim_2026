@@ -1,24 +1,32 @@
 import os
 from contextlib import asynccontextmanager
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from threading import Thread
+from typing import Annotated
+from zoneinfo import ZoneInfo
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 
+import gcal
+from accounts.models import User
 from accounts.routes import router as accounts_router
+from accounts.sessions import team_member
 from agents.routes import router as agents_router
 from ai import AI_ENABLED, warm_up
 from ai import router as ai_router
 from db import migrate
 from demo import DEMO_MODE
+from editeur import router as editeur_router
 from employment.routes import router as employment_router
 from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
 from matching import router as matching_router
 from messages import router as messages_router
+from modeles import router as modeles_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
@@ -33,6 +41,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
+PARIS = ZoneInfo("Europe/Paris")
 app = FastAPI(title="Marthe", version="0.1.0", lifespan=lifespan)
 app.include_router(ai_router)
 app.include_router(matching_router)
@@ -44,6 +53,8 @@ app.include_router(accounts_router)
 app.include_router(agents_router)
 app.include_router(funding_router)
 app.include_router(messages_router)
+app.include_router(modeles_router)
+app.include_router(editeur_router)
 
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the
@@ -77,12 +88,46 @@ async def redirect_to_canonical(request: Request, call_next):
     return await call_next(request)
 
 
+@app.get("/api/programmation")
+def programmation(semaine: str = "") -> dict:
+    """Évènements du Google Agenda de l'association pour la semaine qui contient `semaine` (AAAA-MM-JJ, défaut : aujourd'hui)."""
+    try:
+        day = date.fromisoformat(semaine) if semaine else datetime.now(PARIS).date()
+    except ValueError:
+        raise HTTPException(
+            status_code=422, detail="Date invalide : AAAA-MM-JJ attendu"
+        ) from None
+    monday = day - timedelta(days=day.weekday())
+    return {"monday": monday.isoformat(), "events": gcal.week_public(monday)}
+
+
+@app.get("/api/agenda")
+def agenda(du: str, au: str, _: Annotated[User, Depends(team_member)]) -> dict:
+    """Agendas Google de l'association pour le calendrier de l'équipe (connexion équipe requise)."""
+    try:
+        first, last = date.fromisoformat(du), date.fromisoformat(au)
+    except ValueError:
+        raise HTTPException(
+            status_code=422, detail="Dates invalides : AAAA-MM-JJ attendu"
+        ) from None
+    if not first <= last <= first + timedelta(days=62):
+        raise HTTPException(status_code=422, detail="Période de 62 jours maximum")
+    return gcal.team_range(first, last)
+
+
 @app.get("/api/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-SITE_PAGES = {"contact", "mentions-legales", "politique-de-confidentialite"}
+SITE_PAGES = {
+    "contact",
+    "mentions-legales",
+    "politique-de-confidentialite",
+    "connexion",
+    "equipe",
+    "on-parle-de-nous",
+}
 # Addresses of the previous site (Odoo) that have a page here.
 OLD_PAGES = {"contactus": "/contact", "privacy": "/politique-de-confidentialite"}
 
