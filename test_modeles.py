@@ -84,3 +84,49 @@ def test_only_the_team_can_create_and_the_input_is_checked(client_as):  # noqa: 
         ).status_code
         == 422
     )
+
+
+PRICES = {
+    "groups": [
+        {
+            "id": "chapelle",
+            "name": "La Chapelle",
+            "items": [{"id": "chapelle-1", "name": "Demi-journée", "price": 150}],
+        },
+        {
+            "id": "autres",
+            "name": "Autres",
+            "items": [{"id": "menage", "name": "Ménage", "price": 40.5}],
+        },
+    ]
+}
+
+
+def test_price_list_is_saved_read_and_reset_by_the_team(client_as):  # noqa: F811
+    team, resident, anonymous = teams(client_as)
+    assert team.get("/api/modeles/tarifs").json() == {"groups": None}
+    saved = team.put("/api/modeles/tarifs", json=PRICES)
+    assert saved.status_code == 200
+    assert (
+        team.get("/api/modeles/tarifs").json()["groups"][1]["items"][0]["price"] == 40.5
+    )
+    assert team.delete("/api/modeles/tarifs").json() == {"groups": None}
+    assert team.get("/api/modeles/tarifs").json() == {"groups": None}
+    for client, code in ((resident, 403), (anonymous, 401)):
+        assert client.get("/api/modeles/tarifs").status_code == code
+        assert client.put("/api/modeles/tarifs", json=PRICES).status_code == code
+        assert client.delete("/api/modeles/tarifs").status_code == code
+
+
+def test_price_list_is_checked(client_as):  # noqa: F811
+    team, _, _ = teams(client_as)
+    bad_price = {
+        "groups": [
+            {"id": "a", "name": "A", "items": [{"id": "x", "name": "Y", "price": -1}]}
+        ]
+    }
+    assert team.put("/api/modeles/tarifs", json=bad_price).status_code == 422
+    bad_id = {"groups": [{"id": "a b", "name": "A", "items": []}]}
+    assert team.put("/api/modeles/tarifs", json=bad_id).status_code == 422
+    empty_name = {"groups": [{"id": "a", "name": "", "items": []}]}
+    assert team.put("/api/modeles/tarifs", json=empty_name).status_code == 422

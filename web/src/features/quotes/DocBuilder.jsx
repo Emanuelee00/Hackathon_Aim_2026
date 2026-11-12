@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
 import DocPreview from './DocPreview.jsx';
-import { priceGroups } from './priceList.js';
+import PriceManager from './PriceManager.jsx';
+import { designationOf } from './priceList.js';
 
 // Créer un devis ou une facture : à gauche le client et les prestations (avec les tarifs à cliquer), à droite l'aperçu du document.
 // Les fichiers Word et PDF sont fabriqués par le serveur (modeles.py) ; rien n'est enregistré, sauf le dernier numéro utilisé (dans ce navigateur).
@@ -25,11 +26,12 @@ function rememberNumber(kind, number) {
 }
 const blank = kind => ({ number: nextNumber(kind), date: today(), name: '', address: '', postal_code: '', city: '', nature: '', lines: [], deposit: '' });
 
-export default function DocBuilder({ kind }) {
+export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices }) {
   const [doc, setDoc] = useState(() => blank(kind));
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
   const [added, setAdded] = useState('');
+  const [editing, setEditing] = useState(false);
   const lastLine = useRef(null);
   const set = (name, value) => setDoc(current => ({ ...current, [name]: value }));
   const setLine = (id, name, value) => setDoc(current => ({ ...current, lines: current.lines.map(line => line.id === id ? { ...line, [name]: value } : line) }));
@@ -42,16 +44,20 @@ export default function DocBuilder({ kind }) {
   const total = priced.reduce((sum, line) => sum + line.lineTotal, 0);
   const deposit = kind === 'facture' ? toNumber(doc.deposit) : 0;
 
-  const addItem = item => {
+  const addItem = (group, item) => {
     setError('');
     setDoc(current => {
-      const existing = item.id !== 'libre' && current.lines.find(line => line.source === item.id);
+      const existing = current.lines.find(line => line.source === item.id);
       if (existing) return { ...current, lines: current.lines.map(line => line === existing ? { ...line, quantity: String(toNumber(line.quantity) + 1) } : line) };
-      return { ...current, lines: [...current.lines, { id: newId(), source: item.id, designation: item.label, quantity: '1', unit_price: item.price === null ? '' : String(item.price) }] };
+      return { ...current, lines: [...current.lines, { id: newId(), source: item.id, designation: designationOf(group, item), quantity: '1', unit_price: String(item.price) }] };
     });
     setAdded(item.id);
     setTimeout(() => setAdded(''), 900);
-    if (item.id === 'libre') setTimeout(() => lastLine.current?.focus(), 50);
+  };
+  const addFree = () => {
+    setError('');
+    setDoc(current => ({ ...current, lines: [...current.lines, { id: newId(), source: '', designation: '', quantity: '1', unit_price: '' }] }));
+    setTimeout(() => lastLine.current?.focus(), 50);
   };
   const step = (id, delta) => setDoc(current => ({ ...current, lines: current.lines.map(line => line.id === id ? { ...line, quantity: String(Math.max(1, toNumber(line.quantity) + delta)) } : line) }));
   const remove = id => setDoc(current => ({ ...current, lines: current.lines.filter(line => line.id !== id) }));
@@ -95,14 +101,19 @@ export default function DocBuilder({ kind }) {
 
       <section className="doc-card">
         <h3><span className="step">2</span>Les prestations</h3>
-        <p className="doc-hint">Cliquez sur un tarif pour l’ajouter au {label}. Un second clic ajoute une unité.</p>
-        <div className="price-groups">{priceGroups.map(group => <div key={group.id} className="price-group">
-          <b>{group.name}</b>
-          <div className="price-chips">{group.items.map(item => <button key={item.id} type="button" className={`price-chip${added === item.id ? ' just-added' : ''}`} onClick={() => addItem(item)}>
-            <span>{item.short}</span>
-            <em>{item.price === null ? '+ ligne' : item.price === 0 ? 'gratuit' : euros(item.price)}</em>
-          </button>)}</div>
-        </div>)}</div>
+        {editing
+          ? <PriceManager groups={groups} onClose={() => setEditing(false)} onSave={async next => { await onSavePrices(next); setEditing(false); }} onReset={async () => { await onResetPrices(); setEditing(false); }} />
+          : <>
+            <p className="doc-hint">Cliquez sur un tarif pour l’ajouter au {label}. Un second clic ajoute une unité. <button type="button" className="link-button" onClick={() => setEditing(true)}>Modifier les tarifs</button></p>
+            <div className="price-groups">{groups.filter(group => group.items.length).map(group => <div key={group.id} className="price-group">
+              <b>{group.name}</b>
+              <div className="price-chips">{group.items.map(item => <button key={item.id} type="button" className={`price-chip${added === item.id ? ' just-added' : ''}`} onClick={() => addItem(group, item)}>
+                <span>{item.name}</span>
+                <em>{item.price === 0 ? 'gratuit' : euros(item.price)}</em>
+              </button>)}</div>
+            </div>)}
+            <div className="price-group"><b>Autre prestation</b><div className="price-chips"><button type="button" className="price-chip" onClick={addFree}><span>Ligne libre</span><em>+ ligne</em></button></div></div></div>
+          </>}
 
         <div className="doc-lines2">
           {priced.length === 0 && <p className="doc-empty"><Icon name="file" size={18} />Aucune prestation pour l’instant.</p>}

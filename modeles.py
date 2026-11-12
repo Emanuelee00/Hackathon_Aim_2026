@@ -1,7 +1,8 @@
 """« Factures et devis »: the team fills in a quote or an invoice on the site, then downloads it in Word (to adjust) or PDF.
 
 The Word file is the association's own template (modeles/trame-*.docx) with its <<fields>> replaced, so the layout stays the same.
-The PDF is drawn here with the same content. Totals are always computed on the server. Nothing is stored.
+The PDF is drawn here with the same content. Totals are always computed on the server. Documents are not stored; only the price list
+(the rates to click) is, as a document of the store.
 """
 
 import datetime as dt
@@ -18,6 +19,7 @@ from fastapi.responses import Response
 from fpdf import FPDF
 from pydantic import BaseModel, ConfigDict, Field
 
+import store
 from accounts.models import User
 from accounts.sessions import team_member
 
@@ -129,7 +131,10 @@ def fill_docx(kind: str, document: Document) -> bytes:
 
     # « <<Nom>> » is split in two runs in the templates
     xml = re.sub(
-        r"&lt;&lt;</w:t>.*?<w:t[^>]*>Nom&gt;&gt;", value(document.name), xml, flags=re.DOTALL
+        r"&lt;&lt;</w:t>.*?<w:t[^>]*>Nom&gt;&gt;",
+        value(document.name),
+        xml,
+        flags=re.DOTALL,
     )
     final = money(amounts["due"] if kind == "facture" else amounts["total"])
     replacements = {
@@ -320,3 +325,46 @@ def download(kind: str, extension: str, document: Document, user: Team) -> Respo
             "Content-Disposition": f"attachment; filename*=UTF-8''{quote(name)}.{extension}"
         },
     )
+
+
+# ---------- Price list (the rates the team clicks to fill a quote or an invoice) ----------
+
+PRICE_KEY = "price_list"
+Slug = Annotated[str, Field(min_length=1, max_length=60, pattern=r"^[\w-]+$")]
+
+
+class PriceItem(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    id: Slug
+    name: Text = Field(min_length=1, max_length=80)
+    price: float = Field(ge=0, le=1_000_000)
+
+
+class PriceGroup(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    id: Slug
+    name: Text = Field(min_length=1, max_length=80)
+    items: list[PriceItem] = Field(max_length=30)
+
+
+class PriceList(BaseModel):
+    groups: list[PriceGroup] = Field(max_length=20)
+
+
+@router.get("/tarifs")
+def read_prices(user: Team) -> dict:
+    """The team's saved rates; null until they have changed the original ones (the page then shows its own)."""
+    return {"groups": store.load_document(PRICE_KEY)}
+
+
+@router.put("/tarifs")
+def save_prices(prices: PriceList, user: Team) -> dict:
+    groups = prices.model_dump()["groups"]
+    store.save_document(PRICE_KEY, groups)
+    return {"groups": groups}
+
+
+@router.delete("/tarifs")
+def reset_prices(user: Team) -> dict:
+    store.save_document(PRICE_KEY, None)
+    return {"groups": None}

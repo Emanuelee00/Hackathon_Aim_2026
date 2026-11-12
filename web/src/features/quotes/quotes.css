@@ -120,3 +120,13 @@ mark.ph { color: inherit; }
 .line-card { grid-template-columns: auto auto minmax(0, 1fr) 30px; row-gap: 8px; }
 .line-card .line-name { grid-column: 1 / -1; }
 .line-card .line-total { text-align: right; }
+
+/* Modifier les tarifs */
+.link-button { padding: 0; border: 0; background: none; font: inherit; font-weight: 700; color: var(--violet, #682a7f); text-decoration: underline; cursor: pointer; }
+.price-manager { display: flex; flex-direction: column; gap: 12px; }
+.pm-group { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #f6f1f8; }
+.pm-group-head, .pm-item { display: grid; grid-template-columns: minmax(0, 1fr) auto 34px; gap: 8px; align-items: center; }
+.pm-group-head { grid-template-columns: minmax(0, 1fr) 34px; }
+.pm-group-head input { font-weight: 800; }
+.pm-group-head input, .pm-item > input { padding: 8px 10px; border: 1px solid rgba(0, 0, 0, 0.18); border-radius: 10px; font: inherit; min-width: 0; background: #fff; }
+.pm-group .button { align-self: flex-start; }
