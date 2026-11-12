@@ -4,6 +4,7 @@ import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import { ContactForm } from '../site-pages/Contact.jsx';
+import { hostedAssociations, members } from '../site-pages/teamData.js';
 import HomeShell, { LINKS, socials } from './HomeShell.jsx';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
@@ -51,8 +52,11 @@ const publicSpaces = [
   { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', focus: 'center 45%', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
   { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', focus: 'center 40%', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
   { id: 'atelier', name: 'L’Atelier', photo: '/foto/atelier.jpg', focus: 'center 55%', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
+  // Ces deux espaces sont gérés par des associations du lieu : la carte renvoie vers leur site (pas vers le formulaire de demande).
+  { id: 'coworking', name: 'Le Coworking', photo: '/foto/coworking.jpg', focus: 'center 50%', details: ['Jusqu’à 12 places', 'Location à la place', 'Géré par Sista4good'], note: 'Tarifs et réservation auprès de Sista4good.', link: { url: 'https://www.sista4good.com/', label: 'Découvrir Sista4good' } },
+  { id: 'cantines', name: 'Les Petites Cantines', photo: '/foto/cantine.webp', focus: 'center 50%', details: ['30 personnes', '32 m² + terrasse de 30 m²', 'Cantine solidaire à prix libre'], note: 'Privatisable, tarif sur devis.', link: { url: 'https://marseille.lespetitescantines.org/', label: 'Voir Les Petites Cantines' } },
 ];
-const requestSpaces = publicSpaces.map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
+const requestSpaces = publicSpaces.filter(space => !space.link).map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
 
 const partners = [
   { name: 'Habitat Alternatif Social', logo: 'has.webp', url: 'https://www.has.asso.fr/' },
@@ -441,6 +445,7 @@ function FeaturedEvent({ event }) {
       <p className="pg-feat-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" /></svg>À la une</p>
       <h3>{cleanTitle(event.title)}</h3>
       <p className="pg-feat-meta">{dayNames[(day.getDay() + 6) % 7]} {day.getDate()} {fullMonths[day.getMonth()]} · {time}{event.place ? ` · ${event.place}` : ''}</p>
+      {event.link && <a className="pg-register" href={event.link} target="_blank" rel="noopener noreferrer">S’inscrire ↗</a>}
     </div>
   </article>;
 }
@@ -500,6 +505,7 @@ function WeekProgramme() {
           <time>{event.start ? `${event.start}${event.end ? `–${event.end}` : ''}` : 'Toute la journée'}</time>
           <strong>{cleanTitle(event.title)}</strong>
           {event.place && <small>{event.place}</small>}
+          {event.link && <a className="pg-register" href={event.link} target="_blank" rel="noopener noreferrer">S’inscrire ↗</a>}
         </p>;
       })}</div>
     </li>);
@@ -584,6 +590,19 @@ export default function Landing() {
         </div>
       </section>
 
+      <section id="equipe-lieu" className="landing-team" aria-labelledby="equipe-lieu-titre">
+        <p className="kicker">ILS FONT VIVRE LE LIEU</p>
+        <h2 id="equipe-lieu-titre">L’équipe de Chez Marthe</h2>
+        <p className="lt-intro">Celles qui font vivre Saint-Savournin au quotidien, avec les associations installées dans le lieu.</p>
+        <ul className="lt-faces">{members.map(member => <li key={member.name}>
+          <span className="lt-photo"><img src={member.photo} alt="" loading="lazy" /></span>
+          <strong>{member.name}</strong>
+          <small>{member.role}</small>
+        </li>)}</ul>
+        <div className="lt-assos"><span>Avec nous, au quotidien :</span>{hostedAssociations.map(assoc => <a key={assoc.name} href={assoc.url} target="_blank" rel="noopener noreferrer" title={assoc.name}><img src={assoc.logo} alt={assoc.name} loading="lazy" /></a>)}</div>
+        <a className="btn btn-primary lt-more" href="/equipe">Rencontrer toute l’équipe</a>
+      </section>
+
       <section className="landing-band" aria-labelledby="pillars-title">
         <div className="landing-wrap">
           <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
@@ -603,7 +622,7 @@ export default function Landing() {
       <section id="espaces" className="block" aria-labelledby="espaces-titre">
         <p className="kicker">LOUER UN ESPACE</p>
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
-        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href="#demande" onClick={() => setPicked({ space: space.id, at: Date.now() })}>
+        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : '#demande'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : { onClick: () => setPicked({ space: space.id, at: Date.now() }) })}>
           <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
           <h3 className="space-title">{space.name}</h3>
           <div className="space-body">
@@ -611,7 +630,7 @@ export default function Landing() {
             {space.prices && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
             {space.note && <p>{space.note}</p>}
             {space.exchange && <p className="space-exchange">{space.exchange}</p>}
-            <span className="space-cta">Faire une demande →</span>
+            <span className="space-cta">{space.link ? `${space.link.label} ↗` : 'Faire une demande →'}</span>
           </div>
         </a>)}</div>
         <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>
@@ -620,7 +639,7 @@ export default function Landing() {
       <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>
 
       <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
-        <p className="kicker">ILS FONT VIVRE LE LIEU</p>
+        <p className="kicker">SOUTIENS ET PARTENAIRES</p>
         <h2 id="partenaires-titre">Nos partenaires</h2>
         <PartnerRow items={partners} />
         <h3 className="partners-subtitle">Nos partenaires financiers</h3>

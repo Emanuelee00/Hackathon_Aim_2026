@@ -1,16 +1,7 @@
 import { useRef, useState } from 'react';
 import HomeShell from '../landing/HomeShell.jsx';
+import { hostedAssociations, members } from './teamData.js';
 
-// « Notre équipe » (/equipe), reached from the menu. Still to complete: the roles and presentations written « [ … ] », and the missing photos (add `photo`).
-const members = [
-  { name: 'Véronique', role: 'Fondatrice et Coordinatrice générale', photo: '/foto/equipe/veronique.jpg', text: 'Quand les femmes ont un toit sur la tête et du lien social, elles peuvent faire rayonner leur lumière dans le monde. Le soin est politique !' },
-  { name: 'Barbara', role: 'Pilotage financier', photo: '/foto/equipe/barbara.jpg', text: 'Tout devient possible quand les énergies d’un collectif se mettent au service d’un projet qui fait sens : l’accueil inconditionnel.' },
-  { name: 'Caroline', role: 'Recherche de fonds et communication', photo: '/foto/equipe/caroline.jpg', text: 'Rien ne nous arrête quand nous décidons d’avancer unies. Chez Marthe, je suis heureuse de transformer mon énergie en tremplins.' },
-  { name: 'Isadora', role: 'Partenariat stratégique et financier', photo: '/foto/equipe/isadora.jpg', text: 'Chez Marthe, bien plus qu’un toit : un lieu pour reprendre souffle, retrouver sa force et se reconstruire grâce à la sororité. Chaque quartier mérite son Chez Marthe.' },
-  { name: 'Joria', role: 'Coordination opérationnelle', photo: '/foto/equipe/joria.jpg', text: 'Vivre n’est pas un privilège : c’est un droit, et il commence par un toit, par un lieu où l’on habite, travaille, crée et se soigne ensemble. Chez Marthe, ce droit à une adresse.' },
-  { name: 'Flora', role: 'Référente programmation', photo: '/foto/equipe/flora.jpg', text: 'Ici, la fête et la culture ne sont pas réservées à celles qui en ont les clés : elle s’invente, elle se transmet, elle se partage.' },
-  { name: 'Sarah', role: 'Animation de la communauté', photo: '/foto/equipe/sarah.jpg', text: 'Créer des rencontres et faire rayonner l’esprit de Chez Marthe, en ligne comme dans la vraie vie : pour que chacune se sente accueillie et que d’autres Chez Marthe voient le jour, de ville en ville.' },
-];
 
 const people = <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><circle cx="17.5" cy="9.5" r="2.6" /><path d="M17 14.2a5.2 5.2 0 0 1 4.5 5.3" /></svg>;
 
@@ -71,6 +62,16 @@ export default function Team() {
           </div>
         </div>
         <div className="team-dots manifesto-dots" aria-hidden="true"><span className={slide === 0 ? 'on' : ''} /><span className={slide === 1 ? 'on' : ''} /></div>
+      </section>
+      <section id="associations" className="assos-v2" aria-labelledby="assos-titre">
+        <p className="kicker">AVEC NOUS, AU QUOTIDIEN</p>
+        <h2 id="assos-titre">Les associations du lieu</h2>
+        <p className="assos-intro">Chez Marthe vit chaque jour avec les associations qui sont installées dans le lieu.</p>
+        <div className="assos-grid">{hostedAssociations.map(assoc => <a key={assoc.name} className="asso-card" href={assoc.url} target="_blank" rel="noopener noreferrer">
+          <span className="asso-logo"><img src={assoc.logo} alt="" loading="lazy" /></span>
+          <strong>{assoc.name}</strong>
+          <small>{assoc.role}</small>
+        </a>)}</div>
       </section>
     </main>
   </HomeShell>;

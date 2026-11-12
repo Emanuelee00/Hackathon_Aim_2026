@@ -7,6 +7,7 @@ Variables d'environnement :
 import base64
 import json
 import os
+import re
 import time
 from datetime import date, timedelta
 from pathlib import Path
@@ -81,8 +82,24 @@ FEATURED_COLOR_ID = "11"
 MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
 
 
+LINK_LABEL = re.compile(r"(?i)(?:inscriptions?|r[ée]servations?)")
+LINK_URL = re.compile(r"https://[^\s\"'<>]+")
+
+
+def registration_link(description: str) -> str:
+    """The public registration link of an event: the first https address written after « Inscription » (or « Réservation ») in its description.
+
+    Only that address is ever made public, never the rest of the description (internal notes). Without the word, no link.
+    """
+    label = LINK_LABEL.search(description or "")
+    if not label:
+        return ""
+    found = LINK_URL.search(description[label.end() : label.end() + 400])
+    return found.group(0).rstrip(".,;)") if found else ""
+
+
 def week_public(monday: date, ttl: int = 60) -> list[dict]:
-    """Évènements publics d'une semaine (du lundi au dimanche) : titre, date, heures, lieu. Jamais la description (notes internes).
+    """Évènements publics d'une semaine (du lundi au dimanche) : titre, date, heures, lieu, lien d'inscription. Jamais la description (notes internes).
 
     Garde chaque semaine en mémoire `ttl` secondes (1 minute) ; si Google est injoignable, renvoie la dernière version connue.
     """
@@ -113,6 +130,7 @@ def week_public(monday: date, ttl: int = 60) -> list[dict]:
             "end": (finish.get("dateTime") or "")[11:16] if timed else "",
             "place": (event.get("location") or "").split(",")[0].strip(),
             "featured": event.get("colorId") == FEATURED_COLOR_ID,
+            "link": registration_link(event.get("description") or ""),
         })
     _weeks[monday] = (time.time(), items)
     return items

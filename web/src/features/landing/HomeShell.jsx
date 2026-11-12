@@ -74,7 +74,7 @@ export default function HomeShell({ home = false, children }) {
         <div className="menu-section">
           <p className="menu-group">Participer</p>
           <MenuLink href={`${at}#espaces`} title="Louer un espace" text="Chapelle, salon, atelier, bureau" onPick={close} />
-          <MenuLink href={`${at}#partenaires`} title="Nos partenaires" text="Ils font vivre le lieu" onPick={close} />
+          <MenuLink href={`${at}#partenaires`} title="Nos partenaires" text="Soutiens et partenaires" onPick={close} />
           <MenuLink href={`${at}#s-impliquer`} title="Rejoindre le mouvement" text="Don, adhésion, communauté" onPick={close} />
         </div>
       </div>

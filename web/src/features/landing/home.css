@@ -1827,3 +1827,47 @@
 .cm-home .hero-text, .cm-home .hero-text h1, .cm-home .hero-text h1.hero-title, .cm-home .hero-text p, .cm-home .hero-text p.hero-eyebrow, .cm-home .hero-text p.hero-sub, .cm-home .hero-text .hero-eyebrow .city { text-shadow: 0 1px 0 rgba(20, 5, 35, 0.45) !important; }
 .cm-home .hero-title mark.ht-mark, .cm-home .hero-title mark.ht-mark::before { text-shadow: none !important; box-shadow: none !important; }
 .cm-home .hero-text p.hero-sub { animation: none !important; opacity: 1 !important; transform: none !important; }
+
+/* Lien d'inscription d'un évènement (écrit « Inscription : https://… » dans la description du Google Agenda). */
+.cm-home .pg-register { justify-self: start; margin-top: 4px; padding: 4px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 800; color: #fff; background: var(--violet); text-decoration: none; }
+.cm-home .pg-register:hover { background: #e0527c; }
+.cm-home .pg-featured .pg-register { padding: 8px 18px; font-size: 14px; margin-top: 10px; display: inline-block; }
+
+/* ===== L'équipe du lieu sur l'accueil : avant les partenaires, avec des visages ===== */
+.cm-home .landing-team { box-sizing: border-box; min-height: calc(100vh - var(--bar)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(10px, 2.2vh, 24px); padding: clamp(24px, 5vh, 60px) 16px; text-align: center; background: #fbf6fa; color: var(--night, #1b1319); scroll-margin-top: var(--bar); }
+.cm-home .landing-team .kicker { margin: 0; color: #a25889; }
+.cm-home .landing-team h2 { margin: 0; color: var(--violet); font-size: clamp(30px, min(4.4vw, 7vh), 54px); line-height: 1.04; }
+.cm-home .lt-intro { margin: 0; max-width: 40rem; font-size: clamp(15px, 1.4vw, 19px); line-height: 1.5; color: #4a3a50; }
+.cm-home .lt-faces { list-style: none; margin: clamp(6px, 1.6vh, 18px) 0 0; padding: 0; width: min(100%, 1180px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2.4vh, 26px) 14px; }
+@media (min-width: 1000px) { .cm-home .lt-faces { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+.cm-home .lt-faces li { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+.cm-home .lt-photo { display: block; overflow: hidden; width: clamp(64px, 12vh, 118px); height: clamp(64px, 12vh, 118px); border-radius: 50%; border: 3px solid #f2a1ab; box-shadow: 0 8px 20px rgba(102, 43, 128, 0.22); background: var(--pink); }
+.cm-home .lt-photo img { width: 100%; height: 100%; object-fit: cover; }
+.cm-home .lt-faces strong { margin-top: 4px; font-family: var(--display); font-size: clamp(15px, 2.2vh, 21px); color: var(--violet); }
+.cm-home .lt-faces small { font-size: clamp(11.5px, 1.6vh, 13.5px); line-height: 1.25; color: #6d5a74; }
+.cm-home .lt-assos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; font-size: 14px; color: #6d5a74; }
+.cm-home .lt-assos a { display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 6px 12px; border-radius: 12px; background: #fff; box-shadow: 0 4px 12px rgba(102, 43, 128, 0.14); }
+.cm-home .lt-assos img { max-height: 32px; width: auto; max-width: 120px; object-fit: contain; }
+.cm-home .lt-more { margin-top: 4px; }
+@media (max-width: 699px) {
+  .cm-home .landing-team { min-height: calc(100svh - var(--bar)); padding: clamp(16px, 3svh, 34px) 14px; gap: clamp(8px, 1.8svh, 18px); }
+  .cm-home .lt-intro { font-size: 14px; }
+  .cm-home .lt-faces { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.8svh, 18px) 6px; }
+  .cm-home .lt-photo { width: clamp(52px, 9.5svh, 84px); height: clamp(52px, 9.5svh, 84px); border-width: 2px; }
+  .cm-home .lt-faces small { display: none; }
+  .cm-home .lt-faces strong { font-size: 13px; }
+}
+@supports (height: 100svh) { @media (min-width: 700px) { .cm-home .landing-team { min-height: calc(100svh - var(--bar)); } } }
+
+/* La page Notre équipe : les associations du lieu, après le manifeste. */
+.cm-home .assos-v2 { box-sizing: border-box; padding: 44px max(16px, calc(50% - 640px)) 72px; display: flex; flex-direction: column; gap: 12px; background: #fbf6fa; }
+.cm-home .assos-v2 .kicker { margin: 0; color: #a25889; }
+.cm-home .assos-v2 h2 { margin: 0; color: var(--violet); font-family: var(--display); font-size: clamp(28px, 4vw, 42px); }
+.cm-home .assos-intro { margin: 0; color: #4a3a50; }
+.cm-home .assos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 8px; }
+.cm-home .asso-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 20px 16px; border-radius: 20px; background: #fff; box-shadow: 0 8px 22px rgba(102, 43, 128, 0.12); text-align: center; text-decoration: none; color: var(--night); }
+.cm-home .asso-card:hover { transform: translateY(-3px); }
+.cm-home .asso-logo { display: grid; place-items: center; width: 100%; height: 84px; }
+.cm-home .asso-logo img { max-width: 80%; max-height: 74px; object-fit: contain; }
+.cm-home .asso-card strong { color: var(--violet); }
+.cm-home .asso-card small { color: #6d5a74; }
