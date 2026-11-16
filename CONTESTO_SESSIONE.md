@@ -1,15 +1,16 @@
 # Contesto di lavoro — Chez Marthe
 
-Scritto il **12 novembre 2026**. Serve a riprendere il lavoro da un'altra sessione di Claude o da un altro computer
-senza perdere il filo. Letto insieme a `TODO.md` (backlog dettagliato, in francese) e `deploy/README.md` (server).
+Scritto il **12 novembre 2026**, aggiornato il **16 novembre 2026** (pacchetti 6 e 7). Serve a riprendere il lavoro
+da un'altra sessione di Claude o da un altro computer senza perdere il filo. Letto insieme a `TODO.md` (backlog dettagliato, in francese) e `deploy/README.md` (server).
 
 > Il repo è **pubblico**. Qui non vanno mai password, chiavi, token, `deploy/.env` o `secrets/`.
 
 ## 1. Cos'è
 
 Piattaforma di Chez Marthe (lieu a Saint-Savournin, Marsiglia). Il repo è `Emanuelee00/Hackathon_Aim_2026`.
-Ha il **sito pubblico** (home, Notre équipe, On parle de nous, Connexion, Contact) e lo **spazio équipe**
-(Financements, Messages, Factures et devis, calendrier, ecc.). Backend Python (FastAPI, `main.py`), front-end React in `web/`,
+Ha il **sito pubblico** (home, Notre équipe, On parle de nous, Connexion, Contact), lo **spazio équipe**
+(Financements, Financeurs potentiels, Messages, Factures et devis, Bilans des structures, Site, calendrier, ecc.)
+e lo **spazio associazioni** (`partenaires`: agenda comune e bilancio mensile). Backend Python (FastAPI, `main.py`), front-end React in `web/`,
 Postgres. Il nuovo sito sostituirà il vecchio sito Odoo (`chezmarthe1.odoo.com`) su `chezmarthe.org`.
 L'AI è spenta in produzione (`MARTHE_AI=0`, `VITE_AI=off`).
 
@@ -37,7 +38,8 @@ Regole da rispettare:
 
 ## 3. Cosa è stato fatto
 
-Pacchetti messi in produzione sulla VM Google Cloud `marthe` (test su https://34-155-50-2.sslip.io):
+Pacchetti (VM Google Cloud `marthe`, test su https://34-155-50-2.sslip.io). **Al 16/11 tutto è in `main` (commit `8897125`);
+sulla VM girava al massimo il pacchetto 2/3: i pacchetti 3–7 vanno su insieme con un solo `git pull` (§6.3).**
 
 | Pacchetto | Contenuto | Stato |
 |---|---|---|
@@ -46,6 +48,26 @@ Pacchetti messi in produzione sulla VM Google Cloud `marthe` (test su https://34
 | 3 | Sito per telefono, foto HD, niente blur (commit `c013753`) | fuso in `main`, build fatto sulla VM, **bascola `up -d app` da confermare** |
 | 4 | Factures et devis: tariffe da cliccare, anteprima in diretta, tariffe modificabili (`652d52b`) | in `main`, **non ancora sulla VM** |
 | 5 | Richieste dell'équipe dell'11 novembre (vedi sotto) | in `main` dal 12/11, **non ancora sulla VM** |
+| 6 | Comptabilité degli eventi (devis → fattura, PDF come i modelli Word, invio e-mail), «Financeurs potentiels» (201 finanziatori, bandi EU/FR, mecenati, consigli), card «Louer un espace» modificabili (`7d4e5d9`) | in `main` dal 16/11, **non ancora sulla VM** |
+| 7 | Vedi sotto (16/11) | in `main` dal 16/11, **non ancora sulla VM** |
+
+**Pacchetto 7** (16 novembre, tutto in `main`):
+- **Menu «Site»** (`web/src/features/site/`, backend `espaces.py` → `/api/site`): tutta la home si modifica dall'équipe, sezione per
+  sezione (testi, foto caricate o del sito, liste, sezioni nascoste, ordine delle sezioni trascinando le linguette). I membri dell'équipe
+  modificati compaiono anche su «Notre équipe». Contenuti di partenza in `web/src/features/landing/siteContent.js`.
+- **Bilans des structures** (`bilans.py`, `web/src/features/bilans/`): bilancio mensile per struttura (Chez Marthe, HAS, JUST, Sista4good,
+  Petites Cantines, Bénénova) dal foglio di Caroline; domande comuni + proprie; le associazioni lo compilano dal loro spazio, l'équipe
+  vede i totali ed esporta l'anno in Excel. HAS/JUST: solo numeri, **nessun dato per persona** (scelta da confermare, vedi TODO).
+- **Financeurs potentiels**: menu a tendina veri per statut/adéquation (prima era un datalist che mostrava solo il valore già scelto),
+  statut «Contacté» verde; le 57 righe già presenti in «Financements» (file `AAP retroplanning`) sono **rosse** con «Déjà dans Financements»
+  (mappa in `fundingMatches.js` + stesso nome), casella «Les masquer», bottone € per segnare/togliere a mano; barra di scorrimento
+  orizzontale attaccata in fondo allo schermo (`StickyScrollbar.jsx`, anche in Financements).
+- **Spazi personali** (`profils.py` → `/api/profils`, `web/src/features/profiles/`): dopo il login équipe «Qui êtes-vous ?» (le persone
+  dell'équipe del sito, + «Ajouter une personne»), «Bonjour <prenome>», menu personale riordinabile a mano (`shared/lib/usePointerSort.js`:
+  la voce si solleva e le altre fanno spazio; anche nelle liste di «Site»), ★ per evidenziare, sfondi pagina e menu (colore o immagine),
+  **☀ tema scuro e M tema viola** (`themes.css`). Salvati sul server; la persona scelta è ricordata nel browser. Non è una sicurezza
+  (tutti usano l'account équipe).
+- Test al 16/11: **139 backend, 114 front-end**, build ok.
 
 **Pacchetto 5** (era l'ultimo lavoro della vecchia sessione, branch `feature/richieste-equipe`, completato e testato il 12/11):
 - ordine dell'équipe per arrivo: Véronique, Barbara, Caroline, Isadora, Joria, Flora, Sarah (senza cognomi);
@@ -65,7 +87,10 @@ Sincronizzazione nei due sensi: non fatta, è nel TODO.
 
 Il dettaglio completo è in `TODO.md`. In sintesi:
 
-1. **Server**: bascola del pacchetto 3, poi pacchetti 4 e 5 (procedura al §6).
+0. **Backup automatico del database fuori dalla VM** (segnato «important» in cima al TODO): oggi esiste solo il `pg_dump` a mano.
+1. **Server**: mettere su i pacchetti 3–7 insieme (procedura al §6.3). Dopo: in «Financements» importare l'Excel `AAP retroplanning`
+   se è vuoto (servono le pistes per il rosso in «Financeurs potentiels»); creare gli account `partenaires` delle associazioni con il
+   **nome esatto** («Benenova», «Sista4good», «Les Petites Cantines», «HAS», «JUST») per i bilanci.
 2. **Controllare il pacchetto 3 sul PC** sul sito vero (foto HD ritagliata, niente alone, 5 eventi, pillola «Notre manifeste»).
 3. **Domini**: `chezmarthe.org` non punta ancora alla VM. Servono record `A` su IONOS (senza toccare MX/TXT/DKIM/DMARC delle e-mail),
    poi `SITE_HOSTS`, `CANONICAL_DOMAIN`, `OLD_DOMAINS` nel `.env` della VM. Serve chi ha l'accesso IONOS. `chezmarthe.site` non è dell'associazione.
@@ -79,7 +104,13 @@ Il dettaglio completo è in `TODO.md`. In sintesi:
 9. Backlog sito: tablet (700–1299 px), modulo di richiesta per telefono, «Adhérer»/«Faire un don» visibili in alto, TikTok, spazi
    (prezzi, foto, capacità, togliere Jardin e Cuisine, Atelier = scambio di servizi), Linktree per le prenotazioni.
 
-## 5. Cosa faceva la vecchia sessione (e come è finita)
+## 5. Cosa facevano le sessioni precedenti (e come sono finite)
+
+Sessione del 13–16/11 (id `49559626`): pacchetti 6 e 7, tutti pushati su `main` (fast-forward, su richiesta esplicita dell'utente);
+branch di lavoro `feature/comptabilite`, allineato a `main`. Finita con le istruzioni per mettere tutto sulla VM (§6.3), non ancora eseguite.
+Durante questa sessione l'utente provava in parallelo il sito locale (http://equipe.localhost:8000): le prove automatiche vanno fatte
+su una persona di test, non su Véronique o sugli altri profili veri.
+
 
 La sessione precedente (id interno `f77fce3e`, fino al 12/11 ~19:00) stava aggiungendo in locale le richieste dell'équipe
 (pacchetto 5). Aveva già committato `91cd0f7` sul branch `feature/richieste-equipe` e lanciato i test, ma i test backend
@@ -105,10 +136,11 @@ Le altre due sessioni su Chez Marthe (`9179c45c` fino al 10/11 e la più vecchia
 - **Indirizzi oggi**: test su `https://34-155-50-2.sslip.io` (con `equipe.`, `bilan.`, ecc. davanti). `SITE_HOSTS` in `.env` usa ancora sslip.io.
   `chezmarthe.org` e `.site` **non** sono ancora sulla VM.
 
-### 6.2 Cosa si stava mettendo sul server (stato al 12/11)
-1. **Pacchetto 3** (sito per telefono): codice in `main`, `git pull` e `docker compose build app` già fatti sulla VM. **Manca solo `docker compose up -d app`** e il controllo dei log.
-2. **Pacchetto 4** (tariffe di Factures et devis) e **pacchetto 5** (richieste dell'équipe): in `main`, **non ancora sulla VM**. Si fanno insieme con una sola passata (comandi qui sotto).
-   Il pacchetto 4 non richiede variabili nuove; il 5 neppure (il link «S'inscrire» legge la descrizione degli eventi di Google Agenda).
+### 6.2 Cosa si sta mettendo sul server (stato al 16/11)
+1. **Pacchetti 3–7**: tutti in `main` (`8897125`). Una sola passata con la procedura 6.3. Prima del `git pull` annotare `git log --oneline -1`
+   sulla VM (per sapere da dove si parte). Nessuna variabile nuova obbligatoria; **nessuna migrazione dello schema** dal pacchetto 2:
+   i dati nuovi (contenuto del sito, foto caricate, bilanci, spazi personali) vanno nella tabella `documents` già esistente.
+2. Il pacchetto 6 invia devis/fatture per e-mail: funziona solo quando l'e-mail è collegata (punto 4).
 3. **Google Agenda**: già configurato in produzione (chiavi in `deploy/secrets/`, `GOOGLE_CALENDAR_ID` nel `.env`). Verifica: `curl -s https://<sito>/api/programmation` risponde con `"events": [...]`.
 4. **E-mail**: non collegata. Da fare: Gmail con «password per app» (verifica in due passaggi attiva) → nel `deploy/.env` `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM`, poi `docker compose up -d app`.
    Mettere lo stesso indirizzo come «Bonjour Chez Marthe» nella pagina Messages. **La password non si scrive mai in chat**: la si digita direttamente nel `.env` sulla VM con `nano`.
@@ -148,21 +180,23 @@ docker compose ps                      # db, app, caddy "Up"
 3. Push su `main` (PR con squash, oppure fast-forward se l'utente lo chiede).
 4. Procedura 6.3 in Cloud Shell. Il classificatore di sicurezza di Claude blocca tunnel e merge senza ok esplicito: serve sempre il «sì» dell'utente.
 
-Tag di ritorno su GitHub: `pre-finanziamenti-messaggi-2026-11`, `pre-sito-pubblico-2026-11`, `pre-sito-mobile-2026-11`, `pre-devis-tarifs-2026-11`, `pre-richieste-equipe-2026-11`, `pre-paquet6-2026-11`.
+Tag di ritorno su GitHub: `pre-finanziamenti-messaggi-2026-11`, `pre-sito-pubblico-2026-11`, `pre-sito-mobile-2026-11`, `pre-devis-tarifs-2026-11`, `pre-richieste-equipe-2026-11`, `pre-paquet6-2026-11` (= `main` prima dei pacchetti 6 e 7).
 
 ## 7. Riprendere su un altro computer
 
 ```bash
 git clone git@github.com:Emanuelee00/Hackathon_Aim_2026.git chezMarthe && cd chezMarthe
 uv sync && (cd web && npm install)
-uv run pytest -q                      # 120 test backend
-(cd web && npm test)                  # 83 test front-end
+uv run pytest -q                      # 139 test backend
+(cd web && npm test)                  # 114 test front-end
 MARTHE_AI=0 uv run uvicorn main:app --port 8010   # sito su http://localhost:8010 (build front: cd web && VITE_AI=off npm run build)
 ```
 
 - Per la programmazione in locale servono `secrets/google-calendar.json` e `GOOGLE_CALENDAR_ID` (non sono nel repo: chiederli all'utente).
   Senza chiave la sezione dice «programmazione indisponibile».
-- Gli account demo locali sono in `comptes.txt` (solo per sviluppo).
+- Gli account demo locali sono in `comptes.txt` (solo per sviluppo). Lo spazio équipe locale è su `http://equipe.localhost:<porta>`,
+  quello delle associazioni su `http://partenaires.localhost:<porta>`.
+- Se `uv` riempie la home: `UV_CACHE_DIR=<disco grande>/.cache/uv`. Le prove nel browser sono state fatte con Playwright e Chromium.
 - Per i rilasci conviene un worktree: `git worktree add ../chezMarthe-release -b release/<nome> origin/main`.
 
 ## 8. Mappa dei branch e delle copie
