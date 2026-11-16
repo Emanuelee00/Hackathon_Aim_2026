@@ -710,21 +710,22 @@
 
 /* Défilement des logos partenaires, de droite à gauche. */
 .cm-home .marquee { --gap: 22px; overflow: hidden; padding: 12px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
-.cm-home #partenaires .home-partners.marquee-track { display: flex; flex-wrap: nowrap; gap: var(--gap); width: max-content; padding: 0 var(--gap) 0 0; grid-template-columns: none; animation: partners-scroll var(--duration, 40s) linear infinite; }
+.cm-home #partenaires .home-partners.marquee-track { display: flex; flex-wrap: nowrap; gap: var(--gap); width: max-content; padding: 0 var(--gap) 0 0; grid-template-columns: none; }
 .cm-home .marquee-track li { flex: 0 0 auto; width: 190px; }
 .cm-home .marquee-track li a { width: 100%; }
-.cm-home .marquee:hover .marquee-track, .cm-home .marquee:focus-within .marquee-track { animation-play-state: paused; }
-@keyframes partners-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* Rangées qui défilent : c'est le script (useAutoScroll) qui les fait avancer, et on peut les faire glisser au doigt. */
+.cm-home .marquee-moving { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-behavior: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.cm-home .marquee-moving::-webkit-scrollbar { display: none; }
 @media (min-width: 960px) { .cm-home .marquee-track li { width: 215px; } }
 @media (prefers-reduced-motion: reduce) {
   .cm-home .marquee { -webkit-mask-image: none; mask-image: none; }
-  .cm-home #partenaires .home-partners.marquee-track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; padding: 0; }
+  .cm-home #partenaires .home-partners.marquee-track { flex-wrap: wrap; justify-content: center; width: auto; padding: 0; }
   .cm-home .marquee-track li[aria-hidden="true"] { display: none; }
 }
 
 /* Peu de logos : rangée fixe et centrée. */
 .cm-home .marquee-still { -webkit-mask-image: none; mask-image: none; }
-.cm-home #partenaires .marquee-still .home-partners.marquee-track { animation: none; width: auto; padding: 0; justify-content: center; }
+.cm-home #partenaires .marquee-still .home-partners.marquee-track { width: auto; padding: 0; justify-content: center; }
 
 
 /* Programmation : la phrase sous le calendrier est un peu plus grande que le texte courant, mais reste plus petite que les titres. */

@@ -6,6 +6,7 @@ import PublicRequest from '../public-request/PublicRequest.jsx';
 import { ContactForm } from '../site-pages/Contact.jsx';
 import { hostedAssociations, members } from '../site-pages/teamData.js';
 import HomeShell, { LINKS, socials } from './HomeShell.jsx';
+import { useRentalSpaces } from './rentalSpaces.js';
 
 const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
 
@@ -45,18 +46,8 @@ function Wave({ className }) {
   return <svg className={className} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 48 C 240 8 480 8 720 40 S 1200 80 1440 30 V80 H0 Z" /></svg>;
 }
 
-// The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
-// « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
-const publicSpaces = [
-  { id: 'chapelle', name: 'La Chapelle', photo: '/foto/chapelle.jpg', focus: 'center 14%', details: ['80 à 150 personnes', '114 m²', 'Concerts, spectacles, danse, yoga'], prices: [['2 heures', '40 €'], ['Demi-journée', '150 €'], ['Journée', '300 €']], note: 'Sonorisation (micro + enceinte) : 50 € en plus.' },
-  { id: 'salon-collectif', name: 'Salon collectif / Séminaire', photo: '/foto/salon.jpg', focus: 'center 45%', details: ['Maximum 20 personnes', '28 m²', 'Séminaires et réunions'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'reunion', name: 'Le Bureau', photo: '/foto/bureau.jpg', focus: 'center 40%', details: ['Maximum 6 personnes', '16 m²', 'Réunions en petit comité'], prices: [['2 heures', '40 €'], ['Demi-journée', '100 €'], ['Journée', '200 €']] },
-  { id: 'atelier', name: 'L’Atelier', photo: '/foto/atelier.jpg', focus: 'center 55%', details: ['Échange de services'], exchange: 'Vous utilisez l’Atelier et, en échange, vous animez un atelier gratuit pour Chez Marthe.' },
-  // Ces deux espaces sont gérés par des associations du lieu : la carte renvoie vers leur site (pas vers le formulaire de demande).
-  { id: 'coworking', name: 'Le Coworking', photo: '/foto/coworking.jpg', focus: 'center 50%', details: ['Jusqu’à 12 places', 'Location à la place', 'Géré par Sista4good'], note: 'Tarifs et réservation auprès de Sista4good.', link: { url: 'https://www.sista4good.com/', label: 'Découvrir Sista4good' } },
-  { id: 'cantines', name: 'Les Petites Cantines', photo: '/foto/cantine.webp', focus: 'center 50%', details: ['30 personnes', '32 m² + terrasse de 30 m²', 'Cantine solidaire à prix libre'], note: 'Privatisable, tarif sur devis.', link: { url: 'https://marseille.lespetitescantines.org/', label: 'Voir Les Petites Cantines' } },
-];
-const requestSpaces = publicSpaces.filter(space => !space.link).map(space => ({ ...spaceById[space.id], name: space.id === 'atelier' ? 'L’Atelier (échange de services)' : space.name }));
+// The cards of « Louer un espace » : the team edits them in its space (« Louer un espace (site) »), see rentalSpaces.js.
+const requestSpacesOf = cards => cards.filter(card => !card.link && spaceById[card.space]).map(card => ({ ...spaceById[card.space], name: card.space === 'atelier' ? 'L’Atelier (échange de services)' : card.name }));
 
 const partners = [
   { name: 'Habitat Alternatif Social', logo: 'has.webp', url: 'https://www.has.asso.fr/' },
@@ -87,17 +78,64 @@ const involvement = [
   { title: 'Les amies de Chez Marthe', photo: '/foto/cantine.webp', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
 ];
 
+// Fait avancer la rangée toute seule (une moitié de la piste en `duration` secondes). Au doigt ou au pavé tactile
+// on peut la faire glisser dans les deux sens ; elle repart 1,5 s après, de là où on l'a laissée. La piste contient
+// deux fois la même série : arrivé au bout d'une moitié on revient d'autant en arrière, sans que cela se voie.
+function useAutoScroll(duration) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof requestAnimationFrame !== 'function') return undefined;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let pos = el.scrollLeft, lastSet = pos, last = performance.now(), frame = 0;
+    let holding = false, hover = false, resumeAt = 0;
+    const half = () => el.scrollWidth / 2;
+    const put = value => { pos = value; el.scrollLeft = value; lastSet = el.scrollLeft; };
+    const tick = now => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      if (!holding && !hover && now >= resumeAt && !el.contains(document.activeElement) && half() > 0) {
+        let next = pos + (half() / duration) * (dt / 1000);
+        if (next >= half()) next -= half();
+        put(next);
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    const onScroll = () => {
+      if (Math.abs(el.scrollLeft - lastSet) < 2) return; // c'est nous qui avons bougé la rangée
+      resumeAt = performance.now() + 1500;
+      const x = el.scrollLeft;
+      if (x >= half()) put(x - half());
+      else if (x <= 0) put(x + half());
+      else { pos = x; lastSet = x; }
+    };
+    const press = () => { holding = true; };
+    const release = () => { holding = false; resumeAt = performance.now() + 1500; };
+    const enter = event => { if (event.pointerType === 'mouse') hover = true; };
+    const leave = () => { hover = false; };
+    const listeners = [['scroll', onScroll], ['touchstart', press], ['touchend', release], ['touchcancel', release], ['pointerenter', enter], ['pointerleave', leave]];
+    listeners.forEach(([type, fn]) => el.addEventListener(type, fn, { passive: true }));
+    frame = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frame);
+      listeners.forEach(([type, fn]) => el.removeEventListener(type, fn));
+    };
+  }, [duration]);
+  return ref;
+}
+
 // Rangée de logos qui défile de droite à gauche en boucle : l'ensemble est répété pour remplir la largeur,
 // puis le tout est doublé pour que la boucle soit continue. Seule la première série est lue par les lecteurs d'écran.
 function PartnerRow({ items }) {
+  const set = Array.from({ length: Math.max(1, Math.ceil(8 / items.length)) }, () => items).flat();
+  const scroller = useAutoScroll(set.length * 6);
   // Moins de 4 logos : pas de défilement, ils restent fixes et centrés.
   if (items.length < 4) return <div className="marquee marquee-still">
     <ul className="home-partners marquee-track">{items.map(p => <li key={p.name}>
       <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={p.name} title={p.name} loading="lazy" /></a>
     </li>)}</ul>
   </div>;
-  const set = Array.from({ length: Math.max(1, Math.ceil(8 / items.length)) }, () => items).flat();
-  return <div className="marquee" style={{ '--duration': `${set.length * 6}s` }}>
+  return <div className="marquee marquee-moving" ref={scroller}>
     <ul className="home-partners marquee-track">{[0, 1].flatMap(round => set.map((p, i) => {
       const copy = round === 1 || i >= items.length;
       return <li key={`${round}-${i}`} aria-hidden={copy ? 'true' : undefined}>
@@ -535,6 +573,8 @@ const AUTO_SCROLL_SECONDS = 10;
 
 export default function Landing() {
   const [picked, setPicked] = useState(null);
+  const publicSpaces = useRentalSpaces();
+  const requestSpaces = requestSpacesOf(publicSpaces);
   const spacesRef = useRef(null);
   const [spaceActive, setSpaceActive] = useState(0);
   // Téléphone : les espaces se font défiler de côté, un à la fois ; les points montrent lequel est devant.
@@ -622,15 +662,15 @@ export default function Landing() {
       <section id="espaces" className="block" aria-labelledby="espaces-titre">
         <p className="kicker">LOUER UN ESPACE</p>
         <h2 id="espaces-titre">Un lieu pour votre activité</h2>
-        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : '#demande'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : { onClick: () => setPicked({ space: space.id, at: Date.now() }) })}>
+        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : spaceById[space.space] ? '#demande' : '#contact'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : spaceById[space.space] ? { onClick: () => setPicked({ space: space.space, at: Date.now() }) } : {})}>
           <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
           <h3 className="space-title">{space.name}</h3>
           <div className="space-body">
-            <ul className="space-details">{space.details.map(detail => <li key={detail}>{detail}</li>)}</ul>
-            {space.prices && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
+            <ul className="space-details">{(space.details || []).map(detail => <li key={detail}>{detail}</li>)}</ul>
+            {space.prices?.length > 0 && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
             {space.note && <p>{space.note}</p>}
             {space.exchange && <p className="space-exchange">{space.exchange}</p>}
-            <span className="space-cta">{space.link ? `${space.link.label} ↗` : 'Faire une demande →'}</span>
+            <span className="space-cta">{space.link ? `${space.link.label} ↗` : spaceById[space.space] ? 'Faire une demande →' : 'Nous contacter →'}</span>
           </div>
         </a>)}</div>
         <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>

@@ -1,6 +1,10 @@
+import base64
 import io
+import json
+import re
 import zipfile
 
+import mailer
 import modeles
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
@@ -130,3 +134,115 @@ def test_price_list_is_checked(client_as):  # noqa: F811
     assert team.put("/api/modeles/tarifs", json=bad_id).status_code == 422
     empty_name = {"groups": [{"id": "a", "name": "", "items": []}]}
     assert team.put("/api/modeles/tarifs", json=empty_name).status_code == 422
+
+
+def test_numbers_are_shared_by_the_team_and_follow_the_last_one_used(client_as):  # noqa: F811
+    team, resident, _ = teams(client_as)
+    year = modeles.this_year()
+    assert team.get("/api/modeles/numeros/devis").json() == {"number": f"{year}-001"}
+    taken = team.post("/api/modeles/numeros/devis", json={}).json()
+    assert taken == {"number": f"{year}-001", "next": f"{year}-002"}
+    # A number typed by hand (here a higher one) moves the counter; invoices count apart.
+    team.post("/api/modeles/numeros/devis", json={"number": f"{year}-010"})
+    assert team.get("/api/modeles/numeros/devis").json()["number"] == f"{year}-011"
+    assert team.get("/api/modeles/numeros/facture").json()["number"] == f"{year}-001"
+    # A downloaded document counts as used too.
+    team.post("/api/modeles/facture.pdf", json={**BODY, "number": f"{year}-004"})
+    assert team.get("/api/modeles/numeros/facture").json()["number"] == f"{year}-005"
+    assert resident.get("/api/modeles/numeros/devis").status_code == 403
+    assert team.get("/api/modeles/numeros/contrat").status_code == 404
+
+
+def test_pdf_is_one_page_like_the_template_and_long_lists_go_on(client_as):  # noqa: F811
+    for kind in ("devis", "facture"):
+        pdf = modeles.make_pdf(kind, modeles.Document(**BODY))
+        assert len(re.findall(rb"/Type\s*/Page\b", pdf)) == 1
+        many = {**BODY, "lines": [BODY["lines"][0]] * 30}
+        assert (
+            len(
+                re.findall(
+                    rb"/Type\s*/Page\b",
+                    modeles.make_pdf(kind, modeles.Document(**many)),
+                )
+            )
+            >= 2
+        )
+
+
+SENDING = {
+    "to": "awa@soleil.org",
+    "document": BODY,
+    "event": "Séminaire de rentrée",
+    "event_date": "2026-12-12",
+}
+
+
+def test_a_quote_is_sent_to_the_client_with_its_pdf(client_as, monkeypatch):  # noqa: F811
+    team, resident, _ = teams(client_as)
+    sent = []
+    monkeypatch.setattr(mailer, "configured", lambda: True)
+    monkeypatch.setattr(mailer, "deliver", lambda mail: sent.append(mail) or True)
+    answer = team.post("/api/modeles/devis/envoyer", json=SENDING)
+    assert answer.status_code == 200 and answer.json()["to"] == "awa@soleil.org"
+    mail = sent[0]
+    assert mail["To"] == "awa@soleil.org"
+    assert mail["Subject"] == "Chez Marthe : votre devis n° 2026-014"
+    text = mail.get_body(("plain",)).get_content()
+    assert "Bonjour Association Soleil & Co" in text
+    assert (
+        "340,50\xa0€" in text
+        and "samedi 12 décembre 2026" in text
+        and "Séminaire de rentrée" in text
+    )
+    (attachment,) = mail.iter_attachments()
+    assert attachment.get_filename() == "Devis 2026-014.pdf"
+    assert attachment.get_content().startswith(b"%PDF")
+    # The invoice says what is left to pay, after the deposit.
+    team.post("/api/modeles/facture/envoyer", json=SENDING)
+    assert "240,50\xa0€" in sent[1].get_body(("plain",)).get_content()
+    assert sent[1]["Subject"] == "Chez Marthe : facture n° 2026-014"
+    assert resident.post("/api/modeles/devis/envoyer", json=SENDING).status_code == 403
+    bad = team.post(
+        "/api/modeles/devis/envoyer", json={**SENDING, "to": "pas-une-adresse"}
+    )
+    assert bad.status_code == 422
+
+
+def test_without_a_mail_service_nothing_is_sent_and_the_team_is_told(
+    client_as,  # noqa: F811
+    monkeypatch,
+):
+    team, _, _ = teams(client_as)
+    monkeypatch.setattr(mailer, "configured", lambda: False)
+    answer = team.post("/api/modeles/devis/envoyer", json=SENDING)
+    assert answer.status_code == 503
+    assert "pas encore branché" in answer.json()["detail"]
+
+    def broken(mail):
+        raise OSError("smtp down")
+
+    monkeypatch.setattr(mailer, "configured", lambda: True)
+    monkeypatch.setattr(mailer, "deliver", broken)
+    assert team.post("/api/modeles/devis/envoyer", json=SENDING).status_code == 502
+
+
+def test_resend_gets_the_pdf_as_an_attachment(monkeypatch):
+    calls = []
+
+    class Answer:
+        def close(self):
+            pass
+
+    monkeypatch.setenv("RESEND_API_KEY", "test")
+    monkeypatch.setattr(
+        mailer.urllib.request,
+        "urlopen",
+        lambda request, timeout: calls.append(request) or Answer(),
+    )
+    sending = modeles.Sending(**SENDING)
+    assert mailer.deliver(modeles.document_mail("devis", sending))
+    payload = json.loads(calls[0].data)
+    assert payload["to"] == ["awa@soleil.org"]
+    assert "340,50\xa0€" in payload["text"]
+    assert payload["attachments"][0]["filename"] == "Devis 2026-014.pdf"
+    assert base64.b64decode(payload["attachments"][0]["content"]).startswith(b"%PDF")

@@ -1,6 +1,6 @@
 # À faire — Chez Marthe
 
-Dernière mise à jour : 12 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (contexte de travail complet).
+Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (contexte de travail complet).
 
 ## Où en est la mise en ligne (VM Google Cloud `marthe`, adresse de test https://34-155-50-2.sslip.io)
 
@@ -11,6 +11,7 @@ Dernière mise à jour : 12 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 - [ ] **Vérifier sur le PC avant de garder le paquet 3** : sur ordinateur la première partie des pages change un peu par rapport au paquet 2 (photo HD recadrée, plus de halo derrière les textes, 5 évènements au plus, pastille « Notre manifeste » sous les cartes, titres de presse en entier). Ce sont des demandes validées en aperçu, mais à regarder sur le vrai site.
 - [ ] **Paquet 5** (demandes de l'équipe du 11 novembre : lien d'inscription des évènements, équipe du lieu sur l'accueil, Coworking et Cantine à louer, associations du lieu, ordre de l'équipe) : fusionné dans `main` le 12 novembre ; **reste** : mise sur la VM (voir le paquet 4, même procédure). Étiquette de retour : `pre-richieste-equipe-2026-11`.
 - [ ] **Paquet 4** (Factures et devis : tarifs à cliquer, aperçu en direct, tarifs modifiables) : fusionné dans `main` (commit `652d52b`) ; **reste** : sauvegarde, `git pull`, build et bascule sur la VM. Étiquette de retour : `pre-devis-tarifs-2026-11`.
+- [ ] **Paquet 6** (fenêtre Comptabilité des évènements, PDF identiques aux modèles, page « Financeurs potentiels » avec conseils et mécènes, modèle de message aux financeurs, cartes « Louer un espace » modifiables par l'équipe, logos des partenaires à faire glisser au doigt) : poussé sur `main` le 16 novembre ; **reste** : la bascule sur la VM (procédure habituelle). Étiquette de retour : `pre-paquet6-2026-11`. Pas de variable nouvelle ; l'envoi des devis et factures par e-mail marchera dès que le service e-mail sera branché (`SMTP_*` ou `RESEND_API_KEY`, voir plus bas).
 - [ ] Brancher les **noms de domaine** : `chezmarthe.org` et `.site` ne pointent pas encore vers la VM (voir plus bas).
 - [ ] La branche locale `design` et le dépôt d'aperçu `chezmarthe-temp2` ne sont plus la référence : tout ce qui est en ligne vient de `main`. Décider quoi faire de `design` (reprendre depuis `main`, ou l'abandonner). Les validations de temp2 n'ont **pas** été poussées (limite de 100 déploiements par jour sur Vercel).
 
@@ -25,15 +26,34 @@ Dernière mise à jour : 12 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 - [ ] Afficher les 4 agendas Google dans la vue « Mois » du calendrier de l'équipe (l'API `/api/agenda` est prête, réservée à l'équipe).
 - [ ] **Programmation en temps réel** (notifications push Google Calendar) : une fois `chezmarthe.org` relié à la VM, enregistrer le domaine comme vérifié dans la console Google Cloud, créer un point d'entrée HTTPS qui reçoit l'avis « un évènement a changé », vider la mémoire et relire l'agenda. Renouveler l'abonnement automatiquement (il expire au bout d'environ 7 jours). En attendant, le site relit l'agenda au plus toutes les minutes. Coût Google : aucun.
 
+## Financeurs potentiels (espace équipe)
+
+- [x] Page « Financeurs potentiels » (paquet 6), sous « Financements » : les quatre onglets du fichier de prospection de l'équipe (Google Sheets « Répertoire financeurs », « Appels et échéances », « Stratégie de financement », « Mode d'emploi »), en tableaux modifiables comme celui des financements (cellules, colonnes, tri, couleurs), avec recherche et filtres (statut, adéquation). Colonnes de suivi ajoutées comme le demande le mode d'emploi : contact, dernier échange, relance, montant demandé, montant obtenu ; « Date limite » pour les appels (les échéances à moins de 45 jours s'affichent en haut). Le bouton « Demander un financement » d'une ligne l'ajoute au tableau de bord « Financements ». Export Excel des quatre onglets.
+- [x] Recherche sur internet (16 novembre 2026) : 18 financeurs ajoutés au répertoire et 6 appels français dans « Appels et échéances » (lignes en bleu « ciel »), et onglet « Appels européens » (15 lignes : DAPHNE, CERV, New European Bauhaus, Erasmus+, FSE+, Interreg, LIFE, FEDER…). Tout est à vérifier sur le site de chaque financeur avant de déposer.
+- [x] Deuxième recherche (16 novembre 2026) : 201 financeurs au répertoire (lignes bleues = ajouts), onglet « Appels français » (28 appels : DRAC Culture et lien social 13 janvier 2027, CEDRE Région Sud 11 décembre 2026, Contrat de ville investissement 30 décembre 2026…). Colonnes « Site / lien », « Contact direct (e-mail) », « LinkedIn » et « Points de vigilance » placées au début de chaque tableau.
+- [ ] Contacts : e-mails cherchés pour 32 organisations (« Non trouvé » si rien de publié), pages LinkedIn pour 14 ; les autres lignes disent « À chercher ». Pour les profils LinkedIn des personnes, il faut un accès LinkedIn (connecteur ou recherche à la main).
+- [x] Onglet « Mécènes et investisseurs » (21 lignes, Marseille et toute la France) : philanthropes et cercles de mécènes pour l'association (DAPAT, Entreprendre pour toi, Sisley-d'Ornano, Femmes Ensemble…), business angels seulement pour le volet B (une association ne peut pas recevoir de capital).
+- [x] Colonne « Conseils » dans tous les tableaux de « Financeurs potentiels » : ce que fait le financeur et ce que Chez Marthe met en avant ; écrit à la main pour 22 pistes principales, composé à partir de la ligne pour les autres ; s'ouvre dans une fenêtre et se réécrit.
+- [ ] Nuit du Bien Commun : à discuter en équipe avant de candidater (appels au boycott en 2025, liés au projet politique de son cofondateur).
+- [ ] Urgent si intéressant : New European Bauhaus « réutiliser des lieux vacants » et « sans-abrisme » (dépôt le 1er décembre 2026, seulement en rejoignant un consortium) ; Interreg Euro-MED (30 novembre 2026).
+- [ ] DAPHNE : l'appel 2026 est clos (3 novembre 2026) ; 29 M€ prévus en 2027. Chercher des partenaires européens et surveiller les sous-subventions des intermédiaires en 2027.
+- [ ] Données de départ : le fichier tel qu'il était le 16 novembre 2026. Au premier chargement sur la VM, les tableaux partent de ce fichier ; ensuite ils vivent sur le site (le Google Sheets n'est plus mis à jour automatiquement).
+- [ ] Plus tard, si utile : import d'un fichier Excel dans cette page, rappels par e-mail à la date de relance (comme pour les financements).
+
 ## Factures et devis (espace équipe)
 
 - [x] Menu « Factures et devis » : créer un devis ou une facture avec **tarifs à cliquer** (Chapelle, Salon collectif / Séminaire, Bureau, Atelier, ligne libre), **aperçu en direct** du document, numéro automatique, téléchargement en Word et en PDF ; éditeur de document avec devis et facture déjà écrits (champs `<<…>>` à remplacer). Rien n'est enregistré sur le serveur, sauf les tarifs.
 - [x] **Tarifs modifiables** depuis la page (nom, prix, ajouter/retirer, groupes, retour aux tarifs d'origine), partagés par l'équipe.
 - [ ] **Ouvrir un fichier Word téléchargé dans Word** une fois, pour vérifier la mise en page (la fabrication a été contrôlée dans le fichier, pas dans Word).
-- [ ] Le PDF est dessiné par le serveur : il n'est pas identique au Word. Si vous avez des PDF exportés depuis Word, on peut les utiliser comme modèles.
-- [ ] Plus tard : mémoire des clients, historique des devis/factures enregistrés dans l'espace équipe, numérotation partagée par l'équipe (aujourd'hui dans le navigateur), nature de prestation différente par ligne, éditeur avec images et tableaux libres, version téléphone de la page.
+- [x] **Fenêtre « Comptabilité » d'un évènement** (paquet 6) : depuis la fiche de l'évènement, devis prérempli (organisateur, évènement, espace, date), modifiable et enregistré automatiquement dans l'évènement ; « Devis accepté » (qui, quand) ; puis « Émettre la facture », qui reprend le devis (acompte modifiable). Envoi au client par e-mail avec le PDF joint ; le texte des deux e-mails se modifie dans la page Messages (« Factures et devis »). La confirmation d'une location attend le devis accepté. Onglet « Suivi des évènements » dans « Factures et devis ».
+- [x] **Numérotation partagée par l'équipe** (sur le serveur, par année : `2026-001`…), pour les devis et les factures, aussi depuis la page « Factures et devis ».
+- [x] **PDF identiques aux modèles** Word de l'association (mêmes polices Roboto, couleurs, tableau gris, cadre d'acceptation, pied de page légal) ; l'aperçu à l'écran suit la même mise en page.
+- [ ] Envoi par e-mail : à essayer pour de vrai une fois le service e-mail branché (un devis envoyé à une adresse de l'équipe). Voir si le script actuel du tableau Google (publipostage) envoie un texte particulier à reprendre dans la page Messages, et si l'équipe veut une copie de chaque envoi.
+- [ ] Plus tard : mémoire des clients (adresse postale), « facture payée », nature de prestation différente par ligne, éditeur avec images et tableaux libres, version téléphone de la page.
 
 ## Site public
+
+- [x] Cartes « Louer un espace » : l'équipe les ajoute, modifie (nom, photo, informations, tarifs, note, bouton), range et supprime dans « Louer un espace (site) » ; visibles tout de suite sur la page d'accueil. Les photos envoyées sont gardées dans la base de données.
 
 ### Fait
 - [x] Page d'accueil refaite : première image en HD, schémas de couleurs, sections à hauteur d'écran sur ordinateur et sur téléphone, flèche pour descendre, descente automatique après 10 s sans action (`AUTO_SCROLL_SECONDS` dans `Landing.jsx`), retour au premier écran quand on recharge.

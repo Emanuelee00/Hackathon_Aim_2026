@@ -18,8 +18,10 @@ export const navigation = [
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
+  { id: 'prospection', label: 'Financeurs potentiels', icon: 'target' },
   { id: 'messages', label: 'Messages', icon: 'mail' },
   { id: 'quotes', label: 'Factures et devis', icon: 'file' },
+  { id: 'rentals', label: 'Louer un espace (site)', icon: 'space' },
 ];
 
 export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {

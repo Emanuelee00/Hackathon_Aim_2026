@@ -1,12 +1,12 @@
 // Width and order of the funders table's columns, in pixels.
-// Columns whose content has a set size: the date field, the state menu, the row actions.
-const FIXED = ['deadline', 'status', 'card'];
+// Columns whose content has a set size: the date field, the state menu, the row actions (other tables give their own).
+const FIXED_DEFAULT = ['deadline', 'status', 'card'];
 export const MIN_COLUMN = 50;
 
 export const totalWidth = widths => Object.values(widths).reduce((sum, width) => sum + width, 0);
 
 // The text columns grow or shrink in proportion; the fixed ones keep their width.
-export function scaleWidths(widths, total) {
+export function scaleWidths(widths, total, FIXED = FIXED_DEFAULT) {
   const fixed = totalWidth(Object.fromEntries(Object.entries(widths).filter(([key]) => FIXED.includes(key))));
   const ratio = Math.max(0, total - fixed) / (totalWidth(widths) - fixed);
   const scaled = Object.fromEntries(Object.entries(widths).map(([key, width]) => [key, FIXED.includes(key) ? width : Math.max(MIN_COLUMN, Math.floor(width * ratio))]));

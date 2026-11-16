@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tableMath.js';
+import { moveColumn, resizeWithNeighbour, scaleWidths as scaleTo, totalWidth } from './tableMath.js';
 
-const KEY = 'marthe-funding-table-v4';
 // The table's columns: key, heading, starting share of the width (in pixels at 1212 px).
 export const columns = [['name', 'Financeur', 200], ['type', 'Type', 100], ['amount', 'Montant', 140], ['deadline', 'Échéance', 160], ['obtained', 'Obtenu le', 160], ['followup', 'Relance le', 160], ['status', 'État', 150], ['owner', 'Resp.', 70], ['next', 'Prochaine action', 170], ['card', '', 110]];
-const defaults = Object.fromEntries(columns.map(([key, , width]) => [key, width]));
-const movable = columns.map(([key]) => key).filter(key => key !== 'card');
+// The funders table; other tables (« Financeurs potentiels ») give their own: where the layout is kept, columns, fixed widths, sortable columns.
+const FUNDERS = { storageKey: 'marthe-funding-table-v4', columns, fixed: ['deadline', 'status', 'card'] };
 const MIN_TABLE = 480;
 // A border dropped this close to its usual place snaps back in line with the other panels.
 const SNAP = 16;
 // The table's panel around it: padding and border, left and right.
 export const PANEL_CHROME = 50;
 
-function savedLayout() {
+function savedLayout(KEY, movable, defaults) {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY)) || {};
     const order = saved.order?.length === movable.length && movable.every(key => saved.order.includes(key)) ? saved.order : movable;
@@ -23,8 +22,12 @@ function savedLayout() {
 }
 
 // Widths, order and column colours chosen in this browser; until then the table fills the page's width.
-export default function useTableLayout(slot) {
-  const [layout, setLayout] = useState(savedLayout);
+export default function useTableLayout(slot, config = FUNDERS) {
+  const { storageKey: KEY, fixed } = config;
+  const defaults = Object.fromEntries(config.columns.map(([key, , width]) => [key, width]));
+  const movable = config.columns.map(([key]) => key).filter(key => key !== 'card');
+  const scaleWidths = (from, total) => scaleTo(from, total, fixed);
+  const [layout, setLayout] = useState(() => savedLayout(KEY, movable, defaults));
   const [available, setAvailable] = useState(0);
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => setAvailable(Math.floor(entry.contentRect.width)));
@@ -35,7 +38,8 @@ export default function useTableLayout(slot) {
     try { localStorage.setItem(KEY, JSON.stringify(layout)); }
     catch { /* The layout remains for this visit. */ }
   }, [layout]);
-  const widths = layout.widths || (available ? scaleWidths(defaults, available - PANEL_CHROME) : defaults);
+  // A table with many columns (fit: false) keeps its widths and scrolls sideways instead of squeezing them.
+  const widths = layout.widths || (available && config.fit !== false ? scaleWidths(defaults, available - PANEL_CHROME) : defaults);
   const change = patch => setLayout(current => ({ ...current, ...patch }));
   const drag = (event, resize) => {
     event.preventDefault();
@@ -68,6 +72,7 @@ export default function useTableLayout(slot) {
     startLeft: (event, minOffset) => { const [from, fromOffset] = [widths, offset]; drag(event, delta => resizeFromLeft(totalWidth(from) - delta, minOffset, from, fromOffset)); },
     move: (key, target) => change({ order: moveColumn(layout.order, key, target) }),
     sort: layout.sort || null,
+    sortable: config.sortable,
     // Like a shop listing: ascending, then descending, then the table's own order.
     sortBy: key => change({ sort: layout.sort?.key !== key ? { key, direction: 'asc' } : layout.sort.direction === 'asc' ? { key, direction: 'desc' } : null }),
     colorColumn: (key, color) => change({ colors: { ...layout.colors, [key]: color } }),

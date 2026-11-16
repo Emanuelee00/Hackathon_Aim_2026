@@ -1,32 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useStore } from '../../app/store.jsx';
 import { PageIntro } from '../../shared/components/Primitives.jsx';
+import { spaceById } from '../../shared/data/spaces.js';
+import { dateLabel } from '../../shared/lib/format.js';
+import { describe } from './accounting.js';
 import DocBuilder from './DocBuilder.jsx';
+import { usePriceList } from './documentsApi.js';
 import Editor from './Editor.jsx';
-import { defaultGroups } from './priceList.js';
 import './quotes.css';
 
-// « Factures et devis » : créer un devis ou une facture (tarifs à cliquer, aperçu en direct), ou écrire librement dans l'éditeur ; téléchargement en Word ou PDF.
-const kinds = { devis: 'Devis', facture: 'Facture', editeur: 'Document libre' };
+// « Factures et devis » : le suivi des devis et factures des évènements, créer un devis ou une facture à part (tarifs à cliquer,
+// aperçu en direct), ou écrire librement dans l'éditeur ; téléchargement en Word ou PDF.
+const kinds = { suivi: 'Suivi des évènements', devis: 'Devis', facture: 'Facture', editeur: 'Document libre' };
 
-async function ask(method, body) {
-  const response = await fetch('/api/modeles/tarifs', { method, headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify({ groups: body }) : undefined }).catch(() => null);
-  if (!response) throw new Error('Le serveur est injoignable. Réessayez dans un instant.');
-  if (!response.ok) throw new Error(response.status === 422 ? 'Vérifiez les tarifs : chaque nom est obligatoire et chaque prix doit être un nombre positif.' : 'L’enregistrement a échoué.');
-  return response.json();
+function Follow({ onOpen }) {
+  const { events } = useStore();
+  const withAccounts = events.filter(event => event.accounting?.quote || event.accounting?.invoice).sort((a, b) => b.date.localeCompare(a.date));
+  if (!withAccounts.length) return <p className="doc-hint">Aucun devis pour l’instant. Ouvrez un évènement (Demandes ou Calendrier) puis « Comptabilité » pour préparer son devis ; il apparaîtra ici.</p>;
+  return <ul className="account-list">{withAccounts.map(event => <li key={event.id}>
+    <button type="button" onClick={() => onOpen(event.id)}>
+      <strong>{event.title}</strong>
+      <span>{event.organizer} · {dateLabel(event.date)} · {spaceById[event.space]?.name}</span>
+      <span>{describe('devis', event.accounting.quote)}</span>
+      <span>{describe('facture', event.accounting.invoice)}</span>
+    </button>
+  </li>)}</ul>;
 }
 
-export default function Quotes() {
-  const [kind, setKind] = useState('devis');
-  const [groups, setGroups] = useState(defaultGroups); // les tarifs de l'équipe s'ils ont été changés, sinon ceux d'origine
-  useEffect(() => { ask('GET').then(data => { if (data.groups) setGroups(data.groups); }).catch(() => {}); }, []);
-  const savePrices = async next => { const data = await ask('PUT', next); setGroups(data.groups); };
-  const resetPrices = async () => { await ask('DELETE'); setGroups(defaultGroups); };
+export default function Quotes({ onAccounting }) {
+  const [kind, setKind] = useState('suivi');
+  const prices = usePriceList();
   return <>
-    <PageIntro eyebrow="ESPACE ÉQUIPE · FACTURES ET DEVIS" title="Factures et devis" description="Choisissez les tarifs en un clic, vérifiez l’aperçu, puis téléchargez le document en Word ou en PDF." />
+    <PageIntro eyebrow="ESPACE ÉQUIPE · FACTURES ET DEVIS" title="Factures et devis" description="Le devis et la facture de chaque évènement se préparent dans sa fenêtre Comptabilité. Ici : leur suivi, et des documents à part." />
     <div className="doc-tabs" role="tablist">{Object.entries(kinds).map(([id, label]) => <button key={id} type="button" role="tab" aria-selected={kind === id} className={`doc-tab${kind === id ? ' active' : ''}`} onClick={() => setKind(id)}>{label}</button>)}</div>
+    {kind === 'suivi' && <Follow onOpen={onAccounting} />}
     {/* Les deux modèles restent en mémoire quand on change d'onglet. */}
-    <div hidden={kind !== 'devis'}><DocBuilder kind="devis" groups={groups} onSavePrices={savePrices} onResetPrices={resetPrices} /></div>
-    <div hidden={kind !== 'facture'}><DocBuilder kind="facture" groups={groups} onSavePrices={savePrices} onResetPrices={resetPrices} /></div>
+    <div hidden={kind !== 'devis'}><DocBuilder kind="devis" groups={prices.groups} onSavePrices={prices.save} onResetPrices={prices.reset} /></div>
+    <div hidden={kind !== 'facture'}><DocBuilder kind="facture" groups={prices.groups} onSavePrices={prices.save} onResetPrices={prices.reset} /></div>
     {kind === 'editeur' && <Editor />}
   </>;
 }

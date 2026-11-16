@@ -18,7 +18,21 @@ SQLITE_PATH = (
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"
 )
-Key = Literal["events", "matches", "partners", "visitSlots", "laughs", "funders"]
+# "prospects", "prospectCalls", "fundingStrategy", "euCalls", "frCalls" and "patrons": the page « Financeurs potentiels » (funding/prospection.py).
+Key = Literal[
+    "events",
+    "matches",
+    "partners",
+    "visitSlots",
+    "laughs",
+    "funders",
+    "prospects",
+    "prospectCalls",
+    "fundingStrategy",
+    "euCalls",
+    "frCalls",
+    "patrons",
+]
 
 
 def execute(sql: str, params: tuple = ()) -> list[tuple]:

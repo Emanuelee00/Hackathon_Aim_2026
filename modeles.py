@@ -1,27 +1,34 @@
 """« Factures et devis »: the team fills in a quote or an invoice on the site, then downloads it in Word (to adjust) or PDF.
 
 The Word file is the association's own template (modeles/trame-*.docx) with its <<fields>> replaced, so the layout stays the same.
-The PDF is drawn here with the same content. Totals are always computed on the server. Documents are not stored; only the price list
-(the rates to click) is, as a document of the store.
+The PDF is drawn here as the same page. Totals are always computed on the server. The documents themselves are kept with their event
+(the « Comptabilité » window, in the events of the store); here are kept the price list (the rates to click) and the last number used
+for each kind and year, shared by the whole team. A quote or an invoice can also be e-mailed to the client with its PDF attached.
 """
 
 import datetime as dt
+import logging
 import re
 import zipfile
+from email.message import EmailMessage
 from io import BytesIO
 from pathlib import Path
 from typing import Annotated
 from urllib.parse import quote
 from xml.sax.saxutils import escape
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from fpdf import FPDF
 from pydantic import BaseModel, ConfigDict, Field
 
+import mailer
+import messages
 import store
 from accounts.models import User
 from accounts.sessions import team_member
+from sharing.confirmations import french_date
 
 FOLDER = Path(__file__).parent / "modeles"
 FORMATS = {
@@ -40,9 +47,9 @@ VAT_NOTE = "Tva non applicable, article 293 B du CGI"
 IBAN = ("IBAN : FR76 1027 8089 7200 0220 7280 129", "BIC : CMCIFR2A")
 INVOICE_TERMS = (
     "Conditions de paiement : paiement à réception de facture, à 30 jours. Aucun escompte consenti pour règlement anticipé. "
-    "Tout incident de paiement est passible d’intérêt de retard. Le montant des pénalités résulte de l’application aux sommes "
-    "restant dues d’un taux d’intérêt légal en vigueur au moment de l’incident. Indemnité forfaitaire pour frais de "
-    "recouvrement due au créancier en cas de retard de paiement : 40 €"
+    "Tout incident de paiement est passible d'intérêt de retard. Le montant des pénalités résulte de l'application aux sommes "
+    "restant dues d'un taux d'intérêt légal en vigueur au moment de l'incident. Indemnité forfaitaire pour frais de "
+    "recouvrement due au créancier en cas de retard de paiement: 40€"
 )
 router = APIRouter(prefix="/api/modeles")
 Team = Annotated[User, Depends(team_member)]
@@ -163,151 +170,195 @@ def fill_docx(kind: str, document: Document) -> bytes:
     return output.getvalue()
 
 
-# ---------- PDF ----------
+# ---------- PDF: the same page as the Word templates (positions, fonts and colours measured on them) ----------
 
-VIOLET = (104, 42, 127)
-GREY = (217, 217, 217)
+VIOLET = (104, 42, 127)  # 682a7f
+GREY = (217, 217, 217)  # d9d9d9, head of the table
+BORDER = (192, 192, 192)  # c0c0c0
+INK = (31, 31, 31)  # 1f1f1f, the client
+NOTE = (128, 128, 128)  # 808080, the invoice terms
+FOOTER = (
+    (
+        "Chez Marthe / Association Loi 1901 enregistrée sous le N° W133041303 à la préfecture des Bouches-du-Rhône- "
+        "N° Siret 100 396 464 00016"
+    ),
+    "Catégorie juridique : 9220 Association déclarée  -  contact.chezmarthe@gmail.com",
+)
+# Word's table columns (twips → mm): the invoice has a narrower « Quantité ».
+COLUMNS = {"devis": (77.5, 31.2, 31.5, 31.2), "facture": (77.5, 26.7, 36.0, 31.2)}
+LEFT, RIGHT = 20, 190
+PAD = 1.9  # inner margin of a table cell
+
+
+class Page(FPDF):
+    def footer(self) -> None:
+        self.set_font("Roboto", "", 7)
+        self.set_text_color(51, 51, 51)
+        for top, text in zip((278.0, 281.1), FOOTER, strict=True):
+            self.set_xy(LEFT, top)
+            self.cell(RIGHT - LEFT, 3.2, text, align="C")
 
 
 def make_pdf(kind: str, document: Document) -> bytes:
     amounts = totals(document)
-    pdf = FPDF(format="A4")
-    pdf.set_margins(20, 12, 20)
-    pdf.set_auto_page_break(True, 18)
-    pdf.add_font("Sans", "", str(FOLDER / "fonts" / "DejaVuSans.ttf"))
-    pdf.add_font("Sans", "B", str(FOLDER / "fonts" / "DejaVuSans-Bold.ttf"))
+    pdf = Page(format="A4")
+    pdf.set_margins(LEFT, 15, 210 - RIGHT)
+    pdf.set_auto_page_break(True, 19)
+    fonts = FOLDER / "fonts"
+    pdf.add_font("Roboto", "", str(fonts / "Roboto-Regular.ttf"))
+    pdf.add_font("Roboto", "B", str(fonts / "Roboto-Bold.ttf"))
+    pdf.add_font("Roboto", "I", str(fonts / "Roboto-Italic.ttf"))
+    pdf.add_font("Arial", "", str(fonts / "LiberationSans-Regular.ttf"))
+    pdf.add_font("Arial", "B", str(fonts / "LiberationSans-Bold.ttf"))
+    pdf.set_line_width(0.18)
     pdf.add_page()
-    pdf.image(str(FOLDER / "logo.jpg"), x=20, y=12, w=38)
-    pdf.set_xy(20, 18)
-    pdf.set_font("Sans", "B", 20)
+
+    def write(
+        x: float, baseline: float, text: str, style: str = "", size: float = 12
+    ) -> float:
+        pdf.set_font("Roboto", style, size)
+        pdf.text(x, baseline, text)
+        return x + pdf.get_string_width(text)
+
+    def right(
+        edge: float, baseline: float, text: str, style: str = "", size: float = 12
+    ) -> None:
+        pdf.set_font("Roboto", style, size)
+        pdf.text(edge - pdf.get_string_width(text), baseline, text)
+
+    # Head: logo, title and date, the association, the client.
+    pdf.image(str(FOLDER / "logo.jpg"), x=LEFT, y=20.3, w=38.9)
+    title_x = 117.1 if kind == "devis" else 99.5
     pdf.set_text_color(*VIOLET)
-    pdf.cell(
-        0,
-        10,
-        f"{TITLES[kind]} n° {document.number}",
-        align="R",
-        new_x="LMARGIN",
-        new_y="NEXT",
-    )
-    pdf.set_font("Sans", "", 10)
-    pdf.set_text_color(31, 31, 31)
-    pdf.cell(
-        0,
-        6,
-        f"Date : {long_date(document.date)}",
-        align="R",
-        new_x="LMARGIN",
-        new_y="NEXT",
-    )
+    write(title_x, 40.4, f"{TITLES[kind]} n° {document.number}", "B", 20)
+    after = write(title_x, 45.4, "Date :", "B")
+    write(after, 45.4, f" {long_date(document.date)}")
+    top = 55.4 if kind == "devis" else 60.6
+    for index, text in enumerate(ISSUER[:4]):
+        write(LEFT, top + index * 5.1, text, "B")
+    after = write(LEFT, top + 4 * 5.1, "SIRET : ", "B")
+    write(after, top + 4 * 5.1, ISSUER[4].removeprefix("SIRET : "), "B", 9.5)
+    pdf.set_text_color(*INK)
+    client = [
+        document.name,
+        document.address,
+        f"{document.postal_code} {document.city}".strip(),
+    ]
+    for index, text in enumerate(part for part in client if part):
+        write(119.2, 100.7 + index * 5.8, text)
 
-    top = 62
-    pdf.set_xy(20, top)
-    pdf.set_font("Sans", "B", 10)
-    pdf.cell(85, 6, ISSUER[0], new_x="LMARGIN", new_y="NEXT")
-    pdf.set_font("Sans", "", 10)
-    for text in ISSUER[1:]:
-        pdf.cell(85, 6, text, new_x="LMARGIN", new_y="NEXT")
-    pdf.set_xy(115, top)
-    pdf.multi_cell(
-        75,
-        6,
-        "\n".join(
-            part
-            for part in (
-                document.name,
-                document.address,
-                f"{document.postal_code} {document.city}".strip(),
-            )
-            if part
-        ),
-    )
-
-    pdf.set_xy(20, 104)
-    widths = (84, 24, 32, 30)
-    pdf.set_fill_color(*VIOLET)
-    pdf.set_text_color(255, 255, 255)
-    pdf.set_font("Sans", "B", 10)
-    for label, width, align in zip(
-        ("Désignation", "Quantité", "Prix unit HT", "Total"),
+    # The table of benefits.
+    widths = COLUMNS[kind]
+    pdf.set_draw_color(*BORDER)
+    pdf.set_text_color(0, 0, 0)
+    pdf.set_xy(LEFT, 124.1)
+    pdf.set_fill_color(*GREY)
+    for (label, size), width, align in zip(
+        (("Désignation", 11), ("Quantité", 11), ("Prix unit HT", 10), ("Total", 10)),
         widths,
-        "LRRR",
+        "LCCC",
         strict=True,
     ):
-        pdf.cell(width, 8, label, fill=True, align=align)
-    pdf.ln(8)
-    pdf.set_text_color(31, 31, 31)
-    pdf.set_font("Sans", "", 10)
-    if document.nature:
-        pdf.set_font("Sans", "B", 10)
+        pdf.set_font("Roboto", "", size)
         pdf.cell(
-            sum(widths), 8, document.nature, border="B", new_x="LMARGIN", new_y="NEXT"
+            width,
+            8,
+            f" {label}" if align == "L" else label,
+            border=1,
+            fill=True,
+            align=align,
         )
-        pdf.set_font("Sans", "", 10)
-    for line, total in zip(document.lines, amounts["rows"], strict=True):
-        start = pdf.get_y()
+    pdf.ln(8)
+    if document.nature:
+        pdf.set_font("Arial", "", 11)
+        pdf.set_x(LEFT)
         pdf.multi_cell(
-            widths[0], 7, line.designation, border="B", new_x="RIGHT", new_y="TOP"
+            sum(widths),
+            8,
+            f" {document.nature}",
+            border=1,
+            new_x="LMARGIN",
+            new_y="NEXT",
         )
-        height = max(7, pdf.get_y() - start)
-        pdf.set_xy(20 + widths[0], start)
-        for text, width in zip(
-            (number(line.quantity), money(cents(line.unit_price)), money(total)),
-            widths[1:],
-            strict=True,
-        ):
-            pdf.cell(width, height, text, border="B", align="R")
-        pdf.set_xy(20, start + height)
+    pdf.set_font("Arial", "", 11)
+    for line, total in zip(document.lines, amounts["rows"], strict=True):
+        texts = (number(line.quantity), money(cents(line.unit_price)), money(total))
+        lines = pdf.multi_cell(
+            widths[0] - 2 * PAD, 5.5, line.designation, dry_run=True, output="LINES"
+        )
+        height = max(10.0, len(lines) * 5.5 + 4)
+        if pdf.will_page_break(height):
+            pdf.add_page()
+        start = pdf.get_y()
+        pdf.rect(LEFT, start, widths[0], height)
+        pdf.set_xy(LEFT + PAD, start + (height - len(lines) * 5.5) / 2)
+        pdf.multi_cell(widths[0] - 2 * PAD, 5.5, line.designation)
+        x = LEFT + widths[0]
+        for text, width, align in zip(texts, widths[1:], "CCR", strict=True):
+            pdf.set_xy(x, start)
+            pdf.cell(
+                width,
+                height,
+                f"{text} " if align == "R" else text,
+                border=1,
+                align=align,
+            )
+            x += width
+        pdf.set_xy(LEFT, start + height)
 
-    pdf.ln(6)
-    rows = [("Total Hors Taxe", money(amounts["total"]), False)]
+    # Totals, VAT note.
+    rows = [("Total Hors Taxe", money(amounts["total"]))]
     if kind == "facture":
         rows += [
-            ("Acompte versé", money(amounts["deposit"]), False),
-            ("Total HT à payer", money(amounts["due"]), False),
+            ("Acompte versé", money(amounts["deposit"])),
+            ("Total HT à payer", money(amounts["due"])),
         ]
     rows.append(
         (
             "Total TTC en euros",
             money(amounts["due"] if kind == "facture" else amounts["total"]),
-            True,
         )
     )
-    for label, text, bold in rows:
-        pdf.set_x(100)
-        pdf.set_font("Sans", "B" if bold else "", 10)
-        pdf.set_fill_color(*GREY)
-        pdf.cell(45, 8, label, fill=True)
-        pdf.cell(45, 8, text, align="R", new_x="LMARGIN", new_y="NEXT")
-    pdf.set_font("Sans", "", 8.5)
-    pdf.set_text_color(128, 128, 128)
-    pdf.cell(0, 8, VAT_NOTE, align="R", new_x="LMARGIN", new_y="NEXT")
-    pdf.set_text_color(31, 31, 31)
+    # What follows the table must stay on one page, above the footer (it starts at 278 mm).
+    below_vat = 53 if kind == "devis" else 58
+    if pdf.get_y() + 5.5 + len(rows) * 10 + 9 + below_vat > 277:
+        pdf.add_page()
+    label_x = 111.8 if kind == "devis" else 90.0
+    y = pdf.get_y() + 5.5
+    for label, text in rows:
+        write(label_x, y + 6.6, label, "B")
+        right(188.4, y + 6.6, text, "B")
+        y += 10
+    vat = y + 9
+    right(188.6, vat, VAT_NOTE, "I")
 
-    pdf.ln(6)
+    # Payment, and the acceptance box (quote) or the payment terms (invoice).
+    pdf.set_text_color(*VIOLET)
+    pay = vat + 20.2
+    write(
+        LEFT,
+        pay,
+        "Modalité de paiement : par virement bancaire"
+        if kind == "devis"
+        else "Paiement par virement",
+        "B",
+    )
+    for index, text in enumerate(IBAN, start=1):
+        write(LEFT, pay + index * 5.1, text)
     if kind == "devis":
-        pdf.set_font("Sans", "", 9)
-        pdf.rect(20, pdf.get_y(), 85, 32)
-        pdf.set_xy(23, pdf.get_y() + 3)
-        pdf.cell(80, 5, "Acceptation de devis (date et signature)")
-        pdf.set_xy(20, pdf.get_y() + 36)
-        pdf.set_font("Sans", "B", 10)
-        pdf.cell(
-            0,
-            6,
-            "Modalité de paiement : par virement bancaire",
-            new_x="LMARGIN",
-            new_y="NEXT",
-        )
+        pdf.set_draw_color(0, 0, 0)
+        pdf.set_line_width(0.2)
+        pdf.rect(112.6, vat + 17, 76.1, 36)
+        pdf.set_text_color(0, 0, 0)
+        pdf.set_font("Arial", "B", 10.5)
+        pdf.set_xy(112.6, vat + 18.5)
+        pdf.cell(76.1, 5, "Acceptation de devis (date et signature)", align="C")
     else:
-        pdf.set_font("Sans", "B", 10)
-        pdf.cell(0, 6, "Paiement par virement", new_x="LMARGIN", new_y="NEXT")
-    pdf.set_font("Sans", "", 10)
-    for text in IBAN:
-        pdf.cell(0, 6, text, new_x="LMARGIN", new_y="NEXT")
-    if kind == "facture":
-        pdf.ln(4)
-        pdf.set_font("Sans", "", 8)
-        pdf.multi_cell(0, 4.5, INVOICE_TERMS)
+        pdf.set_text_color(*NOTE)
+        pdf.set_font("Roboto", "I", 10)
+        pdf.set_xy(LEFT, pay + 2 * 5.1 + 13.4 - 3.2)
+        pdf.c_margin = 0
+        pdf.multi_cell(RIGHT - LEFT, 4.2, INVOICE_TERMS, align="J")
     return bytes(pdf.output())
 
 
@@ -317,6 +368,7 @@ def download(kind: str, extension: str, document: Document, user: Team) -> Respo
     if kind not in TITLES or extension not in FORMATS:
         raise HTTPException(404, "Modèle introuvable.")
     content = (fill_docx if extension == "docx" else make_pdf)(kind, document)
+    record_number(kind, document.number)
     name = f"{TITLES[kind].capitalize()} {document.number}".replace("/", "-")
     return Response(
         content,
@@ -325,6 +377,126 @@ def download(kind: str, extension: str, document: Document, user: Team) -> Respo
             "Content-Disposition": f"attachment; filename*=UTF-8''{quote(name)}.{extension}"
         },
     )
+
+
+# ---------- Numbers shared by the team: « 2026-014 » is the 14th quote (or invoice) of 2026 ----------
+
+NUMBERS_KEY = "document_numbers"
+PARIS = ZoneInfo("Europe/Paris")
+NUMBER = re.compile(r"^(\d{4})-(\d{1,6})$")
+
+
+def last_numbers() -> dict:
+    return store.load_document(NUMBERS_KEY) or {}
+
+
+def this_year() -> int:
+    return dt.datetime.now(PARIS).year
+
+
+def next_number(kind: str, year: int) -> str:
+    return f"{year}-{last_numbers().get(f'{kind}-{year}', 0) + 1:03d}"
+
+
+def record_number(kind: str, number: str) -> None:
+    """Remembers a number that was used, so the next one suggested comes after it."""
+    match = NUMBER.match(number.strip())
+    if not match:
+        return
+    numbers = last_numbers()
+    key = f"{kind}-{match[1]}"
+    numbers[key] = max(numbers.get(key, 0), int(match[2]))
+    store.save_document(NUMBERS_KEY, numbers)
+
+
+def check_kind(kind: str) -> None:
+    if kind not in TITLES:
+        raise HTTPException(404, "Modèle introuvable.")
+
+
+class Used(BaseModel):
+    number: Text = ""
+
+
+@router.get("/numeros/{kind}")
+def suggest_number(kind: str, user: Team) -> dict:
+    """The next number of this year, without taking it."""
+    check_kind(kind)
+    return {"number": next_number(kind, this_year())}
+
+
+@router.post("/numeros/{kind}")
+def take_number(kind: str, used: Used, user: Team) -> dict:
+    """With a number: records it as used. Without: takes the next one of this year (a new document of an event)."""
+    check_kind(kind)
+    number = used.number or next_number(kind, this_year())
+    record_number(kind, number)
+    return {"number": number, "next": next_number(kind, this_year())}
+
+
+# ---------- Sending a quote or an invoice to the client, with its PDF ----------
+
+log = logging.getLogger("marthe.modeles")
+TEMPLATE_OF = {"devis": "quote", "facture": "invoice"}
+Email = Annotated[str, Field(max_length=254, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+
+
+class Sending(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    to: Email
+    document: Document
+    event: Text = ""  # the event's name and date, for the e-mail's text
+    event_date: dt.date | None = None
+
+
+def document_mail(kind: str, sending: Sending) -> EmailMessage:
+    document = sending.document
+    amounts = totals(document)
+    values = {
+        "nom": document.name,
+        "numero": document.number,
+        "montant": money(amounts["due"] if kind == "facture" else amounts["total"]),
+        "evenement": sending.event or document.nature or TITLES[kind].lower(),
+        "date_evenement": french_date(
+            (sending.event_date or document.date).isoformat()
+        ),
+        "contact": messages.contact_address(),
+    }
+    subject, body = messages.current(TEMPLATE_OF[kind])
+    mail = EmailMessage()
+    mail["Subject"] = messages.render(subject, values)
+    mail["From"] = messages.funding_from()
+    mail["To"] = sending.to
+    mail["Reply-To"] = messages.contact_address()
+    mail.set_content(messages.render(body, values))
+    name = f"{TITLES[kind].capitalize()} {document.number}".replace("/", "-")
+    mail.add_attachment(
+        make_pdf(kind, document),
+        maintype="application",
+        subtype="pdf",
+        filename=f"{name}.pdf",
+    )
+    return mail
+
+
+@router.post("/{kind}/envoyer")
+def send(kind: str, sending: Sending, user: Team) -> dict:
+    """E-mails the quote or the invoice to the client, as a PDF, with the team's text from the « Messages » page."""
+    check_kind(kind)
+    if not mailer.configured():
+        raise HTTPException(
+            503,
+            "L’envoi des e-mails n’est pas encore branché : téléchargez le PDF et envoyez-le vous-même.",
+        )
+    try:
+        mailer.deliver(document_mail(kind, sending))
+    except Exception as problem:
+        log.warning("%s %s not sent: %s", kind, sending.document.number, problem)
+        raise HTTPException(
+            502, "L’e-mail n’est pas parti. Réessayez dans un instant."
+        ) from problem
+    record_number(kind, sending.document.number)
+    return {"sent": True, "to": sending.to, "at": dt.datetime.now(dt.UTC).isoformat()}
 
 
 # ---------- Price list (the rates the team clicks to fill a quote or an invoice) ----------

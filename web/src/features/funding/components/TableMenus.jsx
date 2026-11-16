@@ -53,15 +53,15 @@ export function Edge({ label, value, className, step, onDrag, onResize, onReset 
 }
 
 // A heading: drag its title onto another to move the column, sort with the arrows.
-export function Heading({ column, label, layout, drag }) {
+export function Heading({ column, label, layout, drag, sticky = false }) {
   const sorted = layout.sort?.key === column ? layout.sort.direction : null;
   const canDrop = drag.dragging && drag.dragging !== column && column !== 'card';
   const next = { asc: 'décroissant', desc: 'sans tri' }[sorted] || 'croissant';
-  return <th aria-sort={sorted ? `${sorted}ending` : undefined} className={drag.target === column ? 'funding-drop' : ''} style={{ background: rowColors[layout.colors[column]]?.value }}
+  return <th aria-sort={sorted ? `${sorted}ending` : undefined} className={`${drag.target === column ? 'funding-drop' : ''}${sticky ? ' sheet-sticky' : ''}`} style={{ background: rowColors[layout.colors[column]]?.value }}
     onDragOver={event => { if (canDrop) { event.preventDefault(); drag.setTarget(column); } }} onDrop={event => { event.preventDefault(); if (canDrop) layout.move(drag.dragging, column); drag.end(); }}>
     {label ? <div className="funding-th">
       <span className="funding-th-label" draggable title="Glisser pour déplacer la colonne" onDragStart={event => { event.dataTransfer.setData('text/plain', column); event.dataTransfer.effectAllowed = 'move'; drag.setDragging(column); }} onDragEnd={drag.end}>{label}</span>
-      {sortableColumns.includes(column) && <button type="button" className={`funding-sort ${sorted ? 'on' : ''}`} aria-label={`Trier par ${label} : ${next}`} title={`Trier : ${next}`} onClick={() => layout.sortBy(column)}>{{ asc: '▲', desc: '▼' }[sorted] || '↕'}</button>}
+      {(layout.sortable || sortableColumns).includes(column) && <button type="button" className={`funding-sort ${sorted ? 'on' : ''}`} aria-label={`Trier par ${label} : ${next}`} title={`Trier : ${next}`} onClick={() => layout.sortBy(column)}>{{ asc: '▲', desc: '▼' }[sorted] || '↕'}</button>}
       <ColumnMenu column={column} label={label} layout={layout} />
     </div> : <span className="sr-only">Actions</span>}
     {label && <Edge label={`Largeur de la colonne ${label}`} value={layout.widths[column]} step={10} className="funding-resize" onDrag={event => layout.startColumn(column, event)} onResize={width => layout.resizeColumn(column, width)} onReset={layout.reset} />}

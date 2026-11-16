@@ -12,8 +12,11 @@ import Spaces from '../features/spaces/Spaces.jsx';
 import Reports from '../features/reports/Reports.jsx';
 import Stats from '../features/stats/Stats.jsx';
 import Funding from '../features/funding/Funding.jsx';
+import Prospection from '../features/prospection/Prospection.jsx';
+import RentalCards from '../features/rentals/RentalCards.jsx';
 import Messages from '../features/messages/Messages.jsx';
 import Quotes from '../features/quotes/Quotes.jsx';
+import AccountingWindow from '../features/quotes/AccountingWindow.jsx';
 import ReportForm from '../features/reports/components/ReportForm.jsx';
 import Opportunities from '../features/opportunities/Opportunities.jsx';
 import Journeys from '../features/journeys/Journeys.jsx';
@@ -27,7 +30,7 @@ import { residentById } from '../features/opportunities/data/residents.js';
 import { TODAY } from '../shared/data/spaces.js';
 import { useStore } from './store.jsx';
 
-function PageContent({ page, openEvent, openJourney, openNew, openReport, openSpaceRequest, navigate, questions, access }) {
+function PageContent({ page, openEvent, openAccounting, openJourney, openNew, openReport, openSpaceRequest, navigate, questions, access }) {
   if (page === 'dashboard') return <Dashboard onNew={openNew} onOpen={openEvent} navigate={navigate} />;
   if (page === 'requests') return <Requests onNew={openNew} onOpen={openEvent} />;
   if (page === 'questions') return <Questions {...questions} />;
@@ -41,8 +44,10 @@ function PageContent({ page, openEvent, openJourney, openNew, openReport, openSp
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
   if (page === 'stats') return <Stats />;
   if (page === 'funding') return <Funding />;
+  if (page === 'prospection') return <Prospection navigate={navigate} />;
   if (page === 'messages') return <Messages />;
-  if (page === 'quotes') return <Quotes />;
+  if (page === 'quotes') return <Quotes onAccounting={openAccounting} />;
+  if (page === 'rentals') return <RentalCards />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 
@@ -111,6 +116,7 @@ export default function App() {
     closeModal();
   };
   const openEvent = eventId => setModal({ type: 'event', eventId });
+  const openAccounting = (eventId, from) => setModal({ type: 'accounting', eventId, from });
   const openNew = () => setModal({ type: 'new' });
 
   return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`}>
@@ -127,13 +133,14 @@ export default function App() {
     />
     <div className="app-content">
       <Header page={page} onMenu={toggleMenu} expanded={narrow ? menuOpen : !collapsed} onNew={openNew} />
-      <main><PageContent page={page} openEvent={openEvent} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} questions={questions} access={access} /></main>
+      <main><PageContent page={page} openEvent={openEvent} openAccounting={openAccounting} openJourney={matchId => setModal({ type: 'journey', matchId })} openNew={openNew} openReport={eventId => setModal({ type: 'report', eventId })} openSpaceRequest={(space, date) => setModal({ type: 'new', initialEvent: { space, date, requestType: 'rental' } })} navigate={navigate} questions={questions} access={access} /></main>
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}
     {toast && <p role="status" className="notice">{toast}</p>}
-    {modal && <Modal title={modal.type === 'event' ? selectedEvent?.title || 'Événement' : modal.type === 'edit' ? 'Modifier la demande' : modal.type === 'new' ? 'Nouvelle demande' : modal.type === 'report' ? `Bilan · ${selectedEvent?.title}` : modal.type === 'journey' ? `Parcours · ${journeyResident?.first_name}` : 'À propos'} onClose={closeModal} wide={['new', 'edit', 'report', 'journey'].includes(modal.type)}>
+    {modal && <Modal title={modal.type === 'event' ? selectedEvent?.title || 'Événement' : modal.type === 'accounting' ? `Comptabilité · ${selectedEvent?.title || 'Événement'}` : modal.type === 'edit' ? 'Modifier la demande' : modal.type === 'new' ? 'Nouvelle demande' : modal.type === 'report' ? `Bilan · ${selectedEvent?.title}` : modal.type === 'journey' ? `Parcours · ${journeyResident?.first_name}` : 'À propos'} onClose={closeModal} wide={['new', 'edit', 'report', 'journey'].includes(modal.type)} className={modal.type === 'accounting' ? 'modal-accounting' : ''}>
       {['new', 'edit'].includes(modal.type) && <EventForm event={modal.type === 'edit' ? selectedEvent : modal.initialEvent} events={events} onSave={saveDraft} onCancel={closeModal} />}
-      {modal.type === 'event' && selectedEvent && <EventDetails event={selectedEvent} events={events} onSave={saveEvent} onEdit={() => setModal({ type: 'edit', eventId: selectedEvent.id })} onClose={closeModal} notify={notify} />}
+      {modal.type === 'event' && selectedEvent && <EventDetails event={selectedEvent} events={events} onSave={saveEvent} onEdit={() => setModal({ type: 'edit', eventId: selectedEvent.id })} onClose={closeModal} notify={notify} onAccounting={() => openAccounting(selectedEvent.id, 'event')} />}
+      {modal.type === 'accounting' && selectedEvent && <AccountingWindow key={selectedEvent.id} event={selectedEvent} onSave={saveEvent} notify={notify} onBack={modal.from === 'event' ? () => openEvent(selectedEvent.id) : undefined} />}
       {modal.type === 'report' && selectedEvent && <ReportForm event={selectedEvent} linkedParticipations={linkedParticipations} onSave={saveReport} onCancel={closeModal} />}
       {modal.type === 'journey' && selectedMatch && journeyResident && journeyEvent && <JourneyForm match={selectedMatch} resident={journeyResident} event={journeyEvent} onSave={saveJourneyDraft} onCancel={closeModal} />}
       {modal.type === 'help' && <p>Marthe accompagne les lieux solidaires dans l’organisation de leurs événements. Les données affichées sont fictives.</p>}

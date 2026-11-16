@@ -101,6 +101,9 @@ def test_only_the_team_edits_the_messages_and_bad_texts_are_refused(client_as): 
         "request",
         "contact",
         "funding-reminder",
+        "quote",
+        "invoice",
+        "funder-intro",
     ]
     assert (
         listed["senders"]["forms"]["from"]

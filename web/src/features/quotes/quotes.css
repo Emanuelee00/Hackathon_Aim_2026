@@ -89,27 +89,33 @@ mark.ph { color: inherit; }
 .doc-total-bar strong { font-size: 26px; }
 
 /* L'aperçu : une feuille de papier. */
-.doc-paper { padding: 22px 24px 20px; border-radius: 6px; background: #fff; border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.45; color: #1f1f1f; }
-.paper-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.paper-head img { width: 84px; height: auto; border-radius: 3px; }
-.paper-title { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
-.paper-title strong { font-size: 19px; color: #682a7f; }
-.paper-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
-.paper-client { text-align: right; }
+.doc-paper { container-type: inline-size; padding: 7% 9% 3%; border-radius: 6px; background: #fff; border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 12px; line-height: 1.35; color: #1f1f1f; }
+.paper-head { display: grid; grid-template-columns: 23% 1fr; align-items: end; }
+.paper-head img { width: 100%; height: auto; }
+.paper-title { display: flex; flex-direction: column; padding-left: 35%; color: #682a7f; }
+.paper-facture .paper-title { padding-left: 23%; }
+.paper-title strong { font-size: clamp(14px, 4.6cqi, 22px); line-height: 1.1; }
+.paper-issuer { margin: 4% 0 0; color: #682a7f; font-weight: 700; }
+.paper-issuer small { font-size: 0.8em; }
+.paper-client { margin: 8% 0 6% 58%; line-height: 1.55; }
 .paper-client i { color: #aaa; }
-.paper-table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; }
-.paper-table th { padding: 6px 8px; background: #682a7f; color: #fff; text-align: left; font-size: 11px; }
-.paper-table th:nth-child(n+2), .paper-table td:nth-child(n+2) { text-align: right; white-space: nowrap; }
-.paper-table td { padding: 6px 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
-.paper-table .paper-nature { font-weight: 700; text-align: left; }
+.paper-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-family: Arial, Helvetica, sans-serif; }
+.paper-table th, .paper-table td { padding: 6px 6px; border: 1px solid #c0c0c0; text-align: center; overflow-wrap: anywhere; }
+.paper-table th { background: #d9d9d9; font-weight: 400; font-size: 0.92em; }
+.paper-table th:first-child, .paper-table td:first-child { width: 45%; text-align: left; }
+.paper-table td:last-child { text-align: right; }
+.paper-table td[colspan] { text-align: left; }
 .paper-table .paper-empty { padding: 18px 8px; text-align: center; color: #999; font-style: italic; }
-.paper-totals { margin-left: auto; width: 62%; }
-.paper-totals div { display: flex; justify-content: space-between; gap: 10px; padding: 4px 8px; background: #efefef; margin-bottom: 2px; }
-.paper-totals .paper-final { font-weight: 800; background: #e6d9ee; }
-.paper-vat { margin: 6px 0; text-align: right; font-size: 10.5px; color: #888; }
-.paper-sign { margin: 12px 0; width: 60%; height: 58px; padding: 6px 8px; border: 1px solid #aaa; font-size: 10.5px; }
-.paper-pay { margin: 10px 0 0; }
-.paper-terms { margin: 8px 0 0; font-size: 9.5px; color: #555; }
+.paper-totals { margin: 4% 0 0 auto; width: 46%; }
+.paper-facture .paper-totals { width: 58%; }
+.paper-totals div { display: flex; justify-content: space-between; gap: 10px; padding: 0.45em 0; font-weight: 700; color: #000; }
+.paper-vat { margin: 3% 0 0; text-align: right; font-style: italic; color: #000; }
+.paper-bottom { display: grid; grid-template-columns: 1fr 45%; gap: 6%; align-items: start; margin-top: 8%; }
+.paper-facture .paper-bottom { grid-template-columns: 1fr; }
+.paper-pay { margin: 0; color: #682a7f; }
+.paper-sign { min-height: 88px; padding: 6px; border: 1px solid #000; text-align: center; font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 0.92em; }
+.paper-terms { margin: 5% 0 0; font-size: 0.82em; font-style: italic; text-align: justify; color: #808080; }
+.paper-footer { margin: 9% 0 0; text-align: center; font-size: 0.55em; color: #333; }
 /* Tarifs plus compacts : deux groupes côte à côte, le nom au-dessus des pastilles. */
 .price-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 700px) { .price-groups { grid-template-columns: 1fr; } }
@@ -130,3 +136,28 @@ mark.ph { color: inherit; }
 .pm-group-head input { font-weight: 800; }
 .pm-group-head input, .pm-item > input { padding: 8px 10px; border: 1px solid rgba(0, 0, 0, 0.18); border-radius: 10px; font: inherit; min-width: 0; background: #fff; }
 .pm-group .button { align-self: flex-start; }
+
+/* ===== Fenêtre Comptabilité d'un évènement ===== */
+.modal.modal-accounting { width: min(96vw, 1320px); }
+.modal-accounting .modal-inner { background: #f6f2f8; }
+.accounting { display: flex; flex-direction: column; gap: 14px; }
+.account-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; padding: 14px 18px; border-radius: 16px; background: #fff; border: 1px solid rgba(0, 0, 0, 0.08); }
+.account-head div { display: flex; flex-direction: column; }
+.account-head small { color: #777; font-size: 12px; }
+.account-head .button { margin-left: auto; }
+.account-step { display: flex; flex-direction: column; gap: 12px; }
+.account-status { margin: 0; padding: 10px 14px; border-radius: 12px; background: #fff; border-left: 5px solid #b9a3c4; font-weight: 700; }
+.account-status small { font-weight: 400; color: #777; }
+.account-status.status-sent { border-left-color: #2f74c0; }
+.account-status.status-accepted, .account-status.status-issued { border-left-color: #2e8b57; }
+.account-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid rgba(104, 42, 127, 0.3); }
+.account-form .field { flex: 1 1 220px; }
+.account-form .doc-note, .account-form .doc-error { flex-basis: 100%; }
+.account-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 22px; border-radius: 16px; background: #fff; border: 1px dashed rgba(104, 42, 127, 0.4); }
+.account-empty p { margin: 0; max-width: 680px; }
+.doc-readonly { grid-template-columns: minmax(0, 720px); justify-content: center; }
+.account-summary .button { align-self: flex-start; }
+.account-list { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.account-list button { display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 14px 18px; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 14px; background: #fff; font: inherit; text-align: left; cursor: pointer; }
+.account-list button:hover { border-color: #682a7f; }
+.account-list span { color: #555; font-size: 14px; }

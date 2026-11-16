@@ -1,4 +1,5 @@
-"""The automatic e-mails, as texts the team can edit on the « Messages » page: the confirmation sent after a form, the funding reminder.
+"""The automatic e-mails, as texts the team can edit on the « Messages » page: the confirmation sent after a form, the funding reminder,
+the quote and the invoice sent from an event.
 
 Each text has variables written between braces ({nom}, {financeur}…) that are replaced when the e-mail is sent. A text the team
 has saved replaces the original one; resetting goes back to the original. Saved texts live in the store (document "message_templates").
@@ -49,7 +50,7 @@ class Template:
     id: str
     group: str
     service: str  # what it is
-    sender: str  # whose address it comes from: "forms" or "funding"
+    sender: str  # whose address it comes from: "forms", or "funding" and "accounting" (both MAIL_FROM)
     title: str
     trigger: str  # when it is sent
     recipient: str  # who gets it
@@ -155,6 +156,91 @@ TEMPLATES: tuple[Template, ...] = (
                     "Financeur : Fondation de France (Fondation)\nAide obtenue : 30 000 €\nContact : Mme Durand\n"
                     "Courriel : durand@fdf.example\nTéléphone : 01 23 45 67 89\nResponsable : Caro"
                 ),
+            ),
+            ("contact", "Adresse de contact de Chez Marthe", "contact@chezmarthe.org"),
+        ),
+    ),
+)
+ACCOUNTING_VARIABLES = (
+    ("nom", "Nom du client", "Association Soleil"),
+    ("numero", "Numéro du document", "2026-014"),
+    ("montant", "Montant à payer", "340,50 €"),
+    ("evenement", "Nom de l’évènement", "Séminaire de rentrée"),
+    ("date_evenement", "Date de l’évènement", "samedi 12 décembre 2026"),
+    ("contact", "Adresse de contact de Chez Marthe", "contact@chezmarthe.org"),
+)
+TEMPLATES += (
+    Template(
+        id="quote",
+        group="Factures et devis",
+        service="Envoi depuis la fenêtre Comptabilité d’un évènement",
+        sender="accounting",
+        title="Envoi d’un devis",
+        trigger="Envoyé quand l’équipe clique « Envoyer par e-mail » sur un devis. Le devis est joint en PDF.",
+        recipient="Le client, à l’adresse indiquée dans la fenêtre Comptabilité",
+        subject="Chez Marthe : votre devis n° {numero}",
+        body=(
+            "Bonjour {nom},\n\n"
+            "Veuillez trouver ci-joint notre devis n° {numero}, d’un montant de {montant}, pour « {evenement} » ({date_evenement}).\n\n"
+            "Pour l’accepter, il suffit de nous le renvoyer daté et signé, ou de répondre à ce message.\n\n"
+            "Nous restons à votre disposition pour toute question : {contact}.\n\n"
+            "Bien cordialement,\nL’équipe de Chez Marthe"
+        ),
+        variables=ACCOUNTING_VARIABLES,
+    ),
+    Template(
+        id="invoice",
+        group="Factures et devis",
+        service="Envoi depuis la fenêtre Comptabilité d’un évènement",
+        sender="accounting",
+        title="Envoi d’une facture",
+        trigger="Envoyé quand l’équipe clique « Envoyer par e-mail » sur une facture. La facture est jointe en PDF.",
+        recipient="Le client, à l’adresse indiquée dans la fenêtre Comptabilité",
+        subject="Chez Marthe : facture n° {numero}",
+        body=(
+            "Bonjour {nom},\n\n"
+            "Veuillez trouver ci-joint la facture n° {numero}, d’un montant de {montant}, pour « {evenement} » ({date_evenement}).\n\n"
+            "Le règlement se fait par virement bancaire : les coordonnées figurent sur la facture.\n\n"
+            "Merci pour votre confiance ! Pour toute question : {contact}.\n\n"
+            "Bien cordialement,\nL’équipe de Chez Marthe"
+        ),
+        variables=ACCOUNTING_VARIABLES,
+    ),
+)
+TEMPLATES += (
+    Template(
+        id="funder-intro",
+        group="Recherche de financements",
+        service="Modèle à copier, pas d’envoi automatique",
+        sender="funding",
+        title="Message de présentation aux financeurs et mécènes",
+        trigger="N’est jamais envoyé tout seul : copiez-le dans votre messagerie, remplacez les variables et adaptez une phrase au destinataire (fondation, mécène, collectivité, réseau…).",
+        recipient="Un financeur, un mécène ou un réseau de « Financeurs potentiels »",
+        subject="Chez Marthe : une Maison Tremplin pour les femmes à Marseille",
+        body=(
+            "Bonjour {nom},\n\n"
+            "Je me permets de vous écrire au nom de Chez Marthe, une association marseillaise qui crée des lieux tremplins pour les femmes : "
+            "des refuges, des lieux ressources et des maisons tremplins, pour passer de la survie à la vie.\n\n"
+            "Notre première Maison Tremplin s’installe dans un ancien couvent de 1 500 m² au cœur de Marseille (1er arrondissement) : "
+            "un lieu vacant devenu un lieu de vie. Des femmes en situation de précarité y sont hébergées et accompagnées vers l’autonomie "
+            "(logement, emploi, accès aux droits), dans un lieu ouvert au quartier : cantine, ateliers, espaces partagés et événements. "
+            "Notre ambition est d’essaimer ce modèle dans d’autres villes, avec les propriétaires de bâtiments vides.\n\n"
+            "Les actions de {organisation} rejoignent les nôtres, et nous aimerions vous présenter le projet. Votre soutien pourrait prendre "
+            "plusieurs formes : un don ou une subvention, un soutien à un projet précis, du mécénat de compétences ou en nature, "
+            "ou une mise en relation.\n\n"
+            "Accepteriez-vous un échange de 30 minutes, en visio ou sur place ? Nous serions heureuses de vous faire visiter le lieu.\n\n"
+            "Bien cordialement,\n"
+            "{signature}\n"
+            "Chez Marthe · 50, rue Saint Savournin, 13001 Marseille · {contact}\n"
+            "Habiter & rayonner"
+        ),
+        variables=(
+            ("nom", "Nom de la personne à qui vous écrivez", "Madame Rosenfeld"),
+            ("organisation", "Son organisation", "Entreprendre pour toi"),
+            (
+                "signature",
+                "Votre prénom, nom et rôle",
+                "Caroline, recherche de fonds et communication",
             ),
             ("contact", "Adresse de contact de Chez Marthe", "contact@chezmarthe.org"),
         ),

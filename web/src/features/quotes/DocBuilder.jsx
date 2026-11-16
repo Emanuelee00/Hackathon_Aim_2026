@@ -1,33 +1,27 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
+import { blankDoc, checkDoc, docTotals, euros, newId, toNumber } from './accounting.js';
 import DocPreview from './DocPreview.jsx';
+import { downloadDoc, suggestNumber } from './documentsApi.js';
 import PriceManager from './PriceManager.jsx';
 import { designationOf } from './priceList.js';
 
 // Créer un devis ou une facture : à gauche le client et les prestations (avec les tarifs à cliquer), à droite l'aperçu du document.
-// Les fichiers Word et PDF sont fabriqués par le serveur (modeles.py) ; rien n'est enregistré, sauf le dernier numéro utilisé (dans ce navigateur).
-const today = () => new Date().toISOString().slice(0, 10);
-const toNumber = text => Number(String(text).replace(',', '.')) || 0;
-const euros = amount => amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-let counter = 0;
-const newId = () => `l${Date.now()}-${counter++}`;
+// Les fichiers Word et PDF sont fabriqués par le serveur (modeles.py). Seul, dans « Factures et devis », rien n'est enregistré sauf le
+// numéro utilisé (partagé par l'équipe). Dans la fenêtre Comptabilité d'un évènement, `initial` est le document gardé dans l'évènement,
+// `onChange` reçoit chaque modification et `children` remplace les boutons du bas ; `readOnly` montre seulement l'aperçu.
 
-const counterKey = (kind, year) => `marthe-numero-${kind}-${year}`;
-function nextNumber(kind) {
-  const year = new Date().getFullYear();
-  let last = 0;
-  try { last = Number(localStorage.getItem(counterKey(kind, year))) || 0; } catch { /* navigateur sans stockage */ }
-  return `${year}-${String(last + 1).padStart(3, '0')}`;
-}
-function rememberNumber(kind, number) {
-  const match = /^(\d{4})-(\d+)$/.exec(number.trim());
-  if (!match) return;
-  try { localStorage.setItem(counterKey(kind, match[1]), String(Number(match[2]))); } catch { /* idem */ }
-}
-const blank = kind => ({ number: nextNumber(kind), date: today(), name: '', address: '', postal_code: '', city: '', nature: '', lines: [], deposit: '' });
-
-export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices }) {
-  const [doc, setDoc] = useState(() => blank(kind));
+export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices, initial, onChange, readOnly = false, children }) {
+  const [doc, setDoc] = useState(() => initial || blankDoc());
+  // Sans document de départ, le numéro proposé est le suivant de l'équipe (tant qu'on ne l'a pas changé à la main).
+  const suggested = useRef('');
+  const suggest = () => suggestNumber(kind).then(number => {
+    setDoc(current => (current.number === suggested.current ? { ...current, number } : current));
+    suggested.current = number;
+  }).catch(() => {});
+  useEffect(() => { if (!initial) suggest(); }, []);
+  const first = useRef(true);
+  useEffect(() => { if (first.current) { first.current = false; return; } onChange?.(doc); }, [doc]);
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
   const [added, setAdded] = useState('');
@@ -36,13 +30,7 @@ export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices }
   const set = (name, value) => setDoc(current => ({ ...current, [name]: value }));
   const setLine = (id, name, value) => setDoc(current => ({ ...current, lines: current.lines.map(line => line.id === id ? { ...line, [name]: value } : line) }));
 
-  const priced = useMemo(() => doc.lines.map(line => {
-    const quantity = toNumber(line.quantity);
-    const price = toNumber(line.unit_price);
-    return { ...line, quantity: line.quantity, price, lineTotal: Math.round(quantity * price * 100) / 100 };
-  }), [doc.lines]);
-  const total = priced.reduce((sum, line) => sum + line.lineTotal, 0);
-  const deposit = kind === 'facture' ? toNumber(doc.deposit) : 0;
+  const { lines: priced, total, deposit, due } = useMemo(() => docTotals(kind, doc), [kind, doc]);
 
   const addItem = (group, item) => {
     setError('');
@@ -64,25 +52,23 @@ export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices }
 
   const download = async extension => {
     setError('');
-    if (!doc.number.trim() || !doc.name.trim()) return setError(`Indiquez le numéro ${kind === 'devis' ? 'du devis' : 'de la facture'} et le nom du client.`);
-    const lines = priced.filter(line => line.designation.trim());
-    if (!lines.length) return setError('Ajoutez au moins une prestation : cliquez sur un tarif à gauche.');
+    const problem = checkDoc(kind, doc);
+    if (problem) return setError(problem);
     setBusy(extension);
-    try {
-      const body = { ...doc, deposit, lines: lines.map(line => ({ designation: line.designation, quantity: toNumber(line.quantity), unit_price: line.price })) };
-      const response = await fetch(`/api/modeles/${kind}.${extension}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null);
-      if (!response) throw new Error('Le serveur est injoignable. Réessayez dans un instant.');
-      if (!response.ok) throw new Error(response.status === 422 ? 'Vérifiez les champs : quantités et prix doivent être des nombres positifs.' : 'Le téléchargement a échoué.');
-      const url = URL.createObjectURL(await response.blob());
-      Object.assign(document.createElement('a'), { href: url, download: `${kind === 'devis' ? 'Devis' : 'Facture'} ${doc.number}.${extension}`.replace('/', '-') }).click();
-      URL.revokeObjectURL(url);
-      rememberNumber(kind, doc.number);
-    } catch (problem) {
-      setError(problem.message);
-    } finally {
-      setBusy('');
-    }
+    try { await downloadDoc(kind, doc, extension); } catch (failure) { setError(failure.message); } finally { setBusy(''); }
   };
+
+  const downloads = <>
+    <button type="button" className="button button-dark" disabled={!!busy} onClick={() => download('docx')}><Icon name="file" size={16} />{busy === 'docx' ? 'Préparation…' : 'Word'}</button>
+    <button type="button" className="button button-dark" disabled={!!busy} onClick={() => download('pdf')}><Icon name="file" size={16} />{busy === 'pdf' ? 'Préparation…' : 'PDF'}</button>
+  </>;
+  if (readOnly) return <div className="doc-studio doc-readonly">
+    <div className="doc-sticky">
+      <DocPreview kind={kind} doc={{ ...doc, lines: priced }} total={total} deposit={deposit} />
+      {error && <p className="doc-error" role="alert">{error}</p>}
+      <div className="doc-actions">{downloads}{children}</div>
+    </div>
+  </div>;
 
   const label = kind === 'devis' ? 'devis' : 'facture';
   return <div className="doc-studio">
@@ -136,13 +122,12 @@ export default function DocBuilder({ kind, groups, onSavePrices, onResetPrices }
 
     <aside className="doc-right">
       <div className="doc-sticky">
-        <div className="doc-total-bar"><span>{kind === 'facture' ? 'À payer' : 'Total'}</span><strong>{euros(kind === 'facture' ? total - deposit : total)}</strong></div>
+        <div className="doc-total-bar"><span>{kind === 'facture' ? 'À payer' : 'Total'}</span><strong>{euros(kind === 'facture' ? due : total)}</strong></div>
         <DocPreview kind={kind} doc={{ ...doc, lines: priced }} total={total} deposit={deposit} />
         {error && <p className="doc-error" role="alert">{error}</p>}
         <div className="doc-actions">
-          <button type="button" className="button button-dark" disabled={!!busy} onClick={() => download('docx')}><Icon name="file" size={16} />{busy === 'docx' ? 'Préparation…' : 'Word'}</button>
-          <button type="button" className="button button-dark" disabled={!!busy} onClick={() => download('pdf')}><Icon name="file" size={16} />{busy === 'pdf' ? 'Préparation…' : 'PDF'}</button>
-          <button type="button" className="button button-quiet" disabled={!!busy} onClick={() => { setDoc(blank(kind)); setError(''); }}>Nouveau</button>
+          {downloads}
+          {children ?? <button type="button" className="button button-quiet" disabled={!!busy} onClick={() => { suggested.current = ''; setDoc(blankDoc()); setError(''); suggest(); }}>Nouveau</button>}
         </div>
       </div>
     </aside>

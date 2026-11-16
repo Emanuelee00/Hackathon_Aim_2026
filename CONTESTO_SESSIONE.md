@@ -148,7 +148,7 @@ docker compose ps                      # db, app, caddy "Up"
 3. Push su `main` (PR con squash, oppure fast-forward se l'utente lo chiede).
 4. Procedura 6.3 in Cloud Shell. Il classificatore di sicurezza di Claude blocca tunnel e merge senza ok esplicito: serve sempre il «sì» dell'utente.
 
-Tag di ritorno su GitHub: `pre-finanziamenti-messaggi-2026-11`, `pre-sito-pubblico-2026-11`, `pre-sito-mobile-2026-11`, `pre-devis-tarifs-2026-11`, `pre-richieste-equipe-2026-11`.
+Tag di ritorno su GitHub: `pre-finanziamenti-messaggi-2026-11`, `pre-sito-pubblico-2026-11`, `pre-sito-mobile-2026-11`, `pre-devis-tarifs-2026-11`, `pre-richieste-equipe-2026-11`, `pre-paquet6-2026-11`.
 
 ## 7. Riprendere su un altro computer
 
