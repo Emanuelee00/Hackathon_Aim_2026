@@ -7,6 +7,7 @@ import { dateLabel } from '../../shared/lib/format.js';
 import { localToday } from '../funding/funding.js';
 import { addedFunders, calls, euCalls, frCalls, guide, lastFunders, moreFunders, patrons, repertoire, strategy as seedStrategy, withEmails } from './prospectionData.js';
 import SheetTable from './SheetTable.jsx';
+import { fundingMatcher } from './fundingMatches.js';
 import { SHEETS, counts, toFunder, toSheet } from './sheets.js';
 import useSharedList from './useSharedList.js';
 import './prospection.css';
@@ -29,7 +30,9 @@ async function saveExcel(sheets) {
 }
 
 export default function Prospection({ navigate }) {
-  const { saveFunder, notify } = useStore();
+  const { funders, saveFunder, notify } = useStore();
+  // Les lignes déjà suivies dans « Financements » sont en rouge et ne peuvent pas y être envoyées une deuxième fois.
+  const fundingOf = fundingMatcher(funders);
   const [tab, setTab] = useState(() => { try { return sessionStorage.getItem('marthe-prospection-tab') || 'repertoire'; } catch { return 'repertoire'; } });
   const lists = {
     repertoire: useSharedList(SHEETS.repertoire.storeKey, seedProspects),
@@ -43,6 +46,7 @@ export default function Prospection({ navigate }) {
   const numbers = counts(lists.repertoire.items, lists.calls.items, today, lists.europe.items, lists.france.items);
   const choose = id => { setTab(id); try { sessionStorage.setItem('marthe-prospection-tab', id); } catch { /* l'onglet vaut pour cette visite */ } };
   const track = prospect => {
+    if (fundingOf(prospect)) return notify(`« ${prospect.name} » est déjà dans les financements (« ${fundingOf(prospect)} »).`);
     saveFunder(toFunder(prospect));
     lists.repertoire.setItems(rows => rows.map(row => (row.id === prospect.id ? { ...row, trackedOn: today, status: row.status === 'Obtenu' ? row.status : 'Dossier en préparation' } : row)));
     notify(`« ${prospect.name} » est ajouté au suivi des financements (statut « À traiter »).`);
@@ -77,6 +81,6 @@ export default function Prospection({ navigate }) {
     {tab === 'guide'
       ? <section className="panel prospection-guide"><dl>{guide.map(([title, text]) => <div key={title}><dt>{title}</dt><dd>{text}</dd></div>)}</dl>
         <p className="funding-hint">Le bouton <Icon name="send" size={14} /> d’une ligne du répertoire ajoute la piste au tableau de bord « Financements » (statut « À traiter », avec ses informations), pour suivre la demande : échéance, tâches, relances.</p></section>
-      : lists[tab].ready && <SheetTable key={tab} sheet={SHEETS[tab]} rows={lists[tab].items} onChange={lists[tab].setItems} onTrack={tab === 'repertoire' ? track : undefined} />}
+      : lists[tab].ready && <SheetTable key={tab} sheet={SHEETS[tab]} rows={lists[tab].items} onChange={lists[tab].setItems} onTrack={tab === 'repertoire' ? track : undefined} fundingOf={fundingOf} />}
   </>;
 }

@@ -132,3 +132,13 @@ test('« Contacté » is offered right after « À contacter » and shows in gre
   assert.equal(tone('À contacter'), 'hot');
   assert.equal(tone('Contact pris'), 'active');
 });
+
+test('a potential funder already followed in « Financements » is recognised, by its row or by its exact name', async () => {
+  const { fundingMatcher } = await import('./fundingMatches.js');
+  const match = fundingMatcher([{ name: 'Fondation MACIF' }, { name: 'Ville de Marseille / Métropole Aix-Marseille-Provence' }, { name: 'Fondation  Kering ' }]);
+  assert.equal(match({ id: 'r02', name: 'Fondation Macif' }), 'Fondation MACIF');
+  assert.equal(match({ id: 'x001', name: 'Ville de Marseille – service Droits des femmes' }), 'Ville de Marseille / Métropole Aix-Marseille-Provence');
+  assert.equal(match({ id: 'new', name: 'Fondation Kering' }), 'Fondation  Kering ');
+  assert.equal(match({ id: 'r14', name: 'Fondation des Femmes' }), '');
+  assert.equal(fundingMatcher([])({ id: 'r02', name: 'Fondation Macif' }), '');
+});

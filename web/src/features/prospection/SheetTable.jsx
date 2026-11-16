@@ -105,7 +105,7 @@ function RemoveButton({ row, sheet, onRemove }) {
   </div>}</Popover>;
 }
 
-function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack }) {
+function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding }) {
   const name = row.name || row.part || '';
   const cell = key => {
     const label = `${labels[key]} · ${name}`;
@@ -120,22 +120,26 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack }) {
     if (kind === 'date') return <DateCell value={value} label={label} onSave={save} />;
     if (kind === 'email') return <EmailCell value={value} label={label} onSave={save} />;
     if (kind === 'link') return <LinkCell value={value} label={label} onSave={save} />;
+    if (kind === 'title' && inFunding) return <><TextCell value={value} label={label} onSave={save} strong /><span className="sheet-in-funding" title={`Piste « ${inFunding} » dans Financements`}>Déjà dans Financements</span></>;
     return <TextCell value={value} label={label} onSave={save} strong={kind === 'title'} />;
   };
   const actions = <div className="funding-row-actions">
     <Popover label={`Couleur de la ligne ${name}`} icon="palette" up>{close => <Swatches value={row.color} onPick={color => { onSave({ ...row, color }); close(); }} />}</Popover>
-    {onTrack && (row.trackedOn
-      ? <span className="sheet-tracked" title={`Passé dans le suivi des financements le ${row.trackedOn}`}><Icon name="check" size={15} /></span>
+    {onTrack && (row.trackedOn || inFunding
+      ? <span className="sheet-tracked" title={inFunding ? `Déjà dans Financements : « ${inFunding} »` : `Passé dans le suivi des financements le ${row.trackedOn}`}><Icon name="check" size={15} /></span>
       : <button type="button" className="icon-button" aria-label={`Demander un financement à ${name} : ajouter au suivi des financements`} title="Demander un financement : ajouter au suivi des financements" onClick={() => onTrack(row)}><Icon name="send" size={15} /></button>)}
     <RemoveButton row={row} sheet={sheet} onRemove={onRemove} />
   </div>;
-  const background = column => rowColors[row.color]?.value || rowColors[layout.colors[column]]?.value;
-  return <tr>{layout.order.map((column, index) => <td key={column} className={`${column === 'card' ? 'funding-actions-cell' : ''}${index === 0 ? ' sheet-sticky' : ''}`} style={{ background: background(column) }}>
+  // Déjà dans « Financements » : toute la ligne en rouge, avant toute autre couleur.
+  const background = column => (inFunding ? IN_FUNDING_RED : rowColors[row.color]?.value || rowColors[layout.colors[column]]?.value);
+  return <tr className={inFunding ? 'sheet-row-in-funding' : undefined}>{layout.order.map((column, index) => <td key={column} className={`${column === 'card' ? 'funding-actions-cell' : ''}${index === 0 ? ' sheet-sticky' : ''}`} style={{ background: background(column) }}>
     {column === 'card' ? actions : cell(column)}
   </td>)}</tr>;
 }
 
-export default function SheetTable({ sheet, rows, onChange, onTrack }) {
+const IN_FUNDING_RED = '#f8c4c4';
+
+export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf = () => '' }) {
   const [query, setQuery] = useState('');
   const [chosen, setChosen] = useState({});
   const [dragging, setDragging] = useState(null);
@@ -149,9 +153,11 @@ export default function SheetTable({ sheet, rows, onChange, onTrack }) {
   const remove = row => onChange(rows.filter(item => item.id !== row.id));
   const add = () => { setQuery(''); setChosen({}); onChange([sheet.blank(), ...rows]); };
   const filtered = query.trim() || Object.values(chosen).some(Boolean);
+  const inFundingCount = rows.filter(row => fundingOf(row)).length;
   return <div className="funding-table-slot" ref={slot}><section className="panel funding-table-panel sheet-panel">
     <div className="funding-tools"><h3>{sheet.title}</h3>
       <span className="funding-muted">{filtered ? `${visible.length} sur ${rows.length}` : `${rows.length} lignes`}</span>
+      {inFundingCount > 0 && <span className="sheet-in-funding" title="Ces lignes sont déjà des pistes du tableau de bord « Financements » : elles restent ici pour leurs informations en plus.">{inFundingCount} déjà dans Financements</span>}
       {sheet.filters.map(([key, all]) => <select key={key} className="sheet-filter" aria-label={all} value={chosen[key] || ''} onChange={event => setChosen(current => ({ ...current, [key]: event.target.value }))}>
         <option value="">{all}</option>{filterOptions(rows, key).map(option => <option key={option} value={option}>{option}</option>)}
       </select>)}
@@ -161,7 +167,7 @@ export default function SheetTable({ sheet, rows, onChange, onTrack }) {
     <div className="funding-table-scroll"><table className="funding-table sheet-table" style={{ width: totalWidth(layout.widths) }}>
       <colgroup>{layout.order.map(key => <col key={key} style={{ width: layout.widths[key] }} />)}</colgroup>
       <thead><tr>{layout.order.map((key, index) => <Heading key={key} column={key} label={labels[key]} layout={layout} drag={drag} sticky={index === 0} />)}</tr></thead>
-      <tbody>{visible.map(row => <Row key={row.id} row={row} sheet={sheet} layout={layout} labels={labels} onSave={save} onRemove={remove} onTrack={onTrack} />)}</tbody>
+      <tbody>{visible.map(row => <Row key={row.id} row={row} sheet={sheet} layout={layout} labels={labels} onSave={save} onRemove={remove} onTrack={onTrack} inFunding={fundingOf(row)} />)}</tbody>
     </table></div>
     {!visible.length && <p className="funding-muted funding-none">Aucune ligne ne correspond.</p>}
     <p className="funding-hint">Cliquez une cellule pour l’écrire (Entrée pour valider, Maj+Entrée pour aller à la ligne, Échap pour annuler) : tout est enregistré pour l’équipe. Glissez un titre pour déplacer sa colonne, son bord pour l’élargir ; les flèches trient, « ⋯ » colore la colonne. Le tableau défile sur le côté ; la première colonne reste visible.{layout.custom && <> <button type="button" className="text-link" onClick={layout.reset}>Largeurs et ordre par défaut</button></>}</p>
