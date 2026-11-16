@@ -1,0 +1,29 @@
+/* Bilans des structures : page de l'équipe et formulaire de l'espace associations. */
+.bilan-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.bilan-toolbar h2 { margin: 0; }
+.bilan-toolbar p { margin: 4px 0 0; color: var(--muted); }
+.bilan-month { display: inline-flex; align-items: center; gap: 10px; }
+.bilan-month strong { min-width: 150px; text-align: center; font-size: 17px; text-transform: capitalize; }
+.bilan-structures { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.bilan-structure { display: grid; gap: 4px; padding: 14px 16px; border: 1px solid var(--line); border-left: 5px solid #e7b9b0; border-radius: 14px; background: white; font: inherit; text-align: left; cursor: pointer; }
+.bilan-structure.is-filled { border-left-color: #6fa77d; }
+.bilan-structure.active { outline: 2px solid var(--green); }
+.bilan-structure small { color: var(--muted); }
+.bilan-totals { margin-bottom: 18px; padding: 18px 20px; }
+.bilan-totals h3 { margin: 0 0 10px; }
+.bilan-totals table { width: 100%; border-collapse: collapse; }
+.bilan-totals th, .bilan-totals td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+.bilan-totals td { width: 150px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bilan-totals thead th { color: var(--muted); font-size: 13px; }
+.bilan-panel { padding: 20px 22px; }
+.bilan-panel > h2 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; text-transform: none; }
+.bilan-form { display: grid; gap: 16px; }
+.bilan-state { margin: 0; color: var(--muted); font-size: 14px; }
+.bilan-section { margin: 0; padding: 14px 16px 16px; border: 1px solid var(--line); border-radius: 14px; }
+.bilan-section legend { padding: 0 6px; font-weight: 700; }
+.bilan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px 16px; }
+.bilan-grid .field small { color: var(--muted); font-size: 12px; }
+.bilan-grid .field input { max-width: 160px; }
+.bilan-wide { grid-column: 1 / -1; }
+.bilan-done { margin: 0; color: #2f7a46; font-weight: 700; }
+.bilan-actions { display: flex; gap: 10px; }

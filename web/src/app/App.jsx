@@ -14,6 +14,7 @@ import Stats from '../features/stats/Stats.jsx';
 import Funding from '../features/funding/Funding.jsx';
 import Prospection from '../features/prospection/Prospection.jsx';
 import SiteEditor from '../features/site/SiteEditor.jsx';
+import StructureBilans from '../features/bilans/StructureBilans.jsx';
 import Messages from '../features/messages/Messages.jsx';
 import Quotes from '../features/quotes/Quotes.jsx';
 import AccountingWindow from '../features/quotes/AccountingWindow.jsx';
@@ -42,6 +43,7 @@ function PageContent({ page, openEvent, openAccounting, openJourney, openNew, op
   if (page === 'calendar') return <Calendar onOpen={openEvent} />;
   if (page === 'spaces') return <Spaces onBook={openSpaceRequest} onOpen={openEvent} />;
   if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
+  if (page === 'bilans') return <StructureBilans />;
   if (page === 'stats') return <Stats />;
   if (page === 'funding') return <Funding />;
   if (page === 'prospection') return <Prospection navigate={navigate} />;

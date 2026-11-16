@@ -16,6 +16,7 @@ export const navigation = [
   { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
   { id: 'spaces', label: 'Nos espaces', icon: 'space' },
   { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
+  { id: 'bilans', label: 'Bilans des structures', icon: 'checks' },
   { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
   { id: 'funding', label: 'Financements', icon: 'euro' },
   { id: 'prospection', label: 'Financeurs potentiels', icon: 'target' },

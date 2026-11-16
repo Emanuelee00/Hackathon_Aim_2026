@@ -18,6 +18,7 @@ from accounts.sessions import team_member
 from agents.routes import router as agents_router
 from ai import AI_ENABLED, warm_up
 from ai import router as ai_router
+from bilans import router as bilans_router
 from db import migrate
 from demo import DEMO_MODE
 from editeur import router as editeur_router
@@ -61,6 +62,7 @@ app.include_router(modeles_router)
 app.include_router(editeur_router)
 app.include_router(espaces_router)
 app.include_router(site_router)
+app.include_router(bilans_router)
 
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the

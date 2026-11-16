@@ -98,6 +98,15 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 - [ ] L'intro 3D (`Intro.jsx`) est restée dans temp2 seulement, désactivée : à supprimer ou à reprendre plus tard.
 - [ ] Nettoyage : l'affiche du manifeste (`foto/manifeste.webp`) n'est plus utilisée dans temp2.
 
+## Bilans des structures (retour de Caroline, n° 10 du tableau du 30 octobre)
+
+- [x] Page « Bilans des structures » (espace équipe) et « Notre bilan du mois » (espace associations) : un bilan par structure et par mois (Chez Marthe, HAS, JUST, Sista4good, Petites Cantines, Bénénova), d'après le tableau partagé par Caroline. Questions communes à toutes (personnes accueillies, dames qui participent, voisinage, orientations entre structures, récit du mois) puis celles de chaque structure ; indicateurs communs additionnés ; export Excel de l'année pour le bilan de juin 2027.
+- [ ] **À valider avec Véro et Barbara** : la liste des indicateurs communs et des questions de chaque structure (dans `bilans.py`, facile à changer), et le rythme (mensuel pour l'instant ; le tableau proposait aussi une version hebdomadaire).
+- [ ] **Choix fait pour la vie privée, à confirmer** : pour HAS et JUST, seulement des nombres du mois (hébergées, arrivées, départs, enfants…), **pas une ligne par dame** comme dans le tableau (dates, temps passé à la rue, cause de départ). Si un suivi par personne est vraiment nécessaire, il doit aller dans « Nos résidentes » (accès équipe seulement), avec l'accord des dames — à décider avant.
+- [ ] **Créer les comptes des structures** sur le serveur (espace `partenaires`), au **nom exact** qui les relie à leur bilan : « Benenova », « Sista4good », « Les Petites Cantines », « HAS » (ou « Habitat Alternatif Social »), « JUST ». Le bilan de Chez Marthe se remplit depuis l'espace équipe.
+- [ ] Reprendre les chiffres déjà notés par les Sistas (soirées Sista de février à mai : 50 participants, 3 à 5 dames) une fois l'année confirmée.
+- [ ] Plus tard : un e-mail de rappel en fin de mois aux structures qui n'ont pas rempli leur bilan (quand l'envoi d'e-mails sera branché).
+
 ## Espaces
 
 - [ ] Ajouter pour chaque espace **les prix, les photos et la capacité** (informations à recevoir de l'équipe).
