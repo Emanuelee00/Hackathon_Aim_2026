@@ -6,7 +6,8 @@ import { PageIntro } from '../../shared/components/Primitives.jsx';
 import { bookableSpaces } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import { defaultRentalSpaces } from '../landing/rentalSpaces.js';
-import { FOCUS, SITE_PHOTOS, blankForm, fromForm, move, shrinkPhoto, toForm } from './rentalCards.js';
+import { FOCUS, SITE_PHOTOS, blankForm, fromForm, move, moveTo, shrinkPhoto, toForm } from './rentalCards.js';
+import useDragSort from './useDragSort.js';
 import './rentals.css';
 
 // « Site » › « Louer un espace » : les cartes de la page d'accueil, que l'équipe ajoute, modifie, range ou supprime.
@@ -84,6 +85,7 @@ export default function RentalCards({ embedded = false }) {
   const [editing, setEditing] = useState(null); // { index, form } ; index -1 : nouvelle carte
   const [removing, setRemoving] = useState(null);
   const [error, setError] = useState('');
+  const drag = useDragSort((from, to) => run(publish(moveTo(cards, from, to), 'Ordre des cartes enregistré.')));
   useEffect(() => {
     call('GET').then(data => { setCards(data.cards || defaultRentalSpaces); setCustom(Boolean(data.cards)); }, problem => { setCards(defaultRentalSpaces); setError(problem.message); });
   }, []);
@@ -110,7 +112,8 @@ export default function RentalCards({ embedded = false }) {
       ? <div className="site-cards-head"><div><h2>Les cartes des espaces</h2><p className="funding-hint">Chaque carte est publiée tout de suite sur le site.</p></div>{actions}</div>
       : <PageIntro eyebrow="ESPACE ÉQUIPE · SITE PUBLIC" title="Louer un espace" description="Les cartes de la partie « Louer un espace » de la page d’accueil. Chaque modification est publiée tout de suite sur le site.">{actions}</PageIntro>}
     {error && <p className="doc-error" role="alert">{error}</p>}
-    <div className="rental-grid">{cards.map((card, index) => <article key={card.id} className="rental-card">
+    {cards.length > 1 && <p className="site-drag-hint">Faites glisser une carte pour changer l’ordre sur le site.</p>}
+    <div className="rental-grid">{cards.map((card, index) => <article key={card.id} className="rental-card" data-drag={drag.state(index)} {...drag.handle(index)} {...drag.target(index)}>
       <img src={card.photo} alt="" loading="lazy" style={{ objectPosition: card.focus }} />
       <div className="rental-body">
         <h3>{card.name}</h3>

@@ -91,6 +91,7 @@ def test_an_uploaded_photo_is_served_and_deleted_when_no_card_uses_it(client_as)
 
 
 CONTENT = {
+    "order": ["place", "hero", "contact"],
     "hero": {"visible": True, "title1": "Des lieux", "photo": "/foto/facade.webp"},
     "involve": {
         "visible": False,
@@ -113,6 +114,8 @@ def test_the_team_edits_the_home_page_and_everyone_reads_it(client_as):  # noqa:
         {"involve": {"items": [{"url": "javascript:alert(1)"}]}},
         {"hero": {"bad key": "x"}},
         {"contact": {"text": "x" * 2001}},
+        {"order": ["hero", "hero"]},
+        {"order": ["hero", "menu"]},
     ):
         assert team.put("/api/site/contenu", json={"content": bad}).status_code == 422
     assert team.delete("/api/site/contenu").json() == {"content": None}

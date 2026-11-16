@@ -208,7 +208,7 @@ class Content(BaseModel):
 
 @site_router.get("")
 def read_site() -> dict:
-    """What the home page needs: the team's content and cards, or null for what they have not changed (public)."""
+    """What the home page needs: the team's content (with "order", the order of the sections) and cards, or null (public)."""
     return {
         "content": store.load_document(CONTENT_KEY),
         "cards": store.load_document(CARDS_KEY),
@@ -218,8 +218,15 @@ def read_site() -> dict:
 @site_router.put("/contenu")
 def save_content(body: Content, user: Team) -> dict:
     content = body.content
-    if not set(content) <= SECTIONS:
+    if not set(content) <= SECTIONS | {"order"}:
         raise HTTPException(422, "Section inconnue.")
+    order = content.get("order", [])
+    if (
+        not isinstance(order, list)
+        or len(set(order)) != len(order)
+        or not set(order) <= SECTIONS
+    ):
+        raise HTTPException(422, "Ordre des sections invalide.")
     check_value(content)
     if len(json.dumps(content)) > MAX_CONTENT:
         raise HTTPException(413, "Contenu trop long.")

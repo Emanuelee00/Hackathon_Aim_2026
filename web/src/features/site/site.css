@@ -20,3 +20,14 @@
 @media (max-width: 640px) { .site-photo-row { grid-template-columns: 1fr; } }
 .site-cards-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .site-cards-head h2 { margin: 0; font-family: var(--font-display); font-size: 26px; font-weight: 400; }
+/* Glisser-déposer : ce qu'on tient est estompé, l'endroit où l'on dépose est marqué en violet. */
+.site-drag-hint { margin: 0 0 6px; color: var(--muted); font-size: 13px; }
+.site-grip { display: grid; place-items: center; width: 26px; height: 32px; color: var(--muted); cursor: grab; }
+.site-grip:active { cursor: grabbing; }
+[data-drag="from"] { opacity: .45; }
+[data-drag="over"] { outline: 2px dashed var(--green); outline-offset: 2px; }
+.site-tabs .doc-tab[draggable="true"] { cursor: grab; }
+.rental-card[draggable="true"] { cursor: grab; }
+.site-visible-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.site-visible-row .site-visible { flex: 1; }
+.site-move { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 700; }

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
@@ -536,7 +536,7 @@ const AUTO_SCROLL_SECONDS = 10;
 
 export default function Landing() {
   const [picked, setPicked] = useState(null);
-  const { content, cards: publicSpaces, ready } = useSite();
+  const { content, cards: publicSpaces, order, ready } = useSite();
   const show = Object.fromEntries(Object.entries(content).map(([section, values]) => [section, values.visible !== false]));
   const requestSpaces = requestSpacesOf(publicSpaces);
   const spacesRef = useRef(null);
@@ -580,91 +580,86 @@ export default function Landing() {
   // Tant que le contenu n'est pas arrivé, la page reste vide (pas d'ancien texte remplacé sous les yeux).
   if (!ready) return <HomeShell home><main className="home-loading" /></HomeShell>;
   const { place, team, pillars, spaces, partners, involve, contact } = content;
-  return <HomeShell home hidden={hidden}>
-    <main>
-      {show.hero && <Hero content={content.hero} show={show} />}
-
-      {/* Le fond de la section est la carte dessinée du quartier (PlaceMap) : voir home.css. */}
-      {show.place && <section id="le-lieu" className="landing-section landing-wrap place place-bg">
-        <PlaceMap />
-        <div>
-          <p className="eyebrow">{place.eyebrow}</p>
-          <h2>{place.title}</h2>
-          <p>{place.text}</p>
-          {place.facts?.length > 0 && <ul className="place-facts">{place.facts.map(fact => <li key={`${fact.value}-${fact.label}`}><strong>{fact.value}</strong><span>{fact.label}</span></li>)}</ul>}
-          {place.pressLabel && <a className="place-press place-press-text" href="/on-parle-de-nous">{place.pressLabel}</a>}
-        </div>
-      </section>}
-
-      {show.team && <section id="equipe-lieu" className="landing-team" aria-labelledby="equipe-lieu-titre">
-        <p className="kicker">{team.kicker}</p>
-        <h2 id="equipe-lieu-titre">{team.title}</h2>
-        <p className="lt-intro">{team.intro}</p>
-        <ul className="lt-faces">{team.members.map((member, index) => <li key={`${member.name}-${index}`}>
-          <span className="lt-photo"><img src={member.photo} alt="" loading="lazy" /></span>
-          <strong>{member.name}</strong>
-          <small>{member.role}</small>
-        </li>)}</ul>
-        {team.associations?.length > 0 && <div className="lt-assos"><span>{team.assocLabel}</span>{team.associations.map((assoc, index) => <a key={`${assoc.name}-${index}`} href={assoc.url} target="_blank" rel="noopener noreferrer" title={assoc.name}><img src={assoc.logo} alt={assoc.name} loading="lazy" /></a>)}</div>}
-        {team.buttonLabel && <a className="btn btn-primary lt-more" href="/equipe">{team.buttonLabel}</a>}
-      </section>}
-
-      {show.pillars && <section className="landing-band" aria-labelledby="pillars-title">
-        <div className="landing-wrap">
-          <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
-          <div className="pillars">{pillars.items.map((pillar, index) => <article key={`${pillar.title}-${index}`} className="pillar">
-            <img src={pillar.photo} alt="" loading="lazy" />
-            <h3>{pillar.title}</h3>
-            <p>{pillar.text}</p>
-          </article>)}</div>
-        </div>
-        <Wave className="wave wave-bottom" />
-      </section>}
-
-      {show.events && <section id="evenements" className="block block-wall prog" aria-labelledby="evenements-titre">
-        <WeekProgramme title={content.events.title} />
-      </section>}
-
-      {show.spaces && <section id="espaces" className="block" aria-labelledby="espaces-titre">
-        <p className="kicker">{spaces.kicker}</p>
-        <h2 id="espaces-titre">{spaces.title}</h2>
-        <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : spaceById[space.space] ? '#demande' : '#contact'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : spaceById[space.space] ? { onClick: () => setPicked({ space: space.space, at: Date.now() }) } : {})}>
-          <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
-          <h3 className="space-title">{space.name}</h3>
-          <div className="space-body">
-            <ul className="space-details">{(space.details || []).map(detail => <li key={detail}>{detail}</li>)}</ul>
-            {space.prices?.length > 0 && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
-            {space.note && <p>{space.note}</p>}
-            {space.exchange && <p className="space-exchange">{space.exchange}</p>}
-            <span className="space-cta">{space.link ? `${space.link.label} ↗` : spaceById[space.space] ? 'Faire une demande →' : 'Nous contacter →'}</span>
+  // Chaque section de la page, dans l'ordre choisi par l'équipe dans « Site » (les sections cachées ne sont pas dessinées).
+  const sections = {
+    hero: () => <Hero content={content.hero} show={show} />,
+    // Le fond de la section est la carte dessinée du quartier (PlaceMap) : voir home.css.
+    place: () => <section id="le-lieu" className="landing-section landing-wrap place place-bg">
+          <PlaceMap />
+          <div>
+            <p className="eyebrow">{place.eyebrow}</p>
+            <h2>{place.title}</h2>
+            <p>{place.text}</p>
+            {place.facts?.length > 0 && <ul className="place-facts">{place.facts.map(fact => <li key={`${fact.value}-${fact.label}`}><strong>{fact.value}</strong><span>{fact.label}</span></li>)}</ul>}
+            {place.pressLabel && <a className="place-press place-press-text" href="/on-parle-de-nous">{place.pressLabel}</a>}
           </div>
-        </a>)}</div>
-        <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>
-      </section>}
-
-      {show.spaces && spaces.showRequest !== false && <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>}
-
-      {show.partners && <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
-        <p className="kicker">{partners.kicker}</p>
-        <h2 id="partenaires-titre">{partners.title}</h2>
-        {partners.partners?.length > 0 && <PartnerRow items={partners.partners} />}
-        {partners.funders?.length > 0 && <><h3 className="partners-subtitle">{partners.fundersTitle}</h3><PartnerRow items={partners.funders} /></>}
-        {partners.supporters?.length > 0 && <><h3 className="partners-subtitle">{partners.supportersTitle}</h3><PartnerRow items={partners.supporters} /></>}
-      </section>}
-
-      {show.involve && <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
-        <p className="kicker">{involve.kicker}</p>
-        <h2 id="impliquer-titre">{involve.title}</h2>
-        {involve.text && <p>{involve.text}</p>}
-        <div className="involve-grid">{involve.items.map((item, index) => <a key={`${item.title}-${index}`} className="home-involve" href={item.url || '#contact'} target={item.url?.startsWith('http') ? '_blank' : undefined} rel={item.url?.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})` }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
-      </section>}
-
-      {show.contact && <section id="contact" className="block" aria-labelledby="contact-titre">
-        <p className="kicker">{contact.kicker}</p>
-        <h2 id="contact-titre">{contact.title}</h2>
-        {contact.text && <p>{contact.text}</p>}
-        <ContactForm />
-      </section>}
-    </main>
+        </section>,
+    team: () => <section id="equipe-lieu" className="landing-team" aria-labelledby="equipe-lieu-titre">
+          <p className="kicker">{team.kicker}</p>
+          <h2 id="equipe-lieu-titre">{team.title}</h2>
+          <p className="lt-intro">{team.intro}</p>
+          <ul className="lt-faces">{team.members.map((member, index) => <li key={`${member.name}-${index}`}>
+            <span className="lt-photo"><img src={member.photo} alt="" loading="lazy" /></span>
+            <strong>{member.name}</strong>
+            <small>{member.role}</small>
+          </li>)}</ul>
+          {team.associations?.length > 0 && <div className="lt-assos"><span>{team.assocLabel}</span>{team.associations.map((assoc, index) => <a key={`${assoc.name}-${index}`} href={assoc.url} target="_blank" rel="noopener noreferrer" title={assoc.name}><img src={assoc.logo} alt={assoc.name} loading="lazy" /></a>)}</div>}
+          {team.buttonLabel && <a className="btn btn-primary lt-more" href="/equipe">{team.buttonLabel}</a>}
+        </section>,
+    pillars: () => <section className="landing-band" aria-labelledby="pillars-title">
+          <div className="landing-wrap">
+            <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
+            <div className="pillars">{pillars.items.map((pillar, index) => <article key={`${pillar.title}-${index}`} className="pillar">
+              <img src={pillar.photo} alt="" loading="lazy" />
+              <h3>{pillar.title}</h3>
+              <p>{pillar.text}</p>
+            </article>)}</div>
+          </div>
+          <Wave className="wave wave-bottom" />
+        </section>,
+    events: () => <section id="evenements" className="block block-wall prog" aria-labelledby="evenements-titre">
+          <WeekProgramme title={content.events.title} />
+        </section>,
+    spaces: () => <>
+  <section id="espaces" className="block" aria-labelledby="espaces-titre">
+          <p className="kicker">{spaces.kicker}</p>
+          <h2 id="espaces-titre">{spaces.title}</h2>
+          <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : spaceById[space.space] ? '#demande' : '#contact'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : spaceById[space.space] ? { onClick: () => setPicked({ space: space.space, at: Date.now() }) } : {})}>
+            <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
+            <h3 className="space-title">{space.name}</h3>
+            <div className="space-body">
+              <ul className="space-details">{(space.details || []).map(detail => <li key={detail}>{detail}</li>)}</ul>
+              {space.prices?.length > 0 && <dl className="space-prices">{space.prices.map(([label, amount]) => <div key={label}><dt>{label}</dt><dd>{amount}</dd></div>)}</dl>}
+              {space.note && <p>{space.note}</p>}
+              {space.exchange && <p className="space-exchange">{space.exchange}</p>}
+              <span className="space-cta">{space.link ? `${space.link.label} ↗` : spaceById[space.space] ? 'Faire une demande →' : 'Nous contacter →'}</span>
+            </div>
+          </a>)}</div>
+          <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>
+        </section>
+        {spaces.showRequest !== false && <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>}
+    </>,
+    partners: () => <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
+          <p className="kicker">{partners.kicker}</p>
+          <h2 id="partenaires-titre">{partners.title}</h2>
+          {partners.partners?.length > 0 && <PartnerRow items={partners.partners} />}
+          {partners.funders?.length > 0 && <><h3 className="partners-subtitle">{partners.fundersTitle}</h3><PartnerRow items={partners.funders} /></>}
+          {partners.supporters?.length > 0 && <><h3 className="partners-subtitle">{partners.supportersTitle}</h3><PartnerRow items={partners.supporters} /></>}
+        </section>,
+    involve: () => <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
+          <p className="kicker">{involve.kicker}</p>
+          <h2 id="impliquer-titre">{involve.title}</h2>
+          {involve.text && <p>{involve.text}</p>}
+          <div className="involve-grid">{involve.items.map((item, index) => <a key={`${item.title}-${index}`} className="home-involve" href={item.url || '#contact'} target={item.url?.startsWith('http') ? '_blank' : undefined} rel={item.url?.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})` }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
+        </section>,
+    contact: () => <section id="contact" className="block" aria-labelledby="contact-titre">
+          <p className="kicker">{contact.kicker}</p>
+          <h2 id="contact-titre">{contact.title}</h2>
+          {contact.text && <p>{contact.text}</p>}
+          <ContactForm />
+        </section>,
+  };
+  return <HomeShell home hidden={hidden}>
+    <main>{order.filter(id => show[id]).map(id => <Fragment key={id}>{sections[id]()}</Fragment>)}</main>
   </HomeShell>;
 }

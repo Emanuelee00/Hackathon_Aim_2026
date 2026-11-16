@@ -80,6 +80,13 @@ export const defaultSite = {
 // Les ancres du menu de la page, par section : une section cachée sort aussi du menu.
 export const sectionAnchors = { place: 'le-lieu', events: 'evenements', spaces: 'espaces', partners: 'partenaires', involve: 's-impliquer', contact: 'contact' };
 
+// L'ordre des sections sur la page : celui que l'équipe a choisi, puis les sections qu'il ne mentionne pas (dans l'ordre d'origine).
+export function sectionOrder(saved) {
+  const known = Object.keys(defaultSite);
+  const chosen = (Array.isArray(saved?.order) ? saved.order : []).filter(id => known.includes(id));
+  return [...new Set([...chosen, ...known])];
+}
+
 // Ce que l'équipe a enregistré remplace, champ par champ, le contenu d'origine (les listes sont remplacées en entier).
 export function mergeSite(saved) {
   return Object.fromEntries(Object.entries(defaultSite).map(([section, values]) => [section, { ...values, ...(saved?.[section] || {}) }]));
@@ -88,13 +95,13 @@ export function mergeSite(saved) {
 // Le contenu et les cartes de la page, lus une fois. `ready` passe à vrai à la réponse (ou au bout d'1,5 s si le serveur tarde),
 // pour ne pas montrer l'ancien texte puis le nouveau.
 export function useSite() {
-  const [site, setSite] = useState({ content: mergeSite(null), cards: defaultRentalSpaces, ready: false });
+  const [site, setSite] = useState({ content: mergeSite(null), cards: defaultRentalSpaces, order: sectionOrder(null), ready: false });
   useEffect(() => {
     let done = false;
     const finish = data => {
       if (done) return;
       done = true;
-      setSite({ content: mergeSite(data?.content), cards: data?.cards || defaultRentalSpaces, ready: true });
+      setSite({ content: mergeSite(data?.content), cards: data?.cards || defaultRentalSpaces, order: sectionOrder(data?.content), ready: true });
     };
     const timer = setTimeout(() => finish(null), 1500);
     fetch('/api/site').then(response => (response.ok ? response.json() : null)).then(finish, () => finish(null)).finally(() => clearTimeout(timer));

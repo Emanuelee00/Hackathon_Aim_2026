@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { defaultRentalSpaces } from '../landing/rentalSpaces.js';
-import { blankForm, fromForm, move, toForm } from './rentalCards.js';
+import { blankForm, fromForm, move, moveTo, toForm } from './rentalCards.js';
 
 test('the six cards of the site are there, and go to the form and back unchanged', () => {
   assert.deepEqual(defaultRentalSpaces.map(card => card.id), ['chapelle', 'salon-collectif', 'reunion', 'atelier', 'coworking', 'cantines']);
@@ -33,4 +33,12 @@ test('cards move up and down, and stay in place at the ends', () => {
   const cards = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
   assert.deepEqual(move(cards, 1, -1).map(card => card.id), ['b', 'a', 'c']);
   assert.deepEqual(move(cards, 2, 1), cards);
+});
+
+test('dragging an element to another place moves it there, the others slide by one', () => {
+  const list = ['a', 'b', 'c', 'd'];
+  assert.deepEqual(moveTo(list, 0, 2), ['b', 'c', 'a', 'd']);
+  assert.deepEqual(moveTo(list, 3, 0), ['d', 'a', 'b', 'c']);
+  assert.equal(moveTo(list, 1, 1), list);
+  assert.equal(moveTo(list, 1, 9), list);
 });

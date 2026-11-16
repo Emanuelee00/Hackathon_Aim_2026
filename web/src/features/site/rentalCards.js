@@ -42,6 +42,15 @@ export function fromForm(form, others) {
   };
 }
 
+// Déplace l'élément `from` à la place de `to` (les autres glissent d'un cran).
+export function moveTo(list, from, to) {
+  if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return list;
+  const next = [...list];
+  const [item] = next.splice(from, 1);
+  next.splice(to, 0, item);
+  return next;
+}
+
 export const move = (cards, index, step) => {
   const target = index + step;
   if (target < 0 || target >= cards.length) return cards;

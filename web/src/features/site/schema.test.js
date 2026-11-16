@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultSite, mergeSite, sectionAnchors } from '../landing/siteContent.js';
+import { defaultSite, mergeSite, sectionAnchors, sectionOrder } from '../landing/siteContent.js';
 import { SITE_SECTIONS, checkSection, cleanSection } from './schema.js';
 
 test('every section of the home page can be edited, and every field has its original value', () => {
@@ -30,4 +30,11 @@ test('links are checked and texts cleaned before publishing', () => {
   const cleaned = cleanSection(hero, { ...defaultSite.hero, cities: [' Marseille ', '', 'Nice'], title1: '  Des lieux  ' });
   assert.deepEqual(cleaned.cities, ['Marseille', 'Nice']);
   assert.equal(cleaned.title1, 'Des lieux');
+});
+
+test('the order of the sections: the team’s choice first, then the ones it does not mention', () => {
+  assert.deepEqual(sectionOrder(null), Object.keys(defaultSite));
+  const order = sectionOrder({ order: ['contact', 'hero', 'menu', 'contact'] });
+  assert.deepEqual(order.slice(0, 3), ['contact', 'hero', 'place']);
+  assert.equal(order.length, Object.keys(defaultSite).length);
 });
