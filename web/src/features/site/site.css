@@ -31,3 +31,7 @@
 .site-visible-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .site-visible-row .site-visible { flex: 1; }
 .site-move { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; font-weight: 700; }
+/* Ranger « à la main » : l'élément attrapé se soulève, les autres lui font place. */
+.site-item { transition: transform .2s ease, box-shadow .15s ease; touch-action: pan-x pan-y; }
+.site-item-head { touch-action: none; user-select: none; cursor: grab; }
+.site-item[data-lifted] { box-shadow: 0 12px 26px rgba(40,20,50,.25); border-color: #c9a6d6; cursor: grabbing; }

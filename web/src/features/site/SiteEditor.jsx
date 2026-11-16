@@ -8,6 +8,7 @@ import RentalCards from './RentalCards.jsx';
 import { SITE_PHOTOS, move, moveTo, shrinkPhoto } from './rentalCards.js';
 import { SITE_SECTIONS, checkSection, cleanSection } from './schema.js';
 import useDragSort from './useDragSort.js';
+import usePointerSort from '../../shared/lib/usePointerSort.js';
 import './rentals.css';
 import './site.css';
 
@@ -59,13 +60,13 @@ function PhotoField({ field, value, onChange }) {
 function ListField({ field, value = [], onChange }) {
   const [open, setOpen] = useState(null);
   const set = (index, item) => onChange(value.map((current, at) => (at === index ? item : current)));
-  const drag = useDragSort((from, to) => { onChange(moveTo(value, from, to)); setOpen(null); });
+  const sort = usePointerSort((from, to) => { onChange(moveTo(value, from, to)); setOpen(null); });
   return <fieldset className="site-list"><legend>{field.label}</legend>
-    {value.length > 1 && <p className="site-drag-hint">Faites glisser ⠿ pour changer l’ordre.</p>}
-    {value.map((item, index) => <div key={index} className="site-item" data-drag={drag.state(index)} {...drag.target(index)}>
+    {value.length > 1 && <p className="site-drag-hint">Attrapez un élément et déplacez-le : les autres lui font de la place.</p>}
+    {value.map((item, index) => <div key={index} className="site-item" {...sort.row(index)}>
       <div className="site-item-head">
-        <span className="site-grip" title="Faire glisser pour déplacer" aria-hidden="true" {...drag.handle(index)}><Icon name="grip" size={16} /></span>
-        <button type="button" className="site-item-title" aria-expanded={open === index} onClick={() => setOpen(open === index ? null : index)}>{item[field.titleKey] || `Sans titre (${field.itemLabel})`}<Icon name={open === index ? 'up' : 'down'} size={14} /></button>
+        <span className="site-grip" title="Attraper pour déplacer" aria-hidden="true"><Icon name="grip" size={16} /></span>
+        <button type="button" className="site-item-title" data-sort-grab aria-expanded={open === index} onClick={() => setOpen(open === index ? null : index)}>{item[field.titleKey] || `Sans titre (${field.itemLabel})`}<Icon name={open === index ? 'up' : 'down'} size={14} /></button>
         <button type="button" className="icon-button" aria-label="Monter" disabled={index === 0} onClick={() => { onChange(move(value, index, -1)); setOpen(null); }}><Icon name="up" size={15} /></button>
         <button type="button" className="icon-button" aria-label="Descendre" disabled={index === value.length - 1} onClick={() => { onChange(move(value, index, 1)); setOpen(null); }}><Icon name="down" size={15} /></button>
         <button type="button" className="icon-button rental-delete" aria-label={`Retirer ${item[field.titleKey] || field.itemLabel}`} onClick={() => { onChange(value.filter((_, at) => at !== index)); setOpen(null); }}><Icon name="trash" size={15} /></button>
