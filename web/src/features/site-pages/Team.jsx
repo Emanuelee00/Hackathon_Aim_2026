@@ -1,11 +1,14 @@
 import { useRef, useState } from 'react';
 import HomeShell from '../landing/HomeShell.jsx';
-import { hostedAssociations, members } from './teamData.js';
+import { useSite } from '../landing/siteContent.js';
 
 
 const people = <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><circle cx="17.5" cy="9.5" r="2.6" /><path d="M17 14.2a5.2 5.2 0 0 1 4.5 5.3" /></svg>;
 
 export default function Team() {
+  // Les personnes et les associations sont celles de « Site » (section L’équipe), modifiables par l’équipe.
+  const { content, ready } = useSite();
+  const { members, associations: hostedAssociations } = content.team;
   const grid = useRef(null);
   const [active, setActive] = useState(0);
   // Téléphone : les cartes se font défiler de côté ; les points montrent laquelle est devant.
@@ -22,6 +25,7 @@ export default function Team() {
     if (el) setSlide(Math.round(el.scrollLeft / Math.max(1, el.clientWidth * 0.9)) > 0 ? 1 : 0);
   };
   const reduced = useRef(typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (!ready) return <HomeShell><main className="team-main" /></HomeShell>;
   return <HomeShell>
     <main className="team-main">
       <section id="equipe" className="team-v2" aria-labelledby="equipe-titre">
@@ -30,7 +34,7 @@ export default function Team() {
           <p className="eyebrow">NOTRE ÉQUIPE</p>
           <h1 id="equipe-titre">Les visages de Chez Marthe</h1>
         </div>
-        <div className="team-grid" ref={grid} onScroll={onScroll}>{members.map(m => <article key={m.name} className="member-card">
+        <div className="team-grid" ref={grid} onScroll={onScroll}>{members.map((m, index) => <article key={`${m.name}-${index}`} className="member-card">
           <span className="member-photo" aria-hidden="true">{m.photo ? <img src={m.photo} alt="" loading="lazy" /> : m.name[0]}</span>
           <h2>{m.name}</h2>
           <p className="member-role">{m.role}</p>
@@ -67,7 +71,7 @@ export default function Team() {
         <p className="kicker">AVEC NOUS, AU QUOTIDIEN</p>
         <h2 id="assos-titre">Les associations du lieu</h2>
         <p className="assos-intro">Chez Marthe vit chaque jour avec les associations qui sont installées dans le lieu.</p>
-        <div className="assos-grid">{hostedAssociations.map(assoc => <a key={assoc.name} className="asso-card" href={assoc.url} target="_blank" rel="noopener noreferrer">
+        <div className="assos-grid">{hostedAssociations.map((assoc, index) => <a key={`${assoc.name}-${index}`} className="asso-card" href={assoc.url} target="_blank" rel="noopener noreferrer">
           <span className="asso-logo"><img src={assoc.logo} alt="" loading="lazy" /></span>
           <strong>{assoc.name}</strong>
           <small>{assoc.role}</small>

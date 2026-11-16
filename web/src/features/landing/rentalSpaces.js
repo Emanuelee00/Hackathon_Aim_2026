@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 // The spaces offered to the public, with the names, surfaces and prices of the « Espaces Chez Marthe » sheet.
 // « reunion » is the Bureau; the Atelier is lent in exchange for free workshops.
 export const defaultRentalSpaces = [
@@ -11,12 +9,3 @@ export const defaultRentalSpaces = [
   { id: 'coworking', name: 'Le Coworking', photo: '/foto/coworking.jpg', focus: 'center 50%', details: ['Jusqu’à 12 places', 'Location à la place', 'Géré par Sista4good'], note: 'Tarifs et réservation auprès de Sista4good.', link: { url: 'https://www.sista4good.com/', label: 'Découvrir Sista4good' } },
   { id: 'cantines', name: 'Les Petites Cantines', photo: '/foto/cantine.webp', focus: 'center 50%', details: ['30 personnes', '32 m² + terrasse de 30 m²', 'Cantine solidaire à prix libre'], note: 'Privatisable, tarif sur devis.', link: { url: 'https://marseille.lespetitescantines.org/', label: 'Voir Les Petites Cantines' } },
 ];
-
-// The cards the team saved in « Louer un espace (site) » (espaces.py), or the ones above until they change them.
-export function useRentalSpaces() {
-  const [cards, setCards] = useState(defaultRentalSpaces);
-  useEffect(() => {
-    fetch('/api/espaces-a-louer').then(response => (response.ok ? response.json() : null)).then(data => { if (data?.cards) setCards(data.cards); }).catch(() => {});
-  }, []);
-  return cards;
-}

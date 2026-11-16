@@ -9,7 +9,7 @@ import { defaultRentalSpaces } from '../landing/rentalSpaces.js';
 import { FOCUS, SITE_PHOTOS, blankForm, fromForm, move, shrinkPhoto, toForm } from './rentalCards.js';
 import './rentals.css';
 
-// « Louer un espace (site) » : les cartes de la page d'accueil, que l'équipe ajoute, modifie, range ou supprime.
+// « Site » › « Louer un espace » : les cartes de la page d'accueil, que l'équipe ajoute, modifie, range ou supprime.
 // Chaque enregistrement est visible tout de suite sur le site (espaces.py).
 
 async function call(method, body) {
@@ -77,7 +77,7 @@ function CardForm({ initial, others, onSave, onCancel }) {
   </form>;
 }
 
-export default function RentalCards() {
+export default function RentalCards({ embedded = false }) {
   const { notify } = useStore();
   const [cards, setCards] = useState(null);
   const [custom, setCustom] = useState(false);
@@ -100,14 +100,15 @@ export default function RentalCards() {
   const run = promise => promise.catch(problem => setError(problem.message));
   const reset = () => run(call('DELETE').then(() => { setCards(defaultRentalSpaces); setCustom(false); setRemoving(null); notify('Les six cartes d’origine sont de retour sur le site.'); }));
   const home = `${spaceUrl(null)}#espaces`;
-  if (!cards) return <PageIntro eyebrow="ESPACE ÉQUIPE · SITE PUBLIC" title="Louer un espace" description="Chargement…" />;
+  if (!cards) return <p className="funding-muted">Chargement des cartes…</p>;
+  const actions = <div className="funding-actions">
+    {!embedded && <a className="button button-quiet button-small" href={home} target="_blank" rel="noreferrer"><Icon name="diagonal" size={15} />Voir sur le site</a>}
+    <button type="button" className="button button-dark button-small" onClick={() => setEditing({ index: -1, form: blankForm() })}><Icon name="plus" size={16} />Ajouter une carte</button>
+  </div>;
   return <>
-    <PageIntro eyebrow="ESPACE ÉQUIPE · SITE PUBLIC" title="Louer un espace" description="Les cartes de la partie « Louer un espace » de la page d’accueil. Chaque modification est publiée tout de suite sur le site.">
-      <div className="funding-actions">
-        <a className="button button-quiet button-small" href={home} target="_blank" rel="noreferrer"><Icon name="diagonal" size={15} />Voir sur le site</a>
-        <button type="button" className="button button-dark button-small" onClick={() => setEditing({ index: -1, form: blankForm() })}><Icon name="plus" size={16} />Ajouter une carte</button>
-      </div>
-    </PageIntro>
+    {embedded
+      ? <div className="site-cards-head"><div><h2>Les cartes des espaces</h2><p className="funding-hint">Chaque carte est publiée tout de suite sur le site.</p></div>{actions}</div>
+      : <PageIntro eyebrow="ESPACE ÉQUIPE · SITE PUBLIC" title="Louer un espace" description="Les cartes de la partie « Louer un espace » de la page d’accueil. Chaque modification est publiée tout de suite sur le site.">{actions}</PageIntro>}
     {error && <p className="doc-error" role="alert">{error}</p>}
     <div className="rental-grid">{cards.map((card, index) => <article key={card.id} className="rental-card">
       <img src={card.photo} alt="" loading="lazy" style={{ objectPosition: card.focus }} />

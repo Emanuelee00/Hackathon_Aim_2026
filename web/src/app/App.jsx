@@ -13,7 +13,7 @@ import Reports from '../features/reports/Reports.jsx';
 import Stats from '../features/stats/Stats.jsx';
 import Funding from '../features/funding/Funding.jsx';
 import Prospection from '../features/prospection/Prospection.jsx';
-import RentalCards from '../features/rentals/RentalCards.jsx';
+import SiteEditor from '../features/site/SiteEditor.jsx';
 import Messages from '../features/messages/Messages.jsx';
 import Quotes from '../features/quotes/Quotes.jsx';
 import AccountingWindow from '../features/quotes/AccountingWindow.jsx';
@@ -47,7 +47,7 @@ function PageContent({ page, openEvent, openAccounting, openJourney, openNew, op
   if (page === 'prospection') return <Prospection navigate={navigate} />;
   if (page === 'messages') return <Messages />;
   if (page === 'quotes') return <Quotes onAccounting={openAccounting} />;
-  if (page === 'rentals') return <RentalCards />;
+  if (page === 'site') return <SiteEditor />;
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 

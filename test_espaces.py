@@ -24,6 +24,7 @@ def clients(client_as):  # noqa: F811
     trio = client_as("equipe"), client_as("residents"), client_as(None)
     for client in trio:
         client.app.include_router(espaces.router)
+        client.app.include_router(espaces.site_router)
     return trio
 
 
@@ -87,3 +88,44 @@ def test_an_uploaded_photo_is_served_and_deleted_when_no_card_uses_it(client_as)
     assert store.list_keys(espaces.PHOTO_PREFIX) == []
     gone = team.put("/api/espaces-a-louer", json={"cards": [new]})
     assert gone.status_code == 422
+
+
+CONTENT = {
+    "hero": {"visible": True, "title1": "Des lieux", "photo": "/foto/facade.webp"},
+    "involve": {
+        "visible": False,
+        "items": [{"title": "Faire un don", "url": "https://example.org/don"}],
+    },
+}
+
+
+def test_the_team_edits_the_home_page_and_everyone_reads_it(client_as):  # noqa: F811
+    team, resident, anonymous = clients(client_as)
+    assert anonymous.get("/api/site").json() == {"content": None, "cards": None}
+    assert (
+        resident.put("/api/site/contenu", json={"content": CONTENT}).status_code == 403
+    )
+    assert team.put("/api/site/contenu", json={"content": CONTENT}).status_code == 200
+    assert anonymous.get("/api/site").json()["content"] == CONTENT
+    for bad in (
+        {"menu": {}},
+        {"hero": {"photo": "https://evil.example/x.jpg"}},
+        {"involve": {"items": [{"url": "javascript:alert(1)"}]}},
+        {"hero": {"bad key": "x"}},
+        {"contact": {"text": "x" * 2001}},
+    ):
+        assert team.put("/api/site/contenu", json={"content": bad}).status_code == 422
+    assert team.delete("/api/site/contenu").json() == {"content": None}
+
+
+def test_a_photo_stays_while_the_content_or_a_card_uses_it(client_as):  # noqa: F811
+    team, _, anonymous = clients(client_as)
+    url = team.post(
+        "/api/espaces-a-louer/photos", json={"data": f"data:image/png;base64,{PNG}"}
+    ).json()["url"]
+    content = {"pillars": {"items": [{"title": "Se loger", "photo": url}]}}
+    assert team.put("/api/site/contenu", json={"content": content}).status_code == 200
+    team.put("/api/espaces-a-louer", json={"cards": [CARD]})  # the cards do not use it
+    assert anonymous.get(url).status_code == 200
+    team.delete("/api/site/contenu")
+    assert anonymous.get(url).status_code == 404

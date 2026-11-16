@@ -1,4 +1,4 @@
-// « Louer un espace (site) » : passer d'une carte au formulaire de l'équipe et inversement (logique sans affichage, testée).
+// « Site » › « Louer un espace » : passer d'une carte au formulaire de l'équipe et inversement (logique sans affichage, testée).
 
 export const SITE_PHOTOS = ['chapelle.jpg', 'salon.jpg', 'bureau.jpg', 'atelier.jpg', 'coworking.jpg', 'cantine.webp', 'jardin.webp', 'cour.jpg', 'facade.webp', 'sororite.webp', 'bienvenue.jpg', 'mur-des-mots.jpg', 'panneaux.webp']
   .map(name => `/foto/${name}`);
@@ -50,8 +50,8 @@ export const move = (cards, index, step) => {
   return next;
 };
 
-// Réduit une photo choisie sur l'ordinateur (1600 px au plus, JPEG) avant de l'envoyer.
-export function shrinkPhoto(file, max = 1600) {
+// Réduit une photo choisie sur l'ordinateur (1600 px au plus, JPEG ; PNG pour les logos, qui gardent leur transparence) avant de l'envoyer.
+export function shrinkPhoto(file, max = 1600, type = 'image/jpeg') {
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => {
@@ -59,7 +59,7 @@ export function shrinkPhoto(file, max = 1600) {
       const canvas = Object.assign(document.createElement('canvas'), { width: Math.round(image.width * scale), height: Math.round(image.height * scale) });
       canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
       URL.revokeObjectURL(image.src);
-      resolve(canvas.toDataURL('image/jpeg', 0.82));
+      resolve(canvas.toDataURL(type, 0.82));
     };
     image.onerror = () => reject(new Error('Cette image n’a pas pu être lue.'));
     image.src = URL.createObjectURL(file);

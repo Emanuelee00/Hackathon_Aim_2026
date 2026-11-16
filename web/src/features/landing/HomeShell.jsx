@@ -4,11 +4,9 @@ import './home.css';
 // Shared frame of the public site (home, Nos espaces, Notre équipe): violet bar with a pink wave,
 // side menu, "Suivez-nous" footer. Everything is scoped under .cm-home.
 
-export const LINKS = {
-  donate: 'https://www.helloasso.com/associations/chez-marthe/formulaires/3',
-  join: 'https://www.helloasso.com/associations/chez-marthe/adhesions/adhesion-chez-marthe',
-  friends: 'https://chat.whatsapp.com/GCTH2IPPnraADelLbGxVzX?mode=gi_t',
-};
+import { LINKS } from './links.js';
+
+export { LINKS };
 
 export const socials = [
   { name: 'Instagram', className: 'ig', url: 'https://www.instagram.com/bienvenuechezmarthe/', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" /></svg> },
@@ -31,7 +29,7 @@ function MenuLink({ href, title, text, onPick }) {
 }
 
 // `home` is true on the home page: its sections are reached with #anchors, elsewhere with /#anchors.
-export default function HomeShell({ home = false, children }) {
+export default function HomeShell({ home = false, hidden = [], children }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -66,16 +64,16 @@ export default function HomeShell({ home = false, children }) {
       <div className="menu-scroll">
         <div className="menu-section">
           <p className="menu-group">Découvrir</p>
-          <MenuLink href={`${at}#le-lieu`} title="Notre premier lieu" text="Chez Marthe, Saint-Savournin" onPick={close} />
+          {!hidden.includes('le-lieu') && <MenuLink href={`${at}#le-lieu`} title="Notre premier lieu" text="Chez Marthe, Saint-Savournin" onPick={close} />}
           <MenuLink href="/equipe" title="Notre équipe" text="Les visages de Chez Marthe et notre manifeste" onPick={close} />
-          <MenuLink href={`${at}#evenements`} title="Nos évènements" text="La programmation" onPick={close} />
+          {!hidden.includes('evenements') && <MenuLink href={`${at}#evenements`} title="Nos évènements" text="La programmation" onPick={close} />}
           <MenuLink href="/on-parle-de-nous" title="On parle de nous" text="Articles de presse et reportages" onPick={close} />
         </div>
         <div className="menu-section">
           <p className="menu-group">Participer</p>
-          <MenuLink href={`${at}#espaces`} title="Louer un espace" text="Chapelle, salon, atelier, bureau" onPick={close} />
-          <MenuLink href={`${at}#partenaires`} title="Nos partenaires" text="Soutiens et partenaires" onPick={close} />
-          <MenuLink href={`${at}#s-impliquer`} title="Rejoindre le mouvement" text="Don, adhésion, communauté" onPick={close} />
+          {!hidden.includes('espaces') && <MenuLink href={`${at}#espaces`} title="Louer un espace" text="Chapelle, salon, atelier, bureau" onPick={close} />}
+          {!hidden.includes('partenaires') && <MenuLink href={`${at}#partenaires`} title="Nos partenaires" text="Soutiens et partenaires" onPick={close} />}
+          {!hidden.includes('s-impliquer') && <MenuLink href={`${at}#s-impliquer`} title="Rejoindre le mouvement" text="Don, adhésion, communauté" onPick={close} />}
         </div>
       </div>
       <div className="menu-fixed">

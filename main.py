@@ -23,6 +23,7 @@ from demo import DEMO_MODE
 from editeur import router as editeur_router
 from employment.routes import router as employment_router
 from espaces import router as espaces_router
+from espaces import site_router
 from funding.prospection import router as prospection_router
 from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
@@ -59,6 +60,7 @@ app.include_router(messages_router)
 app.include_router(modeles_router)
 app.include_router(editeur_router)
 app.include_router(espaces_router)
+app.include_router(site_router)
 
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the

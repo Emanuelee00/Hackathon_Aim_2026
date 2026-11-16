@@ -4,11 +4,8 @@ import { spaceById } from '../../shared/data/spaces.js';
 import { spaceUrl } from '../../shared/lib/spaces.js';
 import PublicRequest from '../public-request/PublicRequest.jsx';
 import { ContactForm } from '../site-pages/Contact.jsx';
-import { hostedAssociations, members } from '../site-pages/teamData.js';
-import HomeShell, { LINKS, socials } from './HomeShell.jsx';
-import { useRentalSpaces } from './rentalSpaces.js';
-
-const cities = ['Marseille', 'Nice', 'Avignon', 'Paris', 'Angers', 'La Ciotat'];
+import HomeShell, { socials } from './HomeShell.jsx';
+import { sectionAnchors, useSite } from './siteContent.js';
 
 // Types out each city, pauses, erases it, then moves to the next — skipped for reduced motion.
 function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 } = {}) {
@@ -34,49 +31,13 @@ function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 }
   return text;
 }
 
-const pillars = [
-  { title: 'Se loger', photo: '/foto/facade.webp', text: 'Un toit sûr pour se poser et retrouver de la stabilité avant la prochaine étape.' },
-  { title: 'Se reconstruire', photo: '/foto/sororite.webp', text: 'Un lieu d’écoute, sans jugement, pour prendre soin de soi à son rythme.' },
-  { title: 'Se nourrir', photo: '/foto/cantine.webp', text: 'Des repas partagés à prix libre avec la cantine et le jardin.' },
-  { title: 'Rayonner', photo: '/foto/jardin.webp', text: 'Des rencontres, des projets et des coups de main avec tout le quartier.' },
-];
-
 // Violet wave closing the band above and below (same as the platform's public site).
 function Wave({ className }) {
   return <svg className={className} viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 48 C 240 8 480 8 720 40 S 1200 80 1440 30 V80 H0 Z" /></svg>;
 }
 
-// The cards of « Louer un espace » : the team edits them in its space (« Louer un espace (site) »), see rentalSpaces.js.
+// The cards of « Louer un espace » : the team edits them in « Site », see rentalSpaces.js and siteContent.js.
 const requestSpacesOf = cards => cards.filter(card => !card.link && spaceById[card.space]).map(card => ({ ...spaceById[card.space], name: card.space === 'atelier' ? 'L’Atelier (échange de services)' : card.name }));
-
-const partners = [
-  { name: 'Habitat Alternatif Social', logo: 'has.webp', url: 'https://www.has.asso.fr/' },
-  { name: 'JUST', logo: 'just.webp', url: 'https://just.earth/' },
-  { name: 'Les Petites Cantines Marseille', logo: 'petites-cantines.webp', url: 'https://marseille.lespetitescantines.org/' },
-  { name: 'Sister4Good', logo: 'sista4good.webp', url: 'https://www.sista4good.com/' },
-  { name: 'Benenova Marseille', logo: 'benenova.webp', url: 'https://www.benenova.fr/' },
-];
-
-// Villes, écoles et programmes qui accompagnent le projet (logos recadrés depuis la capture fournie par l'équipe).
-const supporters = [
-  { name: 'Ville de Marseille', logo: 'ville-de-marseille.webp', url: 'https://www.marseille.fr/' },
-  { name: 'KEDGE Entrepreneurship', logo: 'kedge-entrepreneurship.webp', url: 'https://kedge.edu/' },
-  { name: 'Gagnante Be a Boss Women Tour 2025', logo: 'be-a-boss-women-tour.webp', url: 'https://www.beaboss-womentour.com/e/sud-2027' },
-  { name: 'HEC Paris – Stand Up', logo: 'hec-paris-stand-up.webp', url: 'https://www.hec.edu/' },
-];
-
-// Financeurs publics : le logo vient de la page Wikipédia de la Métropole.
-const funders = [
-  { name: 'Métropole Aix-Marseille-Provence', logo: 'metropole-aix-marseille-provence.svg', url: 'https://www.ampmetropole.fr/' },
-  { name: 'Fondation de France', logo: 'fondation-de-france.webp', url: 'https://www.fondationdefrance.org/fr/' },
-];
-
-const involvement = [
-  { title: 'Proposer un lieu d’accueil', photo: '/foto/facade.webp', text: 'Vous avez les murs, elles ont l’avenir. Vous nous le confiez ?', url: '#contact' },
-  { title: 'Faire un don', photo: '/foto/jardin.webp', text: '1 500 m² de vide ou 1 500 m² d’avenir ? À vous de voir : aidez-nous à les aménager.', url: LINKS.donate },
-  { title: 'Adhérer', photo: '/foto/sororite.webp', text: 'Rejoindre l’association et porter le projet avec nous.', url: LINKS.join },
-  { title: 'Les amies de Chez Marthe', photo: '/foto/cantine.webp', text: 'La communauté qui suit la vie du lieu au quotidien.', url: LINKS.friends },
-];
 
 // Fait avancer la rangée toute seule (une moitié de la piste en `duration` secondes). Au doigt ou au pavé tactile
 // on peut la faire glisser dans les deux sens ; elle repart 1,5 s après, de là où on l'a laissée. La piste contient
@@ -132,14 +93,14 @@ function PartnerRow({ items }) {
   // Moins de 4 logos : pas de défilement, ils restent fixes et centrés.
   if (items.length < 4) return <div className="marquee marquee-still">
     <ul className="home-partners marquee-track">{items.map(p => <li key={p.name}>
-      <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={p.name} title={p.name} loading="lazy" /></a>
+      <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={p.logo} alt={p.name} title={p.name} loading="lazy" /></a>
     </li>)}</ul>
   </div>;
   return <div className="marquee marquee-moving" ref={scroller}>
     <ul className="home-partners marquee-track">{[0, 1].flatMap(round => set.map((p, i) => {
       const copy = round === 1 || i >= items.length;
       return <li key={`${round}-${i}`} aria-hidden={copy ? 'true' : undefined}>
-        <a href={p.url} tabIndex={copy ? -1 : undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={`/foto/partenaires/${p.logo}`} alt={copy ? '' : p.name} title={p.name} loading="lazy" /></a>
+        <a href={p.url} tabIndex={copy ? -1 : undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={p.logo} alt={copy ? '' : p.name} title={p.name} loading="lazy" /></a>
       </li>;
     }))}</ul>
   </div>;
@@ -389,11 +350,13 @@ function PlaceMap() {
   </>;
 }
 
-function Hero() {
+function Hero({ content, show }) {
+  const cities = content.cities?.length ? content.cities : ['Marseille'];
   const city = useTypewriter(cities);
+  const original = content.photo === '/foto/haut-de-page-hd.webp';
   return <section className="home-hero">
     <div className="hero-inner">
-      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src="/foto/haut-de-page-hd.webp" srcSet="/foto/haut-de-page.jpg 1200w, /foto/haut-de-page-hd.webp 2400w" sizes="100vw" alt="" fetchPriority="high" decoding="async" /></div>
+      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src={content.photo} {...(original ? { srcSet: '/foto/haut-de-page.jpg 1200w, /foto/haut-de-page-hd.webp 2400w', sizes: '100vw' } : {})} alt="" fetchPriority="high" decoding="async" /></div>
       <div className="hero-text">
         <div className="hero-headline">
           <p className="hero-eyebrow">Chez Marthe · {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so the line never moves. */}
@@ -404,20 +367,20 @@ function Hero() {
             <span className="sr-only">{cities.join(', ')}.</span>
           </p>
           <h1 className="hero-title">
-            <span className="ht" style={{ '--n': 0 }}><span>Des lieux</span></span>
-            <span className="ht" style={{ '--n': 1 }}><span><mark className="ht-mark" style={{ '--ink': '0.9s' }}>Tremplins</mark></span></span>
-            <span className="ht" style={{ '--n': 2 }}><span>pour les</span></span>
-            <span className="ht" style={{ '--n': 3 }}><span><mark className="ht-mark" style={{ '--ink': '1.5s' }}>Femmes</mark></span></span>
+            <span className="ht" style={{ '--n': 0 }}><span>{content.title1}</span></span>
+            <span className="ht" style={{ '--n': 1 }}><span><mark className="ht-mark" style={{ '--ink': '0.9s' }}>{content.mark1}</mark></span></span>
+            <span className="ht" style={{ '--n': 2 }}><span>{content.title2}</span></span>
+            <span className="ht" style={{ '--n': 3 }}><span><mark className="ht-mark" style={{ '--ink': '1.5s' }}>{content.mark2}</mark></span></span>
           </h1>
-          <p className="hero-sub">Habiter, travailler, vivre ensemble, créer du lien et rayonner.</p>
+          <p className="hero-sub">{content.subtitle}</p>
           <div className="hero-actions">
-            <a className="btn btn-primary" href="#s-impliquer">Nous soutenir</a>
-            <a className="btn btn-rent" href="#espaces">Louer un espace</a>
+            {show.involve && content.button1 && <a className="btn btn-primary" href="#s-impliquer">{content.button1}</a>}
+            {show.spaces && content.button2 && <a className="btn btn-rent" href="#espaces">{content.button2}</a>}
           </div>
         </div>
       </div>
     </div>
-    <button type="button" className="scroll-cue" aria-label="Découvrir la suite" onClick={() => document.getElementById('le-lieu')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })}>
+    <button type="button" className="scroll-cue" aria-label="Découvrir la suite" onClick={() => document.querySelector('.home-hero + *')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7" /></svg>
     </button>
   </section>;
@@ -488,7 +451,7 @@ function FeaturedEvent({ event }) {
   </article>;
 }
 
-function WeekProgramme() {
+function WeekProgramme({ title }) {
   const [weeks, setWeeks] = useState(4);
   const [events, setEvents] = useState(null); // null = chargement, false = indisponible
   const [query, setQuery] = useState('');
@@ -551,7 +514,7 @@ function WeekProgramme() {
   return <div className="pg">
     <div className="pg-top">
       <div>
-        <h2 id="evenements-titre">Nos évènements</h2>
+        <h2 id="evenements-titre">{title}</h2>
       </div>
       <label className="pg-search">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></svg>
@@ -573,7 +536,8 @@ const AUTO_SCROLL_SECONDS = 10;
 
 export default function Landing() {
   const [picked, setPicked] = useState(null);
-  const publicSpaces = useRentalSpaces();
+  const { content, cards: publicSpaces, ready } = useSite();
+  const show = Object.fromEntries(Object.entries(content).map(([section, values]) => [section, values.visible !== false]));
   const requestSpaces = requestSpacesOf(publicSpaces);
   const spacesRef = useRef(null);
   const [spaceActive, setSpaceActive] = useState(0);
@@ -589,6 +553,7 @@ export default function Landing() {
   // section: the sections are drawn by React after the browser has looked for the anchor, so go to it once the page exists and again when
   // the images have settled the layout.
   useEffect(() => {
+    if (!ready) return undefined;
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
     const reloaded = window.performance?.getEntriesByType?.('navigation')?.[0]?.type === 'reload';
     const id = decodeURIComponent(window.location.hash.slice(1));
@@ -597,71 +562,72 @@ export default function Landing() {
     const go = () => document.getElementById(id)?.scrollIntoView();
     const timers = [setTimeout(go, 150), setTimeout(go, 900)];
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [ready]);
 
   // After AUTO_SCROLL_SECONDS on the first screen without any move, the page slides to the second section (the same as the arrow).
   // Any scroll, touch, key or click cancels it, and so does a reduced-motion preference or an address with a #section.
   useEffect(() => {
-    if (window.location.hash || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (!ready || !show.hero || window.location.hash || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
     const cancel = () => clearTimeout(timer);
     const timer = setTimeout(() => {
-      if (window.scrollY < 10) document.getElementById('le-lieu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (window.scrollY < 10) document.querySelector('.home-hero + *')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, AUTO_SCROLL_SECONDS * 1000);
     const events = ['wheel', 'touchstart', 'keydown', 'pointerdown', 'scroll'];
     events.forEach(name => window.addEventListener(name, cancel, { passive: true, once: true }));
     return () => { clearTimeout(timer); events.forEach(name => window.removeEventListener(name, cancel)); };
-  }, []);
-  return <HomeShell home>
+  }, [ready]);
+  const hidden = Object.entries(sectionAnchors).filter(([section]) => !show[section]).map(([, anchor]) => anchor);
+  // Tant que le contenu n'est pas arrivé, la page reste vide (pas d'ancien texte remplacé sous les yeux).
+  if (!ready) return <HomeShell home><main className="home-loading" /></HomeShell>;
+  const { place, team, pillars, spaces, partners, involve, contact } = content;
+  return <HomeShell home hidden={hidden}>
     <main>
-      <Hero />
+      {show.hero && <Hero content={content.hero} show={show} />}
 
       {/* Le fond de la section est la carte dessinée du quartier (PlaceMap) : voir home.css. */}
-      <section id="le-lieu" className="landing-section landing-wrap place place-bg">
+      {show.place && <section id="le-lieu" className="landing-section landing-wrap place place-bg">
         <PlaceMap />
         <div>
-          <p className="eyebrow">NOTRE PREMIER LIEU</p>
-          <h2>Chez Marthe, Saint-Savournin</h2>
-          <p>Un lieu vacant devient un lieu innovant : un ancien couvent de 1 500 m² dans le quartier des Réformés, trois bâtiments, une chapelle néogothique et un jardin, réveillés pour devenir la première Maison Tremplin.</p>
-          <ul className="place-facts">
-            <li><strong>30</strong><span>femmes hébergées, avec ou sans enfants</span></li>
-            <li><strong>6</strong><span>espaces partagés avec le quartier</span></li>
-          </ul>
-          <a className="place-press place-press-text" href="/on-parle-de-nous">On parle de nous</a>
+          <p className="eyebrow">{place.eyebrow}</p>
+          <h2>{place.title}</h2>
+          <p>{place.text}</p>
+          {place.facts?.length > 0 && <ul className="place-facts">{place.facts.map(fact => <li key={`${fact.value}-${fact.label}`}><strong>{fact.value}</strong><span>{fact.label}</span></li>)}</ul>}
+          {place.pressLabel && <a className="place-press place-press-text" href="/on-parle-de-nous">{place.pressLabel}</a>}
         </div>
-      </section>
+      </section>}
 
-      <section id="equipe-lieu" className="landing-team" aria-labelledby="equipe-lieu-titre">
-        <p className="kicker">ILS FONT VIVRE LE LIEU</p>
-        <h2 id="equipe-lieu-titre">L’équipe de Chez Marthe</h2>
-        <p className="lt-intro">Celles qui font vivre Saint-Savournin au quotidien, avec les associations installées dans le lieu.</p>
-        <ul className="lt-faces">{members.map(member => <li key={member.name}>
+      {show.team && <section id="equipe-lieu" className="landing-team" aria-labelledby="equipe-lieu-titre">
+        <p className="kicker">{team.kicker}</p>
+        <h2 id="equipe-lieu-titre">{team.title}</h2>
+        <p className="lt-intro">{team.intro}</p>
+        <ul className="lt-faces">{team.members.map((member, index) => <li key={`${member.name}-${index}`}>
           <span className="lt-photo"><img src={member.photo} alt="" loading="lazy" /></span>
           <strong>{member.name}</strong>
           <small>{member.role}</small>
         </li>)}</ul>
-        <div className="lt-assos"><span>Avec nous, au quotidien :</span>{hostedAssociations.map(assoc => <a key={assoc.name} href={assoc.url} target="_blank" rel="noopener noreferrer" title={assoc.name}><img src={assoc.logo} alt={assoc.name} loading="lazy" /></a>)}</div>
-        <a className="btn btn-primary lt-more" href="/equipe">Rencontrer toute l’équipe</a>
-      </section>
+        {team.associations?.length > 0 && <div className="lt-assos"><span>{team.assocLabel}</span>{team.associations.map((assoc, index) => <a key={`${assoc.name}-${index}`} href={assoc.url} target="_blank" rel="noopener noreferrer" title={assoc.name}><img src={assoc.logo} alt={assoc.name} loading="lazy" /></a>)}</div>}
+        {team.buttonLabel && <a className="btn btn-primary lt-more" href="/equipe">{team.buttonLabel}</a>}
+      </section>}
 
-      <section className="landing-band" aria-labelledby="pillars-title">
+      {show.pillars && <section className="landing-band" aria-labelledby="pillars-title">
         <div className="landing-wrap">
           <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
-          <div className="pillars">{pillars.map(pillar => <article key={pillar.title} className="pillar">
+          <div className="pillars">{pillars.items.map((pillar, index) => <article key={`${pillar.title}-${index}`} className="pillar">
             <img src={pillar.photo} alt="" loading="lazy" />
             <h3>{pillar.title}</h3>
             <p>{pillar.text}</p>
           </article>)}</div>
         </div>
         <Wave className="wave wave-bottom" />
-      </section>
+      </section>}
 
-      <section id="evenements" className="block block-wall prog" aria-labelledby="evenements-titre">
-        <WeekProgramme />
-      </section>
+      {show.events && <section id="evenements" className="block block-wall prog" aria-labelledby="evenements-titre">
+        <WeekProgramme title={content.events.title} />
+      </section>}
 
-      <section id="espaces" className="block" aria-labelledby="espaces-titre">
-        <p className="kicker">LOUER UN ESPACE</p>
-        <h2 id="espaces-titre">Un lieu pour votre activité</h2>
+      {show.spaces && <section id="espaces" className="block" aria-labelledby="espaces-titre">
+        <p className="kicker">{spaces.kicker}</p>
+        <h2 id="espaces-titre">{spaces.title}</h2>
         <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : spaceById[space.space] ? '#demande' : '#contact'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : spaceById[space.space] ? { onClick: () => setPicked({ space: space.space, at: Date.now() }) } : {})}>
           <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
           <h3 className="space-title">{space.name}</h3>
@@ -674,33 +640,31 @@ export default function Landing() {
           </div>
         </a>)}</div>
         <div className="team-dots" aria-hidden="true">{publicSpaces.map((space, i) => <span key={space.id} className={i === spaceActive ? 'on' : ''} />)}</div>
-      </section>
+      </section>}
 
-      <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>
+      {show.spaces && spaces.showRequest !== false && <div id="demande" className="block request-block"><PublicRequest spaces={requestSpaces} hidePicker picked={picked} /></div>}
 
-      <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
-        <p className="kicker">SOUTIENS ET PARTENAIRES</p>
-        <h2 id="partenaires-titre">Nos partenaires</h2>
-        <PartnerRow items={partners} />
-        <h3 className="partners-subtitle">Nos partenaires financiers</h3>
-        <PartnerRow items={funders} />
-        <h3 className="partners-subtitle">Ils nous accompagnent</h3>
-        <PartnerRow items={supporters} />
-      </section>
+      {show.partners && <section id="partenaires" className="block" aria-labelledby="partenaires-titre">
+        <p className="kicker">{partners.kicker}</p>
+        <h2 id="partenaires-titre">{partners.title}</h2>
+        {partners.partners?.length > 0 && <PartnerRow items={partners.partners} />}
+        {partners.funders?.length > 0 && <><h3 className="partners-subtitle">{partners.fundersTitle}</h3><PartnerRow items={partners.funders} /></>}
+        {partners.supporters?.length > 0 && <><h3 className="partners-subtitle">{partners.supportersTitle}</h3><PartnerRow items={partners.supporters} /></>}
+      </section>}
 
-      <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
-        <p className="kicker">REJOINDRE LE MOUVEMENT</p>
-        <h2 id="impliquer-titre">Nous soutenir</h2>
-        <p>Un bâtiment vide ne change aucune vie. Don, adhésion, communauté ou lieu à nous confier : chaque soutien fait vivre Chez Marthe.</p>
-        <div className="involve-grid">{involvement.map(item => <a key={item.title} className="home-involve" href={item.url} target={item.url.startsWith('http') ? '_blank' : undefined} rel={item.url.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})` }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
-      </section>
+      {show.involve && <section id="s-impliquer" className="block" aria-labelledby="impliquer-titre">
+        <p className="kicker">{involve.kicker}</p>
+        <h2 id="impliquer-titre">{involve.title}</h2>
+        {involve.text && <p>{involve.text}</p>}
+        <div className="involve-grid">{involve.items.map((item, index) => <a key={`${item.title}-${index}`} className="home-involve" href={item.url || '#contact'} target={item.url?.startsWith('http') ? '_blank' : undefined} rel={item.url?.startsWith('http') ? 'noreferrer' : undefined} style={{ '--photo': `url(${item.photo})` }}><strong>{item.title}</strong><span>{item.text}</span></a>)}</div>
+      </section>}
 
-      <section id="contact" className="block" aria-labelledby="contact-titre">
-        <p className="kicker">CONTACT</p>
-        <h2 id="contact-titre">Contactez-nous</h2>
-        <p>Vos clés peuvent ouvrir bien plus que des portes. Écrivez-nous : nous répondons généralement sous 1 à 2 jours ouvrables.</p>
+      {show.contact && <section id="contact" className="block" aria-labelledby="contact-titre">
+        <p className="kicker">{contact.kicker}</p>
+        <h2 id="contact-titre">{contact.title}</h2>
+        {contact.text && <p>{contact.text}</p>}
         <ContactForm />
-      </section>
+      </section>}
     </main>
   </HomeShell>;
 }
