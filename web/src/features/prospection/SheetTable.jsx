@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
+import StickyScrollbar from '../../shared/components/StickyScrollbar.jsx';
 import Modal from '../../shared/components/Modal.jsx';
 import { adviceFor } from './advice.js';
 import { rowColors } from '../funding/funding.js';
@@ -145,6 +146,7 @@ export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf =
   const [dragging, setDragging] = useState(null);
   const [target, setTarget] = useState(null);
   const slot = useRef(null);
+  const scroller = useRef(null);
   const layout = useTableLayout(slot, { storageKey: sheet.layoutKey, columns: sheet.columns, fixed: ['card', ...Object.keys(sheet.kinds).filter(key => sheet.kinds[key] === 'date')], sortable: sheet.sortable, fit: false });
   const labels = Object.fromEntries(sheet.columns);
   const drag = { dragging, target, setDragging, setTarget, end: () => { setDragging(null); setTarget(null); } };
@@ -170,11 +172,12 @@ export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf =
       <label className="funding-search"><Icon name="search" size={16} /><span className="sr-only">Rechercher</span><input type="search" placeholder="Rechercher…" value={query} onChange={event => setQuery(event.target.value)} /></label>
       <button type="button" className="button button-dark button-small" onClick={add}><Icon name="plus" size={16} />Ajouter un {sheet.item}</button>
     </div>
-    <div className="funding-table-scroll"><table className="funding-table sheet-table" style={{ width: totalWidth(layout.widths) }}>
+    <div className="funding-table-scroll" ref={scroller}><table className="funding-table sheet-table" style={{ width: totalWidth(layout.widths) }}>
       <colgroup>{layout.order.map(key => <col key={key} style={{ width: layout.widths[key] }} />)}</colgroup>
       <thead><tr>{layout.order.map((key, index) => <Heading key={key} column={key} label={labels[key]} layout={layout} drag={drag} sticky={index === 0} />)}</tr></thead>
       <tbody>{visible.map(row => <Row key={row.id} row={row} sheet={sheet} layout={layout} labels={labels} onSave={save} onRemove={remove} onTrack={onTrack} inFunding={fundingOf(row)} />)}</tbody>
     </table></div>
+    <StickyScrollbar target={scroller} />
     {!visible.length && <p className="funding-muted funding-none">Aucune ligne ne correspond.</p>}
     <p className="funding-hint">Cliquez une cellule pour l’écrire (Entrée pour valider, Maj+Entrée pour aller à la ligne, Échap pour annuler) : tout est enregistré pour l’équipe. Glissez un titre pour déplacer sa colonne, son bord pour l’élargir ; les flèches trient, « ⋯ » colore la colonne. Le tableau défile sur le côté ; la première colonne reste visible.{layout.custom && <> <button type="button" className="text-link" onClick={layout.reset}>Largeurs et ordre par défaut</button></>}</p>
   </section></div>;

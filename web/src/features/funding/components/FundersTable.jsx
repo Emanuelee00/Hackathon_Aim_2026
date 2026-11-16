@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Icon from '../../../shared/components/Icon.jsx';
+import StickyScrollbar from '../../../shared/components/StickyScrollbar.jsx';
 import { closedStatuses, followupDate, followupMonths, fundingStatuses, nextTask, rowColors } from '../funding.js';
 import { sortFunders } from '../sorting.js';
 import { totalWidth } from '../tableMath.js';
@@ -81,6 +82,7 @@ export default function FundersTable({ funders, today, onSave, onOpen, onAdd, on
   const [dragging, setDragging] = useState(null);
   const [target, setTarget] = useState(null);
   const slot = useRef(null);
+  const scroller = useRef(null);
   const layout = useTableLayout(slot);
   const total = totalWidth(layout.widths);
   // How far left the panel may go: up to the page's content, never under the side menu.
@@ -95,11 +97,12 @@ export default function FundersTable({ funders, today, onSave, onOpen, onAdd, on
       {filters.map(([key, label]) => <button key={key} type="button" className="chip" aria-pressed={filter === key} onClick={() => setFilter(key)}>{label}</button>)}
       <label className="funding-search"><Icon name="search" size={16} /><span className="sr-only">Rechercher</span><input type="search" placeholder="Rechercher un financeur…" value={query} onChange={event => setQuery(event.target.value)} /></label>
     </div>
-    <div className="funding-table-scroll"><table className="funding-table" style={{ width: total }}>
+    <div className="funding-table-scroll" ref={scroller}><table className="funding-table" style={{ width: total }}>
       <colgroup>{layout.order.map(key => <col key={key} style={{ width: layout.widths[key] }} />)}</colgroup>
       <thead><tr>{layout.order.map(key => <Heading key={key} column={key} label={labels[key]} layout={layout} drag={drag} />)}</tr></thead>
       <tbody>{visible.map(funder => <Row key={funder.id} funder={funder} today={today} layout={layout} onSave={onSave} onOpen={onOpen} onRemove={onRemove} />)}</tbody>
     </table></div>
+    <StickyScrollbar target={scroller} />
     {!visible.length && <p className="funding-muted funding-none">Aucune piste ne correspond.</p>}
     <button type="button" className="text-link funding-add" onClick={onAdd}><Icon name="plus" size={16} />Ajouter une piste</button>
     <p className="funding-hint">Cliquez une cellule pour la modifier, comme dans Excel : la modification est enregistrée en quittant la cellule. Glissez un titre pour déplacer sa colonne, son bord pour changer sa largeur, les bords gauche et droit du cadre pour élargir ou rétrécir le tableau ; les flèches trient, « ⋯ » colore la colonne et la palette d’une ligne la colore. La disposition reste enregistrée.{layout.custom && <> <button type="button" className="text-link" onClick={layout.reset}>Largeurs et ordre par défaut</button></>}</p>

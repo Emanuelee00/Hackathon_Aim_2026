@@ -63,6 +63,15 @@
 .funding-search { display: flex; width: 260px; align-items: center; gap: 8px; margin-left: auto; padding: 0 14px; border: 1px solid var(--line); border-radius: 20px; color: var(--muted); }
 .funding-search input { width: 100%; height: 38px; border: 0; outline: 0; background: transparent; font-size: 14px; }
 .funding-table-scroll { overflow-x: auto; }
+/* La barre du tableau est remplacée par une barre collée en bas de l'écran (StickyScrollbar), visible partout dans la page. */
+.funding-table-scroll { scrollbar-width: none; }
+.funding-table-scroll::-webkit-scrollbar { display: none; }
+.sticky-scrollbar { position: sticky; bottom: 8px; z-index: 5; margin-top: 6px; padding: 4px; border-radius: 10px; background: #efe4f4; box-shadow: 0 2px 10px rgba(40,20,50,.18); }
+.sticky-scrollbar-track { position: relative; height: 10px; cursor: pointer; touch-action: none; }
+.sticky-scrollbar-thumb { position: absolute; top: 0; bottom: 0; border-radius: 6px; background: #8a4fa3; cursor: grab; }
+.sticky-scrollbar-thumb:hover { background: #662b80; }
+.sticky-scrollbar-thumb:active { cursor: grabbing; }
+.sticky-scrollbar.is-idle { display: none; }
 .funding-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; }
 /* The panel's left and right borders are the table's limits: drag them, like a column's. */
 .funding-table-edge { position: absolute; top: 0; right: -7px; bottom: 0; width: 14px; cursor: col-resize; touch-action: none; }
