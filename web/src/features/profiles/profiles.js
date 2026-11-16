@@ -13,7 +13,7 @@ export function profileId(name, existing = []) {
 
 export const blankProfile = (name, role = '', photo = '', existing = []) => ({
   id: profileId(name, existing), name: name.trim(), role: role.trim(), photo, menuOrder: [], starred: [],
-  pageBackground: { kind: 'none', value: '' }, menuBackground: { kind: 'none', value: '' },
+  pageBackground: { kind: 'none', value: '' }, menuBackground: { kind: 'none', value: '' }, theme: 'light',
 });
 
 // La première fois : les personnes de l'équipe présentées sur le site.
@@ -37,11 +37,17 @@ export function isLight(hex) {
 }
 
 // Le fond de la page : la couleur, ou l'image adoucie pour que les textes restent lisibles.
-export function pageStyle(background) {
-  if (background?.kind === 'color') return { background: background.value };
-  if (background?.kind === 'image') return { background: `linear-gradient(rgba(250,246,247,.72), rgba(250,246,247,.72)), url("${background.value}") center / cover fixed` };
+// En mode sombre ou violet, une couleur claire choisie avant est laissée de côté et l'image est assombrie.
+export function pageStyle(background, theme = 'light') {
+  const dark = theme !== 'light';
+  if (background?.kind === 'color') return dark ? undefined : { background: background.value };
+  const veil = theme === 'violet' ? 'rgba(36,14,48,.82)' : dark ? 'rgba(20,16,23,.84)' : 'rgba(250,246,247,.72)';
+  if (background?.kind === 'image') return { background: `linear-gradient(${veil}, ${veil}), url("${background.value}") center / cover fixed` };
   return undefined;
 }
+
+// ☀ et M : un clic met le thème, un second revient au clair.
+export const nextTheme = (current, wanted) => (current === wanted ? 'light' : wanted);
 
 // Le fond du menu : la couleur, ou l'image assombrie (le texte du menu est clair).
 export function menuStyle(background) {

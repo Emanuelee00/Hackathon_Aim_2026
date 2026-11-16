@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initials, isLight, orderedNavigation, profileId, seedProfiles, toggleStar } from './profiles.js';
+import { initials, isLight, nextTheme, orderedNavigation, pageStyle, profileId, seedProfiles, toggleStar } from './profiles.js';
 
 const navigation = [{ id: 'dashboard' }, { id: 'requests' }, { id: 'funding' }, { id: 'site' }];
 
@@ -25,4 +25,13 @@ test('her menu follows her order; new sections come after, in the usual order', 
 test('a light menu colour switches the menu text to dark', () => {
   assert.equal(isLight('#f3e9f7'), true);
   assert.equal(isLight('#662b80'), false);
+});
+
+test('the sun and the M switch the theme on, a second click switches it off; a light page colour waits in the dark', () => {
+  assert.equal(nextTheme('light', 'dark'), 'dark');
+  assert.equal(nextTheme('dark', 'dark'), 'light');
+  assert.equal(nextTheme('dark', 'violet'), 'violet');
+  assert.equal(pageStyle({ kind: 'color', value: '#fbeff3' }, 'dark'), undefined);
+  assert.equal(pageStyle({ kind: 'color', value: '#fbeff3' }).background, '#fbeff3');
+  assert.match(pageStyle({ kind: 'image', value: '/foto/jardin.webp' }, 'violet').background, /36,14,48/);
 });

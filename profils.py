@@ -49,6 +49,8 @@ class Profile(BaseModel):
     starred: list[MenuId] = Field(default=[], max_length=40)
     pageBackground: Background = Background()
     menuBackground: Background = Background()
+    # Clair, sombre (☀) ou violet sombre (M de Chez Marthe).
+    theme: Literal["light", "dark", "violet"] = "light"
 
     @field_validator("photo")
     @classmethod

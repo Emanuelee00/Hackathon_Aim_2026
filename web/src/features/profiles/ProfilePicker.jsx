@@ -3,6 +3,7 @@ import Icon from '../../shared/components/Icon.jsx';
 import { useProfile } from './ProfileProvider.jsx';
 import { initials } from './profiles.js';
 import './profiles.css';
+import './themes.css';
 
 export function Avatar({ profile, size = 'medium', photo = true }) {
   return <span className={`profile-avatar is-${size}`} aria-hidden="true">{photo && profile.photo ? <img src={profile.photo} alt="" /> : initials(profile.name)}</span>;

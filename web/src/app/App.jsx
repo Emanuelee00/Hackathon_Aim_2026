@@ -135,7 +135,15 @@ function Shell() {
   const openNew = () => setModal({ type: 'new' });
 
   const { profile } = useProfile();
-  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`} style={pageStyle(profile.pageBackground)}>
+  // Le thème de la personne (clair, sombre, violet) vaut pour toute la page, fenêtres comprises.
+  const theme = profile.theme || 'light';
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove('theme-dark', 'theme-violet');
+    if (theme !== 'light') root.classList.add(`theme-${theme}`);
+    return () => root.classList.remove('theme-dark', 'theme-violet');
+  }, [theme]);
+  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`} style={pageStyle(profile.pageBackground, theme)}>
     <Sidebar
       page={page}
       navigate={navigate}

@@ -12,6 +12,7 @@ VERO = {
     "starred": ["funding"],
     "pageBackground": {"kind": "color", "value": "#f3e9f7"},
     "menuBackground": {"kind": "image", "value": "/foto/jardin.webp"},
+    "theme": "violet",
 }
 
 
@@ -54,6 +55,7 @@ def test_backgrounds_and_photos_are_checked(client_as):  # noqa: F811
         },
         {**VERO, "photo": "javascript:alert(1)"},
         {**VERO, "starred": ["<script>"]},
+        {**VERO, "theme": "rose"},
         {
             **VERO,
             "menuBackground": {

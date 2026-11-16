@@ -1,0 +1,95 @@
+/* Thèmes de l'espace équipe : ☀ sombre (html.theme-dark) et M violet sombre (html.theme-violet).
+   Les couleurs de base changent (texte clair, surfaces foncées) ; « --green » (le violet de la charte) devient un violet clair
+   pour les titres et les liens, et les fonds pleins violets gardent un violet soutenu (--accent-fill) sous le texte blanc. */
+
+html.theme-dark {
+  --page: #151217; --paper: #221d25; --surface-2: #2b2530; --line: #3b3340;
+  --ink: #eee7f0; --muted: #b5a9b9; --green: #d3aee6; --violet-dark: #e6cdf2; --accent-fill: #7a3a96; --cream: var(--page);
+  color-scheme: dark;
+}
+
+html.theme-violet {
+  --page: #210e2c; --paper: #2f163d; --surface-2: #3a1d4b; --line: #52306a;
+  --ink: #f6eefa; --muted: #cdb6d9; --green: #e0bdf0; --violet-dark: #f0d9fa; --accent-fill: #8a3fae; --cream: var(--page);
+  color-scheme: dark;
+}
+
+:is(html.theme-dark, html.theme-violet) {
+  color: var(--ink);
+  background: var(--page);
+  --shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+:is(html.theme-dark, html.theme-violet) body { color: var(--ink); background: var(--page); }
+:is(.theme-dark, .theme-violet) .sidebar:not([style]) { background: #0f0b11; }
+.theme-violet .sidebar:not([style]) { background: #160820; }
+:is(.theme-dark, .theme-violet) .topbar { border-color: var(--line); background: color-mix(in srgb, var(--page) 82%, transparent); }
+
+/* Les surfaces blanches deviennent foncées. */
+:is(.theme-dark, .theme-violet) :is(
+  .panel, .metrics-grid, .modal, .chip, .icon-button, .button-quiet, .search-field, .sidebar-handle,
+  .field input, .field select, .field textarea, .calendar-filter select, .opportunity-context select, .chat-panel input,
+  .bilan-structure, .committee-card, .journey-summary, .message-card, .message-sender, .message-identity, .message-preview,
+  .journey-metrics, .match-card, .matching-progress, .match-reasons li, .question-transcript,
+  .account-empty, .account-form, .account-head, .account-list button, .account-status, .doc-card, .doc-form, .doc-tab,
+  .weekday, .calendar-day, .calendar-legend, .week-head, .week-space, .week-cell, .funding-event, .funding-table th.funding-drop,
+  .price-group, .pm-group, .line-card, .modal-accounting .modal-inner, .doc-totals div, .funding-confirm, .filter-tabs span,
+  .editor-tool, .editor-tools, .line-name, .line-qty input, .line-price input, .line-qty button, .line-remove,
+  .pm-group-head input, .pm-item > input, .price-chip, .rental-card, .site-item, .space-date, .space-overview,
+  .funding-popover-panel, .funding-swatch, .sheet-edit, .sheet-filter, .sheet-text, .sheet-table th.sheet-sticky, .sheet-table td.sheet-sticky,
+  .profile-menu-button, .profile-menu-list, .profile-swatch.is-none, .funding-search input, .funding-table th, .funding-table td
+) { color: var(--ink); background-color: var(--paper); border-color: var(--line); }
+:is(.theme-dark, .theme-violet) :is(.field input, .field select, .field textarea, .sheet-filter, .funding-search input, .search-field input) { background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .funding-cell:hover, :is(.theme-dark, .theme-violet) .funding-cell:focus { background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .doc-tab.active, :is(.theme-dark, .theme-violet) .chip[aria-pressed="true"] { color: white; background-color: var(--accent-fill); }
+:is(.theme-dark, .theme-violet) .profile-menu-list button:hover { background: var(--surface-2); }
+:is(.theme-dark, .theme-violet) ::placeholder { color: var(--muted); }
+:is(.theme-dark, .theme-violet) a:not([class]) { color: var(--green); }
+
+/* Les fonds violets pleins (boutons, pastilles, barres) restent violets, avec le texte blanc. */
+:is(.theme-dark, .theme-violet) :is(
+  .button-dark, .notice, .impact-card, .impact-story, .calendar-day.is-today .day-number, .bar-track i,
+  .sheet-pill.tone-won .funding-cell, .sheet-tracked, .funding-event i, .funding-dot, .funding-bar i, .funding-avatar,
+  .funding-table-edge, .funding-resize, .funding-status.validated
+) { background-color: var(--accent-fill); }
+:is(.theme-dark, .theme-violet) .button-dark:hover { background-color: #9450b3; }
+:is(.theme-dark, .theme-violet) :is(.button-dark, .impact-card, .impact-story, .notice) { color: white; }
+
+/* Les pastilles et cartes de couleur claire gardent un texte foncé (sinon le texte clair s'y perd). */
+:is(.theme-dark, .theme-violet) :is(
+  .badge, .sheet-pill:not(.tone-won):not(.tone-none) .funding-cell, .funding-status, .verdict, .metric-icon, .count-label,
+  .date-chip, .sidebar-note, .site-visible, .bilan-done
+) { color: #1b1319; }
+:is(.theme-dark, .theme-violet) .sheet-pill.tone-none .funding-cell { color: var(--ink); }
+:is(.theme-dark, .theme-violet) .site-visible { background: var(--surface-2); color: var(--ink); }
+
+/* Tableaux et lignes */
+:is(.theme-dark, .theme-violet) .funding-table tr:hover td { background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .sticky-scrollbar { background: var(--surface-2); }
+
+/* ☀ et M, à côté du prénom */
+.profile-tools { display: inline-flex; align-items: center; gap: 6px; }
+.theme-button { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 50%; color: #b07800; background: white; cursor: pointer; font: inherit; }
+.theme-button[aria-pressed="true"] { color: #f5c84c; background: #1b1319; border-color: #1b1319; }
+.theme-button-m { color: #f2a1ab; background: #662b80; border-color: #662b80; font-family: var(--font-display); font-size: 17px; font-weight: 800; }
+.theme-button-m[aria-pressed="true"] { color: #662b80; background: #f2a1ab; border-color: #f2a1ab; }
+:is(.theme-dark, .theme-violet) .theme-button:not(.theme-button-m):not([aria-pressed="true"]) { background: var(--paper); }
+/* Les illustrations sur fond clair (le grand bandeau de la vue d'ensemble) gardent les couleurs d'origine. */
+:is(.theme-dark, .theme-violet) :is(.hero-art, .hero-sticker) { --green: #662b80; --violet-dark: #57256d; --ink: #1b1319; color: #1b1319; }
+:is(.theme-dark, .theme-violet) .hero .hero-copy .button-dark.button-dark { color: #662b80; background-color: #f7eaec; }
+:is(.theme-dark, .theme-violet) .hero .hero-copy .button-dark.button-dark:hover { background-color: white; }
+/* ☀ ou M choisi : un anneau rose autour */
+.theme-button[aria-pressed="true"] { box-shadow: 0 0 0 2px #f47595; }
+
+/* Encore des surfaces neutres : un peu plus claires que la carte pour se distinguer. */
+:is(.theme-dark, .theme-violet) :is(.calendar-day.outside, .weekday, .week-head, .week-space, .calendar-legend) { background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) :is(.funding-sort:hover, .funding-sort.on, .funding-menu-button:hover, .funding-menu-button[aria-expanded="true"], .editor-tool:hover, .chip:hover, .funding-copies a:hover) { background-color: var(--surface-2); }
+
+/* Les étiquettes de couleur claire (rose, lilas, jaune) : on les garde, avec un texte foncé. */
+:is(.theme-dark, .theme-violet) :is(
+  .calendar-event, .week-entry, .week-note, .funding-undo, .funding-alert, .opportunity-box, .form-error, .field-error, .confirm,
+  .doc-error, .ph, .doc-totals .doc-final, .button-danger, .filter-tabs button.active, .filter-tabs button:hover, .chip[aria-pressed="true"]
+) { --ink: #1b1319; --muted: #5e5360; --green: #662b80; color: #1b1319; }
+:is(.theme-dark, .theme-violet) :is(.calendar-event, .week-entry, .funding-alert, .filter-tabs button.active) * { color: inherit; }
+
+/* Devis et factures : l'aperçu reste une feuille blanche. */
+:is(.theme-dark, .theme-violet) :is(.doc-paper, .editor-page) { --ink: #1b1319; --muted: #5e5360; --green: #662b80; color: #1b1319; background-color: #fff; }
