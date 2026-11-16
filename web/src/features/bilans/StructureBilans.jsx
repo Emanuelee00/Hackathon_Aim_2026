@@ -26,7 +26,7 @@ export default function StructureBilans() {
     <PageIntro eyebrow="MESURER CE QUI COMPTE" title="Bilans des structures" description="Chaque mois, chaque structure du lieu remplit un bilan court depuis l’espace associations : des questions communes à toutes, puis les siennes. Rien sur une personne nommée.">
       <div className="funding-actions"><a className="button button-quiet button-small" href={`/api/bilans/excel?annee=${year}`}><Icon name="download" size={15} />Télécharger {year} (Excel)</a></div>
     </PageIntro>
-    <div className="bilan-toolbar"><MonthPicker month={month} onChange={setMonth} /><span className="count-label">{filled} / {data.structures.length} bilans remplis</span></div>
+    <div className="bilan-toolbar"><MonthPicker month={month} onChange={setMonth} /><span className="bilan-count">{filled} / {data.structures.length} bilans remplis</span></div>
     <section className="bilan-structures" aria-label="Les structures">{data.structures.map(item => {
       const entry = entryFor(data.entries, item.id, month);
       const { answered, total } = progress(item, entry?.answers);

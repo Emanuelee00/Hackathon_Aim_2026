@@ -27,3 +27,4 @@
 .bilan-wide { grid-column: 1 / -1; }
 .bilan-done { margin: 0; color: #2f7a46; font-weight: 700; }
 .bilan-actions { display: flex; gap: 10px; }
+.bilan-count { padding: 5px 12px; border-radius: 20px; color: #662b80; background: #f3e9f7; font-size: 13px; font-weight: 700; }

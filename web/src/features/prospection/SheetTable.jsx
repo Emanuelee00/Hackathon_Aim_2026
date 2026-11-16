@@ -142,7 +142,7 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding,
   </td>)}</tr>;
 }
 
-const IN_FUNDING_RED = '#f8c4c4';
+const IN_FUNDING_RED = 'var(--in-funding, #f8c4c4)';
 
 export default function SheetTable({ sheet, rows, onChange, onTrack, fundingAuto = () => '' }) {
   const fundingOf = row => fundingStatus(row, fundingAuto);

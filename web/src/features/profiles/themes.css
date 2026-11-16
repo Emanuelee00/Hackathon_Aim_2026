@@ -29,7 +29,7 @@ html.theme-violet {
   .panel, .metrics-grid, .modal, .chip, .icon-button, .button-quiet, .search-field, .sidebar-handle,
   .field input, .field select, .field textarea, .calendar-filter select, .opportunity-context select, .chat-panel input,
   .bilan-structure, .committee-card, .journey-summary, .message-card, .message-sender, .message-identity, .message-preview,
-  .journey-metrics, .match-card, .matching-progress, .match-reasons li, .question-transcript,
+  .journey-metrics, .match-card, .matching-progress, .question-transcript,
   .account-empty, .account-form, .account-head, .account-list button, .account-status, .doc-card, .doc-form, .doc-tab,
   .weekday, .calendar-day, .calendar-legend, .week-head, .week-space, .week-cell, .funding-event, .funding-table th.funding-drop,
   .price-group, .pm-group, .line-card, .modal-accounting .modal-inner, .doc-totals div, .funding-confirm, .filter-tabs span,
@@ -57,7 +57,7 @@ html.theme-violet {
 /* Les pastilles et cartes de couleur claire gardent un texte foncé (sinon le texte clair s'y perd). */
 :is(.theme-dark, .theme-violet) :is(
   .badge, .sheet-pill:not(.tone-won):not(.tone-none) .funding-cell, .funding-status, .verdict, .metric-icon, .count-label,
-  .date-chip, .sidebar-note, .site-visible, .bilan-done
+  .sidebar-note, .bilan-done
 ) { color: #1b1319; }
 :is(.theme-dark, .theme-violet) .sheet-pill.tone-none .funding-cell { color: var(--ink); }
 :is(.theme-dark, .theme-violet) .site-visible { background: var(--surface-2); color: var(--ink); }
@@ -87,9 +87,40 @@ html.theme-violet {
 /* Les étiquettes de couleur claire (rose, lilas, jaune) : on les garde, avec un texte foncé. */
 :is(.theme-dark, .theme-violet) :is(
   .calendar-event, .week-entry, .week-note, .funding-undo, .funding-alert, .opportunity-box, .form-error, .field-error, .confirm,
-  .doc-error, .ph, .doc-totals .doc-final, .button-danger, .filter-tabs button.active, .filter-tabs button:hover, .chip[aria-pressed="true"]
+  .doc-error, .ph, .doc-totals .doc-final, .button-danger, .filter-tabs button.active, .filter-tabs button:hover, .stats-advice li
 ) { --ink: #1b1319; --muted: #5e5360; --green: #662b80; color: #1b1319; }
 :is(.theme-dark, .theme-violet) :is(.calendar-event, .week-entry, .funding-alert, .filter-tabs button.active) * { color: inherit; }
 
 /* Devis et factures : l'aperçu reste une feuille blanche. */
 :is(.theme-dark, .theme-violet) :is(.doc-paper, .editor-page) { --ink: #1b1319; --muted: #5e5360; --green: #662b80; color: #1b1319; background-color: #fff; }
+
+/* Boutons choisis (antennes, onglets) : violet plein, texte blanc. */
+:is(.theme-dark, .theme-violet) :is(.chip.chip[aria-pressed="true"], .doc-tab.doc-tab.active) { color: white; background-color: var(--accent-fill); border-color: var(--accent-fill); }
+:is(.theme-dark, .theme-violet) .chip.chip:hover:not([aria-pressed="true"]) { color: var(--ink); background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .date-chip { color: var(--ink); background: var(--surface-2); border-color: var(--line); }
+:is(.theme-dark, .theme-violet) .site-visible.site-visible { color: var(--ink); background: var(--surface-2); }
+
+/* Nos espaces : le haut coloré des cartes garde ses couleurs ; dessous, étiquettes et planning foncés. */
+:is(.theme-dark, .theme-violet) .space-visual { --green: #662b80; --violet-dark: #57256d; --ink: #1b1319; --muted: #5e5360; }
+:is(.theme-dark, .theme-violet) .space-capacity span { color: var(--muted); background: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .space-body > p { color: var(--muted); }
+:is(.theme-dark, .theme-violet) .space-schedule > button { color: var(--ink); background: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .space-schedule > button:hover { background: var(--line); }
+:is(.theme-dark, .theme-violet) .space-schedule > button span { color: var(--muted); }
+:is(.theme-dark, .theme-violet) .space-schedule > div small { color: #f2a1ab; }
+
+/* Financeurs potentiels : « déjà dans Financements » en rouge foncé. */
+html.theme-dark { --in-funding: #4a1f27; }
+html.theme-violet { --in-funding: #5a1f3a; }
+:is(.theme-dark, .theme-violet) .bilan-count { color: var(--ink); background: var(--surface-2); }
+
+/* Opportunités, parcours, bilans : encadrés de couleur claire avec texte foncé ; barres et étapes sur fond foncé. */
+:is(.theme-dark, .theme-violet) :is(
+  .ethical-ai, .journey-metrics > p, .selected-opportunity, .resident-avatar, .matching-heading > span, .matching-empty > span,
+  .matching-error, .match-points p, .match-reasons, .application-note, .consent-pending, .journey-steps .done, .journey-form-context,
+  .report-outcome, .report-intro, .price-chip:hover, .line-qty button:hover, .empty-icon
+) { --ink: #1b1319; --muted: #5e5360; --green: #662b80; color: #1b1319; }
+:is(.theme-dark, .theme-violet) .match-reasons li { color: #1b1319; background-color: white; }
+:is(.theme-dark, .theme-violet) :is(.bar-track, .journey-progress, .progress-bar) { background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) .journey-steps span:not(.done) { color: var(--muted); background-color: var(--surface-2); }
+:is(.theme-dark, .theme-violet) :is(.account-list span, .doc-hint, .doc-note, .doc-line-head) { color: var(--muted); }
