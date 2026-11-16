@@ -27,6 +27,9 @@ site_router = APIRouter(prefix="/api/site")
 Team = Annotated[User, Depends(team_member)]
 CARDS_KEY = "rental_spaces"
 CONTENT_KEY = "site_content"
+PROFILES_KEY = (
+    "team_profiles"  # profils.py : les espaces personnels (photos de fond envoyées)
+)
 PHOTO_PREFIX = "rental_photo_"
 PHOTO_URL = "/api/espaces-a-louer/photos/"
 MAX_PHOTO_BYTES = 1_500_000
@@ -90,8 +93,10 @@ def check_photos(value) -> None:
 
 
 def forget_unused_photos() -> None:
-    used = photos_in(store.load_document(CARDS_KEY)) | photos_in(
-        store.load_document(CONTENT_KEY)
+    used = (
+        photos_in(store.load_document(CARDS_KEY))
+        | photos_in(store.load_document(CONTENT_KEY))
+        | photos_in(store.load_document(PROFILES_KEY))
     )
     for key in store.list_keys(PHOTO_PREFIX):
         if key.removeprefix(PHOTO_PREFIX) not in used:

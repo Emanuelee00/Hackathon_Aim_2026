@@ -98,6 +98,11 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 - [ ] L'intro 3D (`Intro.jsx`) est restée dans temp2 seulement, désactivée : à supprimer ou à reprendre plus tard.
 - [ ] Nettoyage : l'affiche du manifeste (`foto/manifeste.webp`) n'est plus utilisée dans temp2.
 
+## Espaces personnels de l'équipe
+
+- [x] Après la connexion à l'espace équipe : « Qui êtes-vous ? » (les personnes de l'équipe du site, et « Ajouter une personne »). Chacune retrouve la même vue d'ensemble avec « Bonjour <prénom> », mais son menu à elle (« Ranger mon menu » : glisser-déposer, ⇡ tout en haut, ★ mettre en avant) et ses fonds (page et menu : couleur ou image, du site ou de l'ordinateur). Enregistré sur le serveur (`profils.py`), retrouvé sur tous les ordinateurs ; le prénom choisi est gardé dans le navigateur (« Changer de personne » en haut à droite).
+- [ ] À savoir : ce n'est pas une sécurité (toutes utilisent le compte de l'équipe). Si un jour chacune doit avoir son propre mot de passe, il faudra des comptes équipe séparés.
+
 ## Bilans des structures (retour de Caroline, n° 10 du tableau du 30 octobre)
 
 - [x] Page « Bilans des structures » (espace équipe) et « Notre bilan du mois » (espace associations) : un bilan par structure et par mois (Chez Marthe, HAS, JUST, Sista4good, Petites Cantines, Bénénova), d'après le tableau partagé par Caroline. Questions communes à toutes (personnes accueillies, dames qui participent, voisinage, orientations entre structures, récit du mois) puis celles de chaque structure ; indicateurs communs additionnés ; export Excel de l'année pour le bilan de juin 2027.

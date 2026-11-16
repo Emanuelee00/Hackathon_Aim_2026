@@ -30,6 +30,9 @@ import useAccessRequests from '../features/access/useAccessRequests.js';
 import { residentById } from '../features/opportunities/data/residents.js';
 import { TODAY } from '../shared/data/spaces.js';
 import { useStore } from './store.jsx';
+import ProfileProvider, { useProfile } from '../features/profiles/ProfileProvider.jsx';
+import ProfilePicker from '../features/profiles/ProfilePicker.jsx';
+import { pageStyle } from '../features/profiles/profiles.js';
 
 function PageContent({ page, openEvent, openAccounting, openJourney, openNew, openReport, openSpaceRequest, navigate, questions, access }) {
   if (page === 'dashboard') return <Dashboard onNew={openNew} onOpen={openEvent} navigate={navigate} />;
@@ -59,7 +62,17 @@ const pageFromHash = () => {
   return navigation.some(item => item.id === id) ? id : 'dashboard';
 };
 
+// Après la connexion : « Qui êtes-vous ? », puis l'espace de la personne choisie.
 export default function App() {
+  return <ProfileProvider><ProfileGate /></ProfileProvider>;
+}
+
+function ProfileGate() {
+  const { profile } = useProfile();
+  return profile ? <Shell key={profile.id} /> : <ProfilePicker />;
+}
+
+function Shell() {
   const { events, saveEvent, matches, saveJourney, notify, storageError, toast } = useStore();
   const [page, setPage] = useState(pageFromHash);
   useEffect(() => {
@@ -121,7 +134,8 @@ export default function App() {
   const openAccounting = (eventId, from) => setModal({ type: 'accounting', eventId, from });
   const openNew = () => setModal({ type: 'new' });
 
-  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`}>
+  const { profile } = useProfile();
+  return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`} style={pageStyle(profile.pageBackground)}>
     <Sidebar
       page={page}
       navigate={navigate}

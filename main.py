@@ -31,6 +31,7 @@ from funding.routes import router as funding_router
 from matching import router as matching_router
 from messages import router as messages_router
 from modeles import router as modeles_router
+from profils import router as profils_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
@@ -63,6 +64,7 @@ app.include_router(editeur_router)
 app.include_router(espaces_router)
 app.include_router(site_router)
 app.include_router(bilans_router)
+app.include_router(profils_router)
 
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the
