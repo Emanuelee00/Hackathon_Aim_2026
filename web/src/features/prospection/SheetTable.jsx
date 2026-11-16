@@ -148,16 +148,22 @@ export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf =
   const layout = useTableLayout(slot, { storageKey: sheet.layoutKey, columns: sheet.columns, fixed: ['card', ...Object.keys(sheet.kinds).filter(key => sheet.kinds[key] === 'date')], sortable: sheet.sortable, fit: false });
   const labels = Object.fromEntries(sheet.columns);
   const drag = { dragging, target, setDragging, setTarget, end: () => { setDragging(null); setTarget(null); } };
-  const visible = sortRows(filterRows(rows, sheet, query, chosen), layout.sort);
+  // « Les masquer » : les lignes déjà dans Financements disparaissent du tableau (le choix vaut pour toute la visite).
+  const [hideFunding, setHideFundingState] = useState(() => { try { return sessionStorage.getItem('marthe-hide-in-funding') === '1'; } catch { return false; } });
+  const setHideFunding = value => { setHideFundingState(value); try { sessionStorage.setItem('marthe-hide-in-funding', value ? '1' : ''); } catch { /* pour cette page */ } };
+  const visible = sortRows(filterRows(rows, sheet, query, chosen).filter(row => !hideFunding || !fundingOf(row)), layout.sort);
   const save = row => onChange(rows.map(item => (item.id === row.id ? row : item)));
   const remove = row => onChange(rows.filter(item => item.id !== row.id));
   const add = () => { setQuery(''); setChosen({}); onChange([sheet.blank(), ...rows]); };
-  const filtered = query.trim() || Object.values(chosen).some(Boolean);
+  const filtered = query.trim() || Object.values(chosen).some(Boolean) || (hideFunding && rows.some(row => fundingOf(row)));
   const inFundingCount = rows.filter(row => fundingOf(row)).length;
   return <div className="funding-table-slot" ref={slot}><section className="panel funding-table-panel sheet-panel">
     <div className="funding-tools"><h3>{sheet.title}</h3>
       <span className="funding-muted">{filtered ? `${visible.length} sur ${rows.length}` : `${rows.length} lignes`}</span>
-      {inFundingCount > 0 && <span className="sheet-in-funding" title="Ces lignes sont déjà des pistes du tableau de bord « Financements » : elles restent ici pour leurs informations en plus.">{inFundingCount} déjà dans Financements</span>}
+      {inFundingCount > 0 && <span className="sheet-in-funding-tools">
+        <span className="sheet-in-funding" title="Ces lignes sont déjà des pistes du tableau de bord « Financements » : elles restent ici pour leurs informations en plus.">{inFundingCount} déjà dans Financements</span>
+        <label className="sheet-hide-funding"><input type="checkbox" checked={hideFunding} onChange={event => setHideFunding(event.target.checked)} /> Les masquer</label>
+      </span>}
       {sheet.filters.map(([key, all]) => <select key={key} className="sheet-filter" aria-label={all} value={chosen[key] || ''} onChange={event => setChosen(current => ({ ...current, [key]: event.target.value }))}>
         <option value="">{all}</option>{filterOptions(rows, key).map(option => <option key={option} value={option}>{option}</option>)}
       </select>)}
