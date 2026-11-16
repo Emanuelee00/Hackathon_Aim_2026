@@ -124,3 +124,11 @@ test('a piece of advice for every row of every table, written by hand for the ma
   assert.equal(adviceFor('repertoire', { id: 'zz', advice: 'Mon conseil' }), 'Mon conseil');
   assert.match(toSheet(SHEETS.patrons, patrons, ['name', 'advice']).rows[0][1], /DAPAT/);
 });
+
+test('« Contacté » is offered right after « À contacter » and shows in green', async () => {
+  const { STATUSES, tone } = await import('./sheets.js');
+  assert.equal(STATUSES[1], 'Contacté');
+  assert.equal(tone('Contacté'), 'contacted');
+  assert.equal(tone('À contacter'), 'hot');
+  assert.equal(tone('Contact pris'), 'active');
+});

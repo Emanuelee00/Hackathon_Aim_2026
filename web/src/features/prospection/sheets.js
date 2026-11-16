@@ -7,13 +7,13 @@ import { adviceFor } from './advice.js';
 // Adéquation : de la plus forte à la plus faible (les valeurs écrites à la main restent possibles, classées à la fin).
 export const FITS = ['Très élevée', 'Élevée', 'Élevée à moyen terme', 'Moyenne', 'À moyen terme', 'Conditionnelle', 'Faible à conditionnelle', 'Exclue'];
 // Statuts proposés : ceux du fichier, puis ceux du suivi d'une demande.
-export const STATUSES = ['À contacter', 'À explorer', 'À qualifier', 'À vérifier', 'À utiliser', 'Veille continue', 'Veille 2027', 'Veille prochaine édition', 'À moyen terme', 'Trop tôt actuellement',
+export const STATUSES = ['À contacter', 'Contacté', 'À explorer', 'À qualifier', 'À vérifier', 'À utiliser', 'Veille continue', 'Veille 2027', 'Veille prochaine édition', 'À moyen terme', 'Trop tôt actuellement',
   'Contact pris', 'Dossier en préparation', 'Dossier déposé', 'Obtenu', 'Refusé', 'Déjà sollicitée'];
 
 // État d'un appel (européen ou français).
 export const EU_STATES = ['Ouvert', 'À venir', 'Permanent', 'À vérifier', 'Clos – prochaine édition à surveiller', 'Fonds gérés en France', 'Candidature déposée', 'Obtenu', 'Refusé'];
 
-// La couleur d'un statut ou d'une adéquation : à faire, à creuser, en veille, en cours, gagné, fermé.
+// La couleur d'un statut ou d'une adéquation : à faire, à creuser, en veille, contacté (vert), en cours, gagné, fermé.
 export function tone(value) {
   const text = (value || '').toLowerCase();
   if (!text) return 'none';
@@ -22,6 +22,7 @@ export function tone(value) {
   if (/^clos/.test(text)) return 'watch';
   if (/candidature déposée/.test(text)) return 'active';
   if (/obtenu/.test(text)) return 'won';
+  if (/^contacté/.test(text)) return 'contacted';
   if (/refus|déjà|exclu/.test(text)) return 'closed';
   if (/contact pris|dossier|déposé/.test(text)) return 'active';
   if (/veille|moyen terme|trop tôt/.test(text)) return 'watch';
@@ -155,7 +156,7 @@ export function counts(prospects, calls, today, europe = [], france = []) {
   const status = value => prospects.filter(row => row.status === value).length;
   const soon = [...calls, ...europe, ...france].filter(call => call.deadline && call.deadline >= today && (Date.parse(call.deadline) - Date.parse(today)) / 86400000 <= 45);
   soon.sort((a, b) => a.deadline.localeCompare(b.deadline));
-  return { hot: prospects.filter(row => row.fit === 'Très élevée' && !['closed', 'won'].includes(tone(row.status))).length, toContact: status('À contacter'), inProgress: prospects.filter(row => tone(row.status) === 'active').length, soon };
+  return { hot: prospects.filter(row => row.fit === 'Très élevée' && !['closed', 'won'].includes(tone(row.status))).length, toContact: status('À contacter'), inProgress: prospects.filter(row => ['active', 'contacted'].includes(tone(row.status))).length, soon };
 }
 
 // Pour l'export Excel : les colonnes dans l'ordre affiché, avec leur titre.

@@ -26,13 +26,26 @@ function TextCell({ value, label, onSave, strong = false }) {
   </button>;
 }
 
-// Statut ou adéquation : une pastille de couleur ; on choisit dans la liste ou on écrit autre chose.
-function ChoiceCell({ value, label, options, listId, onSave }) {
+// Statut ou adéquation : une pastille de couleur avec un menu de toutes les valeurs ; « Autre » permet d'écrire la sienne.
+// (Pas de liste de suggestions du navigateur : elle ne montrait que les valeurs proches de celle déjà choisie.)
+const OTHER = '\u0000autre';
+function ChoiceCell({ value, label, options, onSave }) {
+  const [writing, setWriting] = useState(false);
+  if (writing) {
+    return <span className="sheet-pill tone-none">
+      <input autoFocus className="funding-cell" defaultValue={value} aria-label={label} placeholder="Écrire puis Entrée"
+        onBlur={event => { setWriting(false); const next = event.target.value.trim(); if (next !== value) onSave(next); }}
+        onKeyDown={event => { if (event.key === 'Enter') event.target.blur(); if (event.key === 'Escape') { event.target.value = value; event.target.blur(); } }} />
+    </span>;
+  }
   return <span className={`sheet-pill tone-${tone(value)}`}>
-    <input key={value} list={listId} className="funding-cell" defaultValue={value} aria-label={label} title={value} placeholder="—"
-      onBlur={event => { const next = event.target.value.trim(); if (next !== value) onSave(next); }}
-      onKeyDown={event => { if (event.key === 'Enter') event.target.blur(); }} />
-    <datalist id={listId}>{options.map(option => <option key={option} value={option} />)}</datalist>
+    <select className="funding-cell sheet-choice" value={value} aria-label={label} title={value || undefined}
+      onChange={event => { if (event.target.value === OTHER) setWriting(true); else onSave(event.target.value); }}>
+      <option value="">—</option>
+      {value && !options.includes(value) && <option value={value}>{value}</option>}
+      {options.map(option => <option key={option} value={option}>{option}</option>)}
+      <option value={OTHER}>Autre (écrire)…</option>
+    </select>
   </span>;
 }
 
@@ -99,11 +112,11 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack }) {
     const save = value => onSave({ ...row, [key]: value });
     const value = row[key] || '';
     const kind = sheet.kinds[key];
-    if (kind === 'fit') return <ChoiceCell value={value} label={label} options={FITS} listId="sheet-fits" onSave={save} />;
-    if (kind === 'status') return <ChoiceCell value={value} label={label} options={STATUSES} listId="sheet-statuses" onSave={save} />;
+    if (kind === 'fit') return <ChoiceCell value={value} label={label} options={FITS} onSave={save} />;
+    if (kind === 'status') return <ChoiceCell value={value} label={label} options={STATUSES} onSave={save} />;
     if (kind === 'advice') return <AdviceCell row={row} sheet={sheet} onSave={save} />;
-    if (kind === 'ptype') return <ChoiceCell value={value} label={label} options={PATRON_TYPES} listId="sheet-patron-types" onSave={save} />;
-    if (kind === 'state') return <ChoiceCell value={value} label={label} options={EU_STATES} listId="sheet-eu-states" onSave={save} />;
+    if (kind === 'ptype') return <ChoiceCell value={value} label={label} options={PATRON_TYPES} onSave={save} />;
+    if (kind === 'state') return <ChoiceCell value={value} label={label} options={EU_STATES} onSave={save} />;
     if (kind === 'date') return <DateCell value={value} label={label} onSave={save} />;
     if (kind === 'email') return <EmailCell value={value} label={label} onSave={save} />;
     if (kind === 'link') return <LinkCell value={value} label={label} onSave={save} />;
