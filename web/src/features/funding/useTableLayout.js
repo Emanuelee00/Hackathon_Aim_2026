@@ -15,8 +15,8 @@ function savedLayout(KEY, movable, defaults) {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY)) || {};
     const order = saved.order?.length === movable.length && movable.every(key => saved.order.includes(key)) ? saved.order : movable;
-    // Layouts saved before the delete button had the row actions at 88 px: room for two icons.
-    const widths = saved.widths?.card === 88 ? { ...saved.widths, card: defaults.card } : saved.widths;
+    // The row actions never get narrower than their buttons need (layouts saved before a button was added).
+    const widths = saved.widths && saved.widths.card < defaults.card ? { ...saved.widths, card: defaults.card } : saved.widths;
     return { ...saved, widths, order };
   } catch { return { order: movable }; }
 }

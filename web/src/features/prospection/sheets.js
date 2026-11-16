@@ -37,17 +37,17 @@ const prospectColumns = [
   ['name', 'Financeur / dispositif', 210], ['fit', 'Adéquation', 130], ['status', 'Statut', 150], ['link', 'Site / lien', 190], ['email', 'Contact direct (e-mail)', 230], ['linkedin', 'LinkedIn', 230],
   ['vigilance', 'Points de vigilance', 240], ['advice', 'Conseils', 240], ['nature', 'Nature', 150], ['action', 'Action recommandée', 230], ['themes', 'Thématiques', 220], ['support', 'Type de soutien', 210],
   ['eligible', 'Porteur éligible', 170], ['contact', 'Contact (nom)', 150], ['lastExchange', 'Dernier échange', 150], ['followUp', 'Relance le', 150],
-  ['requested', 'Montant demandé', 130], ['obtained', 'Montant obtenu', 130], ['card', '', 120],
+  ['requested', 'Montant demandé', 130], ['obtained', 'Montant obtenu', 130], ['card', '', 160],
 ];
 const callColumns = [
   ['name', 'Appel / dispositif', 230], ['deadline', 'Date limite', 150], ['period', 'Échéance / période', 220], ['link', 'Lien', 190], ['email', 'Contact direct (e-mail)', 230], ['linkedin', 'LinkedIn', 230],
-  ['conditions', 'Conditions / points de vigilance', 260], ['advice', 'Conseils', 240], ['purpose', 'Objet', 190], ['relevance', 'Pertinence', 170], ['nextAction', 'Prochaine action', 230], ['owner', 'Resp.', 100], ['card', '', 90],
+  ['conditions', 'Conditions / points de vigilance', 260], ['advice', 'Conseils', 240], ['purpose', 'Objet', 190], ['relevance', 'Pertinence', 170], ['nextAction', 'Prochaine action', 230], ['owner', 'Resp.', 100], ['card', '', 125],
 ];
 // Appels européens et appels français : mêmes colonnes ; pour les appels français, « Programme » est le financeur.
 const callsColumns = programLabel => [
   ['name', 'Appel / programme', 240], ['fit', 'Adéquation', 130], ['state', 'État', 170], ['deadline', 'Date limite', 150], ['link', 'Site / lien', 190],
   ['email', 'Contact direct (e-mail)', 230], ['linkedin', 'LinkedIn', 230], ['vigilance', 'Points de vigilance', 230], ['advice', 'Conseils', 240], ['program', programLabel, 170], ['calendar', 'Calendrier / prochaine édition', 250],
-  ['purpose', 'Objet', 230], ['amount', 'Montant', 180], ['partners', 'Partenariat', 200], ['action', 'Prochaine action', 240], ['owner', 'Resp.', 100], ['card', '', 90],
+  ['purpose', 'Objet', 230], ['amount', 'Montant', 180], ['partners', 'Partenariat', 200], ['action', 'Prochaine action', 240], ['owner', 'Resp.', 100], ['card', '', 125],
 ];
 const euColumns = callsColumns('Programme');
 const frColumns = callsColumns('Financeur');
@@ -56,7 +56,7 @@ export const PATRON_TYPES = ['Philanthropes (fonds familial)', 'Philanthropes (e
 const patronColumns = [
   ['name', 'Mécène / réseau', 220], ['type', 'Type', 190], ['fit', 'Adéquation', 130], ['status', 'Statut', 150], ['link', 'Site / lien', 190], ['email', 'Contact direct (e-mail)', 230],
   ['linkedin', 'LinkedIn', 230], ['vigilance', 'Points de vigilance', 230], ['advice', 'Conseils', 240], ['people', 'Personnes clés', 240], ['funds', 'Ce qu’ils soutiennent', 260], ['amount', 'Montants', 180],
-  ['action', 'Prochaine action', 240], ['contact', 'Contact (nom)', 150], ['lastExchange', 'Dernier échange', 150], ['followUp', 'Relance le', 150], ['card', '', 90],
+  ['action', 'Prochaine action', 240], ['contact', 'Contact (nom)', 150], ['lastExchange', 'Dernier échange', 150], ['followUp', 'Relance le', 150], ['card', '', 125],
 ];
 const strategyColumns = [
   ['part', 'Volet', 200], ['scope', 'Périmètre', 280], ['targets', 'Financeurs à cibler', 260], ['documents', 'Pièces / données à préparer', 280], ['vigilance', 'Vigilances', 260], ['card', '', 90],

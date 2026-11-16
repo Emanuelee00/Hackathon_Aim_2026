@@ -3,6 +3,7 @@ import Icon from '../../shared/components/Icon.jsx';
 import StickyScrollbar from '../../shared/components/StickyScrollbar.jsx';
 import Modal from '../../shared/components/Modal.jsx';
 import { adviceFor } from './advice.js';
+import { MARKED_BY_HAND, fundingStatus, toggleFunding } from './fundingMatches.js';
 import { rowColors } from '../funding/funding.js';
 import { Heading, Popover, Swatches } from '../funding/components/TableMenus.jsx';
 import useTableLayout from '../funding/useTableLayout.js';
@@ -106,7 +107,7 @@ function RemoveButton({ row, sheet, onRemove }) {
   </div>}</Popover>;
 }
 
-function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding }) {
+function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding, onToggleFunding }) {
   const name = row.name || row.part || '';
   const cell = key => {
     const label = `${labels[key]} · ${name}`;
@@ -121,7 +122,7 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding 
     if (kind === 'date') return <DateCell value={value} label={label} onSave={save} />;
     if (kind === 'email') return <EmailCell value={value} label={label} onSave={save} />;
     if (kind === 'link') return <LinkCell value={value} label={label} onSave={save} />;
-    if (kind === 'title' && inFunding) return <><TextCell value={value} label={label} onSave={save} strong /><span className="sheet-in-funding" title={`Piste « ${inFunding} » dans Financements`}>Déjà dans Financements</span></>;
+    if (kind === 'title' && inFunding) return <><TextCell value={value} label={label} onSave={save} strong /><span className="sheet-in-funding" title={inFunding === MARKED_BY_HAND ? 'Indiqué à la main par l’équipe' : `Piste « ${inFunding} » dans Financements`}>Déjà dans Financements</span></>;
     return <TextCell value={value} label={label} onSave={save} strong={kind === 'title'} />;
   };
   const actions = <div className="funding-row-actions">
@@ -129,6 +130,9 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding 
     {onTrack && (row.trackedOn || inFunding
       ? <span className="sheet-tracked" title={inFunding ? `Déjà dans Financements : « ${inFunding} »` : `Passé dans le suivi des financements le ${row.trackedOn}`}><Icon name="check" size={15} /></span>
       : <button type="button" className="icon-button" aria-label={`Demander un financement à ${name} : ajouter au suivi des financements`} title="Demander un financement : ajouter au suivi des financements" onClick={() => onTrack(row)}><Icon name="send" size={15} /></button>)}
+    {sheet.id !== 'strategy' && <button type="button" className={`icon-button sheet-funding-toggle${inFunding ? ' is-on' : ''}`} aria-pressed={Boolean(inFunding)}
+      aria-label={inFunding ? `${name} : n’est pas dans Financements (retirer le rouge)` : `${name} : marquer « déjà dans Financements »`}
+      title={inFunding ? 'Retirer « déjà dans Financements »' : 'Marquer « déjà dans Financements »'} onClick={onToggleFunding}><Icon name="euro" size={15} /></button>}
     <RemoveButton row={row} sheet={sheet} onRemove={onRemove} />
   </div>;
   // Déjà dans « Financements » : toute la ligne en rouge, avant toute autre couleur.
@@ -140,7 +144,8 @@ function Row({ row, sheet, layout, labels, onSave, onRemove, onTrack, inFunding 
 
 const IN_FUNDING_RED = '#f8c4c4';
 
-export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf = () => '' }) {
+export default function SheetTable({ sheet, rows, onChange, onTrack, fundingAuto = () => '' }) {
+  const fundingOf = row => fundingStatus(row, fundingAuto);
   const [query, setQuery] = useState('');
   const [chosen, setChosen] = useState({});
   const [dragging, setDragging] = useState(null);
@@ -175,7 +180,7 @@ export default function SheetTable({ sheet, rows, onChange, onTrack, fundingOf =
     <div className="funding-table-scroll" ref={scroller}><table className="funding-table sheet-table" style={{ width: totalWidth(layout.widths) }}>
       <colgroup>{layout.order.map(key => <col key={key} style={{ width: layout.widths[key] }} />)}</colgroup>
       <thead><tr>{layout.order.map((key, index) => <Heading key={key} column={key} label={labels[key]} layout={layout} drag={drag} sticky={index === 0} />)}</tr></thead>
-      <tbody>{visible.map(row => <Row key={row.id} row={row} sheet={sheet} layout={layout} labels={labels} onSave={save} onRemove={remove} onTrack={onTrack} inFunding={fundingOf(row)} />)}</tbody>
+      <tbody>{visible.map(row => <Row key={row.id} row={row} sheet={sheet} layout={layout} labels={labels} onSave={save} onRemove={remove} onTrack={onTrack} inFunding={fundingOf(row)} onToggleFunding={() => save(toggleFunding(row, fundingAuto))} />)}</tbody>
     </table></div>
     <StickyScrollbar target={scroller} />
     {!visible.length && <p className="funding-muted funding-none">Aucune ligne ne correspond.</p>}

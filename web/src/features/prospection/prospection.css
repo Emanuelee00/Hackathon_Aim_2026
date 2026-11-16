@@ -45,3 +45,4 @@
 .sheet-row-in-funding td .sheet-in-funding { margin-left: 8px; }
 .sheet-in-funding-tools { display: inline-flex; align-items: center; gap: 4px; }
 .sheet-hide-funding { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.sheet-funding-toggle.is-on { color: white; background: #c0392b; border-color: #c0392b; }

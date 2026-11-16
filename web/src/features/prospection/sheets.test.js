@@ -142,3 +142,17 @@ test('a potential funder already followed in « Financements » is recognised, b
   assert.equal(match({ id: 'r14', name: 'Fondation des Femmes' }), '');
   assert.equal(fundingMatcher([])({ id: 'r02', name: 'Fondation Macif' }), '');
 });
+
+test('the team can mark a row « already in Financements » by hand, or take the red away', async () => {
+  const { MARKED_BY_HAND, fundingStatus, toggleFunding } = await import('./fundingMatches.js');
+  const auto = row => (row.id === 'r02' ? 'Fondation MACIF' : '');
+  const macif = { id: 'r02', name: 'Fondation Macif' };
+  const other = { id: 'zz', name: 'Fondation X' };
+  const notMacif = toggleFunding(macif, auto);
+  assert.equal(notMacif.inFunding, 'no');
+  assert.equal(fundingStatus(notMacif, auto), '');
+  assert.deepEqual(toggleFunding(notMacif, auto), macif);
+  const marked = toggleFunding(other, auto);
+  assert.equal(fundingStatus(marked, auto), MARKED_BY_HAND);
+  assert.deepEqual(toggleFunding(marked, auto), other);
+});

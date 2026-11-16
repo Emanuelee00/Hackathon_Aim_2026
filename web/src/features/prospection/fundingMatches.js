@@ -78,3 +78,21 @@ export function fundingMatcher(funders) {
     return '';
   };
 }
+
+export const MARKED_BY_HAND = 'indiqué à la main';
+
+// Ce que l'équipe a décidé à la main l'emporte (row.inFunding : 'yes' ou 'no') ; sinon, la correspondance trouvée.
+export function fundingStatus(row, auto) {
+  if (row.inFunding === 'no') return '';
+  const found = auto(row);
+  if (row.inFunding === 'yes') return found || MARKED_BY_HAND;
+  return found;
+}
+
+// La ligne après un clic sur « déjà dans Financements » : l'inverse de ce qu'elle montre ; si cela revient à ce que
+// la correspondance automatique dirait, le choix à la main est effacé.
+export function toggleFunding(row, auto) {
+  const next = !fundingStatus(row, auto);
+  const { inFunding: _, ...rest } = row;
+  return next === Boolean(auto(row)) ? rest : { ...rest, inFunding: next ? 'yes' : 'no' };
+}
