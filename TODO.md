@@ -2,6 +2,10 @@
 
 Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (contexte de travail complet).
 
+## ⚠️ Important : sauvegardes automatiques hors de la VM
+
+- [ ] **Sauvegarde automatique de la base de données, chaque nuit, avec une copie hors de la VM.** Aujourd'hui il n'y en a pas : la seule sauvegarde est le `pg_dump` fait à la main avant chaque mise à jour, et elle reste sur la VM. Si la VM est perdue, tout est perdu : demandes, financements, financeurs potentiels, devis et factures, comptes, et maintenant tout le contenu du site modifié par l'équipe (textes, photos envoyées, cartes, ordre des sections). À prévoir : un `pg_dump` quotidien (cron sur la VM), envoyé vers un stockage externe (par ex. un bucket Google Cloud Storage), en gardant plusieurs jours, et un essai de restauration.
+
 ## Où en est la mise en ligne (VM Google Cloud `marthe`, adresse de test https://34-155-50-2.sslip.io)
 
 - [x] **Paquet 1** (Financements, Messages, Devis, languette du menu) : en ligne.
@@ -129,7 +133,7 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 - [ ] Créer les vrais comptes (un compte par personne, pas un compte partagé par groupe) ; ne **jamais** lancer `make seed` sur la VM (comptes de démonstration avec mot de passe connu).
 - [ ] Retirer `comptes.txt` du dépôt Git (comptes de démonstration et leur mot de passe) ou le garder privé.
 - [ ] Faire attendre les visiteurs pendant les quelques secondes d'une mise à jour : `lb_try_duration 30s` dans le `Caddyfile` (à préparer, pas encore fait).
-- [ ] Sauvegardes : le backup du 10 novembre est dans `~/marthe-2026-11-10-1807.sql.gz` sur la VM ; décider d'un rythme régulier et d'un endroit hors de la VM.
+- [ ] Sauvegardes : le backup du 10 novembre est dans `~/marthe-2026-11-10-1807.sql.gz` sur la VM ; rythme régulier et copie hors de la VM : voir « Important » en haut de ce fichier.
 - [ ] Plus tard : passer au tunnel Cloudflare (aucun port ouvert sur la VM).
 - [ ] Plus tard : décider si on réactive l'IA (OpenAI ou Ollama).
 - [ ] Vercel : limite de 100 déploiements par jour atteinte ; des projets en double ont été supprimés. Si on garde temp2, y pousser seulement quand c'est nécessaire.
