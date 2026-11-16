@@ -43,9 +43,17 @@
 .nav-arrange, .nav-reset { padding: 3px 9px; border: 1px solid rgba(255,255,255,.3); border-radius: 12px; color: inherit; background: transparent; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
 .nav-arrange[aria-pressed="true"] { color: #3f1d4f; background: #f7d6e0; border-color: #f7d6e0; }
 .nav-edit-hint { margin: 0 0 8px; color: #e4d3ea; font-size: 12px; line-height: 1.4; }
-.nav-edit-row { cursor: default; }
-.nav-grip { display: inline-grid; place-items: center; margin-left: -6px; cursor: grab; opacity: .8; }
-.nav-top { margin-left: auto; padding: 0 4px; border: 0; color: inherit; background: none; font-size: 16px; cursor: pointer; }
+.nav-edit-row { cursor: grab; touch-action: none; user-select: none; transition: transform .2s ease, box-shadow .15s ease, background .15s ease; }
+.nav-edit-row { gap: 6px; padding: 9px 8px 9px 10px; }
+.nav-edit-row > svg { display: none; }
+.nav-edit-row > span:not(.nav-grip) { flex: 1; min-width: 0; line-height: 1.25; overflow-wrap: anywhere; }
+.nav-editing .nav-edit-row { margin-bottom: 4px; background: rgba(255,255,255,.06); }
+.nav-editing.is-sorting .nav-edit-row { cursor: grabbing; }
+/* La rubrique attrapée : soulevée, un peu sortie du menu, avec une ombre. */
+.sidebar .nav-edit-row[data-lifted], .sidebar .nav-edit-row[data-lifted]:hover { color: #3f1d4f; background: #fdf3f7; box-shadow: 0 8px 16px rgba(20,5,30,.4); cursor: grabbing; }
+.sidebar .nav-edit-row[data-lifted] .nav-star { color: #b07800; }
+.nav-grip { display: inline-grid; flex: none; place-items: center; cursor: grab; opacity: .8; }
+.nav-top { margin-left: 4px; padding: 0 4px; border: 0; color: inherit; background: none; font-size: 16px; cursor: pointer; }
 .nav-top:disabled { opacity: .3; cursor: default; }
 .nav-star { padding: 0 4px; border: 0; color: #f5c84c; background: none; font-size: 18px; line-height: 1; cursor: pointer; }
 .nav-item.is-starred { color: white; background: rgba(245,200,76,.16); }
@@ -57,3 +65,6 @@
 .sidebar.is-light-menu .nav-item:hover, .sidebar.is-light-menu .nav-item.active { color: #2a1035; background: rgba(63,29,79,.1); }
 .sidebar.is-light-menu .nav-arrange, .sidebar.is-light-menu .nav-reset { border-color: rgba(63,29,79,.3); }
 .sidebar.is-light-menu .nav-star, .sidebar.is-light-menu .nav-star-mark { color: #b07800; }
+/* Le menu ne défile jamais de côté (une rubrique trop large ou soulevée le décalait et coupait le bord gauche). */
+.sidebar { overflow-x: hidden; }
+.sidebar nav { grid-template-columns: minmax(0, 1fr); }
