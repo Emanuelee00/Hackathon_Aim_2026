@@ -144,5 +144,6 @@ Italian in chat only, English in the repo, French untouched (site language).
 - `eb6f475` Guide preamble, nesting threshold, CODEX merge, landing start
 - `30b68f0` landing section packages (JSX)
 - `7f4a366` home.css thematic sheets + Guide §1 placement bullet
-- `a9…` prospection data subpackage + Guide §9 + Makefile sweep
-- (next) PAGES registry in App.jsx + this log
+- `864addd` prospection data subpackage + Guide §9 + Makefile sweep
+- `5fbf542` glm.md work log start
+- `23b9ee9` PAGES registry in App.jsx + log update
