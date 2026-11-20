@@ -8,12 +8,12 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-import db
 from accounts.models import User
 from accounts.passwords import hash_password
 from accounts.routes import router as accounts_router
 from agents import llm
 from agents.routes import router
+from core import db
 from sharing.forms import router as forms_router
 
 QUESTION = [{"role": "user", "content": "Puis-je faire un barbecue au jardin ?"}]

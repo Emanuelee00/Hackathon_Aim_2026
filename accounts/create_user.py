@@ -9,7 +9,7 @@ from typing import get_args
 
 from sqlalchemy.orm import Session
 
-from db import engine, migrate
+from core.db import engine, migrate
 
 from .models import Role, User
 from .passwords import hash_password

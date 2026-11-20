@@ -2,13 +2,13 @@ from datetime import date
 from io import BytesIO
 
 from openpyxl import Workbook, load_workbook
+from test_store import client_as  # noqa: F401  (pytest fixture)
 
-import store
+from core import store
 from funding import backup
 from funding.excel import read_tracker
 from funding.routes import router as funding_router
 from funding.workbook import write_tracker
-from test_store import client_as  # noqa: F401  (pytest fixture)
 
 HEADER = ["Objet", "Contact", "Type", "Historique", "Nom", "Mail", "Tél"]
 

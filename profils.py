@@ -11,9 +11,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 import espaces
-import store
 from accounts.models import User
 from accounts.sessions import team_member
+from core import store
 
 router = APIRouter(prefix="/api/profils")
 Team = Annotated[User, Depends(team_member)]

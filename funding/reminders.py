@@ -15,7 +15,7 @@ from threading import Thread
 from zoneinfo import ZoneInfo
 
 import messages
-import store
+from core import store
 from mailer import configured, deliver
 
 from .excel import DEFAULT_FOLLOWUP_MONTHS

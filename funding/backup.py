@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime
 
-import store
+from core import store
 
 PREFIX = "funders@"
 KEEP = 30

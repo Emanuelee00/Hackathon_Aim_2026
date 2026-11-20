@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db import Base
+from core.db import Base
 
 # One role per subdomain; a user signs in on the space of their role.
 Role = Literal["equipe", "residents", "benevoles", "partenaires"]

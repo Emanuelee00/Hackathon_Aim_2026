@@ -1,8 +1,9 @@
 import base64
 
-import espaces
-import store
 from test_store import client_as  # noqa: F401  (pytest fixture)
+
+import espaces
+from core import store
 
 PNG = base64.b64encode(
     base64.b64decode(

@@ -24,7 +24,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 import mailer
 import messages
-import store
+from core import store
 from sharing.confirmations import french_date
 
 from .models import (

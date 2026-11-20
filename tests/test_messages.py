@@ -1,13 +1,14 @@
 from datetime import date
 
+from test_store import client_as  # noqa: F401  (pytest fixture)
+
 import mailer
 import messages
-import store
+from core import store
 from funding import reminders
 from sharing import confirmations
 from sharing.forms import router as forms_router
 from sharing.models import EventDraft
-from test_store import client_as  # noqa: F401  (pytest fixture)
 
 DRAFT = EventDraft(
     title="Atelier danse",

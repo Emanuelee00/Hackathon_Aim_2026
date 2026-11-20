@@ -13,7 +13,7 @@ import psycopg
 DATABASE_URL = os.getenv("DATABASE_URL")
 # Vercel only allows writing to /tmp: data there is lost when the instance stops.
 SQLITE_PATH = (
-    Path("/tmp" if os.getenv("VERCEL") else Path(__file__).parent) / "marthe.db"
+    Path("/tmp" if os.getenv("VERCEL") else Path(__file__).parent.parent) / "marthe.db"
 )
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"

@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from db import get_session
+from core.db import get_session
 
 from .models import (
     OPEN_SIGNUP,

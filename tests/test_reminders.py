@@ -3,13 +3,13 @@ from io import BytesIO
 
 import pytest
 from openpyxl import load_workbook
+from test_store import client_as  # noqa: F401  (pytest fixture)
 
-import store
+from core import store
 from funding import reminders
 from funding.excel import read_tracker
 from funding.routes import router as funding_router
 from funding.workbook import write_tracker
-from test_store import client_as  # noqa: F401  (pytest fixture)
 
 
 @pytest.fixture

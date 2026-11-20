@@ -6,14 +6,13 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-import db
-import store
 from accounts.models import User
 from accounts.passwords import hash_password
 from accounts.routes import router as accounts_router
 from agents import benevoles, llm, partenaires, residents
 from agents.llm import Context
 from agents.routes import router
+from core import db, store
 
 ASK = {"messages": [{"role": "user", "content": "Qu’est-ce que j’ai de prévu ?"}]}
 EVENTS = [

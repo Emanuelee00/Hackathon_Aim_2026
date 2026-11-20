@@ -14,9 +14,9 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import mailer
-import store
 from agents.models import Question
-from db import get_session
+from core import store
+from core.db import get_session
 
 from . import confirmations
 from .models import ContactMessage, EventDraft, Feedback

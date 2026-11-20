@@ -4,7 +4,7 @@ from alembic import context
 
 import accounts.models  # noqa: F401  (registers the tables on Base.metadata)
 import agents.models  # noqa: F401
-import db
+from core import db
 
 config = context.config
 if config.config_file_name and config.attributes.get("configure_logger", True):

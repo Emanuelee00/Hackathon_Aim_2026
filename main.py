@@ -19,18 +19,18 @@ from agents.routes import router as agents_router
 from ai import AI_ENABLED, warm_up
 from ai import router as ai_router
 from bilans import router as bilans_router
-from db import migrate
+from core.db import migrate
 from demo import DEMO_MODE
 from editeur import router as editeur_router
 from employment.routes import router as employment_router
 from espaces import router as espaces_router
 from espaces import site_router
+from facturation import router as modeles_router
 from funding.prospection import router as prospection_router
 from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
 from matching import router as matching_router
 from messages import router as messages_router
-from facturation import router as modeles_router
 from profils import router as profils_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router

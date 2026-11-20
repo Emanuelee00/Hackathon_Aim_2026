@@ -13,9 +13,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
-import store
 from accounts.models import User
 from accounts.sessions import team_member
+from core import store
 
 STORE_KEY = "message_templates"
 VARIABLE = re.compile(r"\{(\w+)\}")

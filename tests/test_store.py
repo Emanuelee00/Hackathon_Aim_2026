@@ -7,11 +7,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-import db
-import store
 from accounts.models import User
 from accounts.passwords import hash_password
 from accounts.routes import router as accounts_router
+from core import db, store
 from sharing import identity
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router

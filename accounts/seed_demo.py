@@ -6,7 +6,7 @@ Usage: uv run python -m accounts.seed_demo
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from db import engine, migrate
+from core.db import engine, migrate
 
 from .models import User
 from .passwords import hash_password

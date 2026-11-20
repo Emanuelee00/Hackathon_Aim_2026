@@ -7,10 +7,10 @@ from alembic.config import Config
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import DeclarativeBase, Session
 
-import store
-from store import DATABASE_URL, SQLITE_PATH
+from . import store
+from .store import DATABASE_URL, SQLITE_PATH
 
-ALEMBIC_INI = Path(__file__).parent / "alembic.ini"
+ALEMBIC_INI = Path(__file__).parent.parent / "alembic.ini"
 MIGRATION_LOCK = 4242
 
 

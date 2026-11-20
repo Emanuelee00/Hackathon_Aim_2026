@@ -5,9 +5,9 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Body, Depends, HTTPException
 from pydantic import ValidationError
 
-import store
 from accounts.models import User
 from accounts.sessions import current_user
+from core import store
 from funding.backup import save_copy
 
 from .events import merge_bookings, merge_signups, shared_view

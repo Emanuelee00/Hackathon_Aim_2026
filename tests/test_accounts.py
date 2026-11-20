@@ -4,10 +4,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 
-import db
 from accounts.models import User
 from accounts.passwords import hash_password, verify_password
 from accounts.routes import router
+from core import db
 
 RESIDENT = {
     "name": "Marie",

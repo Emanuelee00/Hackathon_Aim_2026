@@ -18,9 +18,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel, ConfigDict, Field
 
-import store
 from accounts.models import User
 from accounts.sessions import team_member
+from core import store
 
 router = APIRouter(prefix="/api/espaces-a-louer")
 site_router = APIRouter(prefix="/api/site")
