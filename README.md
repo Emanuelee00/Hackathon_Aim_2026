@@ -247,7 +247,7 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 - `frontend/src/shared/`: componenti, dati demo e funzioni riutilizzabili.
 - `frontend/src/styles/`: stile globale e responsive.
 - `pyproject.toml` e `uv.lock`: dipendenze Python.
-- `CODEX.md`: linee guida di sviluppo.
+- `docs-md/Guide.md`: linee guida di sviluppo.
 
 `make check` verifica lockfile, lint, formattazione e test.
 `make test` esegue solo i test con risposte simulate, senza avviare il modello.
