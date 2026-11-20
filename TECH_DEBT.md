@@ -24,7 +24,7 @@ Trovati il 2026-11-20 durante il pilota `mailer/`. Non introdotti dal refactor.
 ## Refactor pacchetti backend (in corso)
 
 - [x] `mailer.py` → `mailer/` (pilota)
-- [ ] `ranking.py` → `ranking/`
+- [x] `ranking.py` → `ranking/`
 - [ ] `demo.py` → `demo/`
 - [ ] `gcal.py` → `gcal/`
 - [ ] `matching.py`, `profils.py`, `messages.py`, ...
