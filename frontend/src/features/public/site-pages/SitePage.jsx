@@ -1,4 +1,5 @@
-import { Brand, SiteFooter } from '../landing/Landing.jsx';
+import { Brand } from '../landing/Brand.jsx';
+import { SiteFooter } from '../landing/SiteFooter.jsx';
 
 // Pages of the public site outside the landing: legal notice, privacy, contact.
 export default function SitePage({ eyebrow, title, children }) {
