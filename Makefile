@@ -4,7 +4,7 @@ export OLLAMA_MODELS := $(CURDIR)/.ollama/models
 export OLLAMA_NO_CLOUD := 1
 # OpenAI key of the chatbot agents (OPENAI_API=...), kept out of Git.
 -include .env
-export OPENAI_API OPENAI_MODEL
+export OPENAI_API OPENAI_MODEL PUBLIC_SITE_ORIGINS
 
 .DEFAULT_GOAL := all
 
@@ -36,8 +36,8 @@ model-pull:
 
 install:
 	uv sync --locked
-	npm --prefix web ci
-	npm --prefix web run build
+	npm --prefix frontend ci
+	npm --prefix frontend run build
 
 dev:
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
@@ -51,21 +51,21 @@ qr:
 	@echo "QR code créé : qr-demo.png"
 
 front:
-	npm --prefix web run dev
+	npm --prefix frontend run dev
 
 build:
-	npm --prefix web run build
+	npm --prefix frontend run build
 
 browser-test: build
-	npm --prefix web run test:e2e
+	npm --prefix frontend run test:e2e
 
 check:
 	uv lock --check
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run python -m pytest -q
-	npm --prefix web test
-	npm --prefix web run build
+	npm --prefix frontend test
+	npm --prefix frontend run build
 
 test:
 	uv run python -m pytest -q
@@ -74,18 +74,18 @@ format:
 	uv run ruff format .
 
 migrate:
-	uv run alembic upgrade head
+	uv run alembic -c backend/alembic.ini upgrade head
 
 migration:
 	@test -n "$(NAME)" || { echo "Usage : make migration NAME=\"add something\""; exit 1; }
-	uv run alembic revision --autogenerate -m "$(NAME)"
+	uv run alembic -c backend/alembic.ini revision --autogenerate -m "$(NAME)"
 
 user:
 	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
-	uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
+	PYTHONPATH=backend uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
 
 seed:
-	uv run python -m accounts.seed_demo
+	PYTHONPATH=backend uv run python -m accounts.seed_demo
 
 tunnel:
 	cloudflared tunnel --config cloudflare/tunnel.yml run marthe

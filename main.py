@@ -6,11 +6,6 @@ from threading import Thread
 from typing import Annotated
 from zoneinfo import ZoneInfo
 
-from fastapi import Depends, FastAPI, Request
-from fastapi.responses import RedirectResponse, Response
-from fastapi.staticfiles import StaticFiles
-from starlette.exceptions import HTTPException
-
 import gcal
 from accounts.models import User
 from accounts.routes import router as accounts_router
@@ -26,6 +21,10 @@ from employment.routes import router as employment_router
 from espaces import router as espaces_router
 from espaces import site_router
 from facturation import router as modeles_router
+from fastapi import Depends, FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse, Response
+from fastapi.staticfiles import StaticFiles
 from funding.prospection import router as prospection_router
 from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
@@ -35,6 +34,9 @@ from profils import router as profils_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
+from starlette.exceptions import HTTPException
+
+import backend  # noqa: F401
 
 
 @asynccontextmanager
@@ -48,6 +50,20 @@ async def lifespan(app: FastAPI):
 
 PARIS = ZoneInfo("Europe/Paris")
 app = FastAPI(title="Marthe", version="0.1.0", lifespan=lifespan)
+PUBLIC_SITE_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv(
+        "PUBLIC_SITE_ORIGINS",
+        "https://chezmarthe.site,https://www.chezmarthe.site",
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=PUBLIC_SITE_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 app.include_router(ai_router)
 app.include_router(matching_router)
 app.include_router(employment_router)
@@ -182,7 +198,9 @@ class Frontend(StaticFiles):
 app.mount(
     "/",
     Frontend(
-        directory=Path(__file__).parent / "web" / "dist", html=True, check_dir=False
+        directory=Path(__file__).parent / "frontend" / "dist",
+        html=True,
+        check_dir=False,
     ),
-    name="web",
+    name="frontend",
 )

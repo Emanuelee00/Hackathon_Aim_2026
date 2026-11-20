@@ -1,6 +1,6 @@
 {
   "framework": "fastapi",
-  "buildCommand": "npm --prefix web ci && npm --prefix web run build",
+  "buildCommand": "npm --prefix frontend ci && npm --prefix frontend run build",
   "crons": [
     {
       "path": "/api/funders/reminders/cron",

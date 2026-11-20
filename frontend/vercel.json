@@ -1,0 +1,22 @@
+{
+  "framework": "vite",
+  "buildCommand": "npm run build:jamstack",
+  "outputDirectory": "jamstack-dist",
+  "rewrites": [
+    { "source": "/", "destination": "/jamstack.html" },
+    { "source": "/contact", "destination": "/jamstack.html" },
+    { "source": "/mentions-legales", "destination": "/jamstack.html" },
+    { "source": "/politique-de-confidentialite", "destination": "/jamstack.html" },
+    { "source": "/connexion", "destination": "/jamstack.html" },
+    { "source": "/equipe", "destination": "/jamstack.html" },
+    { "source": "/on-parle-de-nous", "destination": "/jamstack.html" }
+  ],
+  "redirects": [
+    { "source": "/contactus", "destination": "/contact", "permanent": true },
+    {
+      "source": "/privacy",
+      "destination": "/politique-de-confidentialite",
+      "permanent": true
+    }
+  ]
+}
