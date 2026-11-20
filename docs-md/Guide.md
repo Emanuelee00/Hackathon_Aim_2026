@@ -111,6 +111,12 @@ level of abstraction. The indicative limit is ~25 lines: if you go far over it,
 the function does too much and must be split **by responsibility**, not to make a
 number fit. At most **5 functions per page**.
 
+**Comments and docstrings.** Keep the ones that explain the **why**: contracts,
+invariants, decisions and traps a reader cannot see in the code (a monkeypatch
+that breaks when a function moves, a one-way sync, hand-tuned geometry).
+Shorten or drop the ones that only restate what the name already says — a stale
+comment that contradicts the code is worse than no comment.
+
 ---
 
 ## 4. Surgical changes

@@ -28,7 +28,7 @@ dev = [
 ]
 
 [tool.ruff]
-# Il prototipo chezmarthe-demo è codice demo autonomo, fuori dagli standard del progetto.
+# The chezmarthe-demo prototype is standalone demo code, outside project standards.
 exclude = ["chezmarthe-demo"]
 
 [tool.pytest.ini_options]

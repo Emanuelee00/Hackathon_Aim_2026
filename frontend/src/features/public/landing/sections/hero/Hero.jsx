@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { apiUrl } from '../../../../shared/lib/apiUrl.js';
+import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 
 // Types out each city, pauses, erases it, then moves to the next — skipped for reduced motion.
 function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 } = {}) {

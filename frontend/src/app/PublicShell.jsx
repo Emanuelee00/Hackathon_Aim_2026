@@ -1,4 +1,4 @@
-import { Brand } from '../features/public/landing/Landing.jsx';
+import { Brand } from '../features/public/landing/Brand.jsx';
 import { AccountMenu } from '../features/auth/AuthGate.jsx';
 import { useStore } from './store.jsx';
 import { SHOW_DEMO_DATA } from '../shared/lib/demo.js';
