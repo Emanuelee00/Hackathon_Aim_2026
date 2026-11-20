@@ -4,6 +4,12 @@ Rules for working on this project. They are guidelines, not dogma: if a rule
 does not apply, explain why in the report instead of following it blindly.
 When in doubt, ask before writing code.
 
+> **AI sessions (Claude, Codex, …): read this file in full before touching any
+> code, and follow these rules in every task, always** — folder structure (§0,
+> §2), simplicity, surgical changes, verification, reporting. A rule is skipped
+> only for a stated reason, explained in the end-of-work report (§8), never
+> silently.
+
 ---
 
 ## 0. Structure: responsibility first, numbers as warning lights
@@ -103,7 +109,7 @@ Minimum code that solves the problem. Nothing speculative.
 **Functions.** Aim for **one thing**, readable without scrolling, at a single
 level of abstraction. The indicative limit is ~25 lines: if you go far over it,
 the function does too much and must be split **by responsibility**, not to make a
-number fit.
+number fit. At most **5 functions per page**.
 
 ---
 
@@ -169,6 +175,9 @@ Before a refactor:
 ## 7. Tools and verification
 
 - **Dependencies**: `uv` for Python, `npm` for the frontend.
+- **Python style**: imports go at the top of each file. Repeating an import
+  across files is normal Python, not duplication — do not "fix" it. Never add
+  imports inside functions unless avoiding a genuine circular dependency.
 - **Gate before every commit**: `make check` -- `uv lock --check`, `ruff check`,
   `ruff format --check`, `pytest`, JS tests, frontend build.
 - **Ruff**: errors in the code you touch must be fixed; pre-existing ones

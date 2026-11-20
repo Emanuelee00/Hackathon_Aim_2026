@@ -638,7 +638,7 @@ Questa sezione elenca solo ciò che è stato aggiunto o modificato da Claude in 
 **Pulizia del codice**
 - Estratto in `journeys/tracking.js` la mappa `nextStepLabels` che era duplicata; rimossa la duplicazione in `JourneyCard.jsx`.
 - Riorganizzato `frontend/src/styles/index.css` con intestazioni di sezione (nessuna regola spostata di significato, solo commenti + una regola CSS che era finita fuori posto rimessa vicino alla sua coppia).
-- Struttura della nuova feature allineata alle convenzioni già in uso nel resto del progetto (pagina + `components/` con sotto-componenti), seguendo [CODEX.md](CODEX.md).
+- Struttura della nuova feature allineata alle convenzioni già in uso nel resto del progetto (pagina + `components/` con sotto-componenti), seguendo [Guide.md](Guide.md).
 
 **Verifica**
 - Build (`npm run build`), lint e l'intera suite di test (backend `pytest` + frontend, 15 test) eseguiti dopo ogni modifica: tutti verdi.
