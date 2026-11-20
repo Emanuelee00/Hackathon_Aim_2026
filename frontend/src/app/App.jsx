@@ -37,26 +37,31 @@ import ProfileProvider, { useProfile } from '../features/equipe/profiles/Profile
 import ProfilePicker from '../features/equipe/profiles/ProfilePicker.jsx';
 import { pageStyle } from '../features/equipe/profiles/profiles.js';
 
-function PageContent({ page, openEvent, openAccounting, openJourney, openNew, openReport, openSpaceRequest, navigate, questions, access }) {
-  if (page === 'dashboard') return <Dashboard onNew={openNew} onOpen={openEvent} navigate={navigate} />;
-  if (page === 'requests') return <Requests onNew={openNew} onOpen={openEvent} />;
-  if (page === 'questions') return <Questions {...questions} />;
-  if (page === 'access') return <AccessRequests {...access} />;
-  if (page === 'committee') return <Committee onOpen={openEvent} />;
-  if (page === 'opportunities') return <Opportunities />;
-  if (page === 'residents') return <Residents navigate={navigate} />;
-  if (page === 'journeys') return <Journeys onEdit={openJourney} navigate={navigate} />;
-  if (page === 'calendar') return <Calendar onOpen={openEvent} />;
-  if (page === 'spaces') return <Spaces onBook={openSpaceRequest} onOpen={openEvent} />;
-  if (page === 'reports') return <Reports onOpen={openEvent} onReport={openReport} />;
-  if (page === 'bilans') return <StructureBilans />;
-  if (page === 'stats') return <Stats />;
-  if (page === 'funding') return <Funding />;
-  if (page === 'prospection') return <Prospection navigate={navigate} />;
-  if (page === 'messages') return <Messages />;
-  if (page === 'quotes') return <Quotes onAccounting={openAccounting} />;
-  if (page === 'site') return <SiteEditor />;
-  return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
+// One entry per équipe page, same style as MODALS: handlers come from the Shell.
+const PAGES = {
+  dashboard: h => <Dashboard onNew={h.openNew} onOpen={h.openEvent} navigate={h.navigate} />,
+  requests: h => <Requests onNew={h.openNew} onOpen={h.openEvent} />,
+  questions: h => <Questions {...h.questions} />,
+  access: h => <AccessRequests {...h.access} />,
+  committee: h => <Committee onOpen={h.openEvent} />,
+  opportunities: () => <Opportunities />,
+  residents: h => <Residents navigate={h.navigate} />,
+  journeys: h => <Journeys onEdit={h.openJourney} navigate={h.navigate} />,
+  calendar: h => <Calendar onOpen={h.openEvent} />,
+  spaces: h => <Spaces onBook={h.openSpaceRequest} onOpen={h.openEvent} />,
+  reports: h => <Reports onOpen={h.openEvent} onReport={h.openReport} />,
+  bilans: () => <StructureBilans />,
+  stats: () => <Stats />,
+  funding: () => <Funding />,
+  prospection: h => <Prospection navigate={h.navigate} />,
+  messages: () => <Messages />,
+  quotes: h => <Quotes onAccounting={h.openAccounting} />,
+  site: () => <SiteEditor />,
+};
+
+function PageContent(h) {
+  const render = PAGES[h.page];
+  return render ? render(h) : <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === h.page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 
 // One definition per modal window: title, width, class and body; all fed from the Shell context.

@@ -122,6 +122,21 @@ Italian in chat only, English in the repo, French untouched (site language).
   only, explicit user order required for anything else), and the language
   rules above.
 
+## 12. More factoring (autonomous pass)
+
+- Guide §9 « Comments and docstrings » moved to its own section (out of §3,
+  with the user's explicit go-ahead); §1 gained « decide where a thing belongs
+  before writing it » after the §3→§9 lesson.
+- Makefile: last Italian comments and message translated (French kept).
+- `prospectionData.js` split into the `data/` subpackage (see §9).
+- `App.jsx`: `PageContent`'s 18-branch if-chain became a `PAGES` registry in
+  the same style as `MODALS` — adding a page is now one entry.
+- Deliberately NOT factored, with reasons: date helpers duplicated in exactly
+  two places as one-liners (§3 forbids the abstraction), `PlaceMap.jsx` (230
+  cohesive lines of one animation), backend `messages.py` / `gcal.py` /
+  `facturation/routes.py` (documented decisions in TECH_DEBT, incl. the
+  monkeypatch constraint), `fonts.css` (generated data).
+
 ## Pushes
 
 - `dae7f59` repo docs/organization + CORS fix + app-layer refactor + TODO task
@@ -129,4 +144,5 @@ Italian in chat only, English in the repo, French untouched (site language).
 - `eb6f475` Guide preamble, nesting threshold, CODEX merge, landing start
 - `30b68f0` landing section packages (JSX)
 - `7f4a366` home.css thematic sheets + Guide §1 placement bullet
-- (next) prospection data subpackage + Guide §9 + Makefile sweep
+- `a9…` prospection data subpackage + Guide §9 + Makefile sweep
+- (next) PAGES registry in App.jsx + this log
