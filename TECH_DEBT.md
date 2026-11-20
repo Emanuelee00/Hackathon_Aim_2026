@@ -25,7 +25,7 @@ Trovati il 2026-11-20 durante il pilota `mailer/`. Non introdotti dal refactor.
 
 - [x] `mailer.py` → `mailer/` (pilota)
 - [x] `ranking.py` → `ranking/`
-- [ ] `demo.py` → `demo/`
+- [x] `demo.py` → `demo/` (path di `demo_responses.json` corretto a `parent.parent`)
 - [ ] `gcal.py` → `gcal/`
 - [ ] `matching.py`, `profils.py`, `messages.py`, ...
 - [ ] `main.py`: **non toccare** (punto d'ingresso)

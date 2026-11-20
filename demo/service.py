@@ -9,7 +9,7 @@ DEMO_MODE = bool(os.getenv("VERCEL") or os.getenv("MARTHE_DEMO"))
 # Seconds of simulated analysis, so the progress bar plays as with the model.
 DEMO_DELAY = 6
 RESPONSES = json.loads(
-    (Path(__file__).parent / "demo_responses.json").read_text(encoding="utf-8")
+    (Path(__file__).parent.parent / "demo_responses.json").read_text(encoding="utf-8")
 )
 
 
