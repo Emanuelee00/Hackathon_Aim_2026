@@ -5,7 +5,7 @@ export OLLAMA_NO_CLOUD := 1
 # OpenAI key of the chatbot agents (OPENAI_API=...), kept out of Git.
 -include .env
 # Export only the variables actually set: exporting an empty one would
-# override the defaults in main.py (es. PUBLIC_SITE_ORIGINS → CORS spento).
+# override the defaults in main.py (e.g. PUBLIC_SITE_ORIGINS → CORS off).
 ifneq ($(OPENAI_API),)
 export OPENAI_API
 endif
@@ -26,14 +26,14 @@ all: install
 	OLLAMA_PID=$$!; \
 	trap 'kill $$OLLAMA_PID 2>/dev/null || true' EXIT INT TERM; \
 	until ollama list >/dev/null 2>&1; do \
-		kill -0 $$OLLAMA_PID 2>/dev/null || { echo "Ollama non si è avviato."; exit 1; }; \
+		kill -0 $$OLLAMA_PID 2>/dev/null || { echo "Ollama failed to start."; exit 1; }; \
 		sleep 1; \
 	done; \
 	ollama pull qwen2.5:0.5b; \
 	ollama pull qwen2.5:3b; \
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
-# Come `all`, ma senza Ollama : installe, builde le frontend et lance le backend.
+# Comme `all`, mais sans Ollama : installe, builde le frontend et lance le backend.
 run: install
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
@@ -100,6 +100,6 @@ seed:
 tunnel:
 	cloudflared tunnel --config cloudflare/tunnel.yml run marthe
 
-# Come `tunnel`, ma lo rilancia da solo se si ferma o perde la connessione.
+# Comme `tunnel`, mais se relance tout seul s'il s'arrête ou perd la connexion.
 tunnel-forever:
 	./cloudflare/tunnel-forever.sh
