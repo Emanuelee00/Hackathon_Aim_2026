@@ -1,28 +1,13 @@
-"""« Bilans des structures » : chaque structure du lieu (Chez Marthe, HAS, JUST, les Sistas, les Petites Cantines,
-Bénénova) remplit chaque mois un bilan court. Des questions communes à toutes, pour additionner (personnes accueillies,
-dames qui participent, voisinage, liens entre associations, récit du mois), puis les questions propres à chacune.
-
-Une association, connectée sur l'espace associations, ne voit et ne remplit que le sien ; l'équipe voit tout, remplit celui de
-Chez Marthe (ou un autre à la place d'une structure) et télécharge l'année en Excel pour le bilan de juin.
-
-Aucune question ne porte sur une personne nommée : pour l'hébergement (HAS, JUST), seulement des nombres du mois."""
+"""Structure constants and validation for monthly structure reports."""
 
 import re
-from datetime import UTC, datetime
-from io import BytesIO
-from typing import Annotated, Any
-from urllib.parse import quote
+from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Query
-from fastapi.responses import Response
-from openpyxl import Workbook
-from openpyxl.styles import Alignment, Font, PatternFill
+from fastapi import HTTPException
 
 from accounts.models import User
-from accounts.sessions import current_user, team_member
 from core import store
 
-router = APIRouter(prefix="/api/bilans")
 KEY = "bilans"
 MONTH = re.compile(r"^(20[2-3]\d)-(0[1-9]|1[0-2])$")
 MAX_TEXT = 3000
@@ -343,124 +328,3 @@ def clean_answers(structure: dict, answers: Any) -> dict:
 
 def entries() -> list[dict]:
     return store.load_document(KEY) or []  # type: ignore[arg-type]
-
-
-@router.get("")
-def read(user: Annotated[User, Depends(current_user)]) -> dict:
-    """Les questions et les bilans que ce compte peut voir."""
-    shown = visible(user)
-    ids = {s["id"] for s in shown}
-    return {
-        "structures": [public(s) for s in shown],
-        "entries": [e for e in entries() if e.get("structure") in ids],
-        "mine": own_structure(user) if user.role == "partenaires" else None,
-    }
-
-
-@router.put("/{structure_id}/{month}")
-def save(
-    structure_id: str,
-    month: str,
-    user: Annotated[User, Depends(current_user)],
-    answers: Annotated[dict, Body(embed=True)],
-) -> dict:
-    structure = BY_ID.get(structure_id)
-    if not structure or structure not in visible(user):
-        raise HTTPException(403, "Ce bilan n’est pas celui de votre structure.")
-    if not MONTH.match(month):
-        raise HTTPException(422, "Mois invalide.")
-    entry = {
-        "structure": structure_id,
-        "month": month,
-        "answers": clean_answers(structure, answers),
-        "updatedAt": datetime.now(UTC).isoformat(timespec="seconds"),
-        "by": user.name,
-    }
-    others = [
-        e
-        for e in entries()
-        if (e.get("structure"), e.get("month")) != (structure_id, month)
-    ]
-    store.save_document(KEY, [*others, entry])  # type: ignore[arg-type]
-    return entry
-
-
-def workbook(year: int, saved: list[dict]) -> bytes:
-    """Une feuille « Indicateurs communs » (l'année, par structure) puis une feuille par structure (une colonne par mois)."""
-    book = Workbook()
-    head = Font(bold=True, color="FFFFFF")
-    fill = PatternFill("solid", fgColor="6B2C7E")
-    wrap = Alignment(wrap_text=True, vertical="top")
-    by_key = {(e["structure"], e["month"]): e.get("answers", {}) for e in saved}
-    months = [f"{year}-{m:02d}" for m in range(1, 13)]
-
-    summary = book.active
-    summary.title = "Indicateurs communs"
-    numbers = [
-        q for section in COMMON for q in section["questions"] if q["type"] == "number"
-    ]
-    summary.append([f"Année {year}", *(s["name"] for s in STRUCTURES), "Total"])
-    for question in numbers:
-        values = [
-            sum(by_key.get((s["id"], m), {}).get(question["id"], 0) for m in months)
-            for s in STRUCTURES
-        ]
-        summary.append([question["label"], *values, sum(values)])
-    summary.append([])
-    summary.append(
-        [
-            "Bilans remplis (mois)",
-            *(sum((s["id"], m) in by_key for m in months) for s in STRUCTURES),
-        ]
-    )
-
-    for structure in STRUCTURES:
-        page = book.create_sheet(
-            structure["name"][:31].replace("(", "").replace(")", "")
-        )
-        page.append(
-            [structure["name"], *(f"{MONTHS[i]} {year}" for i in range(12)), "Total"]
-        )
-        for section in sections(structure):
-            page.append([section["title"]])
-            page.cell(page.max_row, 1).font = Font(bold=True, color="6B2C7E")
-            for question in section["questions"]:
-                values = [
-                    by_key.get((structure["id"], m), {}).get(question["id"], "")
-                    for m in months
-                ]
-                total = (
-                    sum(v for v in values if isinstance(v, int | float))
-                    if question["type"] == "number"
-                    else ""
-                )
-                page.append([question["label"], *values, total])
-        page.column_dimensions["A"].width = 55
-        for column in "BCDEFGHIJKLMN":
-            page.column_dimensions[column].width = 22
-        for row in page.iter_rows(min_row=2):
-            for cell in row:
-                cell.alignment = wrap
-        page.freeze_panes = "B2"
-
-    for page in book.worksheets:
-        for cell in page[1]:
-            cell.font, cell.fill = head, fill
-    summary.column_dimensions["A"].width = 60
-    output = BytesIO()
-    book.save(output)
-    return output.getvalue()
-
-
-@router.get("/excel")
-def export(
-    _: Annotated[User, Depends(team_member)],
-    annee: Annotated[int, Query(ge=2020, le=2039)],
-) -> Response:
-    name = quote(f"Bilans des structures {annee} - Chez Marthe.xlsx")
-    saved = [e for e in entries() if str(e.get("month", "")).startswith(f"{annee}-")]
-    return Response(
-        workbook(annee, saved),
-        media_type=XLSX,
-        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{name}"},
-    )
