@@ -30,7 +30,7 @@ from funding.reminders import start_daily as start_reminders
 from funding.routes import router as funding_router
 from matching import router as matching_router
 from messages import router as messages_router
-from modeles import router as modeles_router
+from facturation import router as modeles_router
 from profils import router as profils_router
 from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router

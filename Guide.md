@@ -1,0 +1,161 @@
+# Coding Guidelines
+
+Rules for working on this project. They are guidelines, not dogma: if a rule
+does not apply, explain why in the report instead of following it blindly.
+When in doubt, ask before writing code.
+
+---
+
+## 0. Structure: responsibility first, numbers as warning lights
+
+**Principle.** Every folder has **one responsibility**, and its name says which.
+A package is a folder with `__init__.py`; a module is a file. The structure must
+make it obvious *where* new code goes, not impress.
+
+**Practical rules.**
+
+- **Python backend**: organize by responsibility, not by file kind. Group into a
+  package when a domain has several modules or when the root becomes a flat list
+  of files with no hierarchy. Do not create a package for a single small module:
+  a file first, extract later.
+- **Warning threshold**: a folder with **more than 7 entries** (modules and
+  sub-packages together, `__init__.py`, `__main__.py` and non-Python files
+excluded) is the signal that one more level is needed. The number is a warning
+  light, not a target: **never split just to reach the number**.
+- **Exceptions**: going over the threshold is allowed when the modules genuinely
+  share one responsibility. In that case write the reason in the package
+  `__init__.py` docstring, prefixed with `Exception: ...`, and mention it in the
+  report.
+- **`__init__.py`**: minimal, with a one-line docstring stating the package's
+  responsibility. It exposes the public API, not every symbol.
+- **No import cycles** between packages. A lower-level package never imports from
+  a higher-level one.
+- **Entry point**: `main.py` stays at the root. It is an external contract
+  (Vercel, `Dockerfile`, `Dockerfile.prod` all use `main:app`). Do not move it
+  without updating those three places and the deploy in the same commit.
+- **Frontend JS**: tests live next to the sources (`*.test.js` in the same feature
+  folder). Do not force the `tests/unit/` layout on the frontend: the runner is
+  `node --test src/**/*.test.js` and tests import modules through relative paths.
+- **Backend tests**: `tests/` at the backend root. As packages grow, `tests/` may
+  mirror the structure (`tests/unit/...`). For now it stays flat: moving tests
+  without a concrete reason is noise.
+
+**How it is checked.** `make check` (see §6) must pass before every commit. Any
+new automated structure rule must fail with a message that explains *what* to
+move, not just *that* something is wrong.
+
+---
+
+## 1. Think before coding
+
+Do not assume. Do not hide confusion. Surface the tradeoffs.
+
+Before implementing:
+
+- State your assumptions. If uncertain, ask.
+- If several interpretations exist, present them: do not pick one silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what is confusing. Ask.
+
+---
+
+## 2. Simplicity first
+
+Minimum code that solves the problem. Nothing speculative.
+
+- No feature beyond what was asked.
+- No abstraction for code used only once.
+- No flexibility or configurability that was not requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+- Ask yourself: "would a senior engineer call this overcomplicated?" If yes,
+  simplify.
+
+**Functions.** Aim for **one thing**, readable without scrolling, at a single
+level of abstraction. The indicative limit is ~25 lines: if you go far over it,
+the function does too much and must be split **by responsibility**, not to make a
+number fit.
+
+---
+
+## 3. Surgical changes
+
+Touch only what you must. Clean up only your own mess.
+
+When editing existing code:
+
+- Do not improve adjacent code, comments or formatting.
+- Do not refactor what is not broken.
+- Match the existing style, even if you would do it differently.
+- If you notice unrelated dead code, **report it** in `TECH_DEBT.md`: do not delete
+  it.
+
+When your changes create orphans:
+
+- Remove imports, variables and functions that **your** changes made unused.
+
+**The test:** every changed line must trace back directly to the request.
+
+---
+
+## 4. Goal-driven execution
+
+Define verifiable success criteria. Iterate until they are met.
+
+Turn tasks into verifiable goals:
+
+- "Add validation" -> "Write tests for invalid inputs, then make them pass".
+- "Fix the bug" -> "Write a test that reproduces it, then make it pass".
+- "Refactor X" -> "Make sure the tests pass before and after".
+
+For multi-step tasks, state a short plan:
+
+1. [Step] -> verify: [check]
+2. [Step] -> verify: [check]
+3. [Step] -> verify: [check]
+
+Strong criteria let you iterate on your own. Weak criteria ("make it work") need
+constant clarification.
+
+---
+
+## 5. When a refactor is worth it
+
+A refactor is done **only** if it solves a concrete problem: duplicated code,
+mixed responsibilities, fragile tests, an unmanageable folder. "Align the
+packages" is not a concrete problem.
+
+Before a refactor:
+
+- Write **why** it is needed (the observable problem).
+- Check that the tests cover the behaviour you are about to touch.
+- If a module is patched with `monkeypatch.setattr(module, "function", ...)`, know
+  that moving it into a package **breaks the patch** unless the tests are updated
+  in the same commit. If you do not want to touch the tests, do not move it.
+- One commit per refactor, with green tests before and after.
+- If the refactor brings no measurable benefit, **stop** and report it.
+
+---
+
+## 6. Tools and verification
+
+- **Dependencies**: `uv` for Python, `npm` for the frontend.
+- **Gate before every commit**: `make check` -- `uv lock --check`, `ruff check`,
+  `ruff format --check`, `pytest`, JS tests, frontend build.
+- **Ruff**: errors in the code you touch must be fixed; pre-existing ones
+  elsewhere go into `TECH_DEBT.md`, never fixed silently.
+- **Commits**: small, with a message that says *what* and *why*. One commit per
+  verifiable unit of work.
+- **Technical debt**: anything you find but do not fix goes into `TECH_DEBT.md`,
+  with the file, the kind of problem and the condition to address it.
+
+---
+
+## 7. End-of-work report
+
+When you finish, report:
+
+- **What** you changed and **why**.
+- **How** you verified it (commands, outcomes).
+- What is **left open** or risky.
+- If you deviated from these rules, **say so** and explain why.

@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from accounts.models import User
 from accounts.sessions import team_member
-from modeles import FOLDER, FORMATS, GREY, ISSUER, VIOLET
+from facturation import FOLDER, FORMATS, GREY, ISSUER, VIOLET
 
 router = APIRouter(prefix="/api/editeur")
 Team = Annotated[User, Depends(team_member)]

@@ -23,10 +23,20 @@ Trovati il 2026-11-20 durante il pilota `mailer/`. Non introdotti dal refactor.
 
 ## Refactor pacchetti backend (in corso)
 
+> `mailer/`, `ranking/`, `demo/` sono stati creati **prima** della guida attuale
+> (`Guide.md` §0: "a file first, extract later"). Sono coerenti con "everything in a
+> package" ma non sono il modello: funzionano e i test sono verdi, quindi restano.
+> I prossimi package si fanno solo se il modulo è grande o composito (§5).
+
 - [x] `mailer.py` → `mailer/` (pilota)
 - [x] `ranking.py` → `ranking/`
 - [x] `demo.py` → `demo/` (path di `demo_responses.json` corretto a `parent.parent`)
-- [ ] `gcal.py` → `gcal/`
+- [ ] `gcal.py` → `gcal/` — **NON fattibile senza riscrivere i test**: `week_public`
+      chiama `list_events` dentro il modulo, e `tests/test_programmation.py` fa
+      `monkeypatch.setattr(gcal, "list_events", …)`. Con un package il patch su
+      `gcal.list_events` non raggiunge `week_public` in `service.py` (2 test rossi).
+      Se si rifà: patchare `gcal.service.list_events` nei test, oppure far risolvere
+      `list_events` al package. Tentato il 2026-11-20, rollbackato.
 - [ ] `matching.py`, `profils.py`, `messages.py`, ...
 - [ ] `main.py`: **non toccare** (punto d'ingresso)
 

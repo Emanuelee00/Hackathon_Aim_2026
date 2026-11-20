@@ -30,7 +30,7 @@ from accounts.models import User
 from accounts.sessions import team_member
 from sharing.confirmations import french_date
 
-FOLDER = Path(__file__).parent / "modeles"
+FOLDER = Path(__file__).parent.parent / "modeles"
 FORMATS = {
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "pdf": "application/pdf",

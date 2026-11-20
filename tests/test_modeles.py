@@ -5,7 +5,7 @@ import re
 import zipfile
 
 import mailer
-import modeles
+import facturation as modeles
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
 BODY = {
