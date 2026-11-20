@@ -63,6 +63,9 @@ Before implementing:
 - If several interpretations exist, present them: do not pick one silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what is confusing. Ask.
+- Decide **where** a thing belongs before writing it: prefer the structurally
+  right placement over the smallest diff (a rule put in the wrong section must
+  be moved twice, and every move touches history).
 
 ---
 

@@ -1,0 +1,368 @@
+/* ── temp2 : « Notre premier lieu » en style verre (glassmorphism) ─────────────────────────────────────────────
+   Fond dégradé violet / corail / orange qui bouge doucement, textes et chiffres dans des panneaux de verre dépoli,
+   carte en traits clairs, murs du lieu qui brillent et anneau « radar » qui pulse sur le lieu. */
+.cm-home .place-bg::before {
+  z-index: -3;
+  background:
+    radial-gradient(52% 68% at 82% 26%, rgba(255, 105, 150, 0.55), transparent 64%),
+    radial-gradient(46% 60% at 14% 100%, rgba(242, 140, 56, 0.34), transparent 64%),
+    radial-gradient(80% 90% at 55% 45%, #7b2f9d 0%, #471870 54%, #250a3d 100%);
+  background-size: 150% 150%, 150% 150%, 100% 100%;
+  animation: glass-drift 22s ease-in-out infinite alternate;
+}
+@keyframes glass-drift { from { background-position: 0% 0%, 100% 100%, 0 0; } to { background-position: 100% 60%, 0% 20%, 0 0; } }
+.cm-home .place-bg::after { display: none; }
+.cm-home .place-bg > div:not(.place-map) {
+  position: relative; z-index: 1; max-width: 580px; padding: 34px 38px 32px; border-radius: 30px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+  backdrop-filter: blur(22px) saturate(1.5); -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 30px 70px rgba(18, 4, 32, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -24px 40px rgba(255, 255, 255, 0.04);
+}
+.cm-home .place-bg > div:not(.place-map)::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; height: 46%; border-radius: 30px 30px 0 0; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0)); }
+.cm-home .place-bg .eyebrow { display: inline-flex; width: fit-content; padding: 7px 15px; border-radius: 999px; font-size: 12px; letter-spacing: 0.2em; color: #ffd3de; background: rgba(255, 255, 255, 0.13); border: 1px solid rgba(255, 255, 255, 0.3); }
+.cm-home .place-bg h2 { color: #fff; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.02; letter-spacing: -0.01em; text-shadow: 0 2px 22px rgba(20, 5, 35, 0.4); margin-top: 16px; }
+.cm-home .place-bg p:not(.eyebrow) { color: rgba(255, 255, 255, 0.92); }
+.cm-home .place-facts { display: flex; gap: 14px; margin-top: 26px; padding-top: 0; border-top: 0; }
+.cm-home .place-facts li { flex: 1 1 0; min-width: 0; padding: 16px 18px 18px; border-radius: 22px; background: rgba(255, 255, 255, 0.09); border: 1px solid rgba(255, 255, 255, 0.24); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.cm-home .place-facts strong { margin-bottom: 4px; font-size: 58px; line-height: 1; color: transparent; background: linear-gradient(135deg, #ffffff 8%, #f8b4c4 52%, #f6a55c 100%); -webkit-background-clip: text; background-clip: text; }
+.cm-home .place-facts span { color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.4; }
+.cm-home .map-lines { opacity: 0.85; }
+.cm-home .map-stage::before { content: ""; position: absolute; z-index: 0; left: -8%; top: 14%; width: 66%; height: 76%; pointer-events: none; background: radial-gradient(closest-side, rgba(255, 110, 155, 0.38), rgba(255, 110, 155, 0) 72%); }
+.cm-home .map-stage::after { content: ""; position: absolute; z-index: 2; left: calc(31% - 46px); top: calc(53% - 46px); width: 92px; height: 92px; border-radius: 50%; pointer-events: none; border: 2px solid rgba(255, 175, 205, 0.85); box-shadow: 0 0 18px rgba(255, 120, 165, 0.6); animation: radar-ping 3.2s ease-out infinite; }
+@keyframes radar-ping { 0% { transform: scale(0.25); opacity: 0.95; } 100% { transform: scale(1.7); opacity: 0; } }
+.cm-home .map-spot-lines { filter: drop-shadow(0 0 5px rgba(255, 170, 200, 0.95)) drop-shadow(0 0 22px rgba(255, 90, 150, 0.8)); animation: map-glow-glass 3.2s ease-in-out infinite; }
+@keyframes map-glow-glass { 0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 170, 200, 0.8)) drop-shadow(0 0 12px rgba(255, 90, 150, 0.55)); } 50% { filter: drop-shadow(0 0 8px rgba(255, 200, 220, 1)) drop-shadow(0 0 30px rgba(255, 90, 150, 0.95)); } }
+.cm-home .map-title-arrow { filter: drop-shadow(0 0 6px rgba(255, 130, 175, 0.55)); }
+.cm-home .map-title-arrow path { stroke: #ffd6e2; }
+@media (max-width: 1299px) {
+  .cm-home .place-bg > div:not(.place-map) { max-width: none; padding: 26px 22px 24px; }
+  .cm-home .place-facts strong { font-size: 50px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-home .place-bg::before, .cm-home .map-spot-lines, .cm-home .map-stage::after { animation: none; }
+  .cm-home .map-stage::after { display: none; }
+}
+
+/* temp2 : écrans moyens (1300–1599 px) : panneau plus étroit et carte décalée à droite pour que le lieu reste visible. */
+@media (min-width: 1300px) and (max-width: 1599px) {
+  .cm-home .place-bg > div:not(.place-map) { max-width: 500px; padding: 28px 30px 26px; }
+  .cm-home .place-facts strong { font-size: 50px; }
+  .cm-home .map-stage { right: -9%; }
+}
+
+/* temp2 : plus de grande carte — le texte est posé directement sur le fond ; le verre ne reste que sur la pastille et les deux tuiles de chiffres. */
+.cm-home .place-bg > div:not(.place-map) { max-width: 560px; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.cm-home .place-bg > div:not(.place-map)::before { display: none; }
+@media (min-width: 1300px) {
+  .cm-home .place-bg::after { display: block; z-index: -1; background: linear-gradient(90deg, rgba(34, 8, 58, 0.72) 0%, rgba(34, 8, 58, 0.45) 42%, rgba(34, 8, 58, 0) 72%); }
+}
+
+/* ── temp2 : « La programmation » refaite ───────────────────────────────────────────────────────────────────
+   Fond nuit avec des lueurs corail / violet / orange (la photo du mur de mots reste en texture), une carte de verre par jour,
+   une couleur par activité, navigation en verre. Sur téléphone : un agenda vertical, la date à gauche. */
+.cm-home .prog { isolation: isolate; color: #fff; padding-top: 64px; padding-bottom: 80px; }
+.cm-home .prog::before {
+  background:
+    radial-gradient(46% 55% at 10% 6%, rgba(255, 105, 150, 0.34), transparent 66%),
+    radial-gradient(50% 60% at 94% 32%, rgba(138, 79, 216, 0.4), transparent 66%),
+    radial-gradient(60% 50% at 50% 100%, rgba(242, 140, 56, 0.24), transparent 68%),
+    linear-gradient(rgba(24, 9, 36, 0.9), rgba(27, 19, 25, 0.96)),
+    url('/foto/mur-des-mots.jpg') center / cover no-repeat;
+  -webkit-mask-image: none; mask-image: none;
+}
+.cm-home .pg-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 22px; margin-bottom: 30px; }
+.cm-home .pg-kicker { display: inline-flex; margin: 0 0 14px; padding: 7px 15px; border-radius: 999px; font-size: 12px; letter-spacing: 0.2em; font-weight: 700; color: #ffd3de; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.28); }
+.cm-home .prog h2 { margin: 0; color: #fff; font-size: clamp(34px, 5vw, 58px); line-height: 1; letter-spacing: -0.01em; text-shadow: 0 2px 22px rgba(20, 5, 35, 0.45); }
+.cm-home .prog h2::after { content: ""; display: block; width: 84px; height: 5px; margin-top: 16px; border-radius: 5px; background: linear-gradient(90deg, #f2a1ab, #f28c38); }
+.cm-home .pg-nav { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 999px; background: linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)); border: 1px solid rgba(255, 255, 255, 0.26); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 18px 40px rgba(10, 0, 25, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.cm-home .pg-arrow { flex-shrink: 0; width: 48px; height: 48px; display: grid; place-items: center; border: 0; border-radius: 50%; background: linear-gradient(135deg, #f2a1ab, #f28c38); color: #2a0f3a; cursor: pointer; transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s; }
+.cm-home .pg-arrow:hover:not(:disabled) { transform: scale(1.1); box-shadow: 0 0 22px rgba(242, 161, 171, 0.7); }
+.cm-home .pg-arrow:disabled { opacity: 0.28; cursor: default; }
+.cm-home .pg-when { display: grid; gap: 2px; min-width: 150px; text-align: center; line-height: 1.1; }
+.cm-home .pg-when small { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.65); }
+.cm-home .pg-when strong { font-family: var(--display); font-size: 20px; color: #fff; }
+.cm-home .pg-now { margin-right: 4px; padding: 10px 15px; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 999px; background: rgba(255, 255, 255, 0.1); color: #fff; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.cm-home .pg-alert { margin: 0 0 18px; padding: 12px 18px; border-radius: 16px; font-size: 15px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.24); }
+.cm-home .pg-days { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 12px; }
+.cm-home .pg-day { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px; border-radius: 24px; background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.16); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); animation: pg-rise 0.6s ease both; animation-delay: calc(var(--i, 0) * 70ms); }
+.cm-home .pg-day.has { border-color: rgba(242, 161, 171, 0.42); box-shadow: 0 16px 38px rgba(10, 0, 25, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.28); }
+.cm-home .pg-day.is-today { border-color: #f2a1ab; box-shadow: 0 0 0 2px rgba(242, 161, 171, 0.5), 0 0 44px rgba(242, 161, 171, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+@keyframes pg-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.cm-home .pg-date { display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; }
+.cm-home .pg-name { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: rgba(255, 255, 255, 0.7); }
+.cm-home .is-weekend .pg-name { color: #f8b4c4; }
+.cm-home .pg-num { font-family: var(--display); font-size: 54px; line-height: 1; color: transparent; background: linear-gradient(160deg, #ffffff 20%, #f8b4c4 72%, #f6a55c 100%); -webkit-background-clip: text; background-clip: text; }
+.cm-home .pg-badge { margin-top: 4px; padding: 3px 9px; border-radius: 999px; font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: #f2a1ab; color: #2a0f3a; }
+.cm-home .pg-events { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.cm-home .pg-event { position: relative; display: grid; gap: 3px; margin: 0; padding: 11px 13px 12px 17px; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 30%, transparent), color-mix(in srgb, var(--c2) 22%, transparent)); border: 1px solid color-mix(in srgb, var(--c1) 55%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform 0.2s, box-shadow 0.2s; }
+.cm-home .pg-event::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, var(--c1), var(--c2)); }
+.cm-home .pg-event:hover { transform: translateY(-2px); box-shadow: 0 12px 26px color-mix(in srgb, var(--c2) 45%, transparent); }
+.cm-home .pg-event time { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; color: var(--c1); }
+.cm-home .pg-event strong { font-size: 15px; line-height: 1.25; color: #fff; }
+.cm-home .pg-event small { font-size: 12.5px; color: rgba(255, 255, 255, 0.72); }
+.cm-home .pg-empty { margin: 0; padding: 12px 0 0; font-size: 26px; line-height: 1; color: rgba(255, 255, 255, 0.24); }
+.cm-home .pg-note { margin: 32px 0 0; text-align: center; font-size: clamp(16px, 2.2vw, 19px); color: rgba(255, 255, 255, 0.84); }
+.cm-home .pg-note a { color: #ffd3de; font-weight: 700; text-decoration: none; padding-bottom: 2px; background: linear-gradient(90deg, #f2a1ab, #f28c38) 0 100% / 100% 2px no-repeat; }
+@media (min-width: 960px) {
+  .cm-home .pg-days { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .cm-home .pg-day { grid-template-columns: 1fr; gap: 12px; min-height: 300px; padding: 16px 12px 12px; align-items: stretch; }
+  .cm-home .pg-num { font-size: 56px; }
+  .cm-home .pg-empty { margin: auto; padding: 0; }
+}
+@media (max-width: 639px) {
+  .cm-home .pg-top { align-items: stretch; }
+  .cm-home .pg-nav { width: 100%; justify-content: space-between; }
+  .cm-home .pg-when { min-width: 0; flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .cm-home .pg-day { animation: none; } }
+
+/* ── temp2 : « La programmation » version claire ─────────────────────────────────────────────────────────── */
+.cm-home .prog { color: #3a1450; }
+.cm-home .prog::before {
+  background:
+    radial-gradient(46% 55% at 8% 4%, rgba(255, 150, 180, 0.5), transparent 66%),
+    radial-gradient(50% 60% at 96% 30%, rgba(190, 150, 255, 0.45), transparent 66%),
+    radial-gradient(60% 50% at 50% 100%, rgba(255, 190, 120, 0.4), transparent 68%),
+    linear-gradient(rgba(255, 246, 249, 0.94), rgba(252, 240, 246, 0.96)),
+    url('/foto/mur-des-mots.jpg') center / cover no-repeat;
+}
+.cm-home .prog h2 { color: #3a1450; text-shadow: none; }
+.cm-home .pg-kicker { color: #8a2f55; background: rgba(255, 255, 255, 0.7); border-color: rgba(138, 47, 85, 0.22); }
+.cm-home .pg-nav { background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5)); border-color: rgba(138, 79, 216, 0.22); box-shadow: 0 16px 36px rgba(138, 79, 216, 0.18), inset 0 1px 0 #fff; }
+.cm-home .pg-when small { color: rgba(58, 20, 80, 0.6); }
+.cm-home .pg-when strong { color: #3a1450; }
+.cm-home .pg-arrow { color: #fff; background: linear-gradient(135deg, #e0527c, #f28c38); }
+.cm-home .pg-now { color: #3a1450; background: rgba(255, 255, 255, 0.7); border-color: rgba(138, 79, 216, 0.3); }
+.cm-home .pg-alert { background: rgba(255, 255, 255, 0.7); border-color: rgba(138, 79, 216, 0.2); }
+.cm-home .pg-day { background: linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.45)); border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 10px 28px rgba(138, 79, 216, 0.12), inset 0 1px 0 #fff; }
+.cm-home .pg-day.has { border-color: rgba(224, 82, 124, 0.35); box-shadow: 0 16px 36px rgba(224, 82, 124, 0.2), inset 0 1px 0 #fff; }
+.cm-home .pg-day.is-today { border-color: #e0527c; box-shadow: 0 0 0 2px rgba(224, 82, 124, 0.45), 0 14px 40px rgba(224, 82, 124, 0.28), inset 0 1px 0 #fff; }
+.cm-home .pg-name { color: rgba(58, 20, 80, 0.62); }
+.cm-home .is-weekend .pg-name { color: #d03e6c; }
+.cm-home .pg-num { background: linear-gradient(160deg, #5a1f7a 10%, #d03e6c 70%, #f28c38 100%); -webkit-background-clip: text; background-clip: text; }
+.cm-home .pg-badge { background: #e0527c; color: #fff; }
+.cm-home .pg-event { background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 38%, #fff), color-mix(in srgb, var(--c2) 18%, #fff)); border-color: color-mix(in srgb, var(--c1) 70%, #fff); }
+.cm-home .pg-event time { color: color-mix(in srgb, var(--c2) 80%, #3a1450); }
+.cm-home .pg-event strong { color: #2f1042; }
+.cm-home .pg-event small { color: rgba(58, 20, 80, 0.7); }
+.cm-home .pg-empty { color: rgba(58, 20, 80, 0.22); }
+.cm-home .pg-note { color: rgba(58, 20, 80, 0.8); }
+.cm-home .pg-note a { color: #b02a5a; }
+.cm-home .pg-note { margin-top: 44px; }
+
+/* ── temp2 : intro three.js (charte : violet, rose, crème) ── */
+.cm-home .cm-intro { position: fixed; inset: 0; z-index: 2000; overflow: hidden; display: grid; place-items: center; cursor: pointer; background: var(--violet); transition: opacity 0.7s ease; }
+.cm-home .cm-intro.is-leaving { opacity: 0; pointer-events: none; }
+.cm-home .cm-intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cm-home .intro-brand { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); height: 54px; width: auto; }
+.cm-home .intro-skip { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); display: grid; justify-items: center; gap: 10px; padding: 0; border: 0; background: none; color: #fff; font: inherit; cursor: pointer; }
+.cm-home .intro-label { font-size: 12px; font-weight: 800; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); padding-left: 0.32em; }
+.cm-home .intro-orb { position: relative; width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: var(--pink); color: var(--violet); box-shadow: 0 0 0 0 rgba(242, 161, 171, 0.55); animation: intro-halo 2.2s ease-out infinite; transition: transform 0.25s; }
+.cm-home .intro-skip:hover .intro-orb { transform: scale(1.08); }
+.cm-home .intro-ring { position: absolute; inset: -7px; width: calc(100% + 14px); height: calc(100% + 14px); transform: rotate(-90deg); }
+.cm-home .intro-ring circle { fill: none; stroke-width: 2.4; }
+.cm-home .intro-ring .track { stroke: rgba(255, 255, 255, 0.22); }
+.cm-home .intro-ring .go { stroke: #fff; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.cm-home .intro-arrow { animation: intro-bob 1.6s ease-in-out infinite; }
+@keyframes intro-halo { to { box-shadow: 0 0 0 26px rgba(242, 161, 171, 0); } }
+@keyframes intro-bob { 50% { transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) { .cm-home .intro-orb, .cm-home .intro-arrow { animation: none; } }
+
+/* ── temp2 : programmation en agenda « à venir » ── */
+.cm-home .pg-agenda { grid-template-columns: 1fr; gap: 14px; }
+.cm-home .pg-agenda .pg-day { grid-template-columns: 92px minmax(0, 1fr); min-height: 0; padding: 16px; animation: pg-rise 0.5s ease both; }
+.cm-home .pg-agenda .pg-num { font-size: 52px; }
+.cm-home .pg-month { grid-column: 1 / -1; margin: 18px 0 0; padding-left: 6px; font-family: var(--display); font-size: clamp(22px, 3vw, 30px); text-transform: capitalize; color: #8a2f55; display: flex; align-items: center; gap: 14px; }
+.cm-home .pg-month::after { content: ""; flex: 1; height: 2px; border-radius: 2px; background: linear-gradient(90deg, rgba(224, 82, 124, 0.45), transparent); }
+.cm-home .pg-month:first-child { margin-top: 0; }
+.cm-home .pg-filters { display: flex; flex-wrap: wrap; gap: 8px; max-width: 560px; justify-content: flex-end; }
+.cm-home .pg-chip { padding: 9px 16px; border-radius: 999px; border: 1px solid rgba(138, 79, 216, 0.28); background: rgba(255, 255, 255, 0.72); color: #3a1450; font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+.cm-home .pg-chip[style] { border-color: color-mix(in srgb, var(--c1) 80%, #fff); }
+.cm-home .pg-chip:hover { transform: translateY(-2px); }
+.cm-home .pg-chip.on { color: #fff; background: linear-gradient(135deg, var(--c2, #5a1f7a), var(--c1, #d03e6c)); border-color: transparent; box-shadow: 0 8px 20px rgba(138, 79, 216, 0.25); }
+.cm-home .pg-more { display: block; margin: 30px auto 0; padding: 13px 28px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #e0527c, #f28c38); color: #fff; font: inherit; font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: 0 12px 28px rgba(224, 82, 124, 0.3); transition: transform 0.2s; }
+.cm-home .pg-more:hover { transform: scale(1.05); }
+@media (min-width: 960px) {
+  .cm-home .pg-agenda { grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .cm-home .pg-agenda .pg-day { grid-template-columns: 100px minmax(0, 1fr); padding: 18px; }
+}
+@media (max-width: 639px) { .cm-home .pg-filters { justify-content: flex-start; } .cm-home .pg-agenda .pg-day { grid-template-columns: 78px minmax(0, 1fr); padding: 12px; } .cm-home .pg-agenda .pg-num { font-size: 44px; } }
+
+.cm-home .pg-search { display: flex; align-items: center; gap: 10px; width: min(100%, 380px); padding: 0 18px; height: 52px; border-radius: 999px; background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.55)); border: 1px solid rgba(138, 79, 216, 0.25); box-shadow: 0 12px 28px rgba(138, 79, 216, 0.14), inset 0 1px 0 #fff; color: #8a2f55; transition: box-shadow 0.2s, border-color 0.2s; }
+.cm-home .pg-search:focus-within { border-color: #e0527c; box-shadow: 0 0 0 3px rgba(224, 82, 124, 0.25), 0 12px 28px rgba(138, 79, 216, 0.14); }
+.cm-home .pg-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #3a1450; font: inherit; font-size: 16px; }
+.cm-home .pg-search input::placeholder { color: rgba(58, 20, 80, 0.5); }
+.cm-home .pg-top { align-items: flex-end; }
+@media (prefers-reduced-motion: reduce) { .cm-home .pg-agenda .pg-day { animation: none; } }
+
+/* ── titre « Nos évènements / La programmation » ── */
+.cm-home .pg-kicker { display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px 8px 14px; font-size: 12.5px; letter-spacing: 0.24em; color: #fff; background: linear-gradient(135deg, #662B80, #c2487a 70%, #f28c38); border: 0; box-shadow: 0 10px 24px rgba(138, 47, 85, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.cm-home .pg-kicker i { width: 9px; height: 9px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); animation: pg-dot 1.8s ease-out infinite; }
+@keyframes pg-dot { to { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } }
+.cm-home .prog h2 { font-size: clamp(40px, 6.4vw, 76px); background: linear-gradient(100deg, #3a1450 25%, #8a2f87 60%, #e0527c 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cm-home .prog h2::after { width: 120px; height: 6px; }
+@media (prefers-reduced-motion: reduce) { .cm-home .pg-kicker i { animation: none; } }
+.cm-home .pg-kicker { text-transform: uppercase; }
+
+/* ── cartes en verre : on voit le fond (mur de mots, lueurs) à travers ── */
+.cm-home .prog::before {
+  background:
+    radial-gradient(46% 55% at 8% 4%, rgba(255, 130, 170, 0.55), transparent 66%),
+    radial-gradient(50% 60% at 96% 30%, rgba(170, 120, 255, 0.5), transparent 66%),
+    radial-gradient(60% 50% at 50% 100%, rgba(255, 180, 110, 0.45), transparent 68%),
+    linear-gradient(rgba(255, 244, 248, 0.86), rgba(250, 236, 244, 0.88)),
+    url('/foto/mur-des-mots.jpg') center / cover no-repeat;
+}
+.cm-home .pg-agenda .pg-day, .cm-home .pg-day {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.14));
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: 0 14px 34px rgba(110, 50, 140, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+}
+.cm-home .pg-day.has { border-color: rgba(255, 255, 255, 0.85); }
+.cm-home .pg-day.is-today { border-color: rgba(224, 82, 124, 0.85); box-shadow: 0 0 0 2px rgba(224, 82, 124, 0.4), 0 16px 40px rgba(224, 82, 124, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+.cm-home .pg-event { background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 42%, rgba(255, 255, 255, 0.35)), color-mix(in srgb, var(--c2) 22%, rgba(255, 255, 255, 0.25))); }
+.cm-home .pg-search { background: linear-gradient(145deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.25)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.cm-home .pg-agenda .pg-day, .cm-home .pg-day { background: linear-gradient(150deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.07)); backdrop-filter: blur(12px) saturate(1.5); -webkit-backdrop-filter: blur(12px) saturate(1.5); }
+.cm-home .pg-event { background: linear-gradient(135deg, color-mix(in srgb, var(--c1) 36%, rgba(255, 255, 255, 0.2)), color-mix(in srgb, var(--c2) 18%, rgba(255, 255, 255, 0.12))); }
+
+/* ── « Nos évènements » : le titre dans un cadre en dégradé, façon étiquette ── */
+.cm-home .prog h2 { position: relative; display: inline-flex; align-items: center; gap: 16px; padding: 12px 34px 14px 26px; border-radius: 26px; color: #fff; -webkit-text-fill-color: #fff; background: linear-gradient(120deg, #662B80 0%, #b53f7d 62%, #f28c38 100%); box-shadow: 0 18px 44px rgba(138, 47, 85, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -2px 0 rgba(0, 0, 0, 0.12); text-shadow: 0 2px 14px rgba(40, 8, 60, 0.35); overflow: hidden; }
+.cm-home .prog h2::before { content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.75); animation: pg-dot 1.8s ease-out infinite; }
+.cm-home .prog h2::after { content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 30%; margin: 0; height: auto; border-radius: 0; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent); transform: skewX(-18deg); animation: pg-shine 4.5s ease-in-out infinite; }
+@keyframes pg-shine { 0%, 55% { left: -40%; } 100% { left: 140%; } }
+@media (prefers-reduced-motion: reduce) { .cm-home .prog h2::before, .cm-home .prog h2::after { animation: none; } }
+.cm-home .prog h2 { font-size: clamp(24px, 3.2vw, 38px); gap: 12px; padding: 9px 24px 11px 18px; border-radius: 18px; line-height: 1.05; letter-spacing: 0; }
+.cm-home .prog h2::before { width: 10px; height: 10px; }
+.cm-home .pg-top { margin-bottom: 22px; }
+
+/* ── intro : refonte dans l'esprit du site (crème, violet, rose, Amiamie) ── */
+.cm-home .cm-intro { background: radial-gradient(55% 60% at 78% 58%, rgba(242, 161, 171, 0.42), transparent 70%), radial-gradient(45% 45% at 0% 0%, rgba(102, 43, 128, 0.1), transparent 70%), var(--cream); }
+.cm-home .intro-copy { position: absolute; z-index: 2; left: clamp(24px, 7vw, 120px); top: 50%; transform: translateY(-50%); max-width: 46vw; pointer-events: none; transition: opacity 0.9s, transform 0.9s; }
+.cm-home .intro-copy .il { margin: 0; font-family: var(--display); line-height: 1.02; opacity: 0; animation: il-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.cm-home .intro-copy .l1 { font-size: clamp(32px, 4.8vw, 78px); color: #9c8aa8; animation-delay: 0.5s; }
+.cm-home .intro-copy .ou { margin: 16px 0; font-family: var(--body); font-size: clamp(14px, 1.5vw, 22px); font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: #b6a4c0; animation-delay: 1.7s; }
+.cm-home .intro-copy .l2 { font-size: clamp(42px, 6.8vw, 112px); color: var(--violet); animation-delay: 2.6s; }
+.cm-home .intro-copy .l2 em { font-style: normal; background: linear-gradient(100deg, #d6477f, #f28c38); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cm-home .intro-copy .sub { margin-top: 22px; font-family: var(--body); font-size: clamp(16px, 1.6vw, 22px); font-weight: 600; color: var(--muted); animation-delay: 4s; }
+@keyframes il-in { from { opacity: 0; transform: translateY(28px); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.cm-home .cm-intro.is-exiting .intro-copy { opacity: 0; transform: translateY(calc(-50% - 24px)); }
+.cm-home .intro-skip { left: clamp(24px, 7vw, 120px); transform: none; justify-items: start; bottom: 36px; }
+.cm-home .intro-skip:hover { transform: none; }
+.cm-home .intro-label { color: var(--violet); padding-left: 2px; }
+.cm-home .intro-orb { background: var(--violet); color: #fff; }
+.cm-home .intro-ring .track { stroke: rgba(102, 43, 128, 0.18); }
+.cm-home .intro-ring .go { stroke: var(--pink); }
+@media (max-aspect-ratio: 23/20) {
+  .cm-home .intro-copy { top: 8vh; transform: none; left: 24px; right: 24px; max-width: none; }
+  .cm-home .cm-intro.is-exiting .intro-copy { transform: translateY(-24px); }
+  .cm-home .intro-copy .l1 { font-size: clamp(30px, 9.4vw, 52px); }
+  .cm-home .intro-copy .l2 { font-size: clamp(40px, 13vw, 76px); }
+  .cm-home .intro-copy .sub { margin-top: 14px; }
+  .cm-home .intro-skip { left: 50%; transform: translateX(-50%); justify-items: center; bottom: 22px; }
+  .cm-home .intro-skip:hover { transform: translateX(-50%); }
+  .cm-home .intro-label { padding-left: 0; }
+}
+@media (max-aspect-ratio: 23/20) { .cm-home .intro-skip { padding: 10px 22px 12px; border-radius: 999px; background: rgba(246, 245, 244, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(102, 43, 128, 0.18); } }
+
+/* ── intro : bouton « Entrer » sobre, façon éditorial ── */
+.cm-home .intro-skip { position: absolute; bottom: 40px; left: clamp(24px, 7vw, 120px); transform: none; display: flex; align-items: stretch; gap: 0; height: 58px; padding: 0; border: 0; border-radius: 14px; overflow: hidden; background: var(--violet); color: var(--cream); font: inherit; cursor: pointer; box-shadow: 0 18px 40px rgba(102, 43, 128, 0.28); transition: background 0.25s, box-shadow 0.25s; }
+.cm-home .intro-skip:hover { transform: none; background: var(--violet-dark); box-shadow: 0 22px 48px rgba(102, 43, 128, 0.38); }
+.cm-home .isk-label { display: flex; align-items: center; padding: 0 26px 0 28px; font-size: 13px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+.cm-home .isk-arrow { display: grid; place-items: center; width: 58px; border-left: 1px solid rgba(246, 245, 244, 0.22); color: var(--pink); transition: background 0.25s, color 0.25s; }
+.cm-home .isk-arrow svg { transition: transform 0.25s; }
+.cm-home .intro-skip:hover .isk-arrow { background: var(--pink); color: var(--violet); }
+.cm-home .intro-skip:hover .isk-arrow svg { transform: translateX(4px); }
+.cm-home .isk-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(246, 245, 244, 0.18); }
+.cm-home .isk-bar i { display: block; height: 100%; transform-origin: left; transform: scaleX(0); background: var(--pink); }
+@media (max-aspect-ratio: 23/20) {
+  .cm-home .intro-skip { left: 24px; right: 24px; bottom: 24px; transform: none; justify-content: space-between; padding: 0; background: var(--violet); backdrop-filter: none; box-shadow: 0 14px 34px rgba(102, 43, 128, 0.35); }
+  .cm-home .intro-skip:hover { transform: none; }
+  .cm-home .isk-label { flex: 1; }
+}
+
+/* ── intro : bouton identique à ceux du site (pastille violette), temps de lecture en filet fin ── */
+.cm-home .intro-skip { position: absolute; bottom: 46px; left: clamp(24px, 7vw, 120px); right: auto; transform: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: auto; padding: 14px 24px 14px 26px; border: 0; border-radius: 999px; overflow: visible; background: var(--violet); color: #fff; font: inherit; font-size: 16px; font-weight: 700; letter-spacing: 0.02em; text-transform: none; box-shadow: 0 8px 22px rgba(102, 43, 128, 0.45); backdrop-filter: none; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+.cm-home .intro-skip:hover { background: var(--violet-dark); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(102, 43, 128, 0.45); }
+.cm-home .intro-skip .isk-arrow { transition: transform 0.2s; }
+.cm-home .intro-skip:hover .isk-arrow { transform: translateX(4px); }
+.cm-home .cm-intro > .isk-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(102, 43, 128, 0.1); }
+.cm-home .cm-intro > .isk-bar i { display: block; height: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, var(--violet), var(--pink)); }
+@media (max-aspect-ratio: 23/20) { .cm-home .intro-skip { left: 24px; right: auto; bottom: 34px; justify-content: center; } }
+.cm-home .intro-skip .isk-arrow { border: 0; width: auto; background: none; display: block; color: var(--pink); } .cm-home .intro-skip:hover .isk-arrow { background: none; color: var(--pink); }
+.cm-home .cm-intro:not(.go) .il { animation-play-state: paused; }
+.cm-home .intro-copy .ou { animation-delay: 1.3s; }
+.cm-home .intro-copy .l2 { animation-delay: 2.3s; }
+.cm-home .intro-copy .sub { animation-delay: 3.3s; }
+
+/* ── « Voir la suite » aux couleurs de Chez Marthe (comme les autres boutons du site), phrase Instagram mieux espacée ── */
+.cm-home .pg-more { margin: 38px auto 0; padding: 14px 28px; background: var(--violet); color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 0.02em; text-transform: none; box-shadow: 0 8px 22px rgba(102, 43, 128, 0.45); }
+.cm-home .pg-more:hover { background: var(--violet-dark); transform: translateY(-1px); }
+.cm-home .pg-note { margin: 30px 0 0; line-height: 1.6; }
+.cm-home .prog { padding-bottom: 96px; }
+
+/* ── Évènement à la une : grande carte au-dessus des jours ── */
+.cm-home .pg-featured { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; margin: 0 0 22px; padding: 18px 26px 18px 18px; overflow: hidden; border-radius: 26px; color: #fff; background: linear-gradient(120deg, #662B80 0%, #8a3a8f 55%, #e0527c 100%); box-shadow: 0 22px 50px rgba(102, 43, 128, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.cm-home .pg-featured::after { content: ""; position: absolute; right: -60px; top: -80px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 255, 255, 0.28), transparent 70%); pointer-events: none; }
+.cm-home .pg-feat-date { display: grid; place-items: center; align-content: center; gap: 0; width: 104px; height: 104px; border-radius: 22px; background: rgba(255, 255, 255, 0.95); color: #662B80; text-align: center; box-shadow: 0 10px 24px rgba(40, 8, 60, 0.25); }
+.cm-home .pg-feat-date span { font-size: 12px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #c2487a; }
+.cm-home .pg-feat-date strong { font-family: var(--display); font-size: 44px; line-height: 1; }
+.cm-home .pg-feat-date small { font-size: 13px; font-weight: 700; }
+.cm-home .pg-feat-badge { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 8px; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); }
+.cm-home .pg-featured h3 { margin: 0 0 6px; font-family: var(--display); font-size: clamp(24px, 3.4vw, 40px); line-height: 1.05; color: #fff; }
+.cm-home .pg-feat-meta { margin: 0; font-size: 16px; color: rgba(255, 255, 255, 0.9); text-transform: capitalize; }
+@media (max-width: 639px) { .cm-home .pg-featured { grid-template-columns: 1fr; gap: 14px; padding: 16px; } .cm-home .pg-feat-date { width: 84px; height: 84px; } .cm-home .pg-feat-date strong { font-size: 34px; } }
+
+/* La règle générale « .block p { margin: 0 } » est plus forte : on la dépasse pour la phrase Instagram et la carte à la une. */
+.cm-home .prog .pg-note { margin: 34px 0 0; font-size: clamp(17px, 2vw, 20px); line-height: 1.6; }
+.cm-home .prog .pg-more { margin: 40px auto 0; }
+.cm-home .prog .pg-feat-badge { margin: 0 0 8px; font-size: 12px; line-height: 1.2; }
+.cm-home .prog .pg-feat-meta { margin: 0; font-size: 16px; line-height: 1.5; text-transform: none; }
+.cm-home .prog .pg-alert { line-height: 1.5; }
+
+/* ── Titre « Nos évènements » : l'inverse de l'étiquette des espaces (rose, bord foncé, ombre violette) → violet, bord rose, ombre rose ── */
+.cm-home .prog h2 { background: var(--violet); color: #fff; -webkit-text-fill-color: #fff; border: 2px solid var(--pink); border-radius: 14px; box-shadow: 5px 5px 0 var(--pink); text-shadow: none; transform: rotate(-1.5deg); padding: 10px 22px 10px 16px; overflow: visible; }
+.cm-home .prog h2::before { background: var(--pink); box-shadow: none; animation: none; }
+.cm-home .prog h2::after { display: none; }
+/* « Instagram » en violet */
+.cm-home .prog .pg-note a { color: var(--violet); background: linear-gradient(90deg, var(--pink), var(--pink)) 0 100% / 100% 2px no-repeat; }
+
+/* ── Même étiquette violette à bord rose partout : titre, bouton « Voir la suite » ; textes en rose de Chez Marthe, barre d'Instagram en rose ── */
+.cm-home .prog h2 { color: var(--pink); -webkit-text-fill-color: var(--pink); }
+.cm-home .prog .pg-more { padding: 10px 24px 10px; border: 2px solid var(--pink); border-radius: 14px; background: var(--violet); color: var(--pink); font-family: var(--display); font-size: 21px; font-weight: 400; line-height: 1.15; letter-spacing: 0; box-shadow: 5px 5px 0 var(--pink); transform: rotate(-1.5deg); transition: transform 0.15s, box-shadow 0.15s; }
+.cm-home .prog .pg-more:hover { background: var(--violet); transform: rotate(-1.5deg) translate(2px, 2px); box-shadow: 3px 3px 0 var(--pink); }
+.cm-home .prog .pg-note a { background: linear-gradient(var(--pink), var(--pink)) 0 100% / 100% 3px no-repeat; padding-bottom: 3px; }
+
+/* ── Cartes des évènements : sans couleur, effet verre seulement ── */
+.cm-home .pg-event { background: linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.2)); border: 1px solid rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px) saturate(1.4); -webkit-backdrop-filter: blur(10px) saturate(1.4); box-shadow: 0 6px 16px rgba(102, 43, 128, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95); }
+.cm-home .pg-event::before { display: none; }
+.cm-home .pg-event:hover { box-shadow: 0 10px 22px rgba(102, 43, 128, 0.2), inset 0 1px 0 #fff; }
+.cm-home .pg-event time { color: var(--violet); }
+.cm-home .pg-event small { color: rgba(58, 20, 80, 0.72); }
+.cm-home .pg-event { padding-left: 13px; }
+
+/* ── Cartes des évènements : dégradé du blanc au noir, effet verre fumé ── */
+.cm-home .pg-event { background: linear-gradient(115deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 42%, rgba(24, 8, 34, 0.7) 100%); border: 1px solid rgba(255, 255, 255, 0.85); }
+.cm-home .pg-event time { color: var(--violet); }
+.cm-home .pg-event strong { color: #24092f; }
+.cm-home .pg-event small { color: rgba(36, 9, 47, 0.78); }
+.cm-home .pg-event { background: linear-gradient(115deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.66) 58%, rgba(24, 8, 34, 0.7) 100%); }
+
+/* ── Évènements : plus de cartes, seulement des lignes de séparation ── */
+.cm-home .pg-events { gap: 0; }
+.cm-home .pg-event, .cm-home .pg-event:hover { background: none; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; transform: none; overflow: visible; padding: 12px 0; border-bottom: 1px solid rgba(102, 43, 128, 0.22); }
+.cm-home .pg-event:first-child { padding-top: 6px; }
+.cm-home .pg-event:last-child { border-bottom: 0; padding-bottom: 6px; }
+.cm-home .pg-event time { color: var(--violet); }
+.cm-home .pg-event strong { color: #24092f; }
+.cm-home .pg-event small { color: rgba(36, 9, 47, 0.72); }
+
+/* Cartes des jours : chacune prend la hauteur de son contenu (un seul évènement = carte plus petite), sans s'étirer sur la ligne. */
+.cm-home .pg-agenda { align-items: start; }
+.cm-home .pg-agenda .pg-day { align-self: start; }
+
+/* La carte d'estimation ne suit pas le défilement : elle reste à sa place, à côté du formulaire. */
+.cm-home .request-block .request-estimate { position: static; top: auto; }
+

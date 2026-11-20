@@ -1,0 +1,268 @@
+@media (min-width: 1024px) {
+  .cm-home .block { max-width: 1140px; padding: 80px 40px 8px; gap: 20px; }
+  .cm-home .block h2 { font-size: 42px; margin-bottom: 8px; }
+  .cm-home .block > p { max-width: 46em; font-size: 17px; }
+
+  .cm-home .audiences { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .audience { padding: 24px; font-size: 15px; }
+  .cm-home .audience strong { font-size: 19px; }
+
+  /* Notre premier lieu : photo à gauche, texte et chiffres à droite, piliers en dessous. */
+
+  .cm-home .team { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+  .cm-home .member { flex-direction: column; align-items: center; text-align: center; padding: 28px 22px; }
+  .cm-home .member-avatar { width: 128px; height: 128px; font-size: 44px; }
+  .cm-home .value { padding: 24px; font-size: 15px; }
+
+  .cm-home .events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* Espaces : cartes avec grande photo, quatre par ligne. */
+
+  .cm-home .home-partners { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .home-partners a { height: 110px; }
+
+  .cm-home .involve-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cm-home .home-involve { padding: 26px; }
+
+  .cm-home .legal { max-width: 1140px; }
+  .cm-home footer { padding: 40px 16px 56px; }
+}
+/* ---------- Propositions de lisibilité du haut de page (téléphone et tablette), à choisir :
+   ?style=a vitre violette · ?style=b surligneur · ?style=c dégradé depuis le bas ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cm-home .btn, .cm-home .socials a { transition: transform 0.15s; }
+  .cm-home .btn:hover, .cm-home .socials a:hover { transform: translateY(-1px); }
+}
+
+/* ---------- Bouton Connexion du bandeau ---------- */
+.cm-home .login-button {
+  height: 46px; min-width: 46px; box-sizing: border-box; border-radius: 999px; padding: 0 12px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: rgba(255, 255, 255, 0.16); color: #fff; font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.cm-home .login-button:hover { background: rgba(255, 255, 255, 0.26); }
+.cm-home .login-button span { display: none; }
+@media (min-width: 720px) { .cm-home .login-button { padding: 0 18px; } .cm-home .login-button span { display: inline; } }
+
+/* ---------- Page « Nos espaces » (connexion / inscription) ---------- */
+.cm-home .back-link { color: #fff; text-decoration: none; font-weight: 700; padding: 10px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.16); }
+.cm-home .portal { max-width: 1040px; margin: 0 auto; padding: 40px 16px 64px; display: flex; flex-direction: column; gap: 18px; }
+.cm-home .portal h1 { margin: 0; font-family: var(--display); font-size: 36px; color: var(--violet); }
+.cm-home .portal > p { margin: 0; font-size: 17px; line-height: 1.55; max-width: 40em; }
+.cm-home .portal-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 8px; }
+@media (min-width: 720px) { .cm-home .portal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cm-home .portal h1 { font-size: 44px; } }
+.cm-home .portal-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 22px; background: #fff; box-shadow: 0 10px 30px rgba(27, 19, 25, 0.06); }
+.cm-home .portal-card h2 { margin: 0; font-size: 22px; color: var(--violet); }
+.cm-home .portal-card p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--muted); flex-grow: 1; }
+.cm-home .portal-card .signup { font-size: 14px; color: var(--night); }
+.cm-home .portal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.cm-home .portal-actions .btn-outline { background: #fff; }
+
+/* ---------- Réseaux discrets sous « Louer un espace » ---------- */
+.cm-home .hero-follow span { white-space: nowrap; }
+.cm-home .hero-follow { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 4px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; opacity: 0.95; }
+.cm-home .hero-social-mini { display: flex; gap: 2px; }
+.cm-home .hero-social-mini a { background: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: inherit; }
+.cm-home .hero-social-mini a:hover { background: rgba(255, 255, 255, 0.15); }
+@media (min-width: 960px) {
+  .cm-home .hero-follow { justify-content: flex-start; color: var(--violet); }
+  .cm-home .hero-social-mini a:hover { background: rgba(102, 43, 128, 0.1); }
+}
+@media (max-width: 359px) { .cm-home .hero-follow > span { display: none; } }
+
+
+/* Sur petits écrans aussi, le texte reste posé sur la photo, comme dans la page d'origine. */
+@media (max-width: 959px) {
+  .cm-home .hero-text { justify-content: flex-end; color: #fff; }
+  .cm-home .hero-text h1 { color: #fff; font-size: 44px; }
+  .cm-home .hero-text p { font-size: 19px; }
+  .cm-home .hero-text .city { color: var(--pink); }
+}
+
+/* Le voile fait partie de la composition originale et garde le texte lisible. */
+/* Petite touche orange (couleur du cœur des marguerites) sur la flèche de « Louer un espace ». */
+.cm-home .btn-rent span[aria-hidden="true"] { color: #F6A55C; transition: transform 0.15s; display: inline-block; }
+.cm-home .btn-rent:hover span[aria-hidden="true"] { transform: translateX(3px); }
+
+
+/* Page « Notre équipe » */
+.cm-home .team-page { padding-top: 48px; padding-bottom: 56px; }
+
+/* Cartes des espaces : prix sur une ligne à part, en violet. */
+
+/* Formulaire de demande (composant de la plateforme) dans la page d'accueil. */
+.cm-home .request-block {
+  position: relative; isolation: isolate;
+  max-width: none; margin: 0; padding: 52px 16px 64px;
+}
+.cm-home .request-block::before {
+  content: ""; position: absolute; z-index: -1; inset: 0;
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(102, 43, 128, 0.3), transparent 34%),
+    radial-gradient(ellipse at 90% 82%, rgba(242, 161, 171, 0.1), transparent 30%),
+    var(--night);
+}
+.cm-home .request-block > .public-request { width: min(100%, 1060px); margin: 0 auto; }
+.cm-home .request-block .public-request { gap: 22px; }
+.cm-home .request-block .landing-hero {
+  max-width: none; gap: 10px; padding: clamp(24px, 4vw, 42px);
+  border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 28px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.14);
+}
+.cm-home .request-block .landing-hero .eyebrow {
+  display: inline-flex; align-items: center; gap: 9px; width: fit-content;
+  margin: 0 0 4px; padding: 8px 13px;
+  border: 1px solid rgba(242, 161, 171, 0.38); border-radius: 999px;
+  background: rgba(27, 19, 25, 0.2); color: #ffd1d7;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+}
+.cm-home .request-block .landing-hero .eyebrow::before {
+  content: ""; width: 7px; height: 7px; flex: 0 0 7px;
+  border-radius: 50%; background: var(--pink);
+  box-shadow: 0 0 0 4px rgba(242, 161, 171, 0.16);
+}
+.cm-home .request-block .landing-hero h2 {
+  max-width: 18ch; margin: 0; color: #fff;
+  font-family: var(--display); font-size: clamp(30px, 4vw, 44px); font-weight: 400; line-height: 1.08;
+}
+.cm-home .request-block .landing-hero > p:not(.eyebrow) { margin: 0; color: rgba(255, 255, 255, 0.88); }
+.cm-home .request-block .request-layout { gap: 18px; }
+.cm-home .request-block .event-form {
+  gap: 22px; border: 1px solid rgba(242, 161, 171, 0.4); border-top: 4px solid var(--pink);
+  border-radius: 24px; background: linear-gradient(145deg, #fff, #fbf8fa);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+}
+.cm-home .request-block .request-estimate {
+  border: 1px solid rgba(255, 255, 255, 0.2); border-top: 4px solid var(--pink);
+  border-radius: 24px; background: linear-gradient(145deg, rgba(102, 43, 128, 0.96), rgba(54, 25, 67, 0.98));
+  color: #fff; box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+}
+.cm-home .request-block .request-estimate .eyebrow { color: #ffd1d7; }
+.cm-home .request-block .request-estimate > strong { color: #fff; font-size: 44px; }
+.cm-home .request-block .request-estimate p { color: rgba(255, 255, 255, 0.84); }
+.cm-home .request-block .event-form .kind-picker label {
+  padding: 14px; border-color: #e7dce8; border-radius: 14px;
+  background: #fff; transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.cm-home .request-block .event-form .kind-picker label:hover { transform: translateY(-2px); border-color: var(--pink); }
+.cm-home .request-block .event-form .kind-picker label.active {
+  border-color: var(--violet); background: #f7eff8;
+  box-shadow: inset 0 0 0 1px var(--violet), 0 5px 14px rgba(102, 43, 128, 0.1);
+}
+.cm-home .request-block .event-form .kind-picker label strong { color: var(--violet); }
+.cm-home .request-block .event-form .form-grid { gap: 16px; }
+.cm-home .request-block .event-form .field > span { color: #514655; }
+.cm-home .request-block .event-form .field input,
+.cm-home .request-block .event-form .field select,
+.cm-home .request-block .event-form .field textarea {
+  border-color: #e4dbe5; border-radius: 10px; background: #fff;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.cm-home .request-block .event-form .field input:focus,
+.cm-home .request-block .event-form .field select:focus,
+.cm-home .request-block .event-form .field textarea:focus {
+  border-color: var(--violet); box-shadow: 0 0 0 3px rgba(102, 43, 128, 0.14);
+}
+.cm-home .request-block .event-form .request-options {
+  border-color: #e4dbe5; border-radius: 14px; background: rgba(102, 43, 128, 0.025);
+}
+.cm-home .request-block .event-form .request-options legend { color: var(--violet); }
+.cm-home .request-block .event-form .form-actions { border-color: #e7dce8; }
+.cm-home .request-block .event-form .form-actions .button {
+  min-height: 48px; padding: 0 24px; border-radius: 999px;
+  background: var(--pink); color: var(--night);
+  box-shadow: 0 8px 18px rgba(102, 43, 128, 0.16);
+}
+.cm-home .request-block .event-form .form-actions .button:hover { background: #f7b3bc; }
+@media (prefers-reduced-motion: reduce) { .cm-home .request-block .kind-picker label, .cm-home .request-block .field input, .cm-home .request-block .field select, .cm-home .request-block .field textarea { transition: none; } }
+@media (min-width: 720px) { .cm-home .request-block { padding-right: 32px; padding-left: 32px; } }
+@media (min-width: 1024px) { .cm-home .request-block { padding-right: 40px; padding-left: 40px; } }
+
+/* Icônes des réseaux : symbole blanc dans le cercle coloré (les liens du pied de page sont violets). */
+.cm-home .social a, .cm-home footer .social a { color: #fff; }
+
+/* Portraits dans les cartes de l'équipe. */
+.cm-home .member-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+
+/* « La programmation » : photo du mur de mots en fond, sur toute la largeur, sous un voile clair
+   qui s'efface en haut et en bas pour se fondre avec les sections voisines. */
+.cm-home { overflow-x: clip; }
+.cm-home .block-wall { isolation: isolate; }
+.cm-home .block-wall::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw;
+  background: linear-gradient(rgba(246, 245, 244, 0.8), rgba(246, 245, 244, 0.72)), url('/foto/mur-des-mots.jpg') center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+}
+
+/* La bande violette touche directement la photo du haut ; seule la vague du bas est gardée. */
+.cm-home .landing-band { z-index: 1; margin-top: 0; }
+
+/* « Notre premier lieu » : la foto dei pannelli resta lo sfondo della sezione. */
+.cm-home .place-bg {
+  position: relative; isolation: isolate; display: grid;
+  grid-template-columns: minmax(0, 1fr); padding-bottom: 72px;
+}
+.cm-home .place-bg::before, .cm-home .place-bg::after {
+  content: ""; position: absolute; pointer-events: none; top: 0; bottom: 0;
+  left: calc(50% - 50vw); width: 100vw;
+}
+.cm-home .place-bg::before { z-index: -3; background: radial-gradient(120% 95% at 70% 45%, #a05bc2 0%, #8446a6 45%, #66308a 100%); }
+.cm-home .place-bg::after {
+  z-index: -1;
+  /* Dégradé qui garde le texte lisible à gauche et laisse la carte visible à droite. */
+  background: linear-gradient(90deg, rgba(70, 26, 96, 0.5) 0%, rgba(70, 26, 96, 0.28) 45%, rgba(70, 26, 96, 0) 78%);
+}
+.cm-home .place-bg > div { position: relative; z-index: 1; max-width: 640px; }
+.cm-home .place-bg .eyebrow { color: var(--pink); }
+.cm-home .place-bg p:not(.eyebrow) { color: #fff; }
+.cm-home .place-bg h2 { color: #fff; }
+
+/* « Notre premier lieu » : due numeri senza riquadri. */
+.cm-home .place-facts { display: flex; gap: 40px; margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.45); }
+.cm-home .place-facts li { flex: 1 1 0; min-width: 0; padding: 0; border-radius: 0; background: none; }
+.cm-home .place-facts strong { display: block; margin-bottom: 6px; color: var(--pink); font-size: 56px; }
+.cm-home .place-facts span { color: #fff; font-size: 15px; line-height: 1.4; }
+@media (max-width: 520px) { .cm-home .place-facts { gap: 24px; } .cm-home .place-facts strong { font-size: 46px; } }
+@media (min-width: 960px) { .cm-home .place-bg > div { max-width: 640px; } }
+
+/* « Louer un espace » : bande sombre, grande photo, titre encadré rose et détails sur un panneau de verre. */
+.cm-home #espaces { isolation: isolate; padding-bottom: 64px; }
+.cm-home #espaces::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; background: var(--night); }
+.cm-home #espaces .kicker { color: var(--pink); }
+.cm-home #espaces h2 { color: #fff; }
+.cm-home .home-spaces { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
+@media (min-width: 760px) { .cm-home .home-spaces { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; } }
+.cm-home .space { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 540px; overflow: hidden; isolation: isolate; border-radius: 28px; color: #fff; text-decoration: none; box-shadow: 0 14px 36px rgba(27, 19, 25, 0.22); }
+.cm-home .space > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.cm-home .space:hover > img { transform: scale(1.03); }
+.cm-home .space-title {
+  position: absolute; top: 18px; left: 18px; margin: 0; padding: 10px 18px 9px; max-width: calc(100% - 36px);
+  border-radius: 14px; border: 2px solid var(--night); background: var(--pink); color: var(--night);
+  font-family: var(--display); font-size: 21px; font-weight: 400; line-height: 1.15;
+  box-shadow: 5px 5px 0 var(--violet); transform: rotate(-1.5deg);
+}
+.cm-home .space-body {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 22px; margin: 12px; padding: 14px 18px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 20px;
+  background: rgba(27, 19, 25, 0.42); backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
+.cm-home .space-details { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.45; }
+.cm-home .space-prices { display: flex; flex-direction: column; gap: 5px; margin: 0; }
+.cm-home .space-prices div { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+.cm-home .space-prices dt { margin: 0; }
+.cm-home .space-prices dd { margin: 0; font-weight: 700; color: #F28C38; }
+.cm-home .space-body p, .cm-home .space-cta { grid-column: 1 / -1; }
+.cm-home .space-body p { margin: 0; font-size: 14px; line-height: 1.5; color: #f1e6f3; }
+.cm-home .space-body .space-exchange { font-size: 15px; color: #fff; }
+.cm-home .space-cta { font-weight: 700; color: #fff; }
+
+.cm-home .space-prices div { white-space: nowrap; gap: 12px; }
+.cm-home .space-prices dt { white-space: nowrap; }
+
+.cm-home .home-spaces > .space:nth-child(2) > img { object-position: center 68% !important; }
+.cm-home .home-spaces > .space:nth-child(4) > img { object-position: 100% 55% !important; transform: scale(1.16); transform-origin: right bottom; }
+
