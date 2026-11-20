@@ -1,12 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Landing from './features/landing/Landing.jsx';
-import Contact from './features/site-pages/Contact.jsx';
-import LegalNotice from './features/site-pages/LegalNotice.jsx';
-import PrivacyPolicy from './features/site-pages/PrivacyPolicy.jsx';
-import SpacesPortal from './features/site-pages/SpacesPortal.jsx';
-import Team from './features/site-pages/Team.jsx';
-import Press from './features/site-pages/Press.jsx';
+import Landing from './features/public/landing/Landing.jsx';
+import Contact from './features/public/site-pages/Contact.jsx';
+import LegalNotice from './features/public/site-pages/LegalNotice.jsx';
+import PrivacyPolicy from './features/public/site-pages/PrivacyPolicy.jsx';
+import SpacesPortal from './features/public/site-pages/SpacesPortal.jsx';
+import Team from './features/public/site-pages/Team.jsx';
+import Press from './features/public/site-pages/Press.jsx';
 import './styles/index.css';
 
 const pages = {

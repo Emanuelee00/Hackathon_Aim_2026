@@ -1,7 +1,7 @@
-import { satisfactionSummary } from '../../features/reports/satisfaction.js';
-import { requestTypes, requestQuestions } from '../../features/requests/workflow.js';
+import { satisfactionSummary } from '../../features/equipe/reports/satisfaction.js';
+import { requestTypes, requestQuestions } from '../../features/equipe/requests/workflow.js';
 import { spaceById, statuses } from '../data/spaces.js';
-import { nextStepLabels } from '../../features/journeys/tracking.js';
+import { nextStepLabels } from '../../features/equipe/journeys/tracking.js';
 import { dateLabel, money } from './format.js';
 
 export function download(name, text, type = 'text/plain;charset=utf-8') {

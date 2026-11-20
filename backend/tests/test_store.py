@@ -251,7 +251,7 @@ def test_only_the_team_makes_qr_codes(client_as):
 
 
 def test_mirrors_match_the_frontend_data():
-    residents = (WEB / "features/opportunities/data/residents.js").read_text()
+    residents = (WEB / "features/equipe/opportunities/data/residents.js").read_text()
     pairs = dict(re.findall(r"id: '([^']+)', email: '([^']+)'", residents))
     assert {email: id_ for id_, email in pairs.items()} == identity.DEMO_RESIDENTS
     associations = (WEB / "shared/data/associations.js").read_text()

@@ -26,7 +26,7 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 > `backend/mailer/`, `backend/ranking/`, `backend/demo/` sono stati creati **prima** della guida attuale
 > (`Guide.md` §0: "a file first, extract later"). Sono coerenti con "everything in a
 > package" ma non sono il modello: funzionano e i test sono verdi, quindi restano.
-> I prossimi package si fanno solo se il modulo è grande o composito (§5).
+> I prossimi package si fanno solo se il modulo è grande o composito (§6).
 
 - [x] `backend/mailer.py` → `backend/mailer/` (pilota)
 - [x] `backend/ranking.py` → `backend/ranking/`
@@ -40,7 +40,7 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 - [ ] `backend/matching.py`, `backend/profils.py`, ... (piccoli e coesi: restano file)
 - [ ] `backend/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
       scrittura e endpoint sono un solo dominio. Non splittare senza un problema
-      concreto (Guide.md §5). Valutato il 2026-11-20, lasciato file.
+      concreto (Guide.md §6). Valutato il 2026-11-20, lasciato file.
 - [ ] `main.py`: resta alla root come entry point richiesto da Vercel e Docker.
 
 ## Note

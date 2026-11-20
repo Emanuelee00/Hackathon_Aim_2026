@@ -5,7 +5,7 @@ The demo data lives in the frontend; test_sharing.py checks these mirrors agains
 
 from accounts.models import User
 
-# frontend/src/features/opportunities/data/residents.js: demo profiles, found by e-mail.
+# frontend/src/features/equipe/opportunities/data/residents.js: demo profiles, found by e-mail.
 DEMO_RESIDENTS = {
     "marie@marthe.fr": "marie",
     "camille.b@marthe.fr": "camille",

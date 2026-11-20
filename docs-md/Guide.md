@@ -40,7 +40,7 @@ excluded) is the signal that one more level is needed. The number is a warning
   mirror the structure (`tests/unit/...`). For now it stays flat: moving tests
   without a concrete reason is noise.
 
-**How it is checked.** `make check` (see §6) must pass before every commit. Any
+**How it is checked.** `make check` (see §7) must pass before every commit. Any
 new automated structure rule must fail with a message that explains *what* to
 move, not just *that* something is wrong.
 
@@ -59,7 +59,32 @@ Before implementing:
 
 ---
 
-## 2. Simplicity first
+## 2. Folders mirror the site
+
+The repo is split by **what is delivered**, and the frontend mirrors the
+**audiences of the site**. A new file goes into the folder of the audience it
+serves, never into a generic "misc" folder.
+
+- **Repo**: `backend/` (FastAPI), `frontend/` (React app), `deploy/` (server
+  config), `docs-md/` (documentation), `chezmarthe-demo/` (static prototype,
+  not published). The public site is its own Jamstack build
+  (`npm run build:jamstack`); the authenticated app is the other build.
+- **Frontend features follow the subdomains**: `features/equipe/` (one
+  subfolder per équipe page), `features/residents/`, `features/benevoles/`,
+  `features/partenaires/`, `features/public/` (home, site pages, bilan, public
+  form). A feature used by several spaces stays at `features/` root
+  (`auth`, `chatbot`, `traces`).
+- **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
+  `styles/` — named for the responsibility (styles), not the technology (css).
+- **Static prototypes** keep one subfolder per file kind (`pages/`, `css/`,
+  `js/`) assembled by a single build script; no markup, style or script mixed
+  in one source file.
+- Adding a page or feature: create its folder under its audience, then wire it
+  into the entry point and the CSS index **in the same commit**.
+
+---
+
+## 3. Simplicity first
 
 Minimum code that solves the problem. Nothing speculative.
 
@@ -78,7 +103,7 @@ number fit.
 
 ---
 
-## 3. Surgical changes
+## 4. Surgical changes
 
 Touch only what you must. Clean up only your own mess.
 
@@ -98,7 +123,7 @@ When your changes create orphans:
 
 ---
 
-## 4. Goal-driven execution
+## 5. Goal-driven execution
 
 Define verifiable success criteria. Iterate until they are met.
 
@@ -119,7 +144,7 @@ constant clarification.
 
 ---
 
-## 5. When a refactor is worth it
+## 6. When a refactor is worth it
 
 A refactor is done **only** if it solves a concrete problem: duplicated code,
 mixed responsibilities, fragile tests, an unmanageable folder. "Align the
@@ -137,7 +162,7 @@ Before a refactor:
 
 ---
 
-## 6. Tools and verification
+## 7. Tools and verification
 
 - **Dependencies**: `uv` for Python, `npm` for the frontend.
 - **Gate before every commit**: `make check` -- `uv lock --check`, `ruff check`,
@@ -151,7 +176,7 @@ Before a refactor:
 
 ---
 
-## 7. End-of-work report
+## 8. End-of-work report
 
 When you finish, report:
 

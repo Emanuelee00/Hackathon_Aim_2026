@@ -1,5 +1,5 @@
-import { priorities } from '../../features/requests/queue.js';
-import { requestTypes } from '../../features/requests/workflow.js';
+import { priorities } from '../../features/equipe/requests/queue.js';
+import { requestTypes } from '../../features/equipe/requests/workflow.js';
 import Icon from './Icon.jsx';
 import { Badge } from './Primitives.jsx';
 import { spaceById } from '../data/spaces.js';

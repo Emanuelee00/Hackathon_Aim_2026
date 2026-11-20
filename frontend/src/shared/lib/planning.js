@@ -1,4 +1,4 @@
-import { validateRequest } from '../../features/requests/workflow.js';
+import { validateRequest } from '../../features/equipe/requests/workflow.js';
 import { spaceById } from '../data/spaces.js';
 import { duration } from './format.js';
 
