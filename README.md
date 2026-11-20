@@ -4,7 +4,22 @@ Scheletro per Hackathon AIM 2026: FastAPI, HTML/CSS e un piccolo modello locale.
 Python 3.14, dipendenze e ambiente virtuale gestiti con uv.
 
 La visione del prodotto, il valore per utenti e finanziatori, il ciclo completo,
-la strategia d'impatto e il pitch sono descritti nel [piano business](BUSINESS_PLAN.md).
+la strategia d'impatto e il pitch sono descritti nel [piano business](docs-md/BUSINESS_PLAN.md).
+
+## Struttura del progetto
+
+```text
+backend/         API FastAPI, moduli Python, migrazioni e test backend
+frontend/        applicazione React/Vite e sito pubblico Jamstack
+main.py          entry point FastAPI richiesto da Vercel e Docker
+deploy/          configurazione e istruzioni per il deployment
+docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
+chezmarthe-demo/ prototipo con dati fittizi, mai pubblicato
+cloudflare/      configurazione del tunnel Cloudflare
+```
+
+Il codice applicativo è quindi diviso fisicamente tra `backend/` e `frontend/`;
+`main.py` resta alla root per compatibilità con il deployment.
 
 ## Avvio locale
 
@@ -36,13 +51,37 @@ Per fermare i server usa Ctrl+C nei rispettivi terminali.
 Il dominio principale mostra la pagina d'accoglienza; ogni pubblico ha il suo
 sottodominio: `equipe.`, `residents.`, `benevoles.` e `partenaires.` (questi ultimi
 due in preparazione). L'app riconosce lo spazio **dal sottodominio** (vedi
-`web/src/shared/lib/spaces.js`): cliccando «Se connecter» il browser passa a
+`frontend/src/shared/lib/spaces.js`): cliccando «Se connecter» il browser passa a
 `<spazio>.<host>`.
 
 > **In locale usa sempre `localhost`, mai `127.0.0.1`.**
 > Con `127.0.0.1` il link diventa `<spazio>.127.0.0.1`, che non è un dominio
 > valido: il browser non risolve nulla e la pagina resta bianca. I browser
-> risolvono invece ogni `*.localhost` su 127.0.0.1 senza toccare `/etc/hosts`.
+
+## Sito pubblico Jamstack
+
+`frontend/` produce due frontend distinti:
+
+- `npm run build` genera `frontend/dist`, l'app completa che FastAPI serve sugli spazi
+  autenticati;
+- `npm run build:jamstack` genera `frontend/jamstack-dist`, solo il sito pubblico
+  (`/`, `/contact`, `/equipe`, ecc.), senza le schermate autenticate.
+
+Per sviluppare il sito pubblico in locale, avviare prima il backend e poi
+`cd frontend && npm run dev:jamstack`; Vite inoltra `/api` al backend locale.
+Il prototipo `chezmarthe-demo/` con dati fittizi resta separato e non viene pubblicato.
+
+Il deploy statico usa un progetto Vercel separato con **Root Directory `frontend`**.
+Impostare `VITE_API_BASE_URL=https://api.chezmarthe.site` nel progetto: i moduli
+pubblici usano quell'origine per programmazione, contenuti aggiornabili e moduli.
+Nel backend impostare `PUBLIC_SITE_ORIGINS=https://chezmarthe.site,https://www.chezmarthe.site`;
+CORS consente solo GET/POST e l'origine pubblica dichiarata. I sottodomini
+`equipe`, `residents`, `benevoles`, `partenaires` e `bilan`, incluso `api`, restano
+sul backend. `chezmarthe.site` è un dominio di test non appartenente
+all'associazione: quando si passerà a `chezmarthe.org`, aggiornare insieme
+`VITE_API_BASE_URL` e `PUBLIC_SITE_ORIGINS` ai rispettivi domini `.org`.
+
+> I browser risolvono ogni `*.localhost` su 127.0.0.1 senza toccare `/etc/hosts`.
 > Esempi che funzionano:
 > - http://equipe.localhost:8000
 > - http://residents.localhost:8000
@@ -83,7 +122,7 @@ terminale, perché vedono i dati delle residenti:
 make user EMAIL=coord@marthe.fr NAME="Coordinatrice" ROLE=equipe
 ```
 
-Utenti e sessioni sono gestiti con SQLAlchemy e migrazioni **Alembic** (`migrations/`),
+Utenti e sessioni sono gestiti con SQLAlchemy e migrazioni **Alembic** (`backend/migrations/`),
 sullo stesso database di `store.py`. L'app applica le migrazioni all'avvio; a mano:
 `make migrate`. Dopo una modifica a `accounts/models.py`:
 `make migration NAME="descrizione"`. La sessione è un cookie httpOnly valido 30 giorni,
@@ -179,7 +218,7 @@ l'impiego usa ancora **Qwen2.5 0.5B** (`qwen2.5:0.5b`, circa 398 MB). Su GPU
 
 Il matching è ibrido:
 
-1. `ranking.py` sceglie in modo deterministico fino a 3 profili consenzienti i cui
+1. `backend/ranking/` sceglie in modo deterministico fino a 3 profili consenzienti i cui
    obiettivi o competenze compaiono nel testo dell'evento (tutti, se nessuno è legato);
 2. il modello scrive soltanto motivazione, beneficio e punto da verificare;
 3. se il modello non risponde entro 9 secondi o produce dati non validi, ogni
@@ -195,17 +234,18 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 ## Sviluppo
 
-- `main.py`: app FastAPI e stato del backend.
-- `ai.py`: chat tramite Ollama locale e precaricamento del modello.
-- `matching.py` e `ranking.py`: matching ibrido con risposta sempre sotto i 10 secondi.
-- `accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
-- `agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
-- `db.py` e `migrations/`: SQLAlchemy e migrazioni Alembic.
-- `employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
-- `web/src/app/`: composizione dell’app e stato condiviso.
-- `web/src/features/`: funzionalità autonome, compresa la vista `resident`.
-- `web/src/shared/`: componenti, dati demo e funzioni riutilizzabili.
-- `web/src/styles/`: stile globale e responsive.
+- `main.py`: entry point FastAPI richiesto dal deploy; il backend vero è in `backend/`.
+- `backend/ai.py`: chat tramite Ollama locale e precaricamento del modello.
+- `backend/matching.py` e `backend/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
+- `backend/accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
+- `backend/agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
+- `backend/core/` e `backend/migrations/`: database SQLAlchemy e migrazioni Alembic.
+- `backend/mailer/`: invio email.
+- `backend/employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
+- `frontend/src/app/`: composizione dell’app e stato condiviso.
+- `frontend/src/features/`: funzionalità autonome, compresa la vista `resident`.
+- `frontend/src/shared/`: componenti, dati demo e funzioni riutilizzabili.
+- `frontend/src/styles/`: stile globale e responsive.
 - `pyproject.toml` e `uv.lock`: dipendenze Python.
 - `CODEX.md`: linee guida di sviluppo.
 
@@ -217,11 +257,11 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 Con `MARTHE_DEMO=1`,
 **l'AI non viene mai chiamata**. Dopo un'attesa simulata di 6 secondi
-(`DEMO_DELAY` in `demo.py`), durante la quale scorre la barra di caricamento,
-il backend restituisce le risposte scritte in `demo_responses.json`:
+(`DEMO_DELAY` in `backend/demo/`), durante la quale scorre la barra di caricamento,
+il backend restituisce le risposte scritte in `backend/demo_responses.json`:
 
 - matching: un testo per ogni evento demo e ogni residente consenziente; la scelta
-  dei profili resta quella di `ranking.py`, gli eventi nuovi ricevono una
+  dei profili resta quella di `backend/ranking/`, gli eventi nuovi ricevono una
   suggestion guidée;
 - piano verso l'impiego: un piano per ciascuno dei tre mestieri di esempio
   (commis de cuisine, assistante administrative, vente); gli altri obiettivi
@@ -236,7 +276,7 @@ make demo                          # demo senza AI, visibile sulla rete locale
 make qr URL=https://tuo-link.app   # crea qr-demo.png
 ```
 
-`qr-bilan.png` porta a https://bilan.chezmarthe.site: da stampare e mostrare alla fine
+`docs-md/qr-bilan.png` porta a https://bilan.chezmarthe.site: da stampare e mostrare alla fine
 di ogni evento, l'organizzatore sceglie il proprio evento e lascia il bilan (nota,
 presenze, residenti, logistica), che finisce nelle Statistiche e nell'Impatto. Nella
 scheda di un evento l'équipe trova anche un QR con l'evento già scelto
@@ -244,9 +284,10 @@ scheda di un evento l'équipe trova anche un QR con l'evento già scelto
 
 ## Tunnel Cloudflare (chezmarthe.site)
 
-L'app gira sul portatile ed è pubblicata con un tunnel Cloudflare: il dominio e
-tutti i sottodomini (`equipe.`, `residents.`, `benevoles.`, `partenaires.`,
-`bilan.`) puntano a `localhost:8000`. Configurazione: `cloudflare/tunnel.yml`.
+L'app gira sul portatile ed è pubblicata con un tunnel Cloudflare. Il dominio
+principale è servito dal deploy Jamstack; i sottodomini (`equipe.`, `residents.`,
+`benevoles.`, `partenaires.`, `bilan.` e `api.`) puntano a `localhost:8000`.
+Configurazione: `cloudflare/tunnel.yml`.
 
 Una sola volta, dopo aver installato
 [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/):
@@ -254,9 +295,11 @@ Una sola volta, dopo aver installato
 ```sh
 cloudflared tunnel login                                  # apre il browser, scegli chezmarthe.site
 cloudflared tunnel create marthe
-cloudflared tunnel route dns marthe chezmarthe.site
 cloudflared tunnel route dns marthe '*.chezmarthe.site'
 ```
+
+Collegare `chezmarthe.site` al progetto Vercel statico seguendo i record indicati
+nella dashboard Vercel; non creare per il dominio radice una route del tunnel.
 
 Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
 poi `make tunnel` (oppure `make tunnel-forever`, che lo rilancia da solo se si
@@ -264,10 +307,11 @@ ferma o perde la connessione). Il portatile deve restare acceso e sveglio.
 
 ## Vercel (piano B se il tunnel non funziona)
 
-Il tunnel Cloudflare resta la via principale (AI e dati veri, persistenti). Vercel
-è tenuto pronto come riserva, nel caso il portatile o il tunnel non siano
-disponibili il giorno della demo: basta collegare il repository su
-[vercel.com](https://vercel.com), la build usa `vercel.json`.
+Il sito pubblico Jamstack ha un progetto Vercel autonomo (configurato da
+`frontend/vercel.json`, Root Directory `frontend`). L'app FastAPI ha un secondo progetto
+Vercel dalla root, tenuto come riserva nel caso il portatile o il tunnel non
+siano disponibili: la build usa `vercel.json`. Non assegnare lo stesso dominio
+radice a entrambi i progetti.
 
 Su Vercel la variabile `VERCEL` è già impostata dalla piattaforma: l'app passa
 automaticamente in **modalità demo** (risposte precompilate, nessuna chiamata AI,

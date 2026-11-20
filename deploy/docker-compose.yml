@@ -26,6 +26,7 @@ services:
       DATABASE_URL: postgresql://marthe:${POSTGRES_PASSWORD}@db:5432/marthe
       CANONICAL_DOMAIN: ${CANONICAL_DOMAIN:-}
       OLD_DOMAINS: ${OLD_DOMAINS:-}
+      PUBLIC_SITE_ORIGINS: "${PUBLIC_SITE_ORIGINS:-https://chezmarthe.site,https://www.chezmarthe.site}"
       # E-mails (funding reminders and the forms' confirmations): nothing is sent until one of the two services is set (see .env.example).
       REMINDER_TO: ${REMINDER_TO:-contact@chezmarthe.org}
       CONTACT_EMAIL: ${CONTACT_EMAIL:-contact@chezmarthe.org}

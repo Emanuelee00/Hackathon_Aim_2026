@@ -1,0 +1,49 @@
+# Debito tecnico
+
+Problemi trovati durante il refactor, **fuori scope** dei rispettivi commit.
+Si affrontano in una passata dedicata, alla fine.
+
+## Ruff — errori preesistenti
+
+Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal refactor.
+
+- [ ] `chezmarthe-demo/src/build.py` — I001 (import non ordinati), F401 (`sys` non usato),
+      SIM115 (file aperti senza context manager). Script HTML legacy, probabilmente obsoleto:
+      decidere se cancellarlo o riscriverlo.
+- [ ] `backend/tests/test_bilans.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_confirmations.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_editeur.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_espaces.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_funding.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_messages.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_modeles.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_profils.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_prospection.py` — errore ruff (da dettagliare)
+- [ ] `backend/tests/test_reminders.py` — errore ruff (da dettagliare)
+
+## Refactor pacchetti backend (in corso)
+
+> `backend/mailer/`, `backend/ranking/`, `backend/demo/` sono stati creati **prima** della guida attuale
+> (`Guide.md` §0: "a file first, extract later"). Sono coerenti con "everything in a
+> package" ma non sono il modello: funzionano e i test sono verdi, quindi restano.
+> I prossimi package si fanno solo se il modulo è grande o composito (§5).
+
+- [x] `backend/mailer.py` → `backend/mailer/` (pilota)
+- [x] `backend/ranking.py` → `backend/ranking/`
+- [x] `backend/demo.py` → `backend/demo/` (path di `demo_responses.json` corretto a `parent.parent`)
+- [ ] `gcal.py` → `gcal/` — **NON fattibile senza riscrivere i test**: `week_public`
+      chiama `list_events` dentro il modulo, e `backend/tests/test_programmation.py` fa
+      `monkeypatch.setattr(gcal, "list_events", …)`. Con un package il patch su
+      `gcal.list_events` non raggiunge `week_public` in `service.py` (2 test rossi).
+      Se si rifà: patchare `gcal.service.list_events` nei test, oppure far risolvere
+      `list_events` al package. Tentato il 2026-11-20, rollbackato.
+- [ ] `backend/matching.py`, `backend/profils.py`, ... (piccoli e coesi: restano file)
+- [ ] `backend/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
+      scrittura e endpoint sono un solo dominio. Non splittare senza un problema
+      concreto (Guide.md §5). Valutato il 2026-11-20, lasciato file.
+- [ ] `main.py`: resta alla root come entry point richiesto da Vercel e Docker.
+
+## Note
+
+- `backend/facturation/models.py` usa gli asset in `backend/modeles/` (fonts, docx):
+  non rinominarlo in `modeles/routes.py` senza prima spostare gli asset.

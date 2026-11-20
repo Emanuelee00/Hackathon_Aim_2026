@@ -1,0 +1,27 @@
+{
+  "name": "marthe-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "dev:jamstack": "vite --mode jamstack --host 127.0.0.1",
+    "build": "vite build",
+    "build:jamstack": "vite build --mode jamstack",
+    "preview:jamstack": "vite preview --mode jamstack",
+    "test": "node --test src/shared/lib/*.test.js src/features/*/*.test.js",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.2.0",
+    "@fontsource/instrument-serif": "^5.2.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^7.1.0"
+  }
+}

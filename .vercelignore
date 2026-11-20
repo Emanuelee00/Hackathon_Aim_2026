@@ -3,11 +3,11 @@
 .pytest_cache/
 .ruff_cache/
 __pycache__/
-web/node_modules/
-web/test-results/
-web/playwright-report/
+frontend/node_modules/
+frontend/test-results/
+frontend/playwright-report/
 artifacts/
 marthe.db
 /docs/
-/chezmarthe/
+/chezmarthe-demo/
 /cloudflare/

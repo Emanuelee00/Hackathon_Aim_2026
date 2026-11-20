@@ -38,7 +38,7 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./web
+    build: ./frontend
     environment:
       API_PROXY_TARGET: http://backend:8000
       # Set to true if HMR misses changes (e.g. project on a Windows drive).
@@ -46,7 +46,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./web:/app
+      - ./frontend:/app
       # Keep the container's node_modules instead of the host's.
       - /app/node_modules
     depends_on:
