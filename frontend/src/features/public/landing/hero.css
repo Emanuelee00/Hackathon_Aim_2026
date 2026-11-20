@@ -1,0 +1,125 @@
+
+.cm-home .home-hero { position: relative; min-height: min(88vh, 760px); box-sizing: border-box; display: grid; align-items: end; background: var(--night); overflow: hidden; }
+@supports (height: 100svh) { .cm-home .home-hero { min-height: min(88svh, 760px); } }
+.cm-home .hero-media { position: absolute; inset: 0; background: var(--night); }
+.cm-home .hero-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: transparent;
+}
+.cm-home .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.008); transition: opacity 0.7s ease; }
+.cm-home .clip.is-on { opacity: 1; }
+.cm-home .hero-inner {
+  width: min(100%, 1120px); max-width: none; margin: 0 auto;
+  padding: 120px clamp(16px, 4vw, 48px) 120px; display: flex; flex-direction: column;
+}
+.cm-home .hero-text {
+  position: relative; z-index: 1; max-width: 760px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; text-align: left; gap: 18px;
+  color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+.cm-home .hero-text h1 { max-width: 12ch; margin: 0; color: #fff; font-family: var(--display); font-size: clamp(36px, 6.4vw, 72px); line-height: 0.98; text-wrap: balance; }
+.cm-home .hero-text p { margin: 0; font-size: clamp(20px, 2.5vw, 24px); line-height: 1.5; font-weight: 700; max-width: 36rem; }
+.cm-home .hero-headline { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.cm-home .hero-headline > p { margin-top: 6px; }
+.cm-home .hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 0; }
+.cm-home .hero-text .city { color: var(--pink); }
+/* Même effet que le nouveau site : la ville s'écrit, attend, s'efface, puis la suivante. */
+.cm-home .city { font-weight: 700; white-space: nowrap; }
+/* Largeur réservée pour la ville la plus longue (voir le script) : « au cœur de » ne bouge plus. */
+.cm-home .city { display: inline-grid; text-align: left; vertical-align: bottom; }
+.cm-home .city > *, .cm-home .city-sizer > * { grid-area: 1 / 1; }
+.cm-home .city-sizer { display: grid; visibility: hidden; }
+.cm-home .city-cursor { margin-left: 1px; font-weight: 400; animation: city-blink 1s step-end infinite; }
+@keyframes city-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .cm-home .city-cursor { animation: none; } }
+.cm-home .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.cm-home .hero-text .btn { text-shadow: none; }
+.cm-home .home-hero .btn-outline { background: rgba(255, 255, 255, 0.6); }
+.cm-home .home-hero .btn-rent { display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; font-size: 16px; background: var(--violet); color: #fff; box-shadow: 0 8px 22px rgba(102, 43, 128, 0.45); letter-spacing: 0.02em; }
+.cm-home .home-hero .btn-rent:hover { background: var(--violet-dark); }
+.cm-home .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 4px; }
+.cm-home .btn { display: inline-block; border-radius: 999px; font-weight: 700; text-decoration: none; text-align: center; }
+.cm-home .btn-primary { padding: 14px 22px; background: var(--violet); color: #fff; }
+.cm-home .btn-primary:hover { background: var(--violet-dark); }
+.cm-home .btn-outline { padding: 12px 20px; border: 2px solid var(--violet); color: var(--violet); background: rgba(255, 255, 255, 0.5); }
+.cm-home .btn-rent { display: block; padding: 17px; font-size: 17px; background: var(--pink); color: var(--night); }
+
+.cm-home .socials { display: flex; justify-content: center; gap: 12px; padding-top: 8px; }
+.cm-home .socials a { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cm-home .ig { background: linear-gradient(45deg, #F58529, #DD2A7B 55%, #8134AF); }
+.cm-home .fb { background: #1877F2; }
+.cm-home .li { background: #0A66C2; }
+.cm-home .yt { background: #FF0000; }
+.cm-home .tt { background: #000; }
+
+.cm-home .block { max-width: 560px; margin: 0 auto; padding: 36px 16px 8px; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: var(--bar); }
+.cm-home .block h2 { margin: 0 0 4px; font-family: var(--display); font-size: 28px; line-height: 1.1; color: var(--violet); text-wrap: balance; }
+.cm-home .block p { margin: 0; font-size: 16px; line-height: 1.6; }
+.cm-home .block .btn { align-self: flex-start; }
+.cm-home .kicker { margin: 0; font-size: 12px; letter-spacing: 0.14em; font-weight: 700; color: #A25889; }
+.cm-home .small { font-size: 14px; color: var(--muted); }
+.cm-home .home-partners { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.cm-home .home-partners a { display: flex; align-items: center; justify-content: center; height: 88px; padding: 12px; background: #fff; border-radius: 16px; }
+.cm-home .home-partners img { max-width: 100%; max-height: 64px; object-fit: contain; }
+.cm-home .home-involve { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; color: var(--night); text-decoration: none; }
+.cm-home .home-involve strong { font-size: 18px; color: var(--violet); }
+.cm-home .legal { padding-bottom: 24px; }
+.cm-home .team { display: flex; flex-direction: column; gap: 10px; }
+.cm-home .member { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: 18px; background: #fff; }
+/* Initiales en attendant les photos. */
+.cm-home .member-avatar { flex-shrink: 0; overflow: hidden; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--pink); color: var(--violet); font-family: var(--display); font-size: 26px; }
+.cm-home .member h3 { margin: 0; font-size: 18px; }
+.cm-home .member .role { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #A25889; }
+.cm-home .member p { font-size: 15px; line-height: 1.5; }
+.cm-home .subtitle { margin: 18px 0 2px; font-family: var(--display); font-size: 22px; color: var(--violet); scroll-margin-top: calc(var(--bar) + 12px); }
+.cm-home .values { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 600px) { .cm-home .values { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cm-home .value { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 18px; background: var(--violet); color: #fff; font-size: 14px; line-height: 1.45; }
+.cm-home .value strong { font-size: 17px; color: var(--pink); }
+.cm-home .audiences { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cm-home .audience { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 18px; background: #fff; font-size: 14px; line-height: 1.4; }
+.cm-home .audience strong { font-size: 16px; color: var(--violet); }
+.cm-home .events { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.cm-home .event { display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: #fff; }
+.cm-home .event-date { flex-shrink: 0; width: 64px; height: 64px; border-radius: 14px; background: var(--violet); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; text-transform: uppercase; }
+.cm-home .event-date strong { font-family: var(--display); font-size: 22px; line-height: 1; }
+.cm-home .event-body { display: flex; flex-direction: column; gap: 2px; }
+.cm-home .event-body small { font-size: 14px; color: var(--muted); }
+.cm-home #louer-contact { scroll-margin-top: calc(var(--bar) + 18px); padding-top: 8px; }
+.cm-home footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 10px; }
+.cm-home footer a { color: var(--violet); font-weight: 700; text-decoration: none; }
+.cm-home footer p { margin: 0; }
+.cm-home .legal details { background: #fff; border-radius: 16px; padding: 4px 18px; scroll-margin-top: calc(var(--bar) + 8px); }
+.cm-home .legal summary { cursor: pointer; font-weight: 700; padding: 14px 0; }
+.cm-home .legal h3 { margin: 12px 0 4px; font-size: 16px; }
+.cm-home .legal p { font-size: 15px; margin-bottom: 10px; }
+
+.cm-home footer { text-align: center; padding: 24px 16px 40px; font-size: 14px; color: var(--muted); }
+
+/* La ville reste collée à « au cœur de », comme dans la page d'origine. */
+@media (min-width: 720px) {
+  .cm-home .keep { white-space: nowrap; }
+}
+@media (min-width: 960px) {
+  .cm-home .hero-inner { padding: 120px 40px 120px; }
+}
+/* Trois marguerites décoratives (pétales violets, cœur orange), éparpillées dans le menu. */
+.cm-home .block { position: relative; }
+.cm-home .daisy {
+  position: absolute; z-index: 2; pointer-events: none;
+  /* Violet plus clair que le fond du menu pour rester visible. */
+  --daisy-petal: #C08AD9; --daisy-edge: #F6F5F4;
+  filter: drop-shadow(0 2px 4px rgba(27, 19, 25, 0.35));
+}
+/* Dans les titres de groupe : elles défilent avec la liste, centrées sur la hauteur du texte. */
+.cm-home .menu-group { display: flex; align-items: center; }
+.cm-home .menu-group .daisy { position: static; }
+.cm-home .daisy-1 { width: 30px; height: 30px; margin-left: auto; margin-right: 8px; transform: rotate(18deg); }   /* à droite de « Découvrir » */
+.cm-home .daisy-2 { width: 30px; height: 30px; margin-left: 14px; transform: rotate(-28deg); } /* à côté de « Participer » */
+.cm-home .daisy-3 { width: 30px; height: 30px; top: -15px; left: 58%; transform: rotate(40deg); }      /* posée sur « Soutenir » */
+/* ---------- Tablette et ordinateur : la page s'élargit, les listes deviennent des grilles. ---------- */
+@media (min-width: 720px) {
+  .cm-home .block { max-width: 760px; padding: 56px 32px 8px; gap: 16px; }
+  .cm-home .block h2 { font-size: 34px; }
+  .cm-home .home-partners { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

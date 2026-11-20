@@ -1,0 +1,108 @@
+/* Les styles généraux de la plateforme donnent des marges à <main> : pas sur le site public. */
+.cm-home main { width: auto; max-width: none; margin: 0; padding: 0; }
+
+/* Accueil de chezmarthe.org (branche design), repris de la page statique : tout est limité à .cm-home
+   pour ne pas toucher aux espaces (équipe, résidentes…). */
+/* Charte chezmarthe.org — variante 1 : bandeau violet, carte blanche transparente sur la photo. */
+.cm-home {
+  --violet: #662B80;
+  --violet-dark: #57256d;
+  --pink: #F2A1AB;
+  --night: #1B1319;
+  --cream: #F6F5F4;
+  --muted: #5e5360;
+  --display: "Amiamie", "Raleway", system-ui, sans-serif;
+  --body: "Raleway", system-ui, sans-serif;
+  --bar: 88px; /* hauteur du bandeau du haut */
+}
+.cm-home, .cm-home * { box-sizing: border-box; }
+/* « hidden » doit toujours cacher, même un élément qui a son propre display. */
+[hidden] { display: none !important; }
+.cm-home, .cm-home { margin: 0; }
+.cm-home { font-family: var(--body); color: var(--night); background: var(--cream); }
+.cm-home a:focus-visible, .cm-home button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+.cm-home .bar {
+  position: sticky; top: 0; z-index: 10;
+  height: var(--bar); padding: 0 14px;
+  display: flex; align-items: center; gap: 10px;
+  /* Violet plein, bord net : pas de dégradé sur la photo. */
+  background: var(--violet);
+}
+.cm-home .bar .logo { margin-right: auto; display: flex; }
+.cm-home .bar .logo img { height: 56px; width: auto; display: block; filter: drop-shadow(0 1px 3px rgba(27, 19, 25, 0.35)); }
+.cm-home .social { display: flex; flex-wrap: wrap; gap: 10px; }
+/* Réseaux aux couleurs d'origine de chaque réseau. */
+.cm-home .social a { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cm-home .social .ig { background: radial-gradient(circle at 30% 107%, #FDF497 0%, #FDF497 5%, #FD5949 45%, #D6249F 60%, #285AEB 90%); }
+.cm-home .social .fb { background: #1877F2; }
+.cm-home .social .li { background: #0A66C2; }
+.cm-home .social .yt { background: #FF0000; }
+.cm-home .footer-social { justify-content: center; }
+.cm-home .footer-social a { width: 44px; height: 44px; box-shadow: 0 4px 12px rgba(102, 43, 128, 0.25); }
+.cm-home .follow { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 24px; }
+.cm-home .follow p { margin: 0; }
+.cm-home .follow-title { font-family: var(--display); font-size: 24px; color: var(--violet); }
+.cm-home .menu-button {
+  width: 46px; height: 46px; border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16); color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+/* Petits téléphones : logo un peu plus petit pour garder de l'air dans le bandeau. */
+@media (max-width: 359px) {
+  .cm-home .bar { padding: 0 10px; }
+  .cm-home .bar .logo img { height: 46px; }
+}
+.cm-home .menu-button svg .line { transition: transform 0.2s, opacity 0.2s; transform-origin: 12px 12px; }
+.cm-home .menu-button[aria-expanded="true"] .l1 { transform: translateY(5px) rotate(45deg); }
+.cm-home .menu-button[aria-expanded="true"] .l2 { opacity: 0; }
+.cm-home .menu-button[aria-expanded="true"] .l3 { transform: translateY(-5px) rotate(-45deg); }
+
+/* Menu : panneau semi-transparent qui glisse depuis la droite, sous le bandeau. */
+.cm-home .scrim { position: fixed; inset: var(--bar) 0 0; z-index: 8; background: rgba(27, 19, 25, 0.35); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.cm-home .scrim.open { opacity: 1; pointer-events: auto; }
+.cm-home .menu {
+  position: fixed; top: var(--bar); bottom: 0; right: 0; z-index: 9;
+  width: min(100%, 400px); overflow: hidden;
+  display: flex; flex-direction: column;
+  background: rgba(87, 37, 109, 0.74);
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: -12px 0 40px rgba(27, 19, 25, 0.25);
+  transform: translateX(102%); visibility: hidden;
+  transition: transform 0.28s ease, visibility 0s 0.28s;
+}
+.cm-home .menu.open { transform: none; visibility: visible; transition: transform 0.28s ease; }
+.cm-home .menu-section { display: flex; flex-direction: column; }
+/* Seule la liste défile, avec sa barre à l'intérieur du panneau ; « Soutenir » reste fixé en bas. */
+.cm-home .menu-scroll {
+  position: relative; z-index: 1;
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 22px; padding: 26px 14px 20px 20px; margin-right: 6px;
+  scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+}
+.cm-home .menu-scroll::-webkit-scrollbar { width: 6px; }
+.cm-home .menu-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 6px; }
+.cm-home .menu-scroll::-webkit-scrollbar-track { background: transparent; }
+.cm-home .menu-fixed {
+  position: relative; flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; padding: 10px 20px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2); background: rgba(87, 37, 109, 0.55);
+}
+.cm-home .menu-group { margin: 0 0 6px; padding: 0 4px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--pink); }
+.cm-home .menu-link {
+  display: flex; align-items: center; gap: 12px; padding: 13px 4px;
+  color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.cm-home .menu-link span { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; }
+.cm-home .menu-link strong { font-size: 17px; font-weight: 700; }
+.cm-home .menu-link small { font-size: 13px; color: rgba(255, 255, 255, 0.78); }
+.cm-home .menu-link svg { flex-shrink: 0; opacity: 0.7; transition: transform 0.15s; }
+.cm-home .menu-link:hover svg, .cm-home .menu-link:focus-visible svg { transform: translateX(3px); opacity: 1; }
+.cm-home .menu-support { display: flex; gap: 10px; }
+.cm-home .menu-support a { flex: 1; text-align: center; padding: 9px 10px; border-radius: 999px; font-size: 14px; font-weight: 700; text-decoration: none; }
+.cm-home .menu-support .don { background: var(--pink); color: var(--night); }
+.cm-home .menu-support .adherer { border: 2px solid rgba(255, 255, 255, 0.85); color: #fff; padding: 7px 10px; }
+.cm-home .menu-info { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 4px; font-size: 12px; }
+.cm-home .menu-info a { color: rgba(255, 255, 255, 0.8); text-decoration: none; }
+.cm-home .menu-info a:hover { color: #fff; }
+@media (prefers-reduced-motion: reduce) { .cm-home .menu, .cm-home .menu.open, .cm-home .scrim, .cm-home .menu-button svg .line { transition: none; } }
