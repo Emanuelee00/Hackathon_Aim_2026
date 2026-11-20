@@ -1,0 +1,188 @@
+export const calls = [
+ {
+  "id": "a01",
+  "name": "Concours Fondation La France s'engage 2027",
+  "purpose": "Essaimage d'innovations sociales",
+  "period": "Janvier 2027 (dates annoncées précédemment : 5–28 janvier)",
+  "relevance": "À moyen terme / trop jeune actuellement",
+  "conditions": "Association mature; ancienneté, comptes et impact exigés; vérifier critères exacts",
+  "link": "https://fondationlafrancesengage.org/",
+  "nextAction": "Ne pas déposer à ce stade; préparer preuves d'impact et ancienneté",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a02",
+  "name": "Programme P'INS – Avise / Fondation Macif",
+  "purpose": "Accompagnement au changement d'échelle",
+  "period": "Prochaine édition non confirmée",
+  "relevance": "Veille",
+  "conditions": "Innovation sociale éprouvée, modèle économique et capacité d'essaimage",
+  "link": "https://www.avise.org/",
+  "nextAction": "Préparer dossier d'essaimage",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a03",
+  "name": "Prix de l'Inspiration en ESS – Fondation Crédit Coopératif",
+  "purpose": "Prix / innovation ESS",
+  "period": "Édition suivante à confirmer; ouverture annoncée autour de décembre 2026 dans la veille précédente",
+  "relevance": "À surveiller",
+  "conditions": "Structure ESS et critères de l'édition à vérifier",
+  "link": "https://fondation.credit-cooperatif.coop/",
+  "nextAction": "Préparer candidature courte et budget",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a04",
+  "name": "Orange Femmes Entrepreneuses",
+  "purpose": "Entrepreneuriat féminin / numérique",
+  "period": "Édition 2027 évoquée : novembre–décembre 2026; vérifier ouverture",
+  "relevance": "Conditionnel",
+  "conditions": "Le numérique doit être au cœur de l'offre et la société doit répondre aux critères",
+  "link": "https://www.orange.com/",
+  "nextAction": "Ne candidater que si volet numérique réellement central",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a05",
+  "name": "Fondation Brico Dépôt",
+  "purpose": "Habitat / rénovation",
+  "period": "Prochaine édition à confirmer",
+  "relevance": "Veille",
+  "conditions": "Travaux et équipements; vérifier bénéficiaires et dépenses admissibles",
+  "link": "https://www.bricodepot.fr/",
+  "nextAction": "Préparer un budget investissement distinct",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a06",
+  "name": "Fonds de dotation QUALITEL",
+  "purpose": "Qualité de l'habitat",
+  "period": "Prochaine édition à confirmer",
+  "relevance": "Veille",
+  "conditions": "Amélioration de l'habitat des publics vulnérables",
+  "link": "https://www.qualitel.org/",
+  "nextAction": "Préparer volet qualité d'usage / logement",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a07",
+  "name": "Fondation des Femmes",
+  "purpose": "Droits des femmes",
+  "period": "Prochain appel à confirmer",
+  "relevance": "Veille",
+  "conditions": "Projet féministe, égalité, lutte contre les précarités et violences",
+  "link": "https://fondationdesfemmes.org/",
+  "nextAction": "Surveiller les ouvertures",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a08",
+  "name": "FSE+ – appels nationaux et régionaux",
+  "purpose": "Inclusion / emploi / innovation sociale",
+  "period": "Selon appels; échéances variables",
+  "relevance": "Veille ciblée PACA",
+  "conditions": "Zone géographique, cofinancement, avance et dépenses éligibles à vérifier",
+  "link": "https://fse.gouv.fr/",
+  "nextAction": "Ne pas utiliser un appel limité à une autre région",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a09",
+  "name": "Région Sud – ESS et innovation",
+  "purpose": "Aides régionales",
+  "period": "Calendrier variable",
+  "relevance": "Veille continue",
+  "conditions": "Selon appel et statut du porteur",
+  "link": "https://www.maregionsud.fr/",
+  "nextAction": "Contacter service ESS / innovation",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ },
+ {
+  "id": "a10",
+  "name": "Métropole Aix-Marseille-Provence",
+  "purpose": "Habitat / ESS / investissement",
+  "period": "Calendrier variable",
+  "relevance": "Veille continue",
+  "conditions": "Vérifier appels réellement ouverts; certains dispositifs 2026 déjà clos",
+  "link": "https://ampmetropole.fr/",
+  "nextAction": "Distinguer fonctionnement, investissement et essaimage",
+  "deadline": "",
+  "owner": "",
+  "color": ""
+ }
+];
+
+// ---- Appels européens (recherche du 16 novembre 2026). État au jour de la recherche ; les dates sont à vérifier sur le portail
+// « Funding & Tenders » de la Commission ou sur le site du programme.
+const eu = (id, name, program, purpose, fit, state, deadline, calendar, amount, partners, action, link, vigilance) => ({ id, name, program, purpose, fit, state, deadline, calendar, amount, partners, action, link, vigilance, owner: '', color: '' });
+
+export const euCalls = [
+  eu('e01', 'DAPHNE 2027 – violences fondées sur le genre', 'CERV (Citoyens, égalité, droits et valeurs)', 'Prévenir les violences faites aux femmes, protéger et accompagner les victimes', 'Très élevée', 'À venir', '', 'Appel 2026 clos le 3 novembre 2026 (5 novembre selon certaines sources). 29 M€ prévus pour DAPHNE en 2027 dans le programme de travail 2026-2027 : appel 2027 attendu, date pas encore publiée.', 'En 2026 : environ 21 M€ en tout ; subventions forfaitaires', 'En général plusieurs organisations partenaires (souvent de plusieurs pays) : à vérifier dans la fiche 2027', 'Chercher dès maintenant des partenaires (réseaux féministes, maisons pour femmes en Europe) et un projet « violences »', 'https://commission.europa.eu/document/download/7407c47d-d261-4dd3-82c8-b2da4fe65492_en?filename=CERV+WORK+PROGRAMME+2026-2027.PDF', 'Il faut un projet précis sur les violences ; gros dossier en anglais.'),
+  eu('e02', 'DAPHNE – sous-subventions pour petites associations (« regranting »)', 'CERV DAPHNE', 'Des organisations intermédiaires redistribuent l’argent européen à de petites associations de terrain', 'Très élevée', 'À venir', '', 'Les intermédiaires choisis sur l’appel 2026 (clos le 3 novembre 2026) lanceront leurs propres appels, sans doute en 2027.', 'Petites subventions (montants fixés par chaque intermédiaire)', 'Aucun : on candidate seule auprès de l’intermédiaire', 'Surveiller les appels des intermédiaires en France et en Europe en 2027', 'https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/cerv/wp-call/2026/call-fiche_cerv-2026-daphne_en.pdf', 'La voie la plus accessible pour une petite association.'),
+  eu('e03', 'CERV – Égalité entre les femmes et les hommes (GE)', 'CERV', 'Égalité, indépendance économique, conciliation vie pro / vie perso, stéréotypes', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Appel 2026 clos le 28 avril 2026. Édition 2027 à vérifier.', 'En 2026 : 23 M€ ; 100 000 à 500 000 € par projet, jusqu’à 90 % des coûts', 'Une seule thématique par dossier ; partenariat à vérifier', 'Surveiller l’édition 2027 (printemps)', 'https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/cerv/wp-call/2026/call-fiche_cerv-2026-ge_en.pdf', 'Montants élevés : il faut une équipe pour gérer le projet.'),
+  eu('e04', 'CERV – Valeurs de l’Union (subventions d’action)', 'CERV', 'Organisations de la société civile qui défendent les valeurs de l’UE', 'Faible à conditionnelle', 'Ouvert', '2027-02-24', 'Ouvert le 27 octobre 2026 (dates indicatives), dépôt jusqu’au 24 février 2027.', '114 M€ ; 2,5 à 6 M€ par subvention', 'Grandes organisations ou consortiums', 'Pas pour Chez Marthe en direct ; utile si un réseau partenaire candidate', 'https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/cerv/wp-call/2026/call-fiche_cerv-2026-citizens-values_en.pdf', 'Trop gros pour une seule petite association.'),
+  eu('e05', 'New European Bauhaus – réutiliser des lieux vacants ou sous-utilisés', 'Horizon Europe – NEB Facility (HORIZON-NEB-2026-01-BUSINESS-03)', 'Redonner vie à des bâtiments vides avec les habitants (co-création)', 'Élevée', 'Ouvert', '2026-12-01', 'Dépôt jusqu’au 1er décembre 2026 à 17 h (Bruxelles).', 'Plusieurs M€ par projet (Horizon)', 'Consortium européen (Horizon Europe)', 'Trop court pour monter un projet seule : rejoindre un consortium comme partenaire « lieu pilote »', 'https://new-european-bauhaus.europa.eu/calls-proposals/approaches-reuse-vacant-obsolete-or-underutilised-spaces_en', 'Le modèle Maison Tremplin (bâtiments vides) colle bien ; délai très court.'),
+  eu('e06', 'New European Bauhaus – sans-abrisme et « logement d’abord »', 'Horizon Europe – NEB (PARTICIPATION-01 et BUSINESS-01)', 'Logement durable pour les personnes sans abri, services d’accompagnement dans les quartiers', 'Moyenne', 'Ouvert', '2026-12-01', 'Dépôt jusqu’au 1er décembre 2026 à 17 h (Bruxelles).', 'PARTICIPATION-01 : 12,6 M€, environ 2 projets de 6,3 M€', 'Grand consortium de recherche et d’innovation', 'Se proposer comme terrain d’expérimentation à un consortium déjà formé', 'https://new-european-bauhaus.europa.eu/calls-proposals/addressing-homelessness-through-housing-led-approaches-aligned-new-european-bauhaus-0_en', 'Projets de recherche à grande échelle.'),
+  eu('e07', 'New European Bauhaus – « Connect NEB » (initiatives d’habitants)', 'NEB Facility', 'Initiatives locales qui améliorent un quartier : participation, co-design, actions locales', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 30 septembre 2026.', 'À vérifier', 'À vérifier dans la fiche', 'Surveiller l’édition 2027', 'https://new-european-bauhaus.europa.eu/calls-proposals/connect-neb_en', 'La plus proche d’un lieu associatif de quartier.'),
+  eu('e08', 'Erasmus+ – partenariats de petite envergure, éducation des adultes (KA210-ADU)', 'Erasmus+ (Agence Erasmus+ France)', 'Échanger des pratiques avec des structures d’autres pays : formation, autonomie, insertion des femmes adultes', 'Élevée', 'À venir', '', 'Appel 2027 attendu fin 2026 ; date limite probablement début mars 2027 (le 5 mars en 2026). À confirmer.', 'Forfait de 30 000 ou 60 000 €', 'Au moins une organisation partenaire d’un autre pays (à confirmer)', 'Trouver un partenaire européen (maison de femmes, tiers-lieu) dès maintenant ; contacter l’Agence Erasmus+ France', 'https://agence.erasmusplus.fr/', 'Le format le plus adapté à une petite association pour un premier projet européen.'),
+  eu('e09', 'Corps européen de solidarité – accueillir des volontaires', 'Corps européen de solidarité', 'Volontaires européens (18-30 ans) dans le lieu', 'Moyenne', 'À venir', '', 'Dates 2027 pas encore publiées (en 2026 : 18 février, 7 mai, 1er octobre).', 'Frais des volontaires et du projet', 'Label de qualité requis', 'Demander le label de qualité', 'https://youth.europa.eu/solidarity/organisations/calls-for-proposals_fr', 'Utile pour l’animation, pas pour le budget du lieu.'),
+  eu('e10', 'FSE+ en France (programme national et appels régionaux)', 'Fonds social européen plus', 'Insertion, emploi, lutte contre la pauvreté, égalité femmes-hommes', 'Élevée', 'Fonds gérés en France', '', 'Appels publiés par la DREETS PACA, le Département 13 et la Métropole (subvention globale 2023-2027).', 'Variable ; remboursement après dépenses', 'Aucun', 'Contacter la DREETS PACA (service FSE) et la Métropole Aix-Marseille-Provence', 'https://fse.gouv.fr/', 'Gestion lourde, avances de trésorerie, justificatifs : prévoir du temps.'),
+  eu('e11', 'Innovation sociale – ESF+ Social Innovation+ et incubation inclusive', 'FSE+ (EaSI / Social Innovation+)', 'Innovation sociale transnationale, essaimage, incubation et financement inclusifs', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Appels 2026 clos (incubation : 2 septembre 2026 ; autres : septembre-octobre 2026).', 'Variable selon l’appel', 'Souvent partenariat transnational', 'Surveiller les appels 2027 pour le volet « essaimage » (Maison Tremplin)', 'https://socialinnovationplus.eu/', 'Plutôt pour le volet B (ingénierie, essaimage).'),
+  eu('e12', 'Interreg Euro-MED – 8e appel', 'Interreg Euro-MED (FEDER)', 'Coopération méditerranéenne (missions limitées)', 'Faible à conditionnelle', 'Ouvert', '2026-11-30', 'Dossier complet jusqu’au 30 novembre 2026 (selon une université partenaire).', 'Environ 20 M€ ; 2 M€ maximum par projet', 'Partenaires de plusieurs pays méditerranéens', 'Seulement en rejoignant un projet existant', 'https://interreg-euro-med.eu/', 'Thèmes limités ; inclusion peu présente.'),
+  eu('e13', 'European Urban Initiative – actions innovantes (logement)', 'FEDER – EUI', 'Logement abordable et inclusif, projets portés par une ville', 'Conditionnelle', 'Clos – prochaine édition à surveiller', '', '4e appel clos en juin 2026 ; résultats en novembre 2026.', 'Jusqu’à 2 M€ FEDER par projet', 'Porté par une ville (Marseille) avec partenaires', 'Proposer à la Ville de Marseille d’être partenaire d’une future candidature', 'https://www.urban-initiative.eu/', 'Chez Marthe ne peut pas porter seule.'),
+  eu('e14', 'LIFE – précarité énergétique (ENERPOV)', 'LIFE – transition énergétique propre', 'Réduire la précarité énergétique des ménages', 'Moyenne', 'Clos – prochaine édition à surveiller', '', 'Appel 2026 clos le 16 septembre 2026 ; appel 2027 à surveiller.', 'En 2026 : 6 M€ pour ce thème', 'Consortium européen', 'Rejoindre un consortium si un volet énergie des logements se dessine', 'https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/alleviating-household-energy-poverty-europe-1_en', 'Ne finance pas le projet social général.'),
+  eu('e15', 'FEDER – programme Région Sud 2021-2027', 'FEDER (fonds régional)', 'Investissement : rénovation, équipements, inclusion sociale selon les axes', 'Moyenne', 'Fonds gérés en France', '', 'Appels publiés par la Région Sud tout au long de l’année.', 'Variable', 'Aucun', 'Regarder le calendrier des appels de la Région Sud (europe.maregionsud.fr)', 'https://europe.maregionsud.fr/', 'Surtout pour l’investissement (travaux, équipement).'),
+];
+
+// ---- « Appels français » (recherche du 16 novembre 2026) : les appels à projets français ouverts, à venir ou à surveiller.
+// Mêmes colonnes que les appels européens ; « Programme » y est le financeur.
+export const frCalls = [
+  eu('f01', 'Culture et lien social en PACA 2027', 'DRAC PACA (ministère de la Culture)', 'Éducation artistique et culturelle avec les habitantes, co-construite avec une structure sociale', 'Élevée', 'Ouvert', '2027-01-13', 'Dépôt en ligne jusqu’au 13 janvier 2027 à 12 h.', 'Non précisé', 'Une structure culturelle porteuse (son SIRET est demandé)', 'Trouver vite un partenaire culturel (compagnie, artiste, lieu) et écrire la note d’intention', 'https://demarche.numerique.gouv.fr/commencer/dev-culturel_lien-social-paca-2027', 'Contact : paca-aap@culture.gouv.fr'),
+  eu('f02', 'Région Sud – CEDRE Ambition 2027', 'Région Sud', 'Aide régionale (à vérifier pour les associations)', 'Conditionnelle', 'Ouvert', '2026-12-11', 'Ouvert du 14 septembre au 11 décembre 2026 à 23 h 59.', 'Non précisé', 'Aucun', 'Appeler la Région pour savoir si Chez Marthe est éligible', 'https://mesaidespubliques.infogreffe.fr/aides/sud-provence-alpes-cote-azur-cedre-ambition', 'Éligibilité des associations non confirmée.'),
+  eu('f03', 'Contrat de ville 2027 – investissement', 'Métropole Aix-Marseille-Provence + État', 'Investissement des associations en quartier prioritaire', 'Conditionnelle', 'Ouvert', '2026-12-30', 'Selon la présentation d’Aix-en-Provence : ouvert du 8 juin au 30 décembre 2026. À confirmer pour Marseille.', 'Variable', 'Aucun', 'Vérifier le lien avec un quartier prioritaire, puis contacter l’équipe territoriale', 'https://ampmetropole.fr/', 'Réservé aux actions pour les habitants des quartiers prioritaires.'),
+  eu('f04', 'Contrat de ville 2027 – fonctionnement', 'Métropole Aix-Marseille-Provence + État', 'Actions des associations en quartier prioritaire', 'Conditionnelle', 'Clos – prochaine édition à surveiller', '', 'Clos le 18 septembre 2026 ; prochaine édition à l’été 2027.', 'Variable', 'Aucun', 'Préparer l’édition 2028 si le lien QPV est confirmé', 'https://ampmetropole.fr/'),
+  eu('f05', 'Département 13 – Ensemble en Provence 2027', 'Département des Bouches-du-Rhône', 'Pouvoir d’agir des habitants les plus fragiles (culture, environnement)', 'Élevée', 'À vérifier', '', 'Cahier des charges 2027 publié : date limite à y lire.', 'En 2026 : 100 000 € pour 18 projets', 'Aucun', 'Lire le cahier des charges 2027 tout de suite', 'https://departement13.fr/sites/default/files/media/downloads/2027-cahier-des-charges-aap-v1-ensemble-en-provence.pdf'),
+  eu('f06', 'Fondation des Femmes – Coups de Pouce 2026', 'Fondation des Femmes', 'Petites associations féministes', 'Très élevée', 'À vérifier', '', 'Formulaire 2026 en ligne ; en 2025 : 30 septembre – 24 octobre.', 'Variable', 'Aucun', 'Vérifier tout de suite si le formulaire est encore ouvert', 'https://tally.so/r/BzPQVK', 'Les associations déjà soutenues en 2026 ne peuvent pas candidater.'),
+  eu('f07', 'Fonds pour les Femmes en Méditerranée – session de janvier 2027', 'FFMed', 'Subventions aux associations de femmes', 'Très élevée', 'À venir', '', 'En 2026 : sessions les 15 janvier, 5 mai et 15 septembre (site tiers).', 'Variable', 'Aucun', 'Confirmer la date de janvier 2027 et préparer le dossier', 'https://www.medwomensfund.org/'),
+  eu('f08', 'Ville de Marseille – subventions 2027 (droits des femmes)', 'Ville de Marseille', 'Associations pour les droits des femmes et contre les violences', 'Très élevée', 'À venir', '', 'Campagne 2027 sur le guichet en ligne ; crédits votés à partir de juin.', 'En 2026 : 215 990 € pour l’ensemble des associations', 'Aucun', 'Préparer la demande et rencontrer le service Droits des femmes', 'https://subventions.marseille.fr/'),
+  eu('f09', 'DRDFE PACA – Égalité femmes-hommes 2027 (BOP 137)', 'État', 'Projets pour les droits des femmes', 'Très élevée', 'À venir', '', 'Campagne 2027 attendue début 2027.', 'Variable', 'Aucun', 'Prendre contact avant l’ouverture', 'https://www.prefectures-regions.gouv.fr/provence-alpes-cote-dazur/Region-et-institutions/L-action-de-l-Etat/Droits-des-femmes-et-egalite-f-h', 'Projets précis, pas le fonctionnement.'),
+  eu('f10', 'DRDFE PACA – aide aux victimes (AGRASC) 2027', 'État', 'Aide aux victimes de violences', 'Élevée', 'À venir', '', 'Lignes directrices 2026 publiées ; 2027 à venir.', 'Variable', 'Aucun', 'Lire les lignes directrices 2026', 'https://www.prefectures-regions.gouv.fr/provence-alpes-cote-dazur/irecontenu/telechargement/134633/986182/file/AAP_AGRASC_2026_lignes%20directrices_PACA.pdf'),
+  eu('f11', 'État et Région – égalité professionnelle 2027', 'Préfecture de région + Région Sud', 'Égalité professionnelle, insertion des femmes', 'Élevée', 'À venir', '', 'L’édition 2026 a fermé le 17 mai 2026.', 'Variable', 'Aucun', 'Surveiller l’ouverture au printemps 2027', 'https://www.prefectures-regions.gouv.fr/provence-alpes-cote-dazur/Region-et-institutions/L-action-de-l-Etat/Droits-des-femmes-et-egalite-f-h/Appel-a-projet-Contrat-d-Avenir-Etat-Region-promotion-de-l-egalite-professionnelle-femmes-hommes'),
+  eu('f12', 'FDVA 2027 – Bouches-du-Rhône', 'État (SDJES 13)', 'Fonctionnement, projets innovants, formation des bénévoles', 'Élevée', 'À venir', '', 'Campagne au printemps 2027 (à confirmer).', 'Souvent quelques milliers d’euros', 'Aucun', 'Mettre à jour Le Compte Asso et les comptes 2026', 'https://www.associations.gouv.fr/'),
+  eu('f13', 'CAF – agrément Espace de vie sociale', 'CAF des Bouches-du-Rhône', 'Financement durable d’un lieu de lien social', 'Très élevée', 'Permanent', '', 'Démarche à tout moment avec la CAF.', 'Prestation annuelle', 'Aucun', 'Prendre rendez-vous avec la CAF', 'https://www.caf.fr/', 'Projet social à écrire avec les habitantes.'),
+  eu('f14', 'ANCV – aides aux projets vacances (« Elles en vacances »)', 'ANCV avec la Cnaf', 'Vacances des femmes victimes de violences', 'Élevée', 'Permanent', '', 'Appels permanents de l’ANCV.', 'Jusqu’à 70 % ; 350 € par femme', 'Aucun', 'Monter un projet de séjour', 'https://www.ancv.com/'),
+  eu('f15', 'FNAVDL – accompagnement vers le logement', 'État (DIHAL, DDETS 13)', 'Accès et maintien dans le logement, victimes de violences conjugales', 'Élevée', 'À vérifier', '', 'Crédits 2026 renforcés ; appels régionaux.', 'Variable', 'Aucun', 'Demander le calendrier à la DDETS 13', 'https://www.info.gouv.fr/organisation/delegation-interministerielle-a-l-hebergement-et-a-l-acces-au-logement/accelerer-lacces-au-logement-social'),
+  eu('f16', 'Service civique – agrément', 'Agence du Service civique', 'Accueillir des volontaires', 'Élevée', 'Permanent', '', 'Demande d’agrément à tout moment.', 'Volontaires indemnisés par l’État', 'Aucun', 'Préparer les missions et la demande d’agrément', 'https://www.service-civique.gouv.fr/'),
+  eu('f17', 'Fondation de France – Réveillons la solidarité 2027', 'Fondation de France', 'Lien social pendant les fêtes', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 9 septembre 2026.', 'Variable', 'Aucun', 'Préparer pour septembre 2027', 'https://fondationdefrance.org/images/pdf/2026/reveillons26-2.pdf'),
+  eu('f18', 'Fondation de France – Droits et discriminations', 'Fondation de France', 'Accès aux droits, discriminations', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 15 juillet 2026.', 'Variable', 'Aucun', 'Préparer l’édition 2027', 'https://fondationdefrance.org/images/pdf/2026/aap/droit-personnes_26.pdf'),
+  eu('f19', 'Fondation de France – programme Habitat', 'Fondation de France', 'Habitat des plus fragiles', 'Très élevée', 'À venir', '', 'En 2026 : dépôt de décembre 2025 à mai 2026. Édition 2027 attendue à partir de décembre 2026.', 'Soutien jusqu’à 3 ans', 'Aucun', 'Surveiller l’ouverture en décembre', 'https://fondationdefrance.org/fr/appels-a-projets/un-habitat-solidaire-resilient-et-durable-pour-nos-territoires'),
+  eu('f20', 'Fondation Castorama – habitats solidaires', 'Fondation Castorama (Fondation de France)', 'Habitats solidaires et mixtes', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Dernière édition close le 2 juin 2026.', 'Variable', 'Aucun', 'Préparer la prochaine édition', 'https://www.fondationdefrance.org/fr/appels-a-projets-fa/lppel-a-projets-2026-de-la-fondation-castorama-porte-sur-ladaptation-des-logements-au-vieillissement-et-les-habitats-solidaires-mixtes'),
+  eu('f21', 'Fondation Brico Dépôt pour l’habitat 2027', 'Fondation Brico Dépôt', 'Rénovation et équipement de lieux d’accueil', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 publiée en juin 2026.', 'Jusqu’à 50 000 € par projet', 'Aucun', 'Préparer un budget travaux / équipement', 'https://www.fondationdefrance.org/fr/appels-a-projets-fa/la-fondation-brico-depot-pour-lhabitat-lance-son-appel-a-projet-2026'),
+  eu('f22', 'Fonds de dotation Qualitel 2027', 'Qualitel', 'Qualité du logement des publics fragiles (dont femmes isolées)', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 17 juillet 2026 ; lauréats en décembre.', 'Variable', 'Aucun', 'Préparer l’édition 2027', 'https://www.qualitel.org/financement-projets/appel-a-projets/'),
+  eu('f23', 'Fondation Laforêt – Prix du Logement Solidaire 2027', 'Fondation Laforêt', 'Prix de 30 000 €', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 7 septembre 2026.', '30 000 €', 'Aucun', 'Surveiller l’édition 2027', 'https://www.laforet.com/espace-presse/nos-communiques/prix-logement-solidaire-2026-fondation-laforet'),
+  eu('f24', 'Fonds solidaire méditerranéen 2027', 'Banque Populaire Méditerranée', 'Projets locaux à impact', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close vers le 20 septembre 2026.', 'Variable', 'Aucun', 'Surveiller l’édition 2027', 'https://mesinfos.fr/13000-marseille/le-fonds-solidaire-mediterraneen-lance-son-premier-appel-a-projets-334878.html'),
+  eu('f25', 'Concours « S’engager pour les quartiers » 2027', 'Fondation FACE', 'Insertion et projets dans les quartiers', 'Élevée', 'Clos – prochaine édition à surveiller', '', 'Édition 2026 close le 6 mars 2026.', 'Prix', 'Aucun', 'Préparer pour début 2027', 'https://www.fondationface.org/'),
+  eu('f26', 'Les Petites Pierres – appels à projets', 'Les Petites Pierres (Fondation Somfy)', 'Habitat solidaire, collecte en ligne', 'Élevée', 'À vérifier', '', 'Appel 2026 publié le 18 mars 2026.', 'Jusqu’à 15 000 €', 'Aucun', 'Vérifier les prochaines dates', 'https://www.carenews.com/fondation-somfy/appels-a-projet/les-metiers-du-btp-au-service-de-l-habitat-solidaire'),
+  eu('f27', 'Fondation CMA CGM – Le Phare', 'Fondation CMA CGM', 'Incubateur social à Marseille', 'Élevée', 'À vérifier', '', 'Appel à candidatures annuel.', 'Accompagnement', 'Aucun', 'Vérifier la date de la prochaine promotion', 'https://cmacgm-group.com/en/foundation/our-actions/le-phare-social-incubator'),
+  eu('f28', 'La Bonne Jeanne et Œuvre antituberculeuse des Bouches-du-Rhône 2027', 'Fondations locales', 'Personnes en difficulté en PACA', 'Élevée', 'À venir', '', 'En 2026 : lauréats choisis fin mars.', 'Variable', 'Aucun', 'Surveiller l’ouverture début 2027', 'https://www.hospimedia.fr/actualite/appels-a-projets/20260225-usagers-deux-fondations-soutiennent-l-innovation-sociale-a'),
+];
+
