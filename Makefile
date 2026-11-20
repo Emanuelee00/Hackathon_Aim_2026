@@ -8,7 +8,7 @@ export OPENAI_API OPENAI_MODEL
 
 .DEFAULT_GOAL := all
 
-.PHONY: all install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
+.PHONY: all run install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
 
 all: install
 	@set -eu; \
@@ -21,6 +21,10 @@ all: install
 	done; \
 	ollama pull qwen2.5:0.5b; \
 	ollama pull qwen2.5:3b; \
+	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
+# Come `all`, ma senza Ollama : installe, builde le frontend et lance le backend.
+run: install
 	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
 
 ai:

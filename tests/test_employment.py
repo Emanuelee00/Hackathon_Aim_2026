@@ -143,7 +143,7 @@ def test_mixed_cv_does_not_deny_existing_cooking_experience():
 
 def test_demo_cv_files_are_readable():
     for name in ("cv-marie-demo.docx", "cv-tech-demo.docx"):
-        file = Path(__file__).parent / "web" / "public" / "demo" / name
+        file = Path(__file__).parent.parent / "web" / "public" / "demo" / name
         text = extract_cv_text(name, file.read_bytes())
         assert "fictif" in text
         assert len(text) > 100

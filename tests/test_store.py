@@ -17,7 +17,7 @@ from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router
 
-WEB = Path(__file__).parent / "web" / "src"
+WEB = Path(__file__).parent.parent / "web" / "src"
 ACCOUNTS = {
     "equipe": ("coord@marthe.fr", "Coordinatrice"),
     "residents": ("marie@marthe.fr", "Marie"),

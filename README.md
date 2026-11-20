@@ -35,8 +35,23 @@ Per fermare i server usa Ctrl+C nei rispettivi terminali.
 
 Il dominio principale mostra la pagina d'accoglienza; ogni pubblico ha il suo
 sottodominio: `equipe.`, `residents.`, `benevoles.` e `partenaires.` (questi ultimi
-due in preparazione). In locale usa `localhost` invece di `127.0.0.1`, per esempio
-http://equipe.localhost:8000. Eventi e percorsi sono salvati dal backend
+due in preparazione). L'app riconosce lo spazio **dal sottodominio** (vedi
+`web/src/shared/lib/spaces.js`): cliccando «Se connecter» il browser passa a
+`<spazio>.<host>`.
+
+> **In locale usa sempre `localhost`, mai `127.0.0.1`.**
+> Con `127.0.0.1` il link diventa `<spazio>.127.0.0.1`, che non è un dominio
+> valido: il browser non risolve nulla e la pagina resta bianca. I browser
+> risolvono invece ogni `*.localhost` su 127.0.0.1 senza toccare `/etc/hosts`.
+> Esempi che funzionano:
+> - http://equipe.localhost:8000
+> - http://residents.localhost:8000
+> - http://benevoles.localhost:8000
+> - http://partenaires.localhost:8000
+> - http://localhost:8000 (pagina d'accoglienza)
+
+Lo stesso vale con Vite: `make front` e apri http://localhost:5173 (non
+`127.0.0.1:5173`). Eventi e percorsi sono salvati dal backend
 (`/api/store/…`), così tutti i sottodomini condividono gli stessi dati: Postgres se
 `DATABASE_URL` è definita (docker compose), altrimenti il file SQLite `marthe.db`.
 

@@ -18,8 +18,13 @@ function rootHost(hostname) {
   return spaceFromHost(hostname) || hostname.startsWith('www.') ? hostname.slice(hostname.indexOf('.') + 1) : hostname;
 }
 
+// A bare IP (127.0.0.1, [::1]) has no subdomains: links from it must switch to
+// localhost, which browsers resolve to the loopback with any subdomain.
+const LOOPBACK_IP = /^(127\.0\.0\.1|\[::1\])$/;
+
 // Link to a space (or to the landing page when space is null), keeping protocol and port.
 export function spaceUrl(space, { protocol, hostname, port } = window.location) {
-  const host = space ? `${space}.${rootHost(hostname)}` : rootHost(hostname);
+  const base = LOOPBACK_IP.test(hostname) ? 'localhost' : hostname;
+  const host = space ? `${space}.${rootHost(base)}` : rootHost(base);
   return `${protocol}//${host}${port ? `:${port}` : ''}/`;
 }
