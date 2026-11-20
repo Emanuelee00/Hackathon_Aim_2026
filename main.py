@@ -52,9 +52,11 @@ PARIS = ZoneInfo("Europe/Paris")
 app = FastAPI(title="Marthe", version="0.1.0", lifespan=lifespan)
 PUBLIC_SITE_ORIGINS = [
     origin.strip().rstrip("/")
-    for origin in os.getenv(
-        "PUBLIC_SITE_ORIGINS",
-        "https://chezmarthe.site,https://www.chezmarthe.site",
+    for origin in (
+        # `or` instead of a getenv default: an env var set to empty (ex: make
+        # exporting PUBLIC_SITE_ORIGINS= without .env) must fall back too.
+        os.getenv("PUBLIC_SITE_ORIGINS")
+        or "https://chezmarthe.site,https://www.chezmarthe.site"
     ).split(",")
     if origin.strip()
 ]
@@ -85,8 +87,8 @@ app.include_router(profils_router)
 
 # In production every visitor ends up on CANONICAL_DOMAIN: www.<domain> and the
 # old domains in OLD_DOMAINS (same subdomain kept) are redirected there.
-CANONICAL_DOMAIN = os.getenv("CANONICAL_DOMAIN", "")
-OLD_DOMAINS = [d for d in os.getenv("OLD_DOMAINS", "").split(",") if d]
+CANONICAL_DOMAIN = os.getenv("CANONICAL_DOMAIN") or ""
+OLD_DOMAINS = [d for d in (os.getenv("OLD_DOMAINS") or "").split(",") if d]
 
 
 def canonical_host(host: str) -> str | None:

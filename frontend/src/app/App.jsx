@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import Header from '../shared/components/Header.jsx';
 import Modal from '../shared/components/Modal.jsx';
-import Sidebar, { navigation } from '../shared/components/Sidebar.jsx';
+import Sidebar from '../shared/components/Sidebar.jsx';
+import { navigation } from '../shared/data/navigation.js';
+import useHashPage from '../shared/lib/useHashPage.js';
+import useMediaQuery from '../shared/lib/useMediaQuery.js';
 import EventDetails from '../features/requests/components/EventDetails.jsx';
 import EventForm from '../features/requests/components/EventForm.jsx';
 import Dashboard from '../features/dashboard/Dashboard.jsx';
@@ -56,10 +59,41 @@ function PageContent({ page, openEvent, openAccounting, openJourney, openNew, op
   return <section className="panel placeholder-page"><p className="eyebrow">CHEZ MARTHE</p><h1>{navigation.find(item => item.id === page)?.label}</h1><p>Cette section est en cours de préparation.</p></section>;
 }
 
-// The page is kept in the address (#funding), so a reload or the back button stays on it.
-const pageFromHash = () => {
-  const id = window.location.hash.slice(1);
-  return navigation.some(item => item.id === id) ? id : 'dashboard';
+// One definition per modal window: title, width, class and body; all fed from the Shell context.
+const MODALS = {
+  event: {
+    title: ({ event }) => event?.title || 'Événement',
+    render: ({ event, events, saveEvent, notify, onEdit, onAccounting, closeModal }) => event && <EventDetails event={event} events={events} onSave={saveEvent} onEdit={onEdit} onClose={closeModal} notify={notify} onAccounting={onAccounting} />,
+  },
+  edit: {
+    title: () => 'Modifier la demande',
+    wide: true,
+    render: ({ event, events, saveDraft, closeModal }) => <EventForm event={event} events={events} onSave={saveDraft} onCancel={closeModal} />,
+  },
+  new: {
+    title: () => 'Nouvelle demande',
+    wide: true,
+    render: ({ initialEvent, events, saveDraft, closeModal }) => <EventForm event={initialEvent} events={events} onSave={saveDraft} onCancel={closeModal} />,
+  },
+  accounting: {
+    title: ({ event }) => `Comptabilité · ${event?.title || 'Événement'}`,
+    className: 'modal-accounting',
+    render: ({ event, saveEvent, notify, from, openEvent }) => event && <AccountingWindow key={event.id} event={event} onSave={saveEvent} notify={notify} onBack={from === 'event' ? () => openEvent(event.id) : undefined} />,
+  },
+  report: {
+    title: ({ event }) => `Bilan · ${event?.title}`,
+    wide: true,
+    render: ({ event, linkedParticipations, saveReport, closeModal }) => event && <ReportForm event={event} linkedParticipations={linkedParticipations} onSave={saveReport} onCancel={closeModal} />,
+  },
+  journey: {
+    title: ({ resident }) => `Parcours · ${resident?.first_name}`,
+    wide: true,
+    render: ({ match, resident, journeyEvent, saveJourneyDraft, closeModal }) => match && resident && journeyEvent && <JourneyForm match={match} resident={resident} event={journeyEvent} onSave={saveJourneyDraft} onCancel={closeModal} />,
+  },
+  help: {
+    title: () => 'À propos',
+    render: () => <p>Marthe accompagne les lieux solidaires dans l’organisation de leurs événements. Les données affichées sont fictives.</p>,
+  },
 };
 
 // Après la connexion : « Qui êtes-vous ? », puis l'espace de la personne choisie.
@@ -74,26 +108,14 @@ function ProfileGate() {
 
 function Shell() {
   const { events, saveEvent, matches, saveJourney, notify, storageError, toast } = useStore();
-  const [page, setPage] = useState(pageFromHash);
-  useEffect(() => {
-    const follow = () => setPage(pageFromHash());
-    window.addEventListener('hashchange', follow);
-    return () => window.removeEventListener('hashchange', follow);
-  }, []);
+  const [page, navigatePage] = useHashPage();
   const [menuOpen, setMenuOpen] = useState(false);
   // Grand écran : le panneau latéral se replie pour voir la page en entier ; le choix est gardé pour la prochaine visite.
   const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem('marthe-sidebar') === 'collapsed'; } catch { return false; } });
-  const isNarrow = () => window.matchMedia('(max-width: 820px)').matches;
   // Petit écran : le menu est un tiroir. On suit la taille de la fenêtre pour que la linguette (flèche) montre le bon sens.
-  const [narrow, setNarrow] = useState(isNarrow);
-  useEffect(() => {
-    const query = window.matchMedia('(max-width: 820px)');
-    const update = () => setNarrow(query.matches);
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
+  const narrow = useMediaQuery('(max-width: 820px)');
   const toggleMenu = () => {
-    if (isNarrow()) { setMenuOpen(open => !open); return; }
+    if (narrow) { setMenuOpen(open => !open); return; }
     setCollapsed(current => {
       const next = !current;
       try { localStorage.setItem('marthe-sidebar', next ? 'collapsed' : 'open'); } catch { /* le choix vaut pour cette visite */ }
@@ -110,8 +132,7 @@ function Shell() {
   const journeyResident = residentById[selectedMatch?.resident_id];
   const linkedParticipations = matches.filter(match => match.eventId === selectedEvent?.id && match.status === 'accepted' && match.journey?.participation === 'participated').length;
   const navigate = nextPage => {
-    window.location.hash = nextPage;
-    setPage(nextPage);
+    navigatePage(nextPage);
     setMenuOpen(false);
   };
   const closeModal = () => setModal(null);
@@ -143,6 +164,15 @@ function Shell() {
     if (theme !== 'light') root.classList.add(`theme-${theme}`);
     return () => root.classList.remove('theme-dark', 'theme-violet');
   }, [theme]);
+  // The open window: one definition per type, fed from this context.
+  const modalDef = MODALS[modal?.type] ?? MODALS.help;
+  const modalCtx = {
+    event: selectedEvent, match: selectedMatch, resident: journeyResident, journeyEvent,
+    initialEvent: modal?.initialEvent, from: modal?.from, linkedParticipations,
+    events, saveEvent, saveDraft, saveReport, saveJourneyDraft, notify, closeModal, openEvent,
+    onEdit: () => setModal({ type: 'edit', eventId: selectedEvent?.id }),
+    onAccounting: () => selectedEvent && openAccounting(selectedEvent.id, 'event'),
+  };
   return <div className={`app-shell${collapsed ? ' is-collapsed' : ''}${menuOpen ? ' menu-open' : ''}`} style={pageStyle(profile.pageBackground, theme)}>
     <Sidebar
       page={page}
@@ -161,13 +191,6 @@ function Shell() {
     </div>
     {storageError && <p role="alert" className="notice">{storageError}</p>}
     {toast && <p role="status" className="notice">{toast}</p>}
-    {modal && <Modal title={modal.type === 'event' ? selectedEvent?.title || 'Événement' : modal.type === 'accounting' ? `Comptabilité · ${selectedEvent?.title || 'Événement'}` : modal.type === 'edit' ? 'Modifier la demande' : modal.type === 'new' ? 'Nouvelle demande' : modal.type === 'report' ? `Bilan · ${selectedEvent?.title}` : modal.type === 'journey' ? `Parcours · ${journeyResident?.first_name}` : 'À propos'} onClose={closeModal} wide={['new', 'edit', 'report', 'journey'].includes(modal.type)} className={modal.type === 'accounting' ? 'modal-accounting' : ''}>
-      {['new', 'edit'].includes(modal.type) && <EventForm event={modal.type === 'edit' ? selectedEvent : modal.initialEvent} events={events} onSave={saveDraft} onCancel={closeModal} />}
-      {modal.type === 'event' && selectedEvent && <EventDetails event={selectedEvent} events={events} onSave={saveEvent} onEdit={() => setModal({ type: 'edit', eventId: selectedEvent.id })} onClose={closeModal} notify={notify} onAccounting={() => openAccounting(selectedEvent.id, 'event')} />}
-      {modal.type === 'accounting' && selectedEvent && <AccountingWindow key={selectedEvent.id} event={selectedEvent} onSave={saveEvent} notify={notify} onBack={modal.from === 'event' ? () => openEvent(selectedEvent.id) : undefined} />}
-      {modal.type === 'report' && selectedEvent && <ReportForm event={selectedEvent} linkedParticipations={linkedParticipations} onSave={saveReport} onCancel={closeModal} />}
-      {modal.type === 'journey' && selectedMatch && journeyResident && journeyEvent && <JourneyForm match={selectedMatch} resident={journeyResident} event={journeyEvent} onSave={saveJourneyDraft} onCancel={closeModal} />}
-      {modal.type === 'help' && <p>Marthe accompagne les lieux solidaires dans l’organisation de leurs événements. Les données affichées sont fictives.</p>}
-    </Modal>}
+    {modal && <Modal title={modalDef.title(modalCtx)} onClose={closeModal} wide={modalDef.wide} className={modalDef.className}>{modalDef.render(modalCtx)}</Modal>}
   </div>;
 }

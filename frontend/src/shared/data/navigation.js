@@ -1,0 +1,21 @@
+// Pages of the équipe space, in menu order; the hash of the address carries the id (#funding).
+export const navigation = [
+  { id: 'dashboard', label: 'Vue d’ensemble', icon: 'dashboard' },
+  { id: 'requests', label: 'Les demandes', icon: 'inbox' },
+  { id: 'questions', label: 'Questions reçues', icon: 'chat' },
+  { id: 'access', label: 'Demandes d’accès', icon: 'users' },
+  { id: 'committee', label: 'Comité du vendredi', icon: 'checks' },
+  { id: 'opportunities', label: 'Opportunités & parcours', icon: 'sparkles' },
+  { id: 'residents', label: 'Nos résidentes', icon: 'users' },
+  { id: 'journeys', label: 'Suivi des parcours', icon: 'leaf' },
+  { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
+  { id: 'spaces', label: 'Nos espaces', icon: 'space' },
+  { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
+  { id: 'bilans', label: 'Bilans des structures', icon: 'checks' },
+  { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
+  { id: 'funding', label: 'Financements', icon: 'euro' },
+  { id: 'prospection', label: 'Financeurs potentiels', icon: 'target' },
+  { id: 'messages', label: 'Messages', icon: 'mail' },
+  { id: 'quotes', label: 'Factures et devis', icon: 'file' },
+  { id: 'site', label: 'Site', icon: 'palette' },
+];

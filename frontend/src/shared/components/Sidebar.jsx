@@ -2,32 +2,12 @@ import { useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useStore } from '../../app/store.jsx';
 import { sites } from '../data/sites.js';
+import { navigation } from '../data/navigation.js';
 import { spaceUrl } from '../lib/spaces.js';
 import { useProfile } from '../../features/profiles/ProfileProvider.jsx';
 import { isLight, menuStyle, orderedNavigation, toggleStar } from '../../features/profiles/profiles.js';
 import usePointerSort from '../lib/usePointerSort.js';
 import { moveTo } from '../../features/site/rentalCards.js';
-
-export const navigation = [
-  { id: 'dashboard', label: 'Vue d’ensemble', icon: 'dashboard' },
-  { id: 'requests', label: 'Les demandes', icon: 'inbox' },
-  { id: 'questions', label: 'Questions reçues', icon: 'chat' },
-  { id: 'access', label: 'Demandes d’accès', icon: 'users' },
-  { id: 'committee', label: 'Comité du vendredi', icon: 'checks' },
-  { id: 'opportunities', label: 'Opportunités & parcours', icon: 'sparkles' },
-  { id: 'residents', label: 'Nos résidentes', icon: 'users' },
-  { id: 'journeys', label: 'Suivi des parcours', icon: 'leaf' },
-  { id: 'calendar', label: 'Le calendrier', icon: 'calendar' },
-  { id: 'spaces', label: 'Nos espaces', icon: 'space' },
-  { id: 'reports', label: 'Bilans & impact', icon: 'heart' },
-  { id: 'bilans', label: 'Bilans des structures', icon: 'checks' },
-  { id: 'stats', label: 'Statistiques & conseils', icon: 'dashboard' },
-  { id: 'funding', label: 'Financements', icon: 'euro' },
-  { id: 'prospection', label: 'Financeurs potentiels', icon: 'target' },
-  { id: 'messages', label: 'Messages', icon: 'mail' },
-  { id: 'quotes', label: 'Factures et devis', icon: 'file' },
-  { id: 'site', label: 'Site', icon: 'palette' },
-];
 
 export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();
