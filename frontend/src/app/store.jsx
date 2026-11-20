@@ -4,6 +4,7 @@ import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
 import { sites } from '../shared/data/sites.js';
 import { demoMatches } from '../features/resident/demo.js';
+import { SHOW_DEMO_DATA } from '../shared/lib/demo.js';
 
 const Store = createContext(null);
 
@@ -16,11 +17,12 @@ async function fetchStored(key) {
 }
 
 function validEvents(saved) {
-  return Array.isArray(saved) && saved.every(event => event.id && typeof event.title === 'string' && spaceById[event.space] && statuses[event.status] && Array.isArray(event.tasks)) ? saved : initialEvents;
+  return Array.isArray(saved) && saved.every(event => event.id && typeof event.title === 'string' && spaceById[event.space] && statuses[event.status] && Array.isArray(event.tasks)) ? saved : SHOW_DEMO_DATA ? initialEvents : [];
 }
 
 function withDemoMatches(saved) {
-  if (!Array.isArray(saved)) return demoMatches;
+  if (!Array.isArray(saved)) return SHOW_DEMO_DATA ? demoMatches : [];
+  if (!SHOW_DEMO_DATA) return saved;
   return [...saved, ...demoMatches.filter(demo => !saved.some(match => match.eventId === demo.eventId && match.resident_id === demo.resident_id))];
 }
 
@@ -32,23 +34,42 @@ function validVisitSlots(saved) {
 function useSync(key, value, ready, synced, onError) {
   useEffect(() => {
     const body = JSON.stringify(value);
-    if (!ready || synced.current[key] === body) return;
-    synced.current[key] = body;
+    if (!ready || synced.current === body) return;
+    synced.current = body;
     fetch(`/api/store/${key}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body })
       .then(response => { if (!response.ok) throw new Error(key); })
       .catch(onError);
   }, [key, value, ready]);
 }
 
+// One server-backed piece of state: validate what the server returns, keep the
+// saved copy aside so unchanged data is never written back, and expose adopt()
+// for the provider's load effect. Every store key uses exactly this.
+function useStored(key, fallback, validate, ready, onError) {
+  const [value, setValue] = useState(fallback);
+  const synced = useRef('');
+  useSync(key, value, ready, synced, onError);
+  const adopt = saved => {
+    const next = validate(saved);
+    if (saved != null) synced.current = JSON.stringify(next);
+    setValue(next);
+  };
+  return [value, setValue, adopt];
+}
+
 export function StoreProvider({ children }) {
-  const [events, setEvents] = useState(initialEvents);
-  const [matches, setMatches] = useState(demoMatches);
-  const [partners, setPartners] = useState([]);
+  const [status, setStatus] = useState('loading');
+  const [storageError, setStorageError] = useState('');
+  const [toast, setToast] = useState('');
+  const ready = status === 'ready';
+  const saveFailed = () => setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.');
+  const [events, setEvents, adoptEvents] = useStored('events', SHOW_DEMO_DATA ? initialEvents : [], validEvents, ready, saveFailed);
+  const [matches, setMatches, adoptMatches] = useStored('matches', SHOW_DEMO_DATA ? demoMatches : [], withDemoMatches, ready, saveFailed);
+  const [partners, setPartners, adoptPartners] = useStored('partners', [], saved => saved ?? [], ready, saveFailed);
+  const [visitSlots, saveVisitSlots, adoptVisitSlots] = useStored('visitSlots', [], validVisitSlots, ready, saveFailed);
+  const [laughs, setLaughs, adoptLaughs] = useStored('laughs', [], saved => saved ?? [], ready, saveFailed);
   // The team's funding tracker; the other spaces always receive an empty list.
-  const [funders, setFunders] = useState([]);
-  const [visitSlots, saveVisitSlots] = useState([]);
-  // Each person's own laughs: the server only returns and keeps the signed-in account's.
-  const [laughs, setLaughs] = useState([]);
+  const [funders, setFunders, adoptFunders] = useStored('funders', [], saved => (Array.isArray(saved) ? saved : []), ready, saveFailed);
   const [siteId, setSiteId] = useState(() => {
     try {
       const saved = localStorage.getItem('marthe-site-v1');
@@ -60,25 +81,15 @@ export function StoreProvider({ children }) {
     try { localStorage.setItem('marthe-site-v1', siteId); }
     catch { /* The site selection remains available for this session. */ }
   }, [siteId]);
-  const [status, setStatus] = useState('loading');
-  const [storageError, setStorageError] = useState('');
-  const [toast, setToast] = useState('');
-  const synced = useRef({});
   useEffect(() => {
     const load = () => Promise.all([fetchStored('events'), fetchStored('matches'), fetchStored('partners'), fetchStored('visitSlots'), fetchStored('laughs'), fetchStored('funders')]).then(([savedEvents, savedMatches, savedPartners, savedVisitSlots, savedLaughs, savedFunders]) => {
-      const nextEvents = validEvents(savedEvents);
-      const nextMatches = withDemoMatches(savedMatches);
-      const nextVisitSlots = validVisitSlots(savedVisitSlots);
-      if (savedEvents) synced.current.events = JSON.stringify(nextEvents);
-      if (savedMatches) synced.current.matches = JSON.stringify(nextMatches);
-      if (savedPartners) synced.current.partners = JSON.stringify(savedPartners);
-      if (savedVisitSlots) synced.current.visitSlots = JSON.stringify(nextVisitSlots);
-      if (savedLaughs) synced.current.laughs = JSON.stringify(savedLaughs);
-      if (savedFunders) synced.current.funders = JSON.stringify(savedFunders);
-      setPartners(savedPartners || []);
-      setLaughs(savedLaughs || []);
-      setFunders(Array.isArray(savedFunders) ? savedFunders : []);
-      setEvents(nextEvents); setMatches(nextMatches); saveVisitSlots(nextVisitSlots); setStorageError(''); setStatus('ready');
+      adoptEvents(savedEvents);
+      adoptMatches(savedMatches);
+      adoptPartners(savedPartners);
+      adoptVisitSlots(savedVisitSlots);
+      adoptLaughs(savedLaughs);
+      adoptFunders(savedFunders);
+      setStorageError(''); setStatus('ready');
     }).catch(() => {
       setStorageError('Le serveur est injoignable : vos modifications ne seront pas enregistrées.');
       setStatus(current => current === 'loading' ? 'offline' : current);
@@ -88,13 +99,6 @@ export function StoreProvider({ children }) {
     window.addEventListener('focus', load);
     return () => window.removeEventListener('focus', load);
   }, []);
-  const saveFailed = () => setStorageError('La sauvegarde est indisponible : gardez cette page ouverte et exportez vos fiches.');
-  useSync('events', events, status === 'ready', synced, saveFailed);
-  useSync('matches', matches, status === 'ready', synced, saveFailed);
-  useSync('partners', partners, status === 'ready', synced, saveFailed);
-  useSync('visitSlots', visitSlots, status === 'ready', synced, saveFailed);
-  useSync('laughs', laughs, status === 'ready', synced, saveFailed);
-  useSync('funders', funders, status === 'ready', synced, saveFailed);
   useEffect(() => { if (toast) { const timer = setTimeout(() => setToast(''), 4500); return () => clearTimeout(timer); } }, [toast]);
   function saveEvent(event) {
     if (event.status === 'cancelled') saveVisitSlots(current => current.reduce((slots, slot) => slot.booking?.eventId === event.id && !slot.outcome ? cancelVisit(slots, slot.id, 'Demande refusée ou annulée') : slots, current));
@@ -123,6 +127,7 @@ export function StoreProvider({ children }) {
   const savePartner = partner => setPartners(current => [...current.filter(item => item.id !== partner.id), partner]);
   const saveFunder = funder => setFunders(current => current.some(item => item.id === funder.id) ? current.map(item => item.id === funder.id ? funder : item) : [...current, funder]);
   const removeFunder = id => setFunders(current => current.filter(funder => funder.id !== id));
+  // Each person's own laughs: the server only returns and keeps the signed-in account's.
   const addLaugh = date => setLaughs(current => [...current, { id: crypto.randomUUID(), date }]);
   const removeLastLaugh = () => setLaughs(current => current.slice(0, -1));
   const saveJourney = (id, journey) => setMatches(current => current.map(match => match.id === id ? { ...match, journey } : match));

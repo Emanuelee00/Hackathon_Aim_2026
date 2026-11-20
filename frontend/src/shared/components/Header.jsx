@@ -1,5 +1,5 @@
 import Icon from './Icon.jsx';
-import { navigation } from './Sidebar.jsx';
+import { navigation } from '../data/navigation.js';
 import { AccountMenu } from '../../features/auth/AuthGate.jsx';
 import ProfileMenu from '../../features/profiles/ProfileMenu.jsx';
 

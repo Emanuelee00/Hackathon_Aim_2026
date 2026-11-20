@@ -4,7 +4,17 @@ export OLLAMA_MODELS := $(CURDIR)/.ollama/models
 export OLLAMA_NO_CLOUD := 1
 # OpenAI key of the chatbot agents (OPENAI_API=...), kept out of Git.
 -include .env
-export OPENAI_API OPENAI_MODEL PUBLIC_SITE_ORIGINS
+# Export only the variables actually set: exporting an empty one would
+# override the defaults in main.py (es. PUBLIC_SITE_ORIGINS → CORS spento).
+ifneq ($(OPENAI_API),)
+export OPENAI_API
+endif
+ifneq ($(OPENAI_MODEL),)
+export OPENAI_MODEL
+endif
+ifneq ($(PUBLIC_SITE_ORIGINS),)
+export PUBLIC_SITE_ORIGINS
+endif
 
 .DEFAULT_GOAL := all
 
