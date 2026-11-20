@@ -1,9 +1,9 @@
-import { cancelVisit } from '../features/requests/visits.js';
+import { cancelVisit } from '../features/equipe/requests/visits.js';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';
 import { sites } from '../shared/data/sites.js';
-import { demoMatches } from '../features/resident/demo.js';
+import { demoMatches } from '../features/residents/demo.js';
 import { SHOW_DEMO_DATA } from '../shared/lib/demo.js';
 
 const Store = createContext(null);

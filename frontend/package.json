@@ -9,7 +9,7 @@
     "build": "vite build",
     "build:jamstack": "vite build --mode jamstack",
     "preview:jamstack": "vite preview --mode jamstack",
-    "test": "node --test src/shared/lib/*.test.js src/features/*/*.test.js",
+    "test": "node --test src/shared/lib/*.test.js src/features/*/*.test.js src/features/*/*/*.test.js",
     "test:e2e": "playwright test"
   },
   "dependencies": {

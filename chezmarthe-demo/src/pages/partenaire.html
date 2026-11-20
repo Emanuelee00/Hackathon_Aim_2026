@@ -1,0 +1,21 @@
+
+<main class="wrap">
+<div style="padding-top:36px"><h1>Espace associations</h1><p class="muted">Un seul agenda pour toutes les structures du lieu. Gardez vos outils : l'outil commun se synchronise avec eux.</p></div>
+<div class="assos" id="assos"></div>
+<div class="two">
+<div>
+<div class="panel"><h2 id="a-name"></h2><p id="a-role" class="muted"></p><h3>Vos créneaux Chez Marthe</h3><div id="slots"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Réserver un espace</h3>
+<form id="bk" novalidate><div class="grid2">
+<div class="field"><label for="bk-sp">Espace</label><select id="bk-sp"><option>Salle de réunion</option><option>La chapelle</option><option>Le salon collectif</option><option>Le jardin</option></select></div>
+<div class="field"><label for="bk-d">Date</label><input type="date" id="bk-d"><div class="err" id="bk-e"></div></div></div>
+<button class="btn" type="submit">Réserver</button></form></div>
+</div>
+<div>
+<div class="panel"><h3>Synchroniser votre agenda</h3><p class="muted" style="font-size:14px" id="tool"></p>
+<div class="src"><label><input type="radio" name="src" value="Google Agenda" checked>Google Agenda</label><label><input type="radio" name="src" value="Excel">Fichier Excel</label><label><input type="radio" name="src" value="Lien iCal">Lien iCal</label></div>
+<button class="btn" id="sync">Synchroniser</button><div class="prog" aria-hidden="true"><i id="bar"></i></div><div id="res" aria-live="polite"></div></div>
+<div class="panel" style="margin-top:20px"><h3>Votre arrivée sur l'outil commun</h3><ul class="check" id="onb"></ul></div>
+</div></div>
+</main>
+<footer class="wrap">Une question ? Votre référente Chez Marthe répond à coordination@chezmarthe.ovh.</footer>

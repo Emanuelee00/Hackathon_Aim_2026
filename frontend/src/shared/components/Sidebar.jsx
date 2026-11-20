@@ -4,10 +4,10 @@ import { useStore } from '../../app/store.jsx';
 import { sites } from '../data/sites.js';
 import { navigation } from '../data/navigation.js';
 import { spaceUrl } from '../lib/spaces.js';
-import { useProfile } from '../../features/profiles/ProfileProvider.jsx';
-import { isLight, menuStyle, orderedNavigation, toggleStar } from '../../features/profiles/profiles.js';
+import { useProfile } from '../../features/equipe/profiles/ProfileProvider.jsx';
+import { isLight, menuStyle, orderedNavigation, toggleStar } from '../../features/equipe/profiles/profiles.js';
 import usePointerSort from '../lib/usePointerSort.js';
-import { moveTo } from '../../features/site/rentalCards.js';
+import { moveTo } from '../../features/equipe/site/rentalCards.js';
 
 export default function Sidebar({ page, navigate, mobile, close, onCollapse, expanded, help, newQuestions, accessRequests }) {
   const { events, siteId, setSiteId } = useStore();

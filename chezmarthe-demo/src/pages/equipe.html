@@ -1,0 +1,31 @@
+
+<main class="wrap">
+<div style="padding-top:36px"><h1>Bonjour l'équipe</h1><p class="muted">4 nouvelles demandes depuis lundi, pré-analysées selon la charte de programmation. Comité de coordination vendredi à 10 h.</p></div>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="demandes">Demandes<span class="count" id="cnt">4</span></button>
+<button role="tab" aria-selected="false" data-t="comite">Comité de vendredi</button>
+<button role="tab" aria-selected="false" data-t="agenda">Agenda des espaces</button>
+<button role="tab" aria-selected="false" data-t="impact">Impact</button>
+</div>
+<section id="demandes" role="tabpanel"><div class="inbox"><div id="list"></div><div class="panel" id="detail"></div></div></section>
+<section id="comite" role="tabpanel" hidden><p class="muted">Les demandes sont triées par la pré-analyse. La décision revient au comité.</p><div class="board" id="board"></div></section>
+<section id="agenda" role="tabpanel" hidden>
+<div class="legend"><span class="ev prog">Programmation</span><span class="ev loc">Location</span><span class="ev asso">Association hébergée</span><span class="ev resid">Vie des résidentes</span><span class="ev conf">Conflit à arbitrer</span></div>
+<div class="scroll"><div class="cal" id="cal"></div></div>
+<div class="alert" style="border-left:4px solid var(--soleil);background:var(--soleil-l);padding:10px 12px;margin-top:14px">La salle de réunion n'a aucune réservation cette semaine. Elle pourrait être proposée en location à la demi-journée.</div>
+</section>
+<section id="impact" role="tabpanel" hidden>
+<div class="kpis">
+<div class="panel kpi"><div class="n">14</div><div class="l">événements en septembre</div></div>
+<div class="panel kpi"><div class="n">1 840 €</div><div class="l">de recettes de location</div></div>
+<div class="panel kpi"><div class="n">6 / 14</div><div class="l">événements avec des résidentes présentes</div></div>
+<div class="panel kpi"><div class="n">5 j</div><div class="l">délai moyen de réponse, contre 3 semaines</div></div>
+</div>
+<div class="grid2" style="margin-top:16px">
+<div class="panel"><h3>Occupation des espaces</h3><div class="bars" id="occ"></div></div>
+<div class="panel"><h3>Qui fréquente le lieu</h3><div class="bars" id="mix"></div><p class="muted" style="font-size:14px;margin-top:10px">Satisfaction moyenne des organisateurs : 4,6 / 5 sur 11 bilans.</p></div>
+</div>
+<div class="actions"><button class="btn" onclick="cmToast('Rapport d\u2019impact de septembre exporté (PDF)')">Exporter le rapport pour les financeurs</button></div>
+</section>
+</main>
+<footer class="wrap">Pré-analyse automatique : une aide à la décision, jamais une décision.</footer>

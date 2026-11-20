@@ -1,5 +1,5 @@
 import { duration } from '../../shared/lib/format.js';
-import { commitments } from '../volunteers/volunteering.js';
+import { commitments } from '../benevoles/volunteering.js';
 
 // No points, no ranking: each trace grows like a plant, from what really happened here.
 const STAGES = [[1, 'Une graine semée'], [3, 'Ça pousse'], [5, 'En bourgeon'], [10, 'En fleur'], [25, 'Un arbre, déjà']];

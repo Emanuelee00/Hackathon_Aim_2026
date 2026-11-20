@@ -90,19 +90,15 @@ Site statique, cinq pages, une par sous-domaine prévu de `chezmarthe.ovh` :
 ```
 chezmarthe-demo/
   CLAUDE.md          ce fichier
-  src/               SOURCES À MODIFIER
-    common.css       styles partagés (tokens, composants)
-    nav.js           menu inter-sites, cmLink(), cmToast()
+  src/               SOURCES À MODIFIER, un sous-dossier par type de fichier
+    pages/           corps de chaque page (markup seul, sans style ni script)
+    css/             common.css (tokens, composants) + un <page>.css par page
+    js/              nav.js (menu inter-sites, cmLink(), cmToast()) + un <page>.js par page
     build.py         assemble chaque page en un index.html autonome
-    accueil.html     CSS spécifique, puis <!--/css-->, puis le corps de page et son script
-    equipe.html
-    partenaire.html
-    benevole.html
-    retour.html
   accueil/index.html etc.   FICHIERS GÉNÉRÉS, ne pas éditer à la main
 ```
 
-Pour modifier : éditer `src/`, puis `cd src && python3 build.py`. Le script injecte le CSS commun, l'en-tête, le bandeau « Démonstration hackathon, données fictives », le menu et `nav.js` dans chaque page, et écrit `../<page>/index.html`.
+Pour modifier : éditer `src/pages`, `src/css` ou `src/js`, puis `cd src && python3 build.py`. Le script assemble le CSS commun et celui de la page, l'en-tête, le bandeau « Démonstration hackathon, données fictives », le menu, le corps de la page, puis `nav.js` et le script de la page, et écrit `../<page>/index.html`.
 
 Navigation : `cmLink()` pointe vers `https://<sous-domaine>.chezmarthe.ovh/` quand le site tourne sur ce domaine, sinon vers `../<page>/index.html` (utile en local).
 
@@ -115,7 +111,7 @@ Navigation : `cmLink()` pointe vers `https://<sous-domaine>.chezmarthe.ovh/` qua
 
 ### Données et limites (à dire au jury)
 
-- **La pré-analyse est scénarisée** : les verdicts et critères des 4 demandes sont écrits en dur dans `equipe.html` (tableau `R`). Aucune IA n'est appelée. Les alertes du formulaire public sont de simples règles JS.
+- **La pré-analyse est scénarisée** : les verdicts et critères des 4 demandes sont écrits en dur dans `js/equipe.js` (tableau `R`). Aucune IA n'est appelée. Les alertes du formulaire public sont de simples règles JS.
 - **Données inventées** : jauges (chapelle 90, jardin 150, salon 15, cantine 30, réunion 8, coworking 12), chiffres d'impact, demandes, missions bénévoles, outils actuels des associations (hypothèses à vérifier avec elles). La majoration privatisation (×1,5) est aussi une hypothèse.
 - **Données réelles** : tarifs, surfaces et contraintes des espaces (PDF de l'association), noms des associations hébergées, fonctionnement du comité du vendredi.
 - Aucune persistance : tout est en mémoire, un rechargement remet à zéro.

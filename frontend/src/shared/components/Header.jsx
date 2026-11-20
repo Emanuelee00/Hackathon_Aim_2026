@@ -1,7 +1,7 @@
 import Icon from './Icon.jsx';
 import { navigation } from '../data/navigation.js';
 import { AccountMenu } from '../../features/auth/AuthGate.jsx';
-import ProfileMenu from '../../features/profiles/ProfileMenu.jsx';
+import ProfileMenu from '../../features/equipe/profiles/ProfileMenu.jsx';
 
 export default function Header({ page, onMenu, expanded, onNew }) {
   return <header className="topbar">
