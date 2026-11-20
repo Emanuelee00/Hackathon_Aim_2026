@@ -18,29 +18,35 @@ def test_invalid_message_does_not_call_model(monkeypatch, message):
     completion.assert_not_called()
 
 
-def test_chat_calls_local_ollama(monkeypatch):
+def test_chat_calls_nemotron(monkeypatch):
+    monkeypatch.setenv("NVIDIA_API_KEY", "test-nvidia-key")
     requests = []
     transport = httpx.MockTransport(
         lambda request: (
             requests.append(request)
-            or httpx.Response(200, json={"message": {"content": "Bonjour !"}})
+            or httpx.Response(
+                200,
+                json={"choices": [{"message": {"content": "Bonjour !"}}]},
+            )
         )
     )
     local_client = httpx.Client(transport=transport)
     monkeypatch.setattr(ai.httpx, "Client", MagicMock(return_value=local_client))
     response = ai.chat(ai.ChatRequest(message=" Bonjour "))
     assert response == {"reply": "Bonjour !"}
-    assert str(requests[0].url) == "http://127.0.0.1:11435/api/chat"
+    assert str(requests[0].url) == ai.NEMOTRON_URL
+    assert requests[0].headers["Authorization"] == "Bearer test-nvidia-key"
     assert json.loads(requests[0].content) == {
-        "model": ai.MODEL,
+        "model": ai.NEMOTRON_MODEL,
         "messages": [{"role": "user", "content": "Bonjour"}],
+        "max_tokens": 256,
         "stream": False,
-        "options": {"num_ctx": 4096, "num_predict": 256},
     }
 
 
 @pytest.mark.parametrize("upstream, expected", [(404, 503), (500, 502)])
-def test_ollama_errors_hide_details(monkeypatch, upstream, expected):
+def test_nemotron_errors_hide_details(monkeypatch, upstream, expected):
+    monkeypatch.setenv("NVIDIA_API_KEY", "test-nvidia-key")
     transport = httpx.MockTransport(
         lambda request: httpx.Response(upstream, json={"error": "private-details"})
     )

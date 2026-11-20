@@ -12,7 +12,11 @@ from sqlalchemy.orm import Session
 from accounts.models import User
 
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
+NEMOTRON_URL = os.getenv(
+    "NEMOTRON_URL", "https://integrate.api.nvidia.com/v1/chat/completions"
+)
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+NEMOTRON_MODEL = os.getenv("NEMOTRON_MODEL", "nvidia/nemotron-3-nano-30b-a3b")
 # Tool calls allowed before the model must answer in plain text.
 MAX_ROUNDS = 3
 
@@ -52,11 +56,26 @@ def params(**properties) -> dict:
     return {"type": "object", "properties": properties}
 
 
-def complete(messages: list[dict], tools: tuple[Tool, ...]) -> dict:
-    key = os.getenv("OPENAI_API")
-    if not key:
+def _resolve_llm_target() -> tuple[str, str, str]:
+    provider = os.getenv("LLM_PROVIDER", "").strip().lower()
+    nvidia_key = os.getenv("NVIDIA_API_KEY", "").strip()
+    openai_key = os.getenv("OPENAI_API", "").strip()
+    if provider == "nemotron" or (not provider and nvidia_key and not openai_key):
+        if not nvidia_key:
+            raise HTTPException(
+                503, "L’assistant n’est pas configuré (clé NVIDIA_API_KEY)."
+            )
+        url = os.getenv("NEMOTRON_URL", NEMOTRON_URL)
+        model = os.getenv("NEMOTRON_MODEL", NEMOTRON_MODEL)
+        return url, model, nvidia_key
+    if not openai_key:
         raise HTTPException(503, "L’assistant n’est pas configuré (clé OpenAI).")
-    body = {"model": MODEL, "messages": messages}
+    return OPENAI_URL, MODEL, openai_key
+
+
+def complete(messages: list[dict], tools: tuple[Tool, ...]) -> dict:
+    url, model, key = _resolve_llm_target()
+    body: dict = {"model": model, "messages": messages}
     if tools:
         body["tools"] = [
             {
@@ -71,7 +90,7 @@ def complete(messages: list[dict], tools: tuple[Tool, ...]) -> dict:
         ]
     with httpx.Client(timeout=30) as client:
         response = client.post(
-            OPENAI_URL, headers={"Authorization": f"Bearer {key}"}, json=body
+            url, headers={"Authorization": f"Bearer {key}"}, json=body
         )
         response.raise_for_status()
     return response.json()["choices"][0]["message"]
