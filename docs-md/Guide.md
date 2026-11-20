@@ -34,8 +34,9 @@ excluded) is the signal that one more level is needed. The number is a warning
   (Vercel, `Dockerfile`, `Dockerfile.prod` all use `main:app`). Do not move it
   without updating those three places and the deploy in the same commit.
 - **Frontend JS**: tests live next to the sources (`*.test.js` in the same feature
-  folder). Do not force the `tests/unit/` layout on the frontend: the runner is
-  `node --test src/**/*.test.js` and tests import modules through relative paths.
+  folder). Do not force the `tests/unit/` layout on the frontend: the runner uses
+  the globs in `frontend/package.json` and tests import modules through relative
+  paths.
 - **Backend tests**: `tests/` at the backend root. As packages grow, `tests/` may
   mirror the structure (`tests/unit/...`). For now it stays flat: moving tests
   without a concrete reason is noise.
@@ -76,6 +77,9 @@ serves, never into a generic "misc" folder.
   (`auth`, `chatbot`, `traces`).
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
+- **Folders nest freely** (`equipe/requests/components/…`), with the same
+  warning threshold as §0: more than ~7 entries in a folder is the signal for
+  one more level — a warning light, never split just to hit the number.
 - **Static prototypes** keep one subfolder per file kind (`pages/`, `css/`,
   `js/`) assembled by a single build script; no markup, style or script mixed
   in one source file.
