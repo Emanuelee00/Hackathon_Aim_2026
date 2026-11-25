@@ -63,7 +63,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
   Recupero: `git checkout 327922a -- chezmarthe-demo`.
 - **Makefile**: `make` da solo mostra l'aiuto (prima avviava Ollama e scaricava 2,3 GB); comando uvicorn in una variabile (`SERVER`);
   tolto `browser-test` (nessun test Playwright esisteva) e la dipendenza `@playwright/test`. Tenuti `demo`, `qr`, `tunnel` per le demo.
-- **Branch**: su GitHub solo `main`. Tag di ritorno tenuti (`pre-*`), più `pre-main2-2026-11` (il `main` prima del refactor, `161989b`)
+- **Branch**: su GitHub solo `main`. Tag di ritorno tenuti (`pre-*`), più `main-prima-refactor-2026-11` (il `main` prima del refactor, `161989b`)
   e `archivio/design`, `archivio/page` (gli unici due vecchi branch con commit non in `main`).
 
 ## 4. Cosa è stato fatto (20 e 25 novembre)
