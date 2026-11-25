@@ -11,7 +11,7 @@ import useDragSort from './useDragSort.js';
 import './rentals.css';
 
 // « Site » › « Louer un espace » : les cartes de la page d'accueil, que l'équipe ajoute, modifie, range ou supprime.
-// Chaque enregistrement est visible tout de suite sur le site (espaces.py).
+// Chaque enregistrement est visible tout de suite sur le site (backend/equipe/site.py).
 
 async function call(method, body) {
   const response = await fetch('/api/espaces-a-louer', body ? { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : { method }).catch(() => null);

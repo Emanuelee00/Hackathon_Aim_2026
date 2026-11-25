@@ -7,16 +7,16 @@ Ce n'est pas une sécurité : toutes se connectent avec le compte de l'équipe ;
 import re
 from typing import Annotated, Literal
 
-import espaces
 from accounts.models import User
 from accounts.sessions import team_member
 from core import store
+from equipe import site
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 router = APIRouter(prefix="/api/profils")
 Team = Annotated[User, Depends(team_member)]
-KEY = espaces.PROFILES_KEY
+KEY = site.PROFILES_KEY
 MAX_PROFILES = 40
 COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
 MenuId = Annotated[str, Field(pattern=r"^[a-z][a-zA-Z0-9-]{0,29}$")]
@@ -33,7 +33,7 @@ class Background(BaseModel):
         kind = info.data.get("kind")
         if kind == "color" and not COLOR.match(value):
             raise ValueError("Couleur invalide.")
-        if kind == "image" and not (value and espaces.PHOTO.match(value)):
+        if kind == "image" and not (value and site.PHOTO.match(value)):
             raise ValueError("Image invalide.")
         return value if kind != "none" else ""
 
@@ -54,7 +54,7 @@ class Profile(BaseModel):
     @field_validator("photo")
     @classmethod
     def known_photo(cls, value: str) -> str:
-        if not espaces.PHOTO.match(value):
+        if not site.PHOTO.match(value):
             raise ValueError("Photo invalide.")
         return value
 
@@ -77,9 +77,9 @@ def save_all(body: list[Profile], _: Team) -> dict:
     saved = [p.model_dump() for p in body]
     if len({p["id"] for p in saved}) != len(saved):
         raise HTTPException(422, "Deux personnes ont le même identifiant.")
-    espaces.check_photos(saved)
+    site.check_photos(saved)
     store.save_document(KEY, saved)  # type: ignore[arg-type]
-    espaces.forget_unused_photos()
+    site.forget_unused_photos()
     return {"profiles": saved}
 
 
@@ -89,7 +89,7 @@ def save_one(profile_id: str, profile: Profile, _: Team) -> dict:
     if profile.id != profile_id:
         raise HTTPException(422, "Identifiant différent.")
     saved = profile.model_dump()
-    espaces.check_photos(saved)
+    site.check_photos(saved)
     current = profiles() or []
     if not any(p["id"] == profile_id for p in current) and len(current) >= MAX_PROFILES:
         raise HTTPException(422, "Trop de personnes.")
@@ -97,7 +97,7 @@ def save_one(profile_id: str, profile: Profile, _: Team) -> dict:
     if saved not in updated:
         updated.append(saved)
     store.save_document(KEY, updated)  # type: ignore[arg-type]
-    espaces.forget_unused_photos()
+    site.forget_unused_photos()
     return {"profiles": updated}
 
 
@@ -105,5 +105,5 @@ def save_one(profile_id: str, profile: Profile, _: Team) -> dict:
 def remove(profile_id: str, _: Team) -> dict:
     updated = [p for p in profiles() or [] if p["id"] != profile_id]
     store.save_document(KEY, updated)  # type: ignore[arg-type]
-    espaces.forget_unused_photos()
+    site.forget_unused_photos()
     return {"profiles": updated}

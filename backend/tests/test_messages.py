@@ -1,11 +1,11 @@
 from datetime import date
 
 import mailer
-import messages
 from core import store
-from funding import reminders
+from equipe import messages
+from equipe.funding import reminders
+from public.forms import router as forms_router
 from sharing import confirmations
-from sharing.forms import router as forms_router
 from sharing.models import EventDraft
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

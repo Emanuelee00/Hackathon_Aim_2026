@@ -1,6 +1,6 @@
 import io
 
-from funding import prospection
+from equipe import prospection
 from openpyxl import load_workbook
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

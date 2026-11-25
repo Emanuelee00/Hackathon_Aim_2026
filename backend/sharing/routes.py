@@ -5,8 +5,8 @@ from typing import Annotated, Any
 from accounts.models import User
 from accounts.sessions import current_user
 from core import store
+from equipe.funding.backup import save_copy
 from fastapi import APIRouter, Body, Depends, HTTPException
-from funding.backup import save_copy
 from pydantic import ValidationError
 
 from .events import merge_bookings, merge_signups, shared_view

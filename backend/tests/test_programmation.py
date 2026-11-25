@@ -1,6 +1,9 @@
 from datetime import date
 
-import gcal
+from agenda import gcal
+from fastapi.testclient import TestClient
+
+import main
 
 
 def event(title, day, color=None):
@@ -69,3 +72,12 @@ def test_registration_link_ignores_unsafe_or_missing_addresses():
         gcal.registration_link("Réservation : https://exemple.fr/x)")
         == "https://exemple.fr/x"
     )
+
+
+def test_the_agenda_routes_keep_their_addresses(monkeypatch):
+    monkeypatch.setattr(gcal, "week_public", lambda monday: [])
+    client = TestClient(main.app)
+    response = client.get("/api/programmation?semaine=2026-11-25")
+    assert response.json() == {"monday": "2026-11-23", "events": []}
+    assert client.get("/api/programmation?semaine=pas-une-date").status_code == 422
+    assert client.get("/api/agenda?du=2026-11-01&au=2026-11-30").status_code == 401

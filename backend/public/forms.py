@@ -15,10 +15,9 @@ from agents.models import Question
 from core import store
 from core.db import get_session
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from sharing import confirmations
+from sharing.models import ContactMessage, EventDraft, Feedback
 from sqlalchemy.orm import Session
-
-from . import confirmations
-from .models import ContactMessage, EventDraft, Feedback
 
 router = APIRouter(prefix="/api")
 Db = Annotated[Session, Depends(get_session)]

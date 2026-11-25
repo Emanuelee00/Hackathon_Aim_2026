@@ -31,19 +31,19 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 - [x] `backend/mailer.py` → `backend/mailer/` (pilota)
 - [x] `backend/ranking.py` → `backend/ranking/`
 - [x] `backend/demo.py` → `backend/demo/` (path di `demo_responses.json` corretto a `parent.parent`)
-- [ ] `gcal.py` → `gcal/` — **NON fattibile senza riscrivere i test**: `week_public`
+- [ ] `agenda/gcal.py` (ex `gcal.py`, ora nel package `agenda/` con le sue route; resta un file) → splittarlo — **NON fattibile senza riscrivere i test**: `week_public`
       chiama `list_events` dentro il modulo, e `backend/tests/test_programmation.py` fa
       `monkeypatch.setattr(gcal, "list_events", …)`. Con un package il patch su
       `gcal.list_events` non raggiunge `week_public` in `service.py` (2 test rossi).
       Se si rifà: patchare `gcal.service.list_events` nei test, oppure far risolvere
       `list_events` al package. Tentato il 2026-11-20, rollbackato.
-- [ ] `backend/matching.py`, `backend/profils.py`, ... (piccoli e coesi: restano file)
-- [ ] `backend/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
+- [ ] `backend/equipe/opportunities.py`, `backend/equipe/profiles.py`, ... (piccoli e coesi: restano file)
+- [ ] `backend/equipe/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
       scrittura e endpoint sono un solo dominio. Non splittare senza un problema
       concreto (Guide.md §6). Valutato il 2026-11-20, lasciato file.
-- [ ] `main.py`: resta alla root come entry point richiesto da Vercel e Docker.
+- [ ] `main.py`: resta alla root come entry point (uvicorn e Docker).
 
 ## Note
 
-- `backend/facturation/models.py` usa gli asset in `backend/modeles/` (fonts, docx):
-  non rinominarlo in `modeles/routes.py` senza prima spostare gli asset.
+- `backend/equipe/quotes/facturation/models.py` usa gli asset in `backend/equipe/quotes/modeles/`
+  (fonts, docx) con `Path(__file__).parent.parent`: spostarli insieme.

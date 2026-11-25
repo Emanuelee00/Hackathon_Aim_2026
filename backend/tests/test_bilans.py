@@ -1,6 +1,6 @@
 from io import BytesIO
 
-import bilans
+from equipe import bilans
 from openpyxl import load_workbook
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

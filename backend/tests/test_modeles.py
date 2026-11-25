@@ -4,8 +4,8 @@ import json
 import re
 import zipfile
 
-import facturation as modeles
 import mailer
+from equipe.quotes import facturation as modeles
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
 BODY = {

@@ -1,4 +1,4 @@
-// Les espaces personnels de l'équipe (profils.py) : ce qui se calcule sans écran, et les échanges avec le serveur.
+// Les espaces personnels de l'équipe (backend/equipe/profiles.py) : ce qui se calcule sans écran, et les échanges avec le serveur.
 import { shrinkPhoto } from '../site/rentalCards.js';
 
 export const CURRENT_KEY = 'marthe-profile';

@@ -2,11 +2,11 @@
 
 import ai
 import httpx
-import matching
 import pytest
 from agents import routes as agent_routes
-from employment import cv_lines, planning
+from equipe import opportunities as matching
 from fastapi.testclient import TestClient
+from residents.employment import cv_lines, planning
 
 import main
 

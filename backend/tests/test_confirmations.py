@@ -1,6 +1,6 @@
 import mailer
+from public.forms import router as forms_router
 from sharing import confirmations
-from sharing.forms import router as forms_router
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
 REQUEST = {

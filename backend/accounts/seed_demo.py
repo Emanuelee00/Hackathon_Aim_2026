@@ -12,7 +12,7 @@ from .passwords import hash_password
 
 PASSWORD = "marthe2026"
 # The resident emails match the demo profiles in
-# frontend/src/features/opportunities/data/residents.js.
+# frontend/src/features/equipe/opportunities/data/residents.js.
 ACCOUNTS = [
     ("equipe@marthe.fr", "Coordinatrice", "equipe"),
     ("marie@marthe.fr", "Marie", "residents"),

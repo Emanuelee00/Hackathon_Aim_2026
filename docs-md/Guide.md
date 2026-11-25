@@ -71,19 +71,26 @@ Before implementing:
 
 ## 2. Folders mirror the site
 
-The repo is split by **what is delivered**, and the frontend mirrors the
-**audiences of the site**. A new file goes into the folder of the audience it
+The repo is split by **what is delivered**, and both frontend and backend
+mirror the **audiences of the site**. A new file goes into the folder of the audience it
 serves, never into a generic "misc" folder.
 
 - **Repo**: `backend/` (FastAPI), `frontend/` (React app), `deploy/` (server
   config), `docs-md/` (documentation), `chezmarthe-demo/` (static prototype,
-  not published). The public site is its own Jamstack build
-  (`npm run build:jamstack`); the authenticated app is the other build.
+  not published). One build serves everything: FastAPI serves the React app on
+  the bare domain (public site) and on every space subdomain.
 - **Frontend features follow the subdomains**: `features/equipe/` (one
   subfolder per équipe page), `features/residents/`, `features/benevoles/`,
   `features/partenaires/`, `features/public/` (home, site pages, bilan, public
   form). A feature used by several spaces stays at `features/` root
   (`auth`, `chatbot`, `traces`).
+- **Backend follows the same spaces, with the frontend's names**:
+  `backend/equipe/<page>` mirrors `features/equipe/<page>` (`bilans`, `funding`,
+  `prospection`, `quotes`, `messages`, `profiles`, `site`, `opportunities`),
+  `backend/residents/`, `backend/public/` (forms anyone can send). What several
+  spaces use stays at `backend/` root (`accounts`, `agents`, `agenda`, `ai`,
+  `core`, `sharing`, `mailer`, `ranking`, `demo`). A space with no server code
+  of its own (today `benevoles`, `partenaires`) gets no folder until it needs one.
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
 - **Folders nest freely** (`equipe/requests/components/…`), with the same

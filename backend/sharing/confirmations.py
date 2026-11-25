@@ -10,7 +10,7 @@ from datetime import date
 from email.message import EmailMessage
 
 import mailer
-import messages
+from equipe import messages
 
 log = logging.getLogger("marthe.confirmations")
 PER_ADDRESS_PER_DAY = 3

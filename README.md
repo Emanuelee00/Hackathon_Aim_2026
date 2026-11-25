@@ -9,7 +9,8 @@ la strategia d'impatto e il pitch sono descritti nel [piano business](docs-md/BU
 ## Struttura del progetto
 
 ```text
-backend/         API FastAPI, moduli Python, migrazioni e test backend
+backend/         API FastAPI: equipe/, residents/, public/ come gli spazi del sito,
+                 più i moduli condivisi, le migrazioni e i test
 frontend/        applicazione React/Vite (sito pubblico e spazi)
 main.py          entry point FastAPI (uvicorn e Docker)
 deploy/          configurazione e istruzioni per il deployment
@@ -214,12 +215,12 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 - `main.py`: entry point FastAPI richiesto dal deploy; il backend vero è in `backend/`.
 - `backend/ai.py`: chat tramite Ollama locale e precaricamento del modello.
-- `backend/matching.py` e `backend/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
+- `backend/equipe/opportunities.py` e `backend/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
 - `backend/accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
 - `backend/agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
 - `backend/core/` e `backend/migrations/`: database SQLAlchemy e migrazioni Alembic.
 - `backend/mailer/`: invio email.
-- `backend/employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
+- `backend/residents/employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `frontend/src/app/`: composizione dell’app e stato condiviso.
 - `frontend/src/features/`: funzionalità autonome, compresa la vista `resident`.
 - `frontend/src/shared/`: componenti, dati demo e funzioni riutilizzabili.

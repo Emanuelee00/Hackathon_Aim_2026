@@ -2,7 +2,7 @@
 
 from typing import Annotated, Literal
 
-from facturation import ISSUER
+from equipe.quotes.facturation import ISSUER
 from pydantic import BaseModel, Field, field_validator
 
 Clean = Annotated[

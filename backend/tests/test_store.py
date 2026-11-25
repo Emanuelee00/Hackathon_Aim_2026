@@ -8,8 +8,8 @@ from accounts.routes import router as accounts_router
 from core import db, store
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from public.forms import router as forms_router
 from sharing import identity
-from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router
 from sqlalchemy import create_engine

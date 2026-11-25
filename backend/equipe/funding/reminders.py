@@ -14,8 +14,8 @@ from email.message import EmailMessage
 from threading import Thread
 from zoneinfo import ZoneInfo
 
-import messages
 from core import store
+from equipe import messages
 from mailer import configured, deliver
 
 from .excel import DEFAULT_FOLLOWUP_MONTHS

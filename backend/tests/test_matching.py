@@ -2,8 +2,8 @@ import json
 from unittest.mock import MagicMock
 
 import httpx
-import matching
 import pytest
+from equipe import opportunities as matching
 from fastapi import HTTPException
 from ranking import rank_profiles
 

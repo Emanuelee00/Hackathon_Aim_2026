@@ -2,10 +2,10 @@ from datetime import date
 from io import BytesIO
 
 from core import store
-from funding import backup
-from funding.excel import read_tracker
-from funding.routes import router as funding_router
-from funding.workbook import write_tracker
+from equipe.funding import backup
+from equipe.funding.excel import read_tracker
+from equipe.funding.routes import router as funding_router
+from equipe.funding.workbook import write_tracker
 from openpyxl import Workbook, load_workbook
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

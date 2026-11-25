@@ -5,7 +5,7 @@ from urllib.parse import quote
 
 from accounts.models import User
 from accounts.sessions import team_member
-from facturation import FORMATS
+from equipe.quotes.facturation import FORMATS
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 

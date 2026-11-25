@@ -18,8 +18,8 @@ from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
 
 import mailer
-import messages
 from core import store
+from equipe import messages
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 from fpdf import FPDF

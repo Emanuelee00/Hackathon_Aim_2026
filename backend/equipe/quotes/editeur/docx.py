@@ -4,7 +4,7 @@ import zipfile
 from io import BytesIO
 from xml.sax.saxutils import escape
 
-from facturation import FOLDER
+from equipe.quotes.facturation import FOLDER
 
 from .models import (
     Block,

@@ -27,9 +27,7 @@ site_router = APIRouter(prefix="/api/site")
 Team = Annotated[User, Depends(team_member)]
 CARDS_KEY = "rental_spaces"
 CONTENT_KEY = "site_content"
-PROFILES_KEY = (
-    "team_profiles"  # profils.py : les espaces personnels (photos de fond envoyées)
-)
+PROFILES_KEY = "team_profiles"  # equipe/profiles.py : les espaces personnels (photos de fond envoyées)
 PHOTO_PREFIX = "rental_photo_"
 PHOTO_URL = "/api/espaces-a-louer/photos/"
 MAX_PHOTO_BYTES = 1_500_000
