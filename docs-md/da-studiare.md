@@ -19,6 +19,50 @@ a percorsi come `/.env`, `/.git/HEAD`, `/backup.sql`, `/wp-config.php`, `/.ssh/i
 Da approfondire: cos'è un CT log, il sito <https://crt.sh> (cercare `chezmarthe.org` per vedere i propri
 certificati), perché non bisogna mai mettere `.env` o backup nella cartella servita dal web server.
 
+## Sottodomini, CNAME e dominio fuori dal codice (25/11/2026)
+
+**Come si forma un nome.** Su IONOS si lavora dentro la zona `chezmarthe.org`: il « Nom d'hôte » `equipe`
+diventa `equipe` + `.` + `chezmarthe.org` = `equipe.chezmarthe.org`. La `@` vuol dire « il dominio stesso »
+(`chezmarthe.org`, senza niente davanti).
+
+**Cosa fa un `CNAME`.** Dice solo **dove trovare l'indirizzo IP**, non cambia l'indirizzo che si vede:
+
+1. il visitatore scrive `equipe.chezmarthe.org`;
+2. il DNS risponde: « è un soprannome di `chezmarthe.org`, che sta a `34.155.50.2` »;
+3. il browser si collega a `34.155.50.2`, ma nella barra resta `equipe.chezmarthe.org` e lo comunica al server;
+4. Caddy e l'app leggono quel nome, vedono `equipe` davanti e mostrano lo spazio équipe.
+
+Come un numero di telefono condiviso: nomi diversi, stesso numero; una volta arrivati ognuno dice con chi vuole parlare.
+
+**Lo schema scelto** (un solo indirizzo da cambiare il giorno del cambio di server):
+
+```
+chezmarthe.org   A      34.155.50.2      ← l'unico posto con l'indirizzo
+www              CNAME  chezmarthe.org
+equipe           CNAME  chezmarthe.org
+residents        CNAME  chezmarthe.org
+benevoles        CNAME  chezmarthe.org
+partenaires      CNAME  chezmarthe.org
+```
+
+La `@` non può essere un `CNAME`: un nome con un `CNAME` non può avere altri record, e sulla `@` ci sono i record
+delle email (`MX`, `TXT` SPF).
+
+**Il dominio non è scritto nel codice.** Sta solo nella configurazione della VM e nel DNS:
+
+| Dove | Cosa | A cosa serve |
+| --- | --- | --- |
+| `deploy/.env` → `SITE_HOSTS` | `chezmarthe.org, equipe.chezmarthe.org, …` | dice a Caddy per quali nomi chiedere i certificati e rispondere |
+| `deploy/.env` → `CANONICAL_DOMAIN` | `chezmarthe.org` | dice all'app il dominio "ufficiale" (rimanda `www.` lì) |
+| `deploy/.env` → `OLD_DOMAINS` | `34-155-50-2.sslip.io` | dice all'app quali domini vecchi rimandare a quello ufficiale |
+| IONOS | i record DNS | dicono a Internet che quei nomi stanno sulla VM |
+
+Il sito ricava il dominio dall'indirizzo nel browser (`frontend/src/shared/lib/spaces.js`): `spaceFromHost()` guarda
+la prima parte del nome e sceglie lo spazio; `spaceUrl()` costruisce i link agli altri spazi partendo dal dominio
+attuale. Così lo stesso codice funziona su `localhost`, `localtest.me`, `sslip.io`, `chezmarthe.site` (demo) e
+`chezmarthe.org` (produzione): passando da `sslip.io` a `chezmarthe.org` non si è toccata una riga di codice, solo il
+`.env` e il DNS. Regola da ricordare: **la configurazione sta nell'ambiente, non nel codice.**
+
 ## Altri concetti di oggi
 
 - **DNS**: i tipi di record `A` (indirizzo IPv4), `AAAA` (IPv6), `CNAME` (soprannome di un altro nome),
