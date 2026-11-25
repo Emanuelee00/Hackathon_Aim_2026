@@ -2,8 +2,6 @@
 .ollama/
 node_modules/
 frontend/dist/
-frontend/test-results/
-frontend/playwright-report/
 __pycache__/
 *.pyc
 .ruff_cache/

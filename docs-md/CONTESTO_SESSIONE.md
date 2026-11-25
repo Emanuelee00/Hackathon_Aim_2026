@@ -1,5 +1,8 @@
 # Contesto di lavoro — Chez Marthe
 
+> **Storico (16/11/2026).** Lo stato attuale, le decisioni e i prossimi passi sono in `docs-md/HANDOFF.md`:
+> leggere quello. Qui la struttura del repo e lo stato del server sono superati.
+
 Scritto il **12 novembre 2026**, aggiornato il **16 novembre 2026** (pacchetti 6 e 7). Serve a riprendere il lavoro
 da un'altra sessione di Claude o da un altro computer senza perdere il filo. Letto insieme a `TODO.md` (backlog dettagliato, in francese) e `deploy/README.md` (server).
 

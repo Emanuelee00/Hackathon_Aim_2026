@@ -13,11 +13,41 @@ ifneq ($(OPENAI_MODEL),)
 export OPENAI_MODEL
 endif
 
-.DEFAULT_GOAL := all
+# The backend as uvicorn starts it everywhere (see Guide.md, entry point).
+SERVER := uv run uvicorn main:app --app-dir backend
+OLLAMA_MODELS_LIST := qwen2.5:0.5b qwen2.5:3b
 
-.PHONY: all run install dev front build check format test ai model-pull browser-test demo qr migrate migration user seed tunnel tunnel-forever
+.DEFAULT_GOAL := help
+.PHONY: help install run dev front build all ai model-pull demo qr tunnel tunnel-forever \
+	check test format migrate migration user seed
 
-all: install
+help: ## List the commands
+	@awk 'BEGIN {FS = ":.*## "} /^[a-z-]+:.*## / {printf "  make %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+# --- Run locally -------------------------------------------------------------
+
+install: ## Install Python and npm dependencies, build the frontend
+	uv sync --locked
+	npm --prefix frontend ci
+	npm --prefix frontend run build
+
+run: install ## Install, build, then start the site on http://localhost:8000 (no AI)
+	$(SERVER) --reload --host 127.0.0.1 --port 8000
+
+dev: ## Start the backend only (after a build), with reload
+	$(SERVER) --reload --host 127.0.0.1 --port 8000
+
+front: ## Vite dev server on http://localhost:5173, live reload of the frontend
+	npm --prefix frontend run dev
+
+build: ## Build the frontend into frontend/dist
+	npm --prefix frontend run build
+
+# --- Local AI (Ollama) ---------------------------------------------------------
+# Production runs without AI (MARTHE_AI=0). Locally, the employment plan still
+# calls Ollama; chat and matching moved to Nemotron (see docs-md/HANDOFF.md).
+
+all: install ## Like run, plus Ollama and its models
 	@set -eu; \
 	ollama serve & \
 	OLLAMA_PID=$$!; \
@@ -26,47 +56,34 @@ all: install
 		kill -0 $$OLLAMA_PID 2>/dev/null || { echo "Ollama failed to start."; exit 1; }; \
 		sleep 1; \
 	done; \
-	ollama pull qwen2.5:0.5b; \
-	ollama pull qwen2.5:3b; \
-	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
+	for model in $(OLLAMA_MODELS_LIST); do ollama pull $$model; done; \
+	$(SERVER) --reload --host 127.0.0.1 --port 8000
 
-# Comme `all`, mais sans Ollama : installe, builde le frontend et lance le backend.
-run: install
-	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
-
-ai:
+ai: ## Start Ollama alone
 	ollama serve
 
-model-pull:
-	ollama pull qwen2.5:0.5b; \
-	ollama pull qwen2.5:3b
+model-pull: ## Download the Ollama models
+	for model in $(OLLAMA_MODELS_LIST); do ollama pull $$model; done
 
-install:
-	uv sync --locked
-	npm --prefix frontend ci
-	npm --prefix frontend run build
+# --- Demos from the laptop -----------------------------------------------------
 
-dev:
-	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
+demo: build ## Demo mode (pre-written answers instead of AI), reachable on the local network
+	MARTHE_DEMO=1 $(SERVER) --host 0.0.0.0 --port 8000
 
-demo: build
-	MARTHE_DEMO=1 uv run uvicorn main:app --app-dir backend --host 0.0.0.0 --port 8000
-
-qr:
-	@test -n "$(URL)" || { echo "Usage : make qr URL=https://..."; exit 1; }
+qr: ## QR code of a link: make qr URL=https://...
+	@test -n "$(URL)" || { echo "Usage: make qr URL=https://..."; exit 1; }
 	uvx --from "qrcode[pil]" qr "$(URL)" > qr-demo.png
-	@echo "QR code créé : qr-demo.png"
+	@echo "QR code written to qr-demo.png"
 
-front:
-	npm --prefix frontend run dev
+tunnel: ## Publish the laptop on chezmarthe.site (Cloudflare tunnel)
+	cloudflared tunnel --config cloudflare/tunnel.yml run marthe
 
-build:
-	npm --prefix frontend run build
+tunnel-forever: ## Same as tunnel, restarted whenever it stops
+	./cloudflare/tunnel-forever.sh
 
-browser-test: build
-	npm --prefix frontend run test:e2e
+# --- Checks --------------------------------------------------------------------
 
-check:
+check: ## Everything that must pass before a commit
 	uv lock --check
 	uv run ruff check .
 	uv run ruff format --check .
@@ -74,29 +91,24 @@ check:
 	npm --prefix frontend test
 	npm --prefix frontend run build
 
-test:
+test: ## Backend tests only
 	uv run python -m pytest -q
 
-format:
+format: ## Format the Python code
 	uv run ruff format .
 
-migrate:
+# --- Database and accounts -------------------------------------------------------
+
+migrate: ## Apply the database migrations (the app also does it at start)
 	uv run alembic -c backend/alembic.ini upgrade head
 
-migration:
-	@test -n "$(NAME)" || { echo "Usage : make migration NAME=\"add something\""; exit 1; }
+migration: ## New migration: make migration NAME="add something"
+	@test -n "$(NAME)" || { echo "Usage: make migration NAME=\"add something\""; exit 1; }
 	uv run alembic -c backend/alembic.ini revision --autogenerate -m "$(NAME)"
 
-user:
-	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
+user: ## Create an account: make user EMAIL=... NAME=... ROLE=equipe
+	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage: make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
 	PYTHONPATH=backend uv run python -m features.accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
 
-seed:
+seed: ## Demo accounts, local development only (never on the VM)
 	PYTHONPATH=backend uv run python -m features.accounts.seed_demo
-
-tunnel:
-	cloudflared tunnel --config cloudflare/tunnel.yml run marthe
-
-# Comme `tunnel`, mais se relance tout seul s'il s'arrête ou perd la connexion.
-tunnel-forever:
-	./cloudflare/tunnel-forever.sh

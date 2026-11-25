@@ -14,7 +14,7 @@ backend/         API FastAPI: features/ (come frontend/src/features: equipe/,
                  email, IA, migrazioni), main.py, tests/
 frontend/        applicazione React/Vite (sito pubblico e spazi)
 deploy/          configurazione e istruzioni per il deployment
-docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
+docs-md/         documentazione: HANDOFF (da leggere per primo), Guide, TODO, business plan, QR demo
 cloudflare/      configurazione del tunnel Cloudflare
 ```
 
@@ -23,17 +23,17 @@ l'entry point è `backend/main.py` (`uvicorn main:app --app-dir backend`).
 
 ## Avvio locale
 
-Servono [uv](https://docs.astral.sh/uv/getting-started/installation/), Make e
-[Ollama](https://ollama.com/download) (già presente su questo computer).
+Servono [uv](https://docs.astral.sh/uv/getting-started/installation/) e Make;
+[Ollama](https://ollama.com/download) solo per l'IA locale. `make` da solo elenca i comandi.
 
-Per installare tutto e avviare Ollama e il sito con un solo comando:
+Per installare tutto e avviare il sito (senza IA, come in produzione):
 
 ```sh
-make
+make run
 ```
 
-Al primo avvio vengono scaricati anche i modelli (circa 2,3 GB in totale). Per fermare
-Ollama e il sito insieme usa Ctrl+C.
+Con l'IA locale, `make all` avvia anche Ollama e al primo avvio scarica i modelli
+(circa 2,3 GB in totale). Per fermare Ollama e il sito insieme usa Ctrl+C.
 
 Ollama usa la porta locale **11435** e salva il modello in `.ollama/models/`,
 esclusa da Git. Le funzioni cloud di Ollama sono disabilitate.
@@ -276,7 +276,7 @@ cloudflared tunnel route dns marthe chezmarthe.site
 cloudflared tunnel route dns marthe '*.chezmarthe.site'
 ```
 
-Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
+Per la demo, in due terminali: `make build && make dev` (oppure `make all` con l'AI),
 poi `make tunnel` (oppure `make tunnel-forever`, che lo rilancia da solo se si
 ferma o perde la connessione). Il portatile deve restare acceso e sveglio.
 
