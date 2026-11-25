@@ -25,8 +25,8 @@ from features.equipe.quotes.facturation import router as modeles_router
 from features.equipe.site import router as espaces_router
 from features.equipe.site import site_router
 from features.public.forms import router as forms_router
+from features.public.qr import router as qr_router
 from features.residents.employment.routes import router as employment_router
-from features.sharing.qr import router as qr_router
 from features.sharing.routes import router as sharing_router
 from starlette.exceptions import HTTPException
 

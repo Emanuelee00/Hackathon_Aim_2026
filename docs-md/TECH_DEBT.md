@@ -44,3 +44,10 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 
 - `backend/features/equipe/quotes/facturation/models.py` usa gli asset in `backend/features/equipe/quotes/modeles/`
   (fonts, docx) con `Path(__file__).parent.parent`: spostarli insieme.
+
+- [ ] Dipendenza circolare tra package (Guide §0): `features/equipe/quotes/facturation`
+      importa `french_date` da `features/public/confirmations`, che a sua volta importa
+      `features/equipe/messages`; e `features/sharing/routes` importa
+      `features/equipe/funding/backup`. Nessun ciclo tra moduli (tutto funziona), ma tra
+      package sì. Rimedio semplice: spostare `french_date` in `core/`. Trovato il 25/11/2026,
+      c'era già prima dello spostamento in `public/`.

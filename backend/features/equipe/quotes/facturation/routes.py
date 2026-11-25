@@ -24,7 +24,7 @@ from fpdf import FPDF
 from pydantic import BaseModel, ConfigDict, Field
 
 from features.equipe import messages
-from features.sharing.confirmations import french_date
+from features.public.confirmations import french_date
 
 from .models import (
     FOLDER,

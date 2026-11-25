@@ -9,8 +9,8 @@ from features.accounts.models import User
 from features.accounts.passwords import hash_password
 from features.accounts.routes import router as accounts_router
 from features.public.forms import router as forms_router
+from features.public.qr import router as qr_router
 from features.sharing import identity
-from features.sharing.qr import router as qr_router
 from features.sharing.routes import router
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session

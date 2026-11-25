@@ -16,7 +16,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from features.agents.models import Question
-from features.sharing import confirmations
+from features.public import confirmations
 from features.sharing.models import ContactMessage, EventDraft, Feedback
 
 router = APIRouter(prefix="/api")

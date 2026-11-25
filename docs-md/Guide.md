@@ -24,24 +24,21 @@ make it obvious *where* new code goes, not impress.
   package when a domain has several modules or when the root becomes a flat list
   of files with no hierarchy. Do not create a package for a single small module:
   a file first, extract later.
-- **Folder size**: aim for **at most 5 entries** per folder; **7 is the hard
-  maximum**. Counted: modules and sub-packages together (`__init__.py`,
-  `__main__.py` and non-Python files excluded). Past 7 a split is **mandatory,
-  always, with no exceptions** — but done with judgment: group by
-  responsibility (what the files serve, mirroring the site where it applies),
-  never by file kind, never into a catch-all `misc`/`utils`/`common` folder,
-  and never a split whose only purpose is to make the number fit.
-- **Judgment comes before the number.** The count is checked, but what decides
-  a structure are two questions: *"when I open the project, do I see at once
-  where a thing lives?"* and *"does this structure reflect something real (the
-  site, a responsibility), or was it invented to satisfy a rule?"*. A split that
-  fails them is wrong even if it fixes the count; a structure that passes them
-  is the goal.
-- **The one exception**: a folder that mirrors the site 1:1 — one entry per
-  section or page of the site, such as `landing/sections/` (the home page's
-  sections) — may go past 7, because there the number is set by the site, not
-  by the code. Grouping those entries artificially (e.g. "top/bottom of the
-  page") would fail the questions above.
+- **Folder size is a warning light, not a limit**: aim for **about 5 entries**
+  per folder; **more than 7** is the signal to stop and look again. Counted:
+  modules and sub-packages together (`__init__.py`, `__main__.py` and
+  non-Python files excluded). Past 7, ask the two questions below: split if a
+  real grouping exists (by responsibility, mirroring the site where it
+  applies), and leave the folder as it is if the entries genuinely belong
+  together. Never split by file kind, never into a catch-all
+  `misc`/`utils`/`common` folder, never just to make the number fit.
+- **Judgment decides, the number only warns.** What decides a structure are two
+  questions: *"when I open the project, do I see at once where a thing
+  lives?"* and *"does this structure reflect something real (the site, a
+  responsibility), or was it invented to satisfy a rule?"*. A split that fails
+  them is wrong even if it fixes the count; a folder over 7 that passes them is
+  fine. Example: `landing/sections/` has 8 entries because the home page has 8
+  sections — grouping them as "top/bottom of the page" would be the wrong fix.
 - **`__init__.py`**: minimal, with a one-line docstring stating the package's
   responsibility. It exposes the public API, not every symbol.
 - **No import cycles** between packages. A lower-level package never imports from
@@ -106,9 +103,9 @@ serves, never into a generic "misc" folder.
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
 - **Folders nest freely** (`equipe/requests/components/…`), with the same
-  folder-size rule as §0: aim for 5 entries, 7 at most (code files and
-  subfolders; tests, styles and assets not counted). Past 7 one more level is
-  mandatory, grouped by responsibility, never just to hit the number.
+  folder-size warning light as §0: aim for about 5 entries (code files and
+  subfolders; tests, styles and assets not counted); past 7, look again and
+  add a level only where a real grouping exists.
 - Adding a page or feature: create its folder under its audience, then wire it
   into the entry point and the CSS index **in the same commit**.
 
