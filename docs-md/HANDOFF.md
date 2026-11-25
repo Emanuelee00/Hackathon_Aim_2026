@@ -41,7 +41,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 ## 3. Decisioni prese, e perché
 
 - **Tutto sulla VM, niente Vercel.** Il refactor `main2` divideva il sito pubblico (statico su Vercel) dall'app (VM, sottodominio `api`).
-  Tolto (commit `33e72ea`): un solo deploy, nessun cambio DNS per il sito pubblico, niente CORS / `VITE_API_BASE_URL` /
+  Tolto (commit `cf2604f`): un solo deploy, nessun cambio DNS per il sito pubblico, niente CORS / `VITE_API_BASE_URL` /
   `PUBLIC_SITE_ORIGINS` da tenere allineati. Il vantaggio di Vercel (home visibile se la VM si ferma) non vale la complessità: senza VM
   moduli, eventi e login non funzionano comunque. **Non reintrodurre** Vercel, CORS o il sottodominio `api`.
 - **Caddy resta** come reverse proxy (HTTPS automatico, 4 righe in `deploy/Caddyfile`). nginx funzionerebbe uguale ma richiede certbot,
@@ -60,7 +60,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
   Spostare il compose avrebbe obbligato a spostare a mano `deploy/.env` e `deploy/secrets/` sulla VM.
 - **Prototipo `chezmarthe-demo/` tolto** (nessun file del sito lo leggeva). Il suo `CLAUDE.md` (dati reali: spazi, tariffe, identità
   visiva) è archiviato in `docs-md/CLAUDE-PROTOTIPO.md`; `comptes.txt` tolto (doppione di `backend/features/accounts/seed_demo.py`).
-  Recupero: `git checkout 327922a -- chezmarthe-demo`.
+  Recupero: `git checkout 183c017 -- chezmarthe-demo`.
 - **Makefile**: `make` da solo mostra l'aiuto (prima avviava Ollama e scaricava 2,3 GB); comando uvicorn in una variabile (`SERVER`);
   tolto `browser-test` (nessun test Playwright esisteva) e la dipendenza `@playwright/test`. Tenuti `demo`, `qr`, `tunnel` per le demo.
 - **Branch**: su GitHub solo `main`. Tag di ritorno tenuti (`pre-*`), più `main-prima-refactor-2026-11` (il `main` prima del refactor, `161989b`)
@@ -72,14 +72,14 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
   pubblico, landing una cartella per sezione, `home.css` in fogli tematici, registri `PAGES`/`MODALS` in `App.jsx`, Guide estesa,
   passaggio parziale a Nemotron per l'IA.
 - **25/11, questa sessione** (commit in ordine):
-  - `a799516` l'app non partiva (`ModuleNotFoundError`) dal primo commit del refactor: corretto + test di avvio.
-  - `33e72ea` tolti Vercel, Jamstack, CORS, cron Vercel, controlli sulla variabile `VERCEL`.
-  - `763d01c` procedura DNS `.org` e «Cambiare server» in `deploy/README.md`.
+  - `74e19ea` l'app non partiva (`ModuleNotFoundError`) dal primo commit del refactor: corretto + test di avvio.
+  - `cf2604f` tolti Vercel, Jamstack, CORS, cron Vercel, controlli sulla variabile `VERCEL`.
+  - `a4de41e` procedura DNS `.org` e «Cambiare server» in `deploy/README.md`.
   - merge di `main2` in `main`, pulizia branch, tag di ritorno.
-  - `327922a` backend per spazi; `9f4529f` tolto `chezmarthe-demo/`; `e874e67` `main.py` in `backend/`, `Dockerfile.prod` in `deploy/`.
-  - `647b6f2` `backend/features/` + `backend/core/`; `a5ce593` conferme e QR in `features/public/`, regola cartelle come spia.
-  - `6efc399` chatbot in `agents/spaces/`, `quotes/editor|invoicing|templates`, test che rispecchiano il codice (`tests/conftest.py`).
-  - `67f6989` frontend raggruppato per sotto-funzioni (`quotes/`, `funding/table/`, `requests/<pannello>/`, `landing/shell/`, hook).
+  - `183c017` backend per spazi; `73cef99` tolto `chezmarthe-demo/`; `2e6c221` `main.py` in `backend/`, `Dockerfile.prod` in `deploy/`.
+  - `0d143be` `backend/features/` + `backend/core/`; `b49d14a` conferme e QR in `features/public/`, regola cartelle come spia.
+  - `bcd0f4a` chatbot in `agents/spaces/`, `quotes/editor|invoicing|templates`, test che rispecchiano il codice (`tests/conftest.py`).
+  - `775ffb8` frontend raggruppato per sotto-funzioni (`quotes/`, `funding/table/`, `requests/<pannello>/`, `landing/shell/`, hook).
   - Makefile con aiuto, senza Playwright; questo handoff e il `CLAUDE.md` alla radice.
   - Migrazioni con SQLite: lock su file come il lock di Postgres, così l'immagine parte anche senza Postgres con 2 worker
     (prima: `table alembic_version already exists`); test `tests/core/test_db.py`.

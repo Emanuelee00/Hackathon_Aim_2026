@@ -139,11 +139,11 @@ Italian in chat only, English in the repo, French untouched (site language).
 
 ## Pushes
 
-- `dae7f59` repo docs/organization + CORS fix + app-layer refactor + TODO task
-- `0e7ac94` prototype split + frontend audience reorganization + Guide §2
-- `eb6f475` Guide preamble, nesting threshold, CODEX merge, landing start
-- `30b68f0` landing section packages (JSX)
-- `7f4a366` home.css thematic sheets + Guide §1 placement bullet
-- `864addd` prospection data subpackage + Guide §9 + Makefile sweep
-- `5fbf542` glm.md work log start
-- `23b9ee9` PAGES registry in App.jsx + log update
+- `58b1389` repo docs/organization + CORS fix + app-layer refactor + TODO task
+- `26d6240` prototype split + frontend audience reorganization + Guide §2
+- `320d1bf` Guide preamble, nesting threshold, CODEX merge, landing start
+- `b6cea44` landing section packages (JSX)
+- `8e8fb52` home.css thematic sheets + Guide §1 placement bullet
+- `dd73c9a` prospection data subpackage + Guide §9 + Makefile sweep
+- `7629aa0` glm.md work log start
+- `7c787dc` PAGES registry in App.jsx + log update

@@ -2,7 +2,7 @@
 
 
 > **Archivio** del file `CLAUDE.md` del prototipo statico `chezmarthe-demo/`, tolto dal repo il 25/11/2026
-> (recuperabile con `git checkout 327922a -- chezmarthe-demo`). Documenta i dati reali dell'associazione
+> (recuperabile con `git checkout 183c017 -- chezmarthe-demo`). Documenta i dati reali dell'associazione
 > (spazi, superfici, tariffe), l'identità visiva e il percorso di demo: vedi anche il PDF « Espaces Chez MArthe »
 > in questa cartella. Le parti sulla struttura dei file descrivono il prototipo, non l'app.
 
