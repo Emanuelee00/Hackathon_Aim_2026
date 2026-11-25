@@ -13,7 +13,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 | --- | --- |
 | `main` su GitHub | contiene tutto il lavoro: refactor `main2` + le sessioni del 25/11 (§4). È l'unico branch. |
 | VM di produzione (Google Cloud, IP `34.155.50.2`) | **aggiornata il 25/11/2026** al nuovo `main` (refactor incluso), 2 worker avviati, dati intatti. Backup del giorno in `~/backup-2026-11-25.sql.gz` e `~/config-2026-11-25.tgz` (solo sulla VM); immagine di ritorno `deploy-app:precedente`; codice di ritorno: tag `main-prima-refactor-2026-11`. Accesso da questo PC: `ssh marthe`. Nessun dominio punta ancora alla VM. |
-| `chezmarthe.org` (DNS su IONOS) | `@` senza record; `www` è un `CNAME` verso Odoo (`chezmarthe1.odoo.com`); MX su IONOS (email: **non toccare**). |
+| `chezmarthe.org` (DNS su IONOS) | `@` senza record; `www` è un `CNAME` verso Odoo (`chezmarthe1.odoo.com`); MX su IONOS (email: **non toccare**). Record prima della bascula e ritorno a Odoo: `docs-md/DNS-chezmarthe-org.md`. |
 | `chezmarthe.site` (DNS su Cloudflare, non è dell'associazione) | passa ancora da Cloudflare (tunnel del portatile). Deciso di usarlo come **dominio di demo** (§3). |
 | IA | spenta in produzione (`MARTHE_AI=0`, `VITE_AI=off` in `deploy/Dockerfile.prod`); i 5 chatbot non compaiono. |
 | Email in uscita | non collegate (nessun `SMTP_*` / `RESEND_API_KEY`): nessuna email parte. |

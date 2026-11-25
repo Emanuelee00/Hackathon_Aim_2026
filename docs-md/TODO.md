@@ -141,6 +141,7 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 
 ## Mise en ligne et sécurité
 
+- [x] Relevé des enregistrements DNS de `chezmarthe.org` **avant** la bascule (ancien site Odoo, e-mails) et procédure pour revenir à Odoo : `docs-md/DNS-chezmarthe-org.md` (25/11/2026).
 - [ ] Relier **chezmarthe.org** : sur IONOS, ajouter les enregistrements `A` → `34.155.50.2` pour `@`, `www`, `equipe`, `residents`, `benevoles`, `partenaires`, `bilan` (voir `deploy/README.md`). **Ne pas toucher** aux enregistrements des e-mails (MX, TXT, `_domainkey`, `_dmarc`, `autodiscover`). Il faut quelqu'un qui a l'accès IONOS. `chezmarthe.site` n'appartient pas à l'association.
 - [ ] Puis, quand `dig +short chezmarthe.org` répond `34.155.50.2` (pas avant : Let's Encrypt bloque après plusieurs refus), mettre `SITE_HOSTS`, `CANONICAL_DOMAIN` et `OLD_DOMAINS` à jour dans `deploy/.env` sur la VM (valeurs dans `deploy/README.md`, tappa 2). TTL des enregistrements au plus bas pour le changement de serveur prévu.
 - [ ] Décider si on garde `chezmarthe.site` comme redirection (QR déjà imprimés ?) ou si on passe uniquement en `.org`.
