@@ -27,7 +27,6 @@ from espaces import router as espaces_router
 from espaces import site_router
 from facturation import router as modeles_router
 from fastapi import Depends, FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from funding.prospection import router as prospection_router
@@ -53,22 +52,6 @@ async def lifespan(app: FastAPI):
 
 PARIS = ZoneInfo("Europe/Paris")
 app = FastAPI(title="Marthe", version="0.1.0", lifespan=lifespan)
-PUBLIC_SITE_ORIGINS = [
-    origin.strip().rstrip("/")
-    for origin in (
-        # `or` instead of a getenv default: an env var set to empty (ex: make
-        # exporting PUBLIC_SITE_ORIGINS= without .env) must fall back too.
-        os.getenv("PUBLIC_SITE_ORIGINS")
-        or "https://chezmarthe.site,https://www.chezmarthe.site"
-    ).split(",")
-    if origin.strip()
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=PUBLIC_SITE_ORIGINS,
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
-)
 app.include_router(ai_router)
 app.include_router(matching_router)
 app.include_router(employment_router)

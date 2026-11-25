@@ -34,9 +34,3 @@ exclude = ["chezmarthe-demo"]
 [tool.pytest.ini_options]
 testpaths = ["backend/tests"]
 pythonpath = ["backend/tests", "backend", "."]
-
-[tool.vercel]
-entrypoint = "main:app"
-
-[tool.vercel.fastapi.static]
-cdn = false

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 import { socials } from '../../HomeShell.jsx';
 import FeaturedEvent from './FeaturedEvent.jsx';
 import { cleanTitle, colorOf, dayNames, demoEvents, fullMonths, isFeatured, isoDate, mondayOf } from './agenda.js';
@@ -16,7 +15,7 @@ export default function WeekProgramme({ title }) {
     Promise.all(Array.from({ length: weeks }, (_, n) => {
       const monday = new Date(base);
       monday.setDate(base.getDate() + n * 7);
-      return fetch(apiUrl(`/api/programmation?semaine=${isoDate(monday)}`)).then(r => (r.ok ? r.json() : Promise.reject(new Error('indisponible')))).then(d => d.events);
+      return fetch(`/api/programmation?semaine=${isoDate(monday)}`).then(r => (r.ok ? r.json() : Promise.reject(new Error('indisponible')))).then(d => d.events);
     }))
       .then(lists => { const all = lists.flat(); if (current) setEvents(all.length ? all : demoEvents(weeks, base)); })
       .catch(() => current && setEvents(demoEvents(weeks, base)));

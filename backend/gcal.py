@@ -31,7 +31,7 @@ def _b64(data: bytes) -> bytes:
 
 
 def _credentials(path: str | None = None) -> dict:
-    """Clé du compte de service : variable GOOGLE_CREDENTIALS_JSON (hébergeur sans fichiers, ex. Vercel) ou fichier JSON."""
+    """Clé du compte de service : variable GOOGLE_CREDENTIALS_JSON (hébergeur sans fichiers) ou fichier JSON."""
     raw = os.environ.get("GOOGLE_CREDENTIALS_JSON")
     if raw and not path:
         return json.loads(raw)

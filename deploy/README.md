@@ -1,9 +1,8 @@
 # Messa in produzione
 
-Architettura: il sito pubblico statico è servito dal progetto Jamstack su Vercel.
-Una VM Google Cloud con Docker esegue Postgres, l'app e Caddy per i sottodomini
-degli spazi e `api`. Caddy ottiene i certificati HTTPS (Let's Encrypt) e passa le
-richieste al backend. Postgres non è esposto.
+Architettura: una VM Google Cloud con Docker esegue Postgres, l'app e Caddy.
+Caddy è l'unico servizio raggiungibile da Internet (porte 80 e 443): ottiene da solo i
+certificati HTTPS (Let's Encrypt) e passa le richieste all'app. Postgres non è esposto.
 
 In produzione l'AI è spenta (`MARTHE_AI=0`, `VITE_AI=off` in `Dockerfile.prod`):
 matching, piani e righe CV usano i testi guidati, i chatbot non compaiono.
@@ -45,28 +44,19 @@ nano deploy/.env        # POSTGRES_PASSWORD lunga e casuale: openssl rand -hex 2
 
 Non avviare ancora: prima i record DNS, altrimenti Let's Encrypt rifiuta i certificati.
 
-## 2. Tappa 1: `chezmarthe.site` (Cloudflare + Vercel)
-
-Collegare un progetto Vercel separato, con **Root Directory `frontend`**, al dominio
-radice `chezmarthe.site` (e `www` se usato). In Vercel impostare
-`VITE_API_BASE_URL=https://api.chezmarthe.site`; la configurazione di build e
-le rewrite delle pagine sono in `frontend/vercel.json`.
+## 2. Tappa 1: `chezmarthe.site` (Cloudflare)
 
 Su [dash.cloudflare.com](https://dash.cloudflare.com) → `chezmarthe.site` → *DNS* → *Records*:
 
 1. Cancella i vecchi record del tunnel del portatile (i `CNAME` verso `...cfargotunnel.com`).
-2. Aggiungi i record indicati da Vercel per `@` e `www`.
-3. Punta i sottodomini dell'app e `api` alla VM (un record wildcard `*` può coprirli):
+2. Aggiungi due record, **nuvola grigia** (*DNS only*), così l'HTTPS lo fa Caddy:
 
 | Tipo | Nome | Valore |
 | --- | --- | --- |
+| `A` | `@` | IP della VM |
 | `A` | `*` | IP della VM |
 
-Il record wildcard deve essere **DNS only** (*nuvola grigia*) per lasciare a
-Caddy l'emissione dei certificati dei sottodomini.
-Ferma il vecchio tunnel sul portatile, se è ancora acceso. Per eseguire il backend
-sul portatile invece della VM, `cloudflare/tunnel.yml` inoltra solo i sottodomini;
-il dominio radice resta collegato a Vercel.
+3. Ferma il vecchio tunnel sul portatile, se è ancora acceso.
 
 Poi sulla VM:
 
@@ -91,29 +81,23 @@ sostituire solo quello di `www` (oggi un `CNAME` verso Odoo). Tutti gli altri re
 
 | Tipo | Nome | Valore |
 | --- | --- | --- |
-| `A` o `CNAME` | `@` | Valore mostrato nella dashboard Vercel |
-| `CNAME` | `www` | Valore mostrato nella dashboard Vercel |
+| `A` | `@` | IP della VM |
+| `A` | `www` | IP della VM |
 | `A` | `equipe` | IP della VM |
 | `A` | `residents` | IP della VM |
 | `A` | `benevoles` | IP della VM |
 | `A` | `partenaires` | IP della VM |
 | `A` | `bilan` | IP della VM |
-| `A` | `api` | IP della VM |
 
-Quando `api.chezmarthe.org` punta alla VM, aggiornare anche `VITE_API_BASE_URL`
-nel progetto statico Vercel a `https://api.chezmarthe.org` e impostare in
-`deploy/.env`:
+Da qui, quando `dig +short chezmarthe.org` risponde con l'IP della VM, in `deploy/.env`:
 
 ```sh
-SITE_HOSTS=equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org, api.chezmarthe.org, equipe.chezmarthe.site, residents.chezmarthe.site, benevoles.chezmarthe.site, partenaires.chezmarthe.site, bilan.chezmarthe.site, api.chezmarthe.site
-PUBLIC_SITE_ORIGINS=https://chezmarthe.org,https://www.chezmarthe.org
+SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org, chezmarthe.site, www.chezmarthe.site, equipe.chezmarthe.site, residents.chezmarthe.site, benevoles.chezmarthe.site, partenaires.chezmarthe.site, bilan.chezmarthe.site
 CANONICAL_DOMAIN=chezmarthe.org
 OLD_DOMAINS=chezmarthe.site
 ```
 
-e `docker compose up -d`. Il progetto Jamstack deve essere collegato a entrambi
-i domini radice e configurato per redirigere `.site` verso `.org`. Il backend
-rimanda allora:
+e `docker compose up -d`. L'app rimanda allora:
 - `www.chezmarthe.org` → `chezmarthe.org`;
 - `chezmarthe.site` e i suoi sottodomini → lo stesso sottodominio su `chezmarthe.org`;
 - le pagine del vecchio sito (`/contactus`, `/shop/...`) → la home.

@@ -10,8 +10,8 @@ la strategia d'impatto e il pitch sono descritti nel [piano business](docs-md/BU
 
 ```text
 backend/         API FastAPI, moduli Python, migrazioni e test backend
-frontend/        applicazione React/Vite e sito pubblico Jamstack
-main.py          entry point FastAPI richiesto da Vercel e Docker
+frontend/        applicazione React/Vite (sito pubblico e spazi)
+main.py          entry point FastAPI (uvicorn e Docker)
 deploy/          configurazione e istruzioni per il deployment
 docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
 chezmarthe-demo/ prototipo con dati fittizi, mai pubblicato
@@ -58,28 +58,7 @@ due in preparazione). L'app riconosce lo spazio **dal sottodominio** (vedi
 > Con `127.0.0.1` il link diventa `<spazio>.127.0.0.1`, che non è un dominio
 > valido: il browser non risolve nulla e la pagina resta bianca. I browser
 
-## Sito pubblico Jamstack
-
-`frontend/` produce due frontend distinti:
-
-- `npm run build` genera `frontend/dist`, l'app completa che FastAPI serve sugli spazi
-  autenticati;
-- `npm run build:jamstack` genera `frontend/jamstack-dist`, solo il sito pubblico
-  (`/`, `/contact`, `/equipe`, ecc.), senza le schermate autenticate.
-
-Per sviluppare il sito pubblico in locale, avviare prima il backend e poi
-`cd frontend && npm run dev:jamstack`; Vite inoltra `/api` al backend locale.
 Il prototipo `chezmarthe-demo/` con dati fittizi resta separato e non viene pubblicato.
-
-Il deploy statico usa un progetto Vercel separato con **Root Directory `frontend`**.
-Impostare `VITE_API_BASE_URL=https://api.chezmarthe.site` nel progetto: i moduli
-pubblici usano quell'origine per programmazione, contenuti aggiornabili e moduli.
-Nel backend impostare `PUBLIC_SITE_ORIGINS=https://chezmarthe.site,https://www.chezmarthe.site`;
-CORS consente solo GET/POST e l'origine pubblica dichiarata. I sottodomini
-`equipe`, `residents`, `benevoles`, `partenaires` e `bilan`, incluso `api`, restano
-sul backend. `chezmarthe.site` è un dominio di test non appartenente
-all'associazione: quando si passerà a `chezmarthe.org`, aggiornare insieme
-`VITE_API_BASE_URL` e `PUBLIC_SITE_ORIGINS` ai rispettivi domini `.org`.
 
 > I browser risolvono ogni `*.localhost` su 127.0.0.1 senza toccare `/etc/hosts`.
 > Esempi che funzionano:
@@ -175,8 +154,7 @@ fatte in Excel.
 A ogni salvataggio delle piste il server riscrive anche una copia Excel nello
 stesso formato in `excel-sauvegarde/` (esclusa da Git): `AAP retroplanning -
 sauvegarde.xlsx`, sempre aggiornata, e una copia per giorno in `par jour/`. La
-cartella si cambia con `FUNDERS_BACKUP_DIR` (vuota = nessuna copia); su Vercel
-la copia è disattivata. Il sito resta l'unica fonte: per lavorare in Excel,
+cartella si cambia con `FUNDERS_BACKUP_DIR` (vuota = nessuna copia). Il sito resta l'unica fonte: per lavorare in Excel,
 modificare una copia del file e caricarla con « Importer depuis Excel ».
 
 ## Agenti chatbot
@@ -285,8 +263,8 @@ scheda di un evento l'équipe trova anche un QR con l'evento già scelto
 ## Tunnel Cloudflare (chezmarthe.site)
 
 L'app gira sul portatile ed è pubblicata con un tunnel Cloudflare. Il dominio
-principale è servito dal deploy Jamstack; i sottodomini (`equipe.`, `residents.`,
-`benevoles.`, `partenaires.`, `bilan.` e `api.`) puntano a `localhost:8000`.
+principale e i sottodomini (`equipe.`, `residents.`, `benevoles.`, `partenaires.`,
+`bilan.`) puntano a `localhost:8000`.
 Configurazione: `cloudflare/tunnel.yml`.
 
 Una sola volta, dopo aver installato
@@ -295,31 +273,14 @@ Una sola volta, dopo aver installato
 ```sh
 cloudflared tunnel login                                  # apre il browser, scegli chezmarthe.site
 cloudflared tunnel create marthe
+cloudflared tunnel route dns marthe chezmarthe.site
 cloudflared tunnel route dns marthe '*.chezmarthe.site'
 ```
-
-Collegare `chezmarthe.site` al progetto Vercel statico seguendo i record indicati
-nella dashboard Vercel; non creare per il dominio radice una route del tunnel.
 
 Per la demo, in due terminali: `make build && make dev` (oppure `make` con l'AI),
 poi `make tunnel` (oppure `make tunnel-forever`, che lo rilancia da solo se si
 ferma o perde la connessione). Il portatile deve restare acceso e sveglio.
 
-## Vercel (piano B se il tunnel non funziona)
-
-Il sito pubblico Jamstack ha un progetto Vercel autonomo (configurato da
-`frontend/vercel.json`, Root Directory `frontend`). L'app FastAPI ha un secondo progetto
-Vercel dalla root, tenuto come riserva nel caso il portatile o il tunnel non
-siano disponibili: la build usa `vercel.json`. Non assegnare lo stesso dominio
-radice a entrambi i progetti.
-
-Su Vercel la variabile `VERCEL` è già impostata dalla piattaforma: l'app passa
-automaticamente in **modalità demo** (risposte precompilate, nessuna chiamata AI,
-vedi sopra) e i dati vengono salvati in SQLite su `/tmp`, quindi persistono solo
-finché l'istanza resta calda. Configura `DATABASE_URL` (Postgres) nelle variabili
-d'ambiente del progetto Vercel se vuoi dati persistenti anche lì. I sottodomini
-(`equipe.`, `residents.`...) richiedono un dominio personalizzato configurato nel
-progetto Vercel: l'URL `*.vercel.app` di default non li supporta.
 
 ## Démonstration CV et reconversion
 

@@ -1,4 +1,3 @@
-import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 
 // Violet wave closing the band above and below (same as the platform's public site).
 function Wave({ className }) {
@@ -10,7 +9,7 @@ export default function PillarsSection({ pillars }) {
     <div className="landing-wrap">
       <h2 id="pillars-title" className="sr-only">Ce que l’on vit Chez Marthe</h2>
       <div className="pillars">{pillars.items.map((pillar, index) => <article key={`${pillar.title}-${index}`} className="pillar">
-        <img src={apiUrl(pillar.photo)} alt="" loading="lazy" />
+        <img src={pillar.photo} alt="" loading="lazy" />
         <h3>{pillar.title}</h3>
         <p>{pillar.text}</p>
       </article>)}</div>

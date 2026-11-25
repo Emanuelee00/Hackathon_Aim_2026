@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { hostedAssociations, members } from '../site-pages/teamData.js';
 import { LINKS } from './links.js';
 import { defaultRentalSpaces } from './rentalSpaces.js';
-import { apiUrl } from '../../../shared/lib/apiUrl.js';
 
 // Le contenu de la page d'accueil, section par section : ce que l'équipe peut changer dans « Site » (textes, photos, listes,
 // section affichée ou cachée). Ces valeurs sont celles d'origine ; ce que l'équipe enregistre les remplace (espaces.py, /api/site).
@@ -105,7 +104,7 @@ export function useSite() {
       setSite({ content: mergeSite(data?.content), cards: data?.cards || defaultRentalSpaces, order: sectionOrder(data?.content), ready: true });
     };
     const timer = setTimeout(() => finish(null), 1500);
-    fetch(apiUrl('/api/site')).then(response => (response.ok ? response.json() : null)).then(finish, () => finish(null)).finally(() => clearTimeout(timer));
+    fetch('/api/site').then(response => (response.ok ? response.json() : null)).then(finish, () => finish(null)).finally(() => clearTimeout(timer));
     return () => { done = true; clearTimeout(timer); };
   }, []);
   return site;

@@ -201,7 +201,7 @@ def loop() -> None:
 
 
 def start_daily() -> None:
-    """Once a day, from 8:00 Paris time, on a server that stays on (not on Vercel's short-lived instances)."""
-    if os.getenv("VERCEL") or os.getenv("REMINDERS", "on") == "off":
+    """Once a day, from 8:00 Paris time; REMINDERS=off disables it."""
+    if os.getenv("REMINDERS", "on") == "off":
         return
     Thread(target=loop, daemon=True, name="funding-reminders").start()

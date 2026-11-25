@@ -5,10 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "dev:jamstack": "vite --mode jamstack --host 127.0.0.1",
     "build": "vite build",
-    "build:jamstack": "vite build --mode jamstack",
-    "preview:jamstack": "vite preview --mode jamstack",
     "test": "node --test src/shared/lib/*.test.js src/features/*/*.test.js src/features/*/*/*.test.js",
     "test:e2e": "playwright test"
   },

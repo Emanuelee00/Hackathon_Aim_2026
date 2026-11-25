@@ -1,12 +1,11 @@
 import { errorMessage } from '../../features/auth/api.js';
-import { apiUrl } from './apiUrl.js';
 
 // The public pages (landing request, bilan, contact) never read the shared store: they only add to it.
 const offline = 'Le serveur est injoignable : votre envoi n’a pas été enregistré. Réessayez dans un instant.';
 
 async function call(path, body) {
   const options = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
-  const response = await fetch(apiUrl(path), options).catch(() => null);
+  const response = await fetch(path, options).catch(() => null);
   if (!response) throw new Error(offline);
   if (!response.ok) throw new Error(await errorMessage(response));
   return response.json();

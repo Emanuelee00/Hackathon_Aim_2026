@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import HomeShell from '../landing/HomeShell.jsx';
 import { useSite } from '../landing/siteContent.js';
-import { apiUrl } from '../../../shared/lib/apiUrl.js';
 
 
 const people = <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><circle cx="17.5" cy="9.5" r="2.6" /><path d="M17 14.2a5.2 5.2 0 0 1 4.5 5.3" /></svg>;
@@ -36,7 +35,7 @@ export default function Team() {
           <h1 id="equipe-titre">Les visages de Chez Marthe</h1>
         </div>
         <div className="team-grid" ref={grid} onScroll={onScroll}>{members.map((m, index) => <article key={`${m.name}-${index}`} className="member-card">
-          <span className="member-photo" aria-hidden="true">{m.photo ? <img src={apiUrl(m.photo)} alt="" loading="lazy" /> : m.name[0]}</span>
+          <span className="member-photo" aria-hidden="true">{m.photo ? <img src={m.photo} alt="" loading="lazy" /> : m.name[0]}</span>
           <h2>{m.name}</h2>
           <p className="member-role">{m.role}</p>
           {m.text ? <blockquote>{`«\u00a0${m.text}\u00a0»`}</blockquote> : <p className="member-todo">[Une ou deux phrases de présentation]</p>}
@@ -73,7 +72,7 @@ export default function Team() {
         <h2 id="assos-titre">Les associations du lieu</h2>
         <p className="assos-intro">Chez Marthe vit chaque jour avec les associations qui sont installées dans le lieu.</p>
         <div className="assos-grid">{hostedAssociations.map((assoc, index) => <a key={`${assoc.name}-${index}`} className="asso-card" href={assoc.url} target="_blank" rel="noopener noreferrer">
-          <span className="asso-logo"><img src={apiUrl(assoc.logo)} alt="" loading="lazy" /></span>
+          <span className="asso-logo"><img src={assoc.logo} alt="" loading="lazy" /></span>
           <strong>{assoc.name}</strong>
           <small>{assoc.role}</small>
         </a>)}</div>

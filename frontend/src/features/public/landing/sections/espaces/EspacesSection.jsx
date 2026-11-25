@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 
 import { spaceById } from '../../../../../shared/data/spaces.js';
-import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 import PublicRequest from '../../../public-request/PublicRequest.jsx';
 
 // The cards of « Louer un espace » : the team edits them in « Site », see rentalSpaces.js and siteContent.js.
@@ -23,7 +22,7 @@ export default function EspacesSection({ spaces, publicSpaces }) {
       <p className="kicker">{spaces.kicker}</p>
       <h2 id="espaces-titre">{spaces.title}</h2>
       <div className="home-spaces" ref={spacesRef} onScroll={onSpacesScroll}>{publicSpaces.map(space => <a key={space.id} className="space" href={space.link ? space.link.url : spaceById[space.space] ? '#demande' : '#contact'} {...(space.link ? { target: '_blank', rel: 'noopener noreferrer' } : spaceById[space.space] ? { onClick: () => setPicked({ space: space.space, at: Date.now() }) } : {})}>
-        <img src={apiUrl(space.photo)} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
+        <img src={space.photo} alt="" loading="lazy" style={{ objectPosition: space.focus }} />
         <h3 className="space-title">{space.name}</h3>
         <div className="space-body">
           <ul className="space-details">{(space.details || []).map(detail => <li key={detail}>{detail}</li>)}</ul>

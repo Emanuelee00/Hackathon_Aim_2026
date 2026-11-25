@@ -1,7 +1,6 @@
 """The team's funding tracker to and from Excel; the funders are kept in the store."""
 
 import logging
-import os
 from typing import Annotated
 from zipfile import BadZipFile
 
@@ -13,7 +12,6 @@ from fastapi import (
     Depends,
     HTTPException,
     Path,
-    Request,
     Response,
     UploadFile,
 )
@@ -98,15 +96,6 @@ def test_reminder(funder: Annotated[dict, Body()], user: Team) -> dict:
             502,
             "Le service d’envoi a refusé le message. Vérifiez la clé et l’adresse d’expédition.",
         ) from exc
-
-
-@router.get("/reminders/cron")
-def reminders_cron(request: Request) -> dict[str, list[dict]]:
-    """Called every morning by Vercel Cron (it sends `Authorization: Bearer $CRON_SECRET`): sends the reminders due today."""
-    secret = os.getenv("CRON_SECRET")
-    if not secret or request.headers.get("authorization") != f"Bearer {secret}":
-        raise HTTPException(401, "Accès refusé.")
-    return {"reminders": run_reminders()}
 
 
 class NotifyEmail(BaseModel):

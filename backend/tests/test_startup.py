@@ -1,4 +1,4 @@
-"""main.py must import on its own, without pytest's pythonpath (uvicorn, Docker, Vercel)."""
+"""main.py must import on its own, without pytest's pythonpath (uvicorn, Docker)."""
 
 import os
 import subprocess

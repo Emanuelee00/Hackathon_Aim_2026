@@ -3,7 +3,6 @@
 .ollama
 **/node_modules
 frontend/dist
-frontend/jamstack-dist
 frontend/test-results
 frontend/playwright-report
 **/__pycache__

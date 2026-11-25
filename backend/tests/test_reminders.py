@@ -199,11 +199,6 @@ def test_only_the_team_sends_a_test_and_the_cron_needs_its_secret(
         .status_code
         == 403
     )
-    monkeypatch.setenv("CRON_SECRET", "secret")
-    assert team.get("/api/funders/reminders/cron").status_code == 401
-    assert team.get(
-        "/api/funders/reminders/cron", headers={"Authorization": "Bearer secret"}
-    ).json() == {"reminders": []}
 
 
 def test_the_team_chooses_where_the_reminders_go(client_as, memory, monkeypatch):  # noqa: F811

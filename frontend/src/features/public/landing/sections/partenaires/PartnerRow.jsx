@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 
 // Fait avancer la rangée toute seule (une moitié de la piste en `duration` secondes). Au doigt ou au pavé tactile
 // on peut la faire glisser dans les deux sens ; elle repart 1,5 s après, de là où on l'a laissée. La piste contient
@@ -56,14 +55,14 @@ export default function PartnerRow({ items }) {
   // Moins de 4 logos : pas de défilement, ils restent fixes et centrés.
   if (items.length < 4) return <div className="marquee marquee-still">
     <ul className="home-partners marquee-track">{items.map(p => <li key={p.name}>
-      <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={apiUrl(p.logo)} alt={p.name} title={p.name} loading="lazy" /></a>
+      <a href={p.url} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={p.logo} alt={p.name} title={p.name} loading="lazy" /></a>
     </li>)}</ul>
   </div>;
   return <div className="marquee marquee-moving" ref={scroller}>
     <ul className="home-partners marquee-track">{[0, 1].flatMap(round => set.map((p, i) => {
       const copy = round === 1 || i >= items.length;
       return <li key={`${round}-${i}`} aria-hidden={copy ? 'true' : undefined}>
-        <a href={p.url} tabIndex={copy ? -1 : undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={apiUrl(p.logo)} alt={copy ? '' : p.name} title={p.name} loading="lazy" /></a>
+        <a href={p.url} tabIndex={copy ? -1 : undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noreferrer' : undefined}><img src={p.logo} alt={copy ? '' : p.name} title={p.name} loading="lazy" /></a>
       </li>;
     }))}</ul>
   </div>;

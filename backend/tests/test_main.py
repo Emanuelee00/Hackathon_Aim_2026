@@ -72,19 +72,13 @@ def test_site_pages_and_old_addresses():
     assert client.get("/privacy").headers["location"] == "/politique-de-confidentialite"
 
 
-def test_public_site_cors_allows_configured_origin_only():
-    client = TestClient(main.app)
-    headers = {
-        "Origin": "https://chezmarthe.site",
-        "Access-Control-Request-Method": "POST",
-        "Access-Control-Request-Headers": "content-type",
-    }
-    allowed = client.options("/api/contact", headers=headers)
-    assert allowed.status_code == 200
-    assert allowed.headers["access-control-allow-origin"] == "https://chezmarthe.site"
-
-    denied = client.options(
+def test_api_does_not_allow_cross_origin_calls():
+    # Site and API share the same origin on the VM: no CORS headers for others.
+    response = TestClient(main.app).options(
         "/api/contact",
-        headers={**headers, "Origin": "https://not-chezmarthe.example"},
+        headers={
+            "Origin": "https://not-chezmarthe.example",
+            "Access-Control-Request-Method": "POST",
+        },
     )
-    assert denied.status_code == 400
+    assert "access-control-allow-origin" not in response.headers

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { apiUrl } from '../../../../../shared/lib/apiUrl.js';
 
 // Types out each city, pauses, erases it, then moves to the next — skipped for reduced motion.
 function useTypewriter(words, { typingMs = 90, deletingMs = 45, pauseMs = 1500 } = {}) {
@@ -32,7 +31,7 @@ export default function Hero({ content, show }) {
   const original = content.photo === '/foto/haut-de-page-hd.webp';
   return <section className="home-hero">
     <div className="hero-inner">
-      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src={apiUrl(content.photo)} {...(original ? { srcSet: '/foto/haut-de-page.jpg 1200w, /foto/haut-de-page-hd.webp 2400w', sizes: '100vw' } : {})} alt="" fetchPriority="high" decoding="async" /></div>
+      <div className="hero-media" aria-hidden="true"><img className="clip is-on" src={content.photo} {...(original ? { srcSet: '/foto/haut-de-page.jpg 1200w, /foto/haut-de-page-hd.webp 2400w', sizes: '100vw' } : {})} alt="" fetchPriority="high" decoding="async" /></div>
       <div className="hero-text">
         <div className="hero-headline">
           <p className="hero-eyebrow">Chez Marthe · {/* Every city is laid out invisibly in the same cell: the widest one sets the width, so the line never moves. */}
