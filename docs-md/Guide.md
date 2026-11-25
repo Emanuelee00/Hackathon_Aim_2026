@@ -76,8 +76,7 @@ mirror the **audiences of the site**. A new file goes into the folder of the aud
 serves, never into a generic "misc" folder.
 
 - **Repo**: `backend/` (FastAPI), `frontend/` (React app), `deploy/` (server
-  config), `docs-md/` (documentation), `chezmarthe-demo/` (static prototype,
-  not published). One build serves everything: FastAPI serves the React app on
+  config), `docs-md/` (documentation). One build serves everything: FastAPI serves the React app on
   the bare domain (public site) and on every space subdomain.
 - **Frontend features follow the subdomains**: `features/equipe/` (one
   subfolder per équipe page), `features/residents/`, `features/benevoles/`,
@@ -96,9 +95,6 @@ serves, never into a generic "misc" folder.
 - **Folders nest freely** (`equipe/requests/components/…`), with the same
   warning threshold as §0: more than ~7 entries in a folder is the signal for
   one more level — a warning light, never split just to hit the number.
-- **Static prototypes** keep one subfolder per file kind (`pages/`, `css/`,
-  `js/`) assembled by a single build script; no markup, style or script mixed
-  in one source file.
 - Adding a page or feature: create its folder under its audience, then wire it
   into the entry point and the CSS index **in the same commit**.
 

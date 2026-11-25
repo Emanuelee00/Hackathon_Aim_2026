@@ -194,7 +194,7 @@ MARTHE_AI=0 uv run uvicorn main:app --port 8010   # sito su http://localhost:801
 
 - Per la programmazione in locale servono `secrets/google-calendar.json` e `GOOGLE_CALENDAR_ID` (non sono nel repo: chiederli all'utente).
   Senza chiave la sezione dice «programmazione indisponibile».
-- Gli account demo locali sono in `chezmarthe-demo/comptes.txt` (solo per sviluppo). Lo spazio équipe locale è su `http://equipe.localhost:<porta>`,
+- Gli account demo locali si creano con `make seed` (elenco e password in `backend/accounts/seed_demo.py`, solo per sviluppo). Lo spazio équipe locale è su `http://equipe.localhost:<porta>`,
   quello delle associazioni su `http://partenaires.localhost:<porta>`.
 - Se `uv` riempie la home: `UV_CACHE_DIR=<disco grande>/.cache/uv`. Le prove nel browser sono state fatte con Playwright e Chromium.
 - Per i rilasci conviene un worktree: `git worktree add ../chezMarthe-release -b release/<nome> origin/main`.

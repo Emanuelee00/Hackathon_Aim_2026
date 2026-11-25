@@ -7,9 +7,6 @@ Si affrontano in una passata dedicata, alla fine.
 
 Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal refactor.
 
-- [ ] `chezmarthe-demo/src/build.py` — I001 (import non ordinati), F401 (`sys` non usato),
-      SIM115 (file aperti senza context manager). Script HTML legacy, probabilmente obsoleto:
-      decidere se cancellarlo o riscriverlo.
 - [ ] `backend/tests/test_bilans.py` — errore ruff (da dettagliare)
 - [ ] `backend/tests/test_confirmations.py` — errore ruff (da dettagliare)
 - [ ] `backend/tests/test_editeur.py` — errore ruff (da dettagliare)

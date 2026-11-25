@@ -15,7 +15,6 @@ frontend/        applicazione React/Vite (sito pubblico e spazi)
 main.py          entry point FastAPI (uvicorn e Docker)
 deploy/          configurazione e istruzioni per il deployment
 docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
-chezmarthe-demo/ prototipo con dati fittizi, mai pubblicato
 cloudflare/      configurazione del tunnel Cloudflare
 ```
 
@@ -59,7 +58,6 @@ due in preparazione). L'app riconosce lo spazio **dal sottodominio** (vedi
 > Con `127.0.0.1` il link diventa `<spazio>.127.0.0.1`, che non è un dominio
 > valido: il browser non risolve nulla e la pagina resta bianca. I browser
 
-Il prototipo `chezmarthe-demo/` con dati fittizi resta separato e non viene pubblicato.
 
 > I browser risolvono ogni `*.localhost` su 127.0.0.1 senza toccare `/etc/hosts`.
 > Esempi che funzionano:

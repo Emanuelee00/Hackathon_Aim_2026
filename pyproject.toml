@@ -27,10 +27,6 @@ dev = [
     "ruff>=0.12,<1",
 ]
 
-[tool.ruff]
-# The chezmarthe-demo prototype is standalone demo code, outside project standards.
-exclude = ["chezmarthe-demo"]
-
 [tool.pytest.ini_options]
 testpaths = ["backend/tests"]
 pythonpath = ["backend/tests", "backend", "."]

@@ -1,4 +1,4 @@
-"""Creates the demo accounts listed in chezmarthe-demo/comptes.txt; existing addresses are left untouched.
+"""Creates the demo accounts below, for local development only (never on the VM); existing addresses are left untouched.
 
 Usage: PYTHONPATH=backend uv run python -m accounts.seed_demo
 """

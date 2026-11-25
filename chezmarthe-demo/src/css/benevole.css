@@ -1,9 +1,0 @@
-.mis{display:grid;grid-template-columns:1fr;gap:14px}
-.m{display:grid;grid-template-columns:110px 1fr;gap:18px}
-.date{background:var(--ink);color:#fff;border-radius:10px;padding:12px;text-align:center;align-self:start}
-.date b{display:block;font-family:var(--display);font-size:34px;font-weight:400;line-height:1}
-.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:10px}
-.role{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
-.role .gauge{display:flex;gap:3px;margin:6px 0}.role .gauge i{flex:1;height:6px;border-radius:3px;background:#ebecef}.role .gauge i.f{background:var(--jardin)}
-.side{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start}
-@media (max-width:860px){.side{grid-template-columns:1fr}.m{grid-template-columns:1fr}}
