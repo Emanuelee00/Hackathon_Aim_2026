@@ -1,15 +1,15 @@
 import json
 
 import pytest
-from accounts.models import User
-from accounts.passwords import hash_password
-from accounts.routes import router as accounts_router
-from agents import benevoles, llm, partenaires, residents
-from agents.llm import Context
-from agents.routes import router
 from core import db, store
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from features.accounts.models import User
+from features.accounts.passwords import hash_password
+from features.accounts.routes import router as accounts_router
+from features.agents import benevoles, llm, partenaires, residents
+from features.agents.llm import Context
+from features.agents.routes import router
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 

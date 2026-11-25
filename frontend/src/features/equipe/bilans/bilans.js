@@ -1,4 +1,4 @@
-// « Bilans des structures » : un bilan par structure et par mois (backend/equipe/bilans/). Ici, ce qui se calcule sans écran.
+// « Bilans des structures » : un bilan par structure et par mois (backend/features/equipe/bilans/). Ici, ce qui se calcule sans écran.
 
 const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 

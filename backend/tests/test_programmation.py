@@ -1,9 +1,8 @@
 from datetime import date
 
-from agenda import gcal
-from fastapi.testclient import TestClient
-
 import main
+from fastapi.testclient import TestClient
+from features.agenda import gcal
 
 
 def event(title, day, color=None):

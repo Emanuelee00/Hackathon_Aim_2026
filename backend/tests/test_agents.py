@@ -3,15 +3,15 @@ from unittest.mock import MagicMock
 
 import httpx
 import pytest
-from accounts.models import User
-from accounts.passwords import hash_password
-from accounts.routes import router as accounts_router
-from agents import llm
-from agents.routes import router
 from core import db
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from public.forms import router as forms_router
+from features.accounts.models import User
+from features.accounts.passwords import hash_password
+from features.accounts.routes import router as accounts_router
+from features.agents import llm
+from features.agents.routes import router
+from features.public.forms import router as forms_router
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 

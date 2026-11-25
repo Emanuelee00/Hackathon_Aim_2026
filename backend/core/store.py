@@ -15,7 +15,7 @@ SQLITE_PATH = Path(__file__).parent.parent.parent / "marthe.db"
 CREATE = (
     "CREATE TABLE IF NOT EXISTS documents (key TEXT PRIMARY KEY, value TEXT NOT NULL)"
 )
-# "prospects", "prospectCalls", "fundingStrategy", "euCalls", "frCalls" and "patrons": the page « Financeurs potentiels » (equipe/prospection.py).
+# "prospects", "prospectCalls", "fundingStrategy", "euCalls", "frCalls" and "patrons": the page « Financeurs potentiels » (features/equipe/prospection.py).
 Key = Literal[
     "events",
     "matches",

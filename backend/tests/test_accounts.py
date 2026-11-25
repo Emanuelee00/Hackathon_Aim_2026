@@ -1,10 +1,10 @@
 import pytest
-from accounts.models import User
-from accounts.passwords import hash_password, verify_password
-from accounts.routes import router
 from core import db
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from features.accounts.models import User
+from features.accounts.passwords import hash_password, verify_password
+from features.accounts.routes import router
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import Session
 

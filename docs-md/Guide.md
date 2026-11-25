@@ -31,6 +31,17 @@ make it obvious *where* new code goes, not impress.
   responsibility (what the files serve, mirroring the site where it applies),
   never by file kind, never into a catch-all `misc`/`utils`/`common` folder,
   and never a split whose only purpose is to make the number fit.
+- **Judgment comes before the number.** The count is checked, but what decides
+  a structure are two questions: *"when I open the project, do I see at once
+  where a thing lives?"* and *"does this structure reflect something real (the
+  site, a responsibility), or was it invented to satisfy a rule?"*. A split that
+  fails them is wrong even if it fixes the count; a structure that passes them
+  is the goal.
+- **The one exception**: a folder that mirrors the site 1:1 — one entry per
+  section or page of the site, such as `landing/sections/` (the home page's
+  sections) — may go past 7, because there the number is set by the site, not
+  by the code. Grouping those entries artificially (e.g. "top/bottom of the
+  page") would fail the questions above.
 - **`__init__.py`**: minimal, with a one-line docstring stating the package's
   responsibility. It exposes the public API, not every symbol.
 - **No import cycles** between packages. A lower-level package never imports from
@@ -83,13 +94,15 @@ serves, never into a generic "misc" folder.
   `features/partenaires/`, `features/public/` (home, site pages, bilan, public
   form). A feature used by several spaces stays at `features/` root
   (`auth`, `chatbot`, `traces`).
-- **Backend follows the same spaces, with the frontend's names**:
-  `backend/equipe/<page>` mirrors `features/equipe/<page>` (`bilans`, `funding`,
-  `prospection`, `quotes`, `messages`, `profiles`, `site`, `opportunities`),
-  `backend/residents/`, `backend/public/` (forms anyone can send). What several
-  spaces use stays at `backend/` root (`accounts`, `agents`, `agenda`, `ai`,
-  `core`, `sharing`, `mailer`, `ranking`, `demo`). A space with no server code
-  of its own (today `benevoles`, `partenaires`) gets no folder until it needs one.
+- **Backend mirrors `frontend/src/`**: `backend/features/` is the mirror of
+  `frontend/src/features/` with the same names — `features/equipe/<page>`
+  (`bilans`, `funding`, `prospection`, `quotes`, `messages`, `profiles`, `site`,
+  `opportunities`), `features/residents/`, `features/public/` (forms anyone can
+  send), and the features several spaces use (`accounts`, `agents`, `agenda`,
+  `sharing`). `backend/core/` is the backend's `shared/`: database and store,
+  model client, e-mail, demo mode, ranking, migrations. A space with no server
+  code of its own (today `benevoles`, `partenaires`) gets no folder until it
+  needs one.
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
 - **Folders nest freely** (`equipe/requests/components/…`), with the same

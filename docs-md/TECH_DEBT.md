@@ -34,13 +34,13 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
       `gcal.list_events` non raggiunge `week_public` in `service.py` (2 test rossi).
       Se si rifà: patchare `gcal.service.list_events` nei test, oppure far risolvere
       `list_events` al package. Tentato il 2026-11-20, rollbackato.
-- [ ] `backend/equipe/opportunities.py`, `backend/equipe/profiles.py`, ... (piccoli e coesi: restano file)
-- [ ] `backend/equipe/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
+- [ ] `backend/features/equipe/opportunities.py`, `backend/features/equipe/profiles.py`, ... (piccoli e coesi: restano file)
+- [ ] `backend/features/equipe/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
       scrittura e endpoint sono un solo dominio. Non splittare senza un problema
       concreto (Guide.md §6). Valutato il 2026-11-20, lasciato file.
 - [x] `main.py` spostato in `backend/main.py` (25/11/2026): `uvicorn --app-dir backend`, niente più `sys.path` in `backend/__init__.py`.
 
 ## Note
 
-- `backend/equipe/quotes/facturation/models.py` usa gli asset in `backend/equipe/quotes/modeles/`
+- `backend/features/equipe/quotes/facturation/models.py` usa gli asset in `backend/features/equipe/quotes/modeles/`
   (fonts, docx) con `Path(__file__).parent.parent`: spostarli insieme.

@@ -89,10 +89,10 @@ migration:
 
 user:
 	@test -n "$(EMAIL)" -a -n "$(NAME)" -a -n "$(ROLE)" || { echo "Usage : make user EMAIL=... NAME=... ROLE=equipe"; exit 1; }
-	PYTHONPATH=backend uv run python -m accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
+	PYTHONPATH=backend uv run python -m features.accounts.create_user "$(EMAIL)" "$(NAME)" "$(ROLE)"
 
 seed:
-	PYTHONPATH=backend uv run python -m accounts.seed_demo
+	PYTHONPATH=backend uv run python -m features.accounts.seed_demo
 
 tunnel:
 	cloudflared tunnel --config cloudflare/tunnel.yml run marthe

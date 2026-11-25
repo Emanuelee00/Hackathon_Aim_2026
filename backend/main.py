@@ -3,31 +3,31 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from threading import Thread
 
-from accounts.routes import router as accounts_router
-from agenda import router as agenda_router
-from agents.routes import router as agents_router
-from ai import AI_ENABLED, warm_up
-from ai import router as ai_router
+from core.ai import AI_ENABLED, warm_up
+from core.ai import router as ai_router
 from core.db import migrate
-from demo import DEMO_MODE
-from equipe.bilans import router as bilans_router
-from equipe.funding.reminders import start_daily as start_reminders
-from equipe.funding.routes import router as funding_router
-from equipe.messages import router as messages_router
-from equipe.opportunities import router as matching_router
-from equipe.profiles import router as profils_router
-from equipe.prospection import router as prospection_router
-from equipe.quotes.editeur import router as editeur_router
-from equipe.quotes.facturation import router as modeles_router
-from equipe.site import router as espaces_router
-from equipe.site import site_router
+from core.demo import DEMO_MODE
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
-from public.forms import router as forms_router
-from residents.employment.routes import router as employment_router
-from sharing.qr import router as qr_router
-from sharing.routes import router as sharing_router
+from features.accounts.routes import router as accounts_router
+from features.agenda import router as agenda_router
+from features.agents.routes import router as agents_router
+from features.equipe.bilans import router as bilans_router
+from features.equipe.funding.reminders import start_daily as start_reminders
+from features.equipe.funding.routes import router as funding_router
+from features.equipe.messages import router as messages_router
+from features.equipe.opportunities import router as matching_router
+from features.equipe.profiles import router as profils_router
+from features.equipe.prospection import router as prospection_router
+from features.equipe.quotes.editeur import router as editeur_router
+from features.equipe.quotes.facturation import router as modeles_router
+from features.equipe.site import router as espaces_router
+from features.equipe.site import site_router
+from features.public.forms import router as forms_router
+from features.residents.employment.routes import router as employment_router
+from features.sharing.qr import router as qr_router
+from features.sharing.routes import router as sharing_router
 from starlette.exceptions import HTTPException
 
 

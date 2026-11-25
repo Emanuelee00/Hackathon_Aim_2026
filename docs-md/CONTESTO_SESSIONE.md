@@ -171,7 +171,7 @@ docker compose ps                      # db, app, caddy "Up"
 - Dopo la bascola: aprire il sito, `/equipe`, `/on-parle-de-nous`, accedere allo spazio équipe e aprire Financements, Messages, Factures et devis.
 - Cambiare solo una variabile (es. `.env`): `nano deploy/.env` poi `docker compose up -d app` (si ricrea solo l'app).
 - Backup di riserva più vecchio: `~/marthe-2026-11-10-1807.sql.gz` sulla VM. Non esiste un backup automatico né una copia fuori dalla VM (da fare).
-- Utile: `docker compose logs -f caddy` (certificati), `docker compose exec app env PYTHONPATH=/app/backend /opt/venv/bin/python -m accounts.create_user email@... "Nome" equipe` (nuovo account équipe).
+- Utile: `docker compose logs -f caddy` (certificati), `docker compose exec app env PYTHONPATH=/app/backend /opt/venv/bin/python -m features.accounts.create_user email@... "Nome" equipe` (nuovo account équipe).
 - Promemoria finanziamenti: `POST /api/funders/reminders/run` (équipe collegata) elenca quelli di oggi senza inviarli, `?dry=false` li invia.
 
 ### 6.4 Rilasci: dal codice alla VM
@@ -194,7 +194,7 @@ MARTHE_AI=0 uv run uvicorn main:app --port 8010   # sito su http://localhost:801
 
 - Per la programmazione in locale servono `secrets/google-calendar.json` e `GOOGLE_CALENDAR_ID` (non sono nel repo: chiederli all'utente).
   Senza chiave la sezione dice «programmazione indisponibile».
-- Gli account demo locali si creano con `make seed` (elenco e password in `backend/accounts/seed_demo.py`, solo per sviluppo). Lo spazio équipe locale è su `http://equipe.localhost:<porta>`,
+- Gli account demo locali si creano con `make seed` (elenco e password in `backend/features/accounts/seed_demo.py`, solo per sviluppo). Lo spazio équipe locale è su `http://equipe.localhost:<porta>`,
   quello delle associazioni su `http://partenaires.localhost:<porta>`.
 - Se `uv` riempie la home: `UV_CACHE_DIR=<disco grande>/.cache/uv`. Le prove nel browser sono state fatte con Playwright e Chromium.
 - Per i rilasci conviene un worktree: `git worktree add ../chezMarthe-release -b release/<nome> origin/main`.

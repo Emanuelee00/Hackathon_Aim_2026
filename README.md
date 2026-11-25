@@ -9,8 +9,9 @@ la strategia d'impatto e il pitch sono descritti nel [piano business](docs-md/BU
 ## Struttura del progetto
 
 ```text
-backend/         API FastAPI: equipe/, residents/, public/ come gli spazi del sito,
-                 più i moduli condivisi, le migrazioni e i test
+backend/         API FastAPI: features/ (come frontend/src/features: equipe/,
+                 residents/, public/ e le funzioni comuni), core/ (database,
+                 email, IA, migrazioni), main.py, tests/
 frontend/        applicazione React/Vite (sito pubblico e spazi)
 deploy/          configurazione e istruzioni per il deployment
 docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
@@ -99,7 +100,7 @@ terminale, perché vedono i dati delle residenti:
 make user EMAIL=coord@marthe.fr NAME="Coordinatrice" ROLE=equipe
 ```
 
-Utenti e sessioni sono gestiti con SQLAlchemy e migrazioni **Alembic** (`backend/migrations/`),
+Utenti e sessioni sono gestiti con SQLAlchemy e migrazioni **Alembic** (`backend/core/migrations/`),
 sullo stesso database di `store.py`. L'app applica le migrazioni all'avvio; a mano:
 `make migrate`. Dopo una modifica a `accounts/models.py`:
 `make migration NAME="descrizione"`. La sessione è un cookie httpOnly valido 30 giorni,
@@ -194,7 +195,7 @@ l'impiego usa ancora **Qwen2.5 0.5B** (`qwen2.5:0.5b`, circa 398 MB). Su GPU
 
 Il matching è ibrido:
 
-1. `backend/ranking/` sceglie in modo deterministico fino a 3 profili consenzienti i cui
+1. `backend/core/ranking/` sceglie in modo deterministico fino a 3 profili consenzienti i cui
    obiettivi o competenze compaiono nel testo dell'evento (tutti, se nessuno è legato);
 2. il modello scrive soltanto motivazione, beneficio e punto da verificare;
 3. se il modello non risponde entro 9 secondi o produce dati non validi, ogni
@@ -211,13 +212,13 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 ## Sviluppo
 
 - `backend/main.py`: entry point FastAPI (router, redirect di dominio, frontend compilato).
-- `backend/ai.py`: chat tramite Ollama locale e precaricamento del modello.
-- `backend/equipe/opportunities.py` e `backend/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
-- `backend/accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
-- `backend/agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
-- `backend/core/` e `backend/migrations/`: database SQLAlchemy e migrazioni Alembic.
-- `backend/mailer/`: invio email.
-- `backend/residents/employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
+- `backend/core/ai.py`: chat tramite Ollama locale e precaricamento del modello.
+- `backend/features/equipe/opportunities.py` e `backend/core/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
+- `backend/features/accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.
+- `backend/features/agents/`: agenti chatbot (OpenAI) e domande trasmesse all'équipe.
+- `backend/core/` (con `migrations/`): database SQLAlchemy e migrazioni Alembic.
+- `backend/core/mailer/`: invio email.
+- `backend/features/residents/employment/`: estrazione CV, piano verso l'impiego ed endpoint dedicato.
 - `frontend/src/app/`: composizione dell’app e stato condiviso.
 - `frontend/src/features/`: funzionalità autonome, compresa la vista `resident`.
 - `frontend/src/shared/`: componenti, dati demo e funzioni riutilizzabili.
@@ -233,11 +234,11 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 Con `MARTHE_DEMO=1`,
 **l'AI non viene mai chiamata**. Dopo un'attesa simulata di 6 secondi
-(`DEMO_DELAY` in `backend/demo/`), durante la quale scorre la barra di caricamento,
-il backend restituisce le risposte scritte in `backend/demo_responses.json`:
+(`DEMO_DELAY` in `backend/core/demo/`), durante la quale scorre la barra di caricamento,
+il backend restituisce le risposte scritte in `backend/core/demo/demo_responses.json`:
 
 - matching: un testo per ogni evento demo e ogni residente consenziente; la scelta
-  dei profili resta quella di `backend/ranking/`, gli eventi nuovi ricevono una
+  dei profili resta quella di `backend/core/ranking/`, gli eventi nuovi ricevono una
   suggestion guidée;
 - piano verso l'impiego: un piano per ciascuno dei tre mestieri di esempio
   (commis de cuisine, assistante administrative, vente); gli altri obiettivi

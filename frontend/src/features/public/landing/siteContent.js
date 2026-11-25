@@ -4,7 +4,7 @@ import { LINKS } from './links.js';
 import { defaultRentalSpaces } from './rentalSpaces.js';
 
 // Le contenu de la page d'accueil, section par section : ce que l'équipe peut changer dans « Site » (textes, photos, listes,
-// section affichée ou cachée). Ces valeurs sont celles d'origine ; ce que l'équipe enregistre les remplace (backend/equipe/site.py, /api/site).
+// section affichée ou cachée). Ces valeurs sont celles d'origine ; ce que l'équipe enregistre les remplace (backend/features/equipe/site.py, /api/site).
 const partnerLogo = name => `/foto/partenaires/${name}`;
 
 export const defaultSite = {

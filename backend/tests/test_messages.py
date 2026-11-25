@@ -1,12 +1,11 @@
 from datetime import date
 
-import mailer
-from core import store
-from equipe import messages
-from equipe.funding import reminders
-from public.forms import router as forms_router
-from sharing import confirmations
-from sharing.models import EventDraft
+from core import mailer, store
+from features.equipe import messages
+from features.equipe.funding import reminders
+from features.public.forms import router as forms_router
+from features.sharing import confirmations
+from features.sharing.models import EventDraft
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
 DRAFT = EventDraft(

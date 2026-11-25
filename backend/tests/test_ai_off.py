@@ -1,14 +1,13 @@
 """MARTHE_AI=0: no model is called, guided texts are used, chatbots answer 503."""
 
-import ai
 import httpx
-import pytest
-from agents import routes as agent_routes
-from equipe import opportunities as matching
-from fastapi.testclient import TestClient
-from residents.employment import cv_lines, planning
-
 import main
+import pytest
+from core import ai
+from fastapi.testclient import TestClient
+from features.agents import routes as agent_routes
+from features.equipe import opportunities as matching
+from features.residents.employment import cv_lines, planning
 
 
 @pytest.fixture

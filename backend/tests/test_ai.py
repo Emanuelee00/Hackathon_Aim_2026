@@ -1,9 +1,9 @@
 import json
 from unittest.mock import MagicMock
 
-import ai
 import httpx
 import pytest
+from core import ai
 from fastapi import HTTPException
 from pydantic import ValidationError
 

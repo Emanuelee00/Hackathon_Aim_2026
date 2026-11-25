@@ -6,12 +6,16 @@ from unittest.mock import AsyncMock, MagicMock
 
 import httpx
 from docx import Document
-from residents.employment.cv_lines import generate_lines
-from residents.employment.extraction import extract_cv_text
-from residents.employment.models import CvEvent, CvLinesRequest, EmploymentContext
-from residents.employment.planning import generate_plan
-from residents.employment.proposals import cv_proposals
-from residents.employment.routes import employment_plan
+from features.residents.employment.cv_lines import generate_lines
+from features.residents.employment.extraction import extract_cv_text
+from features.residents.employment.models import (
+    CvEvent,
+    CvLinesRequest,
+    EmploymentContext,
+)
+from features.residents.employment.planning import generate_plan
+from features.residents.employment.proposals import cv_proposals
+from features.residents.employment.routes import employment_plan
 
 
 def context() -> EmploymentContext:
@@ -63,7 +67,7 @@ def test_employment_plan_uses_valid_ai_response(monkeypatch):
         )
     )
     monkeypatch.setattr(
-        "residents.employment.planning.httpx.Client",
+        "features.residents.employment.planning.httpx.Client",
         MagicMock(return_value=httpx.Client(transport=transport)),
     )
     plan = generate_plan(
@@ -75,7 +79,7 @@ def test_employment_plan_uses_valid_ai_response(monkeypatch):
 
 def test_employment_plan_falls_back_when_model_is_unavailable(monkeypatch):
     monkeypatch.setattr(
-        "residents.employment.planning.httpx.Client",
+        "features.residents.employment.planning.httpx.Client",
         MagicMock(side_effect=httpx.ConnectError("offline")),
     )
     plan = generate_plan(
@@ -96,7 +100,7 @@ def test_employment_endpoint_accepts_a_real_docx(monkeypatch):
     output = BytesIO()
     document.save(output)
     monkeypatch.setattr(
-        "residents.employment.planning.httpx.Client",
+        "features.residents.employment.planning.httpx.Client",
         MagicMock(side_effect=httpx.ConnectError("offline")),
     )
     upload = MagicMock(filename="cv.docx")
@@ -114,7 +118,7 @@ def test_employment_endpoint_accepts_a_real_docx(monkeypatch):
 
 def test_technical_cv_cooking_goal_does_not_invent_cooking_experience(monkeypatch):
     client = MagicMock(side_effect=AssertionError("Model must not invent a match"))
-    monkeypatch.setattr("residents.employment.planning.httpx.Client", client)
+    monkeypatch.setattr("features.residents.employment.planning.httpx.Client", client)
     plan = generate_plan(
         EmploymentContext(
             resident_name="Alex", objective="Commis de cuisine", acquired_skills=[]
@@ -152,9 +156,9 @@ def test_demo_cv_files_are_readable():
 
 def test_demo_mode_serves_prewritten_plan_without_model(monkeypatch):
     client = MagicMock()
-    monkeypatch.setattr("residents.employment.planning.httpx.Client", client)
-    monkeypatch.setattr("residents.employment.planning.DEMO_MODE", True)
-    monkeypatch.setattr("residents.employment.planning.DEMO_DELAY", 0)
+    monkeypatch.setattr("features.residents.employment.planning.httpx.Client", client)
+    monkeypatch.setattr("features.residents.employment.planning.DEMO_MODE", True)
+    monkeypatch.setattr("features.residents.employment.planning.DEMO_DELAY", 0)
     demo = generate_plan(context(), "Préparation de repas familiaux")
     unknown = context().model_copy(update={"objective": "Pilote de ligne"})
     assert demo.source == "ai" and len(demo.steps) == 4
@@ -183,7 +187,7 @@ def test_cv_lines_keep_journey_skills_and_model_wording(monkeypatch):
         )
     )
     monkeypatch.setattr(
-        "residents.employment.cv_lines.httpx.Client",
+        "features.residents.employment.cv_lines.httpx.Client",
         MagicMock(return_value=httpx.Client(transport=transport)),
     )
     result = generate_lines(cv_request())
@@ -203,7 +207,7 @@ def test_cv_lines_fall_back_when_model_fails_or_miscounts(monkeypatch):
     ):
         transport = httpx.MockTransport(lambda request, response=response: response)
         monkeypatch.setattr(
-            "residents.employment.cv_lines.httpx.Client",
+            "features.residents.employment.cv_lines.httpx.Client",
             MagicMock(return_value=real_client(transport=transport)),
         )
         result = generate_lines(cv_request())
@@ -213,9 +217,9 @@ def test_cv_lines_fall_back_when_model_fails_or_miscounts(monkeypatch):
 
 def test_cv_lines_demo_mode_uses_prewritten_answers(monkeypatch):
     client = MagicMock()
-    monkeypatch.setattr("residents.employment.cv_lines.httpx.Client", client)
-    monkeypatch.setattr("residents.employment.cv_lines.DEMO_MODE", True)
-    monkeypatch.setattr("residents.employment.cv_lines.DEMO_DELAY", 0)
+    monkeypatch.setattr("features.residents.employment.cv_lines.httpx.Client", client)
+    monkeypatch.setattr("features.residents.employment.cv_lines.DEMO_MODE", True)
+    monkeypatch.setattr("features.residents.employment.cv_lines.DEMO_DELAY", 0)
     assert generate_lines(cv_request()).source == "ai"
     assert generate_lines(cv_request("Pilote de ligne")).source == "guided"
     client.assert_not_called()

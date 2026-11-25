@@ -70,7 +70,7 @@ Le migrazioni del database partono da sole all'avvio dell'app.
 Primo account dell'équipe:
 
 ```sh
-docker compose exec app /opt/venv/bin/python -m accounts.create_user email@... "Nome" equipe
+docker compose exec app /opt/venv/bin/python -m features.accounts.create_user email@... "Nome" equipe
 ```
 
 ## 3. Tappa 2: `chezmarthe.org` (IONOS)

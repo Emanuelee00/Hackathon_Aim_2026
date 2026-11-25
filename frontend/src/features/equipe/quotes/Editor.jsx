@@ -4,7 +4,7 @@ import { plainText, toBlocks } from './editorModel.js';
 import { templates } from './editorTemplates.js';
 
 // Editor of documents: starts from the association's quote or invoice, already written, with the fields « <<…>> » to type over;
-// or from a blank page. Then download it in Word, PDF or plain text. The file is built by the server (backend/equipe/quotes/editeur/); nothing is stored.
+// or from a blank page. Then download it in Word, PDF or plain text. The file is built by the server (backend/features/equipe/quotes/editeur/); nothing is stored.
 const tools = [
   { label: 'G', title: 'Gras', command: 'bold', className: 'tool-bold' },
   { label: 'I', title: 'Italique', command: 'italic', className: 'tool-italic' },

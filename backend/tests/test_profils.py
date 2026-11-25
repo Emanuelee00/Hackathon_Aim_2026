@@ -1,5 +1,5 @@
-from equipe import profiles as profils
-from equipe import site as espaces
+from features.equipe import profiles as profils
+from features.equipe import site as espaces
 from test_espaces import PNG
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

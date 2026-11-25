@@ -3,10 +3,10 @@ from io import BytesIO
 
 import pytest
 from core import store
-from equipe.funding import reminders
-from equipe.funding.excel import read_tracker
-from equipe.funding.routes import router as funding_router
-from equipe.funding.workbook import write_tracker
+from features.equipe.funding import reminders
+from features.equipe.funding.excel import read_tracker
+from features.equipe.funding.routes import router as funding_router
+from features.equipe.funding.workbook import write_tracker
 from openpyxl import load_workbook
 from test_store import client_as  # noqa: F401  (pytest fixture)
 

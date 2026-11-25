@@ -2,7 +2,7 @@ import io
 import zipfile
 from xml.dom import minidom
 
-from equipe.quotes import editeur
+from features.equipe.quotes import editeur
 from test_store import client_as  # noqa: F401  (pytest fixture)
 
 PAGE = {

@@ -3,9 +3,9 @@ from unittest.mock import MagicMock
 
 import httpx
 import pytest
-from equipe import opportunities as matching
+from core.ranking import rank_profiles
 from fastapi import HTTPException
-from ranking import rank_profiles
+from features.equipe import opportunities as matching
 
 
 def profile(id, goals, skills, consent=True):
