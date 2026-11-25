@@ -12,7 +12,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 | Cosa | Stato |
 | --- | --- |
 | `main` su GitHub | contiene tutto il lavoro: refactor `main2` + le sessioni del 25/11 (§4). È l'unico branch. |
-| VM di produzione (Google Cloud, IP `34.155.50.2`) | **non ancora aggiornata**: gira una versione di `main` **precedente** al refactor (probabilmente senza i pacchetti 3–7). Nessun dominio punta ancora alla VM, quindi nessun utente la usa. |
+| VM di produzione (Google Cloud, IP `34.155.50.2`) | **aggiornata il 25/11/2026** al nuovo `main` (refactor incluso), 2 worker avviati, dati intatti. Backup del giorno in `~/backup-2026-11-25.sql.gz` e `~/config-2026-11-25.tgz` (solo sulla VM); immagine di ritorno `deploy-app:precedente`; codice di ritorno: tag `main-prima-refactor-2026-11`. Accesso da questo PC: `ssh marthe`. Nessun dominio punta ancora alla VM. |
 | `chezmarthe.org` (DNS su IONOS) | `@` senza record; `www` è un `CNAME` verso Odoo (`chezmarthe1.odoo.com`); MX su IONOS (email: **non toccare**). |
 | `chezmarthe.site` (DNS su Cloudflare, non è dell'associazione) | passa ancora da Cloudflare (tunnel del portatile). Deciso di usarlo come **dominio di demo** (§3). |
 | IA | spenta in produzione (`MARTHE_AI=0`, `VITE_AI=off` in `deploy/Dockerfile.prod`); i 5 chatbot non compaiono. |
@@ -21,16 +21,9 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 
 ## 2. Prossimi passi, in ordine
 
-1. **Aggiornare la VM** (l'utente, da SSH; Claude non ha accesso al server):
-   ```sh
-   cd ~/marthe && git branch                 # deve essere main (il vecchio branch deploy non esiste più)
-   docker compose -f deploy/docker-compose.yml exec db pg_dump -U marthe marthe | gzip > ~/backup-$(date +%F).sql.gz
-   git log -1 --oneline                      # annotare: è il commit a cui tornare
-   git pull
-   cd deploy && docker compose up -d --build && docker compose logs -f app
-   ```
-   `deploy/.env` resta **com'è**. Ritorno: `git checkout <commit annotato>` + `docker compose up -d --build`.
-   I dati sono compatibili: le 3 migrazioni sono identiche byte per byte e le chiavi dello store sono le stesse (verificato).
+1. ~~Aggiornare la VM~~: **fatto il 25/11/2026**. Procedura usata (da ripetere per i prossimi aggiornamenti): backup con
+   `docker compose -f deploy/docker-compose.yml exec -T db pg_dump -U marthe marthe | gzip > ~/backup-$(date +%F).sql.gz`
+   (il `-T` è necessario), `docker tag deploy-app:latest deploy-app:precedente`, `git pull`, `cd deploy && docker compose up -d --build`.
 2. **DNS di `chezmarthe.org` su IONOS**: record `A` → IP della VM per `@`, `www` (sostituisce il `CNAME` Odoo),
    `equipe`, `residents`, `benevoles`, `partenaires`, `bilan`; TTL al minimo. Procedura completa: `deploy/README.md`, tappa 2.
 3. Quando `dig +short chezmarthe.org` risponde con l'IP della VM (non prima: Let's Encrypt blocca dopo vari rifiuti):
