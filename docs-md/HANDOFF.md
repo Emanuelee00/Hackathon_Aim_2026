@@ -16,7 +16,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 | `chezmarthe.org` (DNS su IONOS) | **online sulla VM dal 25/11/2026**: `@` `A` → `34.155.50.2`, `www` e i 4 spazi `CNAME` → `chezmarthe.org` (un solo IP da cambiare al cambio di server), HTTPS Caddy, `www.` e `*.34-155-50-2.sslip.io` (indirizzi provvisori di prima) rimandano a `chezmarthe.org`. `bilan.` non esiste: diventerà `/bilan`. Email intatte. Record prima/dopo e ritorno a Odoo: `docs-md/DNS-chezmarthe-org.md`. |
 | `chezmarthe.site` (DNS su Cloudflare, non è dell'associazione) | passa ancora da Cloudflare (tunnel del portatile). Deciso di usarlo come **dominio di demo** (§3). |
 | IA | spenta in produzione (`MARTHE_AI=0`, `VITE_AI=off` in `deploy/Dockerfile.prod`); i 5 chatbot non compaiono. |
-| Email in uscita | non collegate (nessun `SMTP_*` / `RESEND_API_KEY`): nessuna email parte. |
+| Email in uscita | **collegate il 25/11/2026**: SMTP IONOS con `contact@chezmarthe.org` (login verificato). La casella inoltra a `contact.chezmarthe@gmail.com`. La password va cambiata (è stata scritta in chat): vedi TODO. |
 | Account Google Cloud | in prova: passare a «compte complet» **prima di fine gennaio 2027**, oppure cambiare server (previsto tra ~2 mesi). |
 
 ## 2. Prossimi passi, in ordine
@@ -25,8 +25,18 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
    `docker compose -f deploy/docker-compose.yml exec -T db pg_dump -U marthe marthe | gzip > ~/backup-$(date +%F).sql.gz`
    (il `-T` è necessario), `docker tag deploy-app:latest deploy-app:precedente`, `git pull`, `cd deploy && docker compose up -d --build`.
 2. ~~DNS di `chezmarthe.org`~~: **fatto il 25/11/2026** (vedi §1). In `deploy/.env` sulla VM: `SITE_HOSTS` con i nomi `.org` e `sslip.io`, `CANONICAL_DOMAIN=chezmarthe.org`, `OLD_DOMAINS=34-155-50-2.sslip.io`.
-3. **Bilan come pagina** `chezmarthe.org/bilan` (decisione presa, da fare: §6 e TODO).
-4. Su Odoo togliere `www.chezmarthe.org` dalle impostazioni del sito; email (SMTP IONOS) da collegare.
+3. ~~Bilan come pagina~~: **fatto e online** (`chezmarthe.org/bilan`; i vecchi link `bilan.<dominio>` ci rimandano).
+4. Email SMTP IONOS: **collegate**. Restano: cambiare la password della casella (scritta in chat), 2FA della casella, togliere `www.chezmarthe.org` dalle impostazioni di Odoo.
+
+**Come si mette una password sulla VM senza mostrarla** (usato per `SMTP_PASSWORD`), in `~/marthe/deploy`:
+```sh
+sed -i '/^SMTP_PASSWORD=/d' .env
+read -rs -p "Password: " P; echo; printf 'SMTP_PASSWORD=%s\n' "$P" >> .env; unset P
+docker compose up -d
+```
+Per verificare il login SMTP senza mandare email: `docker compose exec -T app python -c "import os,smtplib; s=smtplib.SMTP('smtp.ionos.fr',587,timeout=20); s.starttls(); s.login(os.environ['SMTP_USER'],os.environ['SMTP_PASSWORD']); print('LOGIN OK')"`.
+
+**Pulsante « Répondre par e-mail »** (domande ricevute): è un link `mailto:`, apre il programma di posta del computer. Sul PC della scuola apriva Emacs (le risposte inviate così non sono partite davvero): impostare Gmail come gestore `mailto` nel browser (Firefox: `about:preferences` → Applications → mailto → Use Gmail).
 5. Tra ~2 mesi **cambio di server**: procedura «Cambiare server» in `deploy/README.md` (database + `deploy/.env` + `deploy/secrets/`, poi i record `A`).
 
 ## 3. Decisioni prese, e perché
