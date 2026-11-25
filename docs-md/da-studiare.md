@@ -63,6 +63,28 @@ attuale. Così lo stesso codice funziona su `localhost`, `localtest.me`, `sslip.
 `chezmarthe.org` (produzione): passando da `sslip.io` a `chezmarthe.org` non si è toccata una riga di codice, solo il
 `.env` e il DNS. Regola da ricordare: **la configurazione sta nell'ambiente, non nel codice.**
 
+## Ordine giusto: prima il DNS, poi il certificato (25/11/2026)
+
+Spostando `www.chezmarthe.org` da Odoo alla VM servono due operazioni: il record DNS su IONOS e il nome in
+`SITE_HOSTS` sulla VM (perché Caddy chieda il certificato HTTPS). L'idea di fare **prima la VM** sembra prudente,
+ma è l'ordine sbagliato, per come Let's Encrypt rilascia i certificati.
+
+**Let's Encrypt verifica il nome collegandosi ad esso** (la "sfida" ACME): per dare il certificato di
+`www.chezmarthe.org` si collega a quel nome e controlla che risponda il server che lo chiede.
+
+- **Prima la VM, poi il DNS**: `www` punta ancora a Odoo, Let's Encrypt va su Odoo, non trova la prova e
+  **rifiuta**. Caddy riprova da solo ma aspetta sempre di più (1, 2, 5, 10, 20 minuti…): quando poi il DNS cambia, il
+  prossimo tentativo può arrivare tardi, e intanto chi arriva su `www` alla VM vede un errore di certificato. In più
+  Let's Encrypt limita i tentativi falliti per lo stesso nome (*rate limit*).
+- **Prima il DNS, subito dopo la VM**: quando Caddy chiede il certificato, `www` punta già alla VM e la verifica
+  riesce **al primo colpo**, in pochi secondi. Il "buco" è al massimo il minuto tra le due operazioni, e tocca pochi
+  visitatori, perché quasi tutti hanno ancora Odoo in memoria per un'ora (TTL del vecchio record).
+
+**Come ridurre il buco**: preparare prima il file sulla VM senza applicarlo (`sed` su `.env`), poi salvare il DNS,
+aspettare che IONOS lo pubblichi (circa 1 minuto, si controlla con `dig`), e solo allora `docker compose up -d`.
+
+Da approfondire: le sfide ACME (`HTTP-01`, `TLS-ALPN-01`, `DNS-01`) e i *rate limit* di Let's Encrypt.
+
 ## Altri concetti di oggi
 
 - **DNS**: i tipi di record `A` (indirizzo IPv4), `AAAA` (IPv6), `CNAME` (soprannome di un altro nome),
