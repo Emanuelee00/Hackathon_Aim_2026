@@ -24,14 +24,13 @@ make it obvious *where* new code goes, not impress.
   package when a domain has several modules or when the root becomes a flat list
   of files with no hierarchy. Do not create a package for a single small module:
   a file first, extract later.
-- **Warning threshold**: a folder with **more than 7 entries** (modules and
-  sub-packages together, `__init__.py`, `__main__.py` and non-Python files
-excluded) is the signal that one more level is needed. The number is a warning
-  light, not a target: **never split just to reach the number**.
-- **Exceptions**: going over the threshold is allowed when the modules genuinely
-  share one responsibility. In that case write the reason in the package
-  `__init__.py` docstring, prefixed with `Exception: ...`, and mention it in the
-  report.
+- **Folder size**: aim for **at most 5 entries** per folder; **7 is the hard
+  maximum**. Counted: modules and sub-packages together (`__init__.py`,
+  `__main__.py` and non-Python files excluded). Past 7 a split is **mandatory,
+  always, with no exceptions** — but done with judgment: group by
+  responsibility (what the files serve, mirroring the site where it applies),
+  never by file kind, never into a catch-all `misc`/`utils`/`common` folder,
+  and never a split whose only purpose is to make the number fit.
 - **`__init__.py`**: minimal, with a one-line docstring stating the package's
   responsibility. It exposes the public API, not every symbol.
 - **No import cycles** between packages. A lower-level package never imports from
@@ -94,8 +93,9 @@ serves, never into a generic "misc" folder.
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
 - **Folders nest freely** (`equipe/requests/components/…`), with the same
-  warning threshold as §0: more than ~7 entries in a folder is the signal for
-  one more level — a warning light, never split just to hit the number.
+  folder-size rule as §0: aim for 5 entries, 7 at most (code files and
+  subfolders; tests, styles and assets not counted). Past 7 one more level is
+  mandatory, grouped by responsibility, never just to hit the number.
 - Adding a page or feature: create its folder under its audience, then wire it
   into the entry point and the CSS index **in the same commit**.
 
