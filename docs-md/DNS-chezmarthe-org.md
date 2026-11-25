@@ -15,6 +15,7 @@ Ces informations sont publiques (n'importe qui les lit avec `dig`) : aucun secre
 | `s1-ionos._domainkey` | `CNAME` | `s1.dkim.ionos.com.` | 3600 | DKIM — ne pas toucher |
 | `s2-ionos._domainkey` | `CNAME` | `s2.dkim.ionos.com.` | 3600 | DKIM — ne pas toucher |
 | `autodiscover` | `CNAME` | `adsredir.ionos.info.` | 3600 | configuration des boîtes mail — ne pas toucher |
+| `_domainconnect` | `CNAME` | `_domainconnect.ionos.com` | — | service IONOS (Domain Connect) — ne pas toucher |
 | `@` | `NS` | `ns1073.ui-dns.biz.`, `ns1077.ui-dns.de.`, `ns1080.ui-dns.com.`, `ns1122.ui-dns.org.` | 86400 | serveurs DNS d'IONOS |
 
 ## Bascule vers la VM (Google Cloud, IP `34.155.50.2`)
