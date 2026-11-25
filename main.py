@@ -6,6 +6,11 @@ from threading import Thread
 from typing import Annotated
 from zoneinfo import ZoneInfo
 
+# isort: off
+# Must run first: puts backend/ on sys.path for the imports below.
+import backend  # noqa: F401
+
+# isort: on
 import gcal
 from accounts.models import User
 from accounts.routes import router as accounts_router
@@ -35,8 +40,6 @@ from sharing.forms import router as forms_router
 from sharing.qr import router as qr_router
 from sharing.routes import router as sharing_router
 from starlette.exceptions import HTTPException
-
-import backend  # noqa: F401
 
 
 @asynccontextmanager
