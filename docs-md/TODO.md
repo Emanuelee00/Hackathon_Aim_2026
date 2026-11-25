@@ -142,7 +142,9 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 ## Mise en ligne et sécurité
 
 - [ ] Relier **chezmarthe.org** : sur IONOS, ajouter les enregistrements `A` → `34.155.50.2` pour `@`, `www`, `equipe`, `residents`, `benevoles`, `partenaires`, `bilan` (voir `deploy/README.md`). **Ne pas toucher** aux enregistrements des e-mails (MX, TXT, `_domainkey`, `_dmarc`, `autodiscover`). Il faut quelqu'un qui a l'accès IONOS. `chezmarthe.site` n'appartient pas à l'association.
-- [ ] Puis mettre `SITE_HOSTS`, `CANONICAL_DOMAIN` et `OLD_DOMAINS` à jour dans `deploy/.env` sur la VM.
+- [ ] Puis, quand `dig +short chezmarthe.org` répond `34.155.50.2` (pas avant : Let's Encrypt bloque après plusieurs refus), mettre `SITE_HOSTS`, `CANONICAL_DOMAIN` et `OLD_DOMAINS` à jour dans `deploy/.env` sur la VM (valeurs dans `deploy/README.md`, tappa 2). TTL des enregistrements au plus bas pour le changement de serveur prévu.
+- [ ] Décider si on garde `chezmarthe.site` comme redirection (QR déjà imprimés ?) ou si on passe uniquement en `.org`.
+- [ ] **Changement de serveur** (dans environ 2 mois) : procédure « Cambiare server » dans `deploy/README.md`.
 - [ ] Sur Odoo, retirer le domaine `www.chezmarthe.org` des réglages du site (l'ancien site reste sur `chezmarthe1.odoo.com`).
 - [ ] **Avant fin janvier 2027** : passer le compte Google Cloud en « compte complet », sinon la VM s'arrête à la fin de l'essai gratuit.
 - [ ] Créer les vrais comptes (un compte par personne, pas un compte partagé par groupe) ; ne **jamais** lancer `make seed` sur la VM (comptes de démonstration avec mot de passe connu).

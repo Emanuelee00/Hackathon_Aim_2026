@@ -89,7 +89,28 @@ sostituire solo quello di `www` (oggi un `CNAME` verso Odoo). Tutti gli altri re
 | `A` | `partenaires` | IP della VM |
 | `A` | `bilan` | IP della VM |
 
-Da qui, quando `dig +short chezmarthe.org` risponde con l'IP della VM, in `deploy/.env`:
+Mettere il **TTL più basso possibile** (5-10 minuti): un cambio di server si propaga
+in fretta. Non toccare il `.env` finché il DNS non risponde: Caddy chiederebbe
+certificati per nomi che non puntano ancora alla VM e Let's Encrypt, dopo vari
+rifiuti, blocca per un po'. Controllo dal proprio computer:
+
+```sh
+dig +short chezmarthe.org          # IP della VM
+dig +short www.chezmarthe.org      # IP della VM
+dig +short equipe.chezmarthe.org   # IP della VM
+```
+
+Poi, in `deploy/.env`, solo `.org`:
+
+```sh
+SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org
+CANONICAL_DOMAIN=chezmarthe.org
+OLD_DOMAINS=
+```
+
+Se dei QR stampati usano ancora `chezmarthe.site` e lo si vuole tenere come redirect
+(il dominio non è dell'associazione), puntare anche i suoi record `@` e `*` alla VM
+(Cloudflare, *DNS only*) e usare invece:
 
 ```sh
 SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org, chezmarthe.site, www.chezmarthe.site, equipe.chezmarthe.site, residents.chezmarthe.site, benevoles.chezmarthe.site, partenaires.chezmarthe.site, bilan.chezmarthe.site
@@ -97,10 +118,15 @@ CANONICAL_DOMAIN=chezmarthe.org
 OLD_DOMAINS=chezmarthe.site
 ```
 
-e `docker compose up -d`. L'app rimanda allora:
+e `docker compose up -d`, poi `docker compose logs -f caddy` («certificate obtained» per
+ogni nome). L'app rimanda allora:
 - `www.chezmarthe.org` → `chezmarthe.org`;
-- `chezmarthe.site` e i suoi sottodomini → lo stesso sottodominio su `chezmarthe.org`;
+- `chezmarthe.site` e i suoi sottodomini → lo stesso sottodominio su `chezmarthe.org`
+  (solo con `OLD_DOMAINS=chezmarthe.site`);
 - le pagine del vecchio sito (`/contactus`, `/shop/...`) → la home.
+
+Infine, su Odoo, togliere `www.chezmarthe.org` dalle impostazioni del sito (il vecchio
+sito resta su `chezmarthe1.odoo.com`).
 
 Un nuovo spazio (sottodominio) dell'app va aggiunto sia nei record DNS sia in `SITE_HOSTS`.
 
@@ -109,6 +135,32 @@ Un nuovo spazio (sottodominio) dell'app va aggiunto sia nei record DNS sia in `S
 ```sh
 cd ~/marthe && git pull && cd deploy && docker compose up -d --build
 ```
+
+## Cambiare server
+
+Tutto è in Docker: sul nuovo server bastano Docker e il repo. Da spostare a mano solo
+il database (contiene anche le foto caricate dall'équipe), `deploy/.env` e
+`deploy/secrets/`; i certificati HTTPS Caddy li richiede da solo.
+
+```sh
+# vecchio server: da qui in poi non usarlo più, altrimenti le nuove scritture si perdono
+cd ~/marthe/deploy && docker compose exec db pg_dump -U marthe marthe | gzip > ~/marthe.sql.gz
+# copiare ~/marthe.sql.gz, deploy/.env e deploy/secrets/ sul nuovo server
+
+# nuovo server
+curl -fsSL https://get.docker.com | sudo sh
+git clone https://github.com/Emanuelee00/Hackathon_Aim_2026.git marthe
+# rimettere deploy/.env e deploy/secrets/ al loro posto
+cd marthe/deploy
+docker compose up -d db
+gunzip -c ~/marthe.sql.gz | docker compose exec -T db psql -U marthe marthe
+docker compose up -d --build
+```
+
+Poi sostituire il vecchio IP con il nuovo in tutti i record `A` (IONOS e, se usato,
+Cloudflare). Abbassare il TTL il giorno prima; spegnere il vecchio server solo dopo
+aver verificato home, login équipe e un modulo sul nuovo. Le copie Excel automatiche
+(`excel-sauvegarde/`, dentro il container) non si spostano: la fonte resta il sito.
 
 ## Backup del database
 
