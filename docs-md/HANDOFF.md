@@ -13,7 +13,7 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 | --- | --- |
 | `main` su GitHub | contiene tutto il lavoro: refactor `main2` + le sessioni del 25/11 (§4). È l'unico branch. |
 | VM di produzione (Google Cloud, IP `34.155.50.2`) | **aggiornata il 25/11/2026** al nuovo `main` (refactor incluso), 2 worker avviati, dati intatti. Backup del giorno in `~/backup-2026-11-25.sql.gz` e `~/config-2026-11-25.tgz` (solo sulla VM); immagine di ritorno `deploy-app:precedente`; codice di ritorno: tag `main-prima-refactor-2026-11`. Accesso da questo PC: `ssh marthe`. Nessun dominio punta ancora alla VM. |
-| `chezmarthe.org` (DNS su IONOS) | `@` senza record; `www` è un `CNAME` verso Odoo (`chezmarthe1.odoo.com`); MX su IONOS (email: **non toccare**). Record prima della bascula e ritorno a Odoo: `docs-md/DNS-chezmarthe-org.md`. |
+| `chezmarthe.org` (DNS su IONOS) | **online sulla VM dal 25/11/2026**: `@` `A` → `34.155.50.2`, `www` e i 4 spazi `CNAME` → `chezmarthe.org` (un solo IP da cambiare al cambio di server), HTTPS Caddy, `www.` e `*.34-155-50-2.sslip.io` (indirizzi provvisori di prima) rimandano a `chezmarthe.org`. `bilan.` non esiste: diventerà `/bilan`. Email intatte. Record prima/dopo e ritorno a Odoo: `docs-md/DNS-chezmarthe-org.md`. |
 | `chezmarthe.site` (DNS su Cloudflare, non è dell'associazione) | passa ancora da Cloudflare (tunnel del portatile). Deciso di usarlo come **dominio di demo** (§3). |
 | IA | spenta in produzione (`MARTHE_AI=0`, `VITE_AI=off` in `deploy/Dockerfile.prod`); i 5 chatbot non compaiono. |
 | Email in uscita | non collegate (nessun `SMTP_*` / `RESEND_API_KEY`): nessuna email parte. |
@@ -24,11 +24,9 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
 1. ~~Aggiornare la VM~~: **fatto il 25/11/2026**. Procedura usata (da ripetere per i prossimi aggiornamenti): backup con
    `docker compose -f deploy/docker-compose.yml exec -T db pg_dump -U marthe marthe | gzip > ~/backup-$(date +%F).sql.gz`
    (il `-T` è necessario), `docker tag deploy-app:latest deploy-app:precedente`, `git pull`, `cd deploy && docker compose up -d --build`.
-2. **DNS di `chezmarthe.org` su IONOS**: record `A` → IP della VM per `@`, `www` (sostituisce il `CNAME` Odoo),
-   `equipe`, `residents`, `benevoles`, `partenaires`, `bilan`; TTL al minimo. Procedura completa: `deploy/README.md`, tappa 2.
-3. Quando `dig +short chezmarthe.org` risponde con l'IP della VM (non prima: Let's Encrypt blocca dopo vari rifiuti):
-   in `deploy/.env` `SITE_HOSTS` con i soli host `.org`, `CANONICAL_DOMAIN=chezmarthe.org`, `OLD_DOMAINS=` vuoto; `docker compose up -d`.
-4. Su Odoo togliere `www.chezmarthe.org` dalle impostazioni del sito.
+2. ~~DNS di `chezmarthe.org`~~: **fatto il 25/11/2026** (vedi §1). In `deploy/.env` sulla VM: `SITE_HOSTS` con i nomi `.org` e `sslip.io`, `CANONICAL_DOMAIN=chezmarthe.org`, `OLD_DOMAINS=34-155-50-2.sslip.io`.
+3. **Bilan come pagina** `chezmarthe.org/bilan` (decisione presa, da fare: §6 e TODO).
+4. Su Odoo togliere `www.chezmarthe.org` dalle impostazioni del sito; email (SMTP IONOS) da collegare.
 5. Tra ~2 mesi **cambio di server**: procedura «Cambiare server» in `deploy/README.md` (database + `deploy/.env` + `deploy/secrets/`, poi i record `A`).
 
 ## 3. Decisioni prese, e perché

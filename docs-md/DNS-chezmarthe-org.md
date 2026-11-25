@@ -18,6 +18,22 @@ Ces informations sont publiques (n'importe qui les lit avec `dig`) : aucun secre
 | `_domainconnect` | `CNAME` | `_domainconnect.ionos.com` | — | service IONOS (Domain Connect) — ne pas toucher |
 | `@` | `NS` | `ns1073.ui-dns.biz.`, `ns1077.ui-dns.de.`, `ns1080.ui-dns.com.`, `ns1122.ui-dns.org.` | 86400 | serveurs DNS d'IONOS |
 
+## État après la bascule (25 novembre 2026)
+
+Un seul enregistrement porte l'adresse de la VM ; les autres noms la suivent. Le jour du changement de serveur,
+on ne modifie que la première ligne.
+
+| Nom | Type | Valeur | TTL |
+| --- | --- | --- | --- |
+| `@` | `A` | `34.155.50.2` | 1 min |
+| `www` | `CNAME` | `chezmarthe.org` | 1 min |
+| `equipe`, `residents`, `benevoles`, `partenaires` | `CNAME` | `chezmarthe.org` | 1 min |
+| `bilan` | — | pas d'enregistrement (le bilan deviendra la page `chezmarthe.org/bilan`) | — |
+
+Les enregistrements des e-mails (`MX`, `TXT` SPF, `_dmarc`, DKIM, `autodiscover`) et `_domainconnect` n'ont pas
+été touchés. Sur IONOS, ajouter `@` propose aussi d'ajouter `www` : cliquer « Ne pas ajouter l'enregistrement DNS
+pour www » tant que `www` doit rester ailleurs.
+
 ## Bascule vers la VM (Google Cloud, IP `34.155.50.2`)
 
 Ajouter (et remplacer **seulement** `www`) : enregistrements `A` vers `34.155.50.2` pour `@`, `www`, `equipe`,
@@ -26,7 +42,7 @@ Ajouter (et remplacer **seulement** `www`) : enregistrements `A` vers `34.155.50
 
 ## Revenir à l'ancien site Odoo
 
-1. Sur IONOS : remettre `www` en `CNAME` → `chezmarthe1.odoo.com.` (TTL 3600) et supprimer les enregistrements `A`
-   ajoutés pour la VM (`@`, `www`, `equipe`, `residents`, `benevoles`, `partenaires`, `bilan`).
+1. Sur IONOS : remettre `www` en `CNAME` → `chezmarthe1.odoo.com.` (TTL 3600) et supprimer les enregistrements
+   ajoutés pour la VM (`A` `@` ; `CNAME` `equipe`, `residents`, `benevoles`, `partenaires`).
 2. Sur Odoo : remettre `www.chezmarthe.org` comme domaine du site, si on l'avait retiré.
 3. L'ancien site reste de toute façon joignable à l'adresse `https://chezmarthe1.odoo.com`.
