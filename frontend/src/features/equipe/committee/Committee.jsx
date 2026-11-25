@@ -2,9 +2,9 @@ import { useStore } from '../../../app/store.jsx';
 import { PageIntro } from '../../../shared/components/Primitives.jsx';
 import { spaceById, TODAY } from '../../../shared/data/spaces.js';
 import { dateLabel, shortDate } from '../../../shared/lib/format.js';
-import { preAnalysis } from '../requests/preAnalysis.js';
+import { preAnalysis } from '../requests/pre-analysis/preAnalysis.js';
 import { requestTypes } from '../requests/workflow.js';
-import { Verdict } from '../requests/components/PreAnalysisPanel.jsx';
+import { Verdict } from '../requests/pre-analysis/PreAnalysisPanel.jsx';
 import { committeeColumns, nextFriday } from './board.js';
 
 function Card({ event, verdict, onOpen }) {

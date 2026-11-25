@@ -1,7 +1,7 @@
 // « Financeurs potentiels » : les trois tableaux du fichier de prospection de l'équipe, leurs colonnes, leurs tris et leurs filtres.
 // Une ligne est un objet simple ({ id, name, … , color }) ; les tableaux sont enregistrés tels quels sur le serveur (store).
 import { emptyFunder } from '../funding/funding.js';
-import { amountValue } from '../funding/sorting.js';
+import { amountValue } from '../funding/table/sorting.js';
 import { adviceFor } from './advice.js';
 
 // Adéquation : de la plus forte à la plus faible (les valeurs écrites à la main restent possibles, classées à la fin).

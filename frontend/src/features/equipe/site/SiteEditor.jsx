@@ -8,7 +8,7 @@ import RentalCards from './RentalCards.jsx';
 import { SITE_PHOTOS, move, moveTo, shrinkPhoto } from './rentalCards.js';
 import { SITE_SECTIONS, checkSection, cleanSection } from './schema.js';
 import useDragSort from './useDragSort.js';
-import usePointerSort from '../../../shared/lib/usePointerSort.js';
+import usePointerSort from '../../../shared/lib/hooks/usePointerSort.js';
 import './rentals.css';
 import './site.css';
 

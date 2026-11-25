@@ -1,6 +1,6 @@
 import Icon from '../../../shared/components/Icon.jsx';
 import { spaceUrl } from '../../../shared/lib/spaces.js';
-import HomeShell from '../landing/HomeShell.jsx';
+import HomeShell from '../landing/shell/HomeShell.jsx';
 
 // « Nos espaces » (/connexion): one card per space, each opening its sign-in / sign-up on its subdomain.
 const portals = [

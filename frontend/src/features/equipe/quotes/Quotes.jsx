@@ -3,10 +3,10 @@ import { useStore } from '../../../app/store.jsx';
 import { PageIntro } from '../../../shared/components/Primitives.jsx';
 import { spaceById } from '../../../shared/data/spaces.js';
 import { dateLabel } from '../../../shared/lib/format.js';
-import { describe } from './accounting.js';
-import DocBuilder from './DocBuilder.jsx';
-import { usePriceList } from './documentsApi.js';
-import Editor from './Editor.jsx';
+import { describe } from './accounting/accounting.js';
+import DocBuilder from './invoicing/DocBuilder.jsx';
+import { usePriceList } from './invoicing/documentsApi.js';
+import Editor from './editor/Editor.jsx';
 import './quotes.css';
 
 // « Factures et devis » : le suivi des devis et factures des évènements, créer un devis ou une facture à part (tarifs à cliquer,

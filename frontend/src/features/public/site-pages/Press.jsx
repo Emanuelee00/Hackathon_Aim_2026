@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import HomeShell from '../landing/HomeShell.jsx';
+import HomeShell from '../landing/shell/HomeShell.jsx';
 
 // « On parle de nous » (/on-parle-de-nous): the press articles that mention Chez Marthe. To add one, add a line here.
 const articles = [

@@ -5,7 +5,7 @@ import { Metric, PageIntro } from '../../../shared/components/Primitives.jsx';
 import { download } from '../../../shared/lib/exports.js';
 import { dateLabel } from '../../../shared/lib/format.js';
 import { localToday } from '../funding/funding.js';
-import { addedFunders, calls, euCalls, frCalls, guide, lastFunders, moreFunders, patrons, repertoire, strategy as seedStrategy, withEmails } from './prospectionData.js';
+import { addedFunders, calls, euCalls, frCalls, guide, lastFunders, moreFunders, patrons, repertoire, strategy as seedStrategy, withEmails } from './data/index.js';
 import SheetTable from './SheetTable.jsx';
 import { fundingMatcher, fundingStatus } from './fundingMatches.js';
 import { SHEETS, counts, toFunder, toSheet } from './sheets.js';

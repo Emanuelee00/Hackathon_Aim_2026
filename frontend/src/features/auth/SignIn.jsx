@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '../../shared/components/Icon.jsx';
 import { spaces, spaceUrl } from '../../shared/lib/spaces.js';
-import { Brand } from '../public/landing/Brand.jsx';
+import { Brand } from '../public/landing/shell/Brand.jsx';
 import { signIn, signUp } from './api.js';
 
 // Same rules as accounts/models.py: team accounts are created by the team, residents and associations request one.

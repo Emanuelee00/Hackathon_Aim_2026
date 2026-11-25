@@ -5,9 +5,9 @@ import Modal from '../../../shared/components/Modal.jsx';
 import { adviceFor } from './advice.js';
 import { MARKED_BY_HAND, fundingStatus, toggleFunding } from './fundingMatches.js';
 import { rowColors } from '../funding/funding.js';
-import { Heading, Popover, Swatches } from '../funding/components/TableMenus.jsx';
-import useTableLayout from '../funding/useTableLayout.js';
-import { totalWidth } from '../funding/tableMath.js';
+import { Heading, Popover, Swatches } from '../funding/table/TableMenus.jsx';
+import useTableLayout from '../funding/table/useTableLayout.js';
+import { totalWidth } from '../funding/table/tableMath.js';
 import { EU_STATES, FITS, PATRON_TYPES, STATUSES, filterOptions, filterRows, sortRows, tone } from './sheets.js';
 
 // Un tableau comme dans Excel : on clique une cellule pour l'écrire, la modification est enregistrée en la quittant.

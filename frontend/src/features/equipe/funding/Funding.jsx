@@ -7,7 +7,7 @@ import { dateLabel } from '../../../shared/lib/format.js';
 import { daysBetween, emptyFunder, localToday, overdueTasks, urgentDeadline } from './funding.js';
 import FundingCalendar from './components/FundingCalendar.jsx';
 import FundingPanels from './components/FundingPanels.jsx';
-import FundersTable from './components/FundersTable.jsx';
+import FundersTable from './table/FundersTable.jsx';
 import FunderSheet from './components/FunderSheet.jsx';
 import ImportConfirm from './components/ImportConfirm.jsx';
 import ReminderMail from './components/ReminderMail.jsx';

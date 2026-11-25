@@ -1,4 +1,4 @@
-import { cancelVisit } from '../features/equipe/requests/visits.js';
+import { cancelVisit } from '../features/equipe/requests/visits/visits.js';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { initialEvents } from '../shared/data/events.js';
 import { spaceById, statuses } from '../shared/data/spaces.js';

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { addedFunders, calls, contactEmails, patrons, euCalls, frCalls, guide, lastFunders, moreFunders, repertoire, strategy, withEmails } from './prospectionData.js';
+import { addedFunders, calls, contactEmails, patrons, euCalls, frCalls, guide, lastFunders, moreFunders, repertoire, strategy, withEmails } from './data/index.js';
 import { SHEETS, counts, filterOptions, filterRows, sortRows, toFunder, toSheet, tone } from './sheets.js';
 
 test('the team’s file is all there: 57 funders, 10 calls, 4 parts, the guide', () => {

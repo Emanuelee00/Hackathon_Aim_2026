@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react';
 
-import HomeShell from './HomeShell.jsx';
+import HomeShell from './shell/HomeShell.jsx';
 import { sectionAnchors, useSite } from './siteContent.js';
 import Hero from './sections/hero/Hero.jsx';
 import LieuSection from './sections/lieu/LieuSection.jsx';

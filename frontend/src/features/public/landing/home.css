@@ -1,6 +1,6 @@
 /* Page d'accueil publique : feuilles coupées par thème, importées dans l'ordre
    d'origine (l'ordre des règles fait partie du rendu, ne pas le changer). */
-@import './shell.css';
+@import './shell/shell.css';
 @import './hero.css';
 @import './lieu-espaces.css';
 @import './partenaires-programmation.css';

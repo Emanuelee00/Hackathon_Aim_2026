@@ -1,5 +1,5 @@
-import { quoteIsCurrent } from './quotes.js';
-import { quoteBlocks } from '../quotes/accounting.js';
+import { quoteIsCurrent } from './quote/quotes.js';
+import { quoteBlocks } from '../quotes/accounting/accounting.js';
 export const requestTypes = { programming: 'Programmation', rental: 'Location d’espace' };
 export const requestQuestions = {
   programming: [

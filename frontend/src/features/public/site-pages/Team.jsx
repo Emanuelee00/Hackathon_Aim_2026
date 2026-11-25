@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import HomeShell from '../landing/HomeShell.jsx';
+import HomeShell from '../landing/shell/HomeShell.jsx';
 import { useSite } from '../landing/siteContent.js';
 
 

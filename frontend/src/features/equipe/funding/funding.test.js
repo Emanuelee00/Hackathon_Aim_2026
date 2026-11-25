@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { addMonths, defaultFollowupDate, emptyFunder, followupDate, followupMonths, localToday, nextTask, overdueTasks, urgentDeadline } from './funding.js';
 import { calendarEvents, calendarMonths } from './calendar.js';
 import { importChanges } from './importing.js';
-import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './tableMath.js';
-import { amountValue, sortFunders } from './sorting.js';
+import { moveColumn, resizeWithNeighbour, scaleWidths, totalWidth } from './table/tableMath.js';
+import { amountValue, sortFunders } from './table/sorting.js';
 
 const task = (id, due, done = false) => ({ id, text: id, owner: 'Véro', due, done });
 const funder = (id, status, deadline = '', tasks = []) => ({ id, name: id, status, deadline, tasks });

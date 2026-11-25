@@ -102,7 +102,7 @@ serves, never into a generic "misc" folder.
   needs one.
 - **`shared/`** holds what every audience uses: `components/`, `data/`, `lib/`,
   `styles/` — named for the responsibility (styles), not the technology (css).
-- **Folders nest freely** (`equipe/requests/components/…`), with the same
+- **Folders nest freely** (`equipe/requests/visits/…`), with the same
   folder-size warning light as §0: aim for about 5 entries (code files and
   subfolders; tests, styles and assets not counted); past 7, look again and
   add a level only where a real grouping exists.

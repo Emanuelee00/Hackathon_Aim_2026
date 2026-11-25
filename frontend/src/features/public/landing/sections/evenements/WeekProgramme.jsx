@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { socials } from '../../HomeShell.jsx';
+import { socials } from '../../shell/HomeShell.jsx';
 import FeaturedEvent from './FeaturedEvent.jsx';
 import { cleanTitle, colorOf, dayNames, demoEvents, fullMonths, isFeatured, isoDate, mondayOf } from './agenda.js';
 
