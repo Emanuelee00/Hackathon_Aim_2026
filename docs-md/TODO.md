@@ -143,6 +143,7 @@ Dernière mise à jour : 16 novembre 2026. Voir aussi `CONTESTO_SESSIONE.md` (co
 
 - [x] Relevé des enregistrements DNS de `chezmarthe.org` **avant** la bascule (ancien site Odoo, e-mails) et procédure pour revenir à Odoo : `docs-md/DNS-chezmarthe-org.md` (25/11/2026).
 - [x] **chezmarthe.org relié à la VM** (25/11/2026) : `@` en `A` → `34.155.50.2`, `www` et les espaces en `CNAME` → `chezmarthe.org` ; HTTPS par Caddy ; `www.` et les adresses `34-155-50-2.sslip.io` renvoient vers `chezmarthe.org`. Détail : `docs-md/DNS-chezmarthe-org.md`.
+- [ ] **Connexion : afficher le mot de passe** pendant qu'on le tape, avec l'icône en forme d'œil à droite du champ (un clic montre le texte, un autre le cache), dans `frontend/src/features/auth/SignIn.jsx` ; même chose à la création de compte. Libellé accessible (« Afficher le mot de passe » / « Masquer le mot de passe ») pour les lecteurs d'écran.
 - [ ] **Bilan en page du site** : `bilan.` devient `chezmarthe.org/bilan` (formulaire public, sans connexion : pas besoin d'un sous-domaine). Jusque-là le formulaire bilan n'est pas joignable sur `.org`.
 - [ ] Dans quelques jours, si tout va bien : remonter le TTL des enregistrements DNS à 1 heure (le redescendre à 1 minute la veille du changement de serveur) ; retirer l'image de secours `deploy-app:precedente` (`docker rmi`).
 - [ ] Dans quelques semaines : retirer les noms `*.34-155-50-2.sslip.io` de `SITE_HOSTS` et `OLD_DOMAINS` (plus personne ne devrait les utiliser).
