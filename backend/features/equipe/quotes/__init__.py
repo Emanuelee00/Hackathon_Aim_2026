@@ -1,1 +1,1 @@
-"""Quotes and invoices page: the free editor and the association's devis/factures templates."""
+"""Quotes and invoices page: the free editor (editor/), quotes and invoices (invoicing/) and the association's Word templates (templates/)."""

@@ -42,7 +42,7 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 
 ## Note
 
-- `backend/features/equipe/quotes/facturation/models.py` usa gli asset in `backend/features/equipe/quotes/modeles/`
+- `backend/features/equipe/quotes/invoicing/models.py` usa gli asset in `backend/features/equipe/quotes/templates/`
   (fonts, docx) con `Path(__file__).parent.parent`: spostarli insieme.
 
 - [ ] Dipendenza circolare tra package (Guide §0): `features/equipe/quotes/facturation`

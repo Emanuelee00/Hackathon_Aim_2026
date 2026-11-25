@@ -20,8 +20,8 @@ from features.equipe.messages import router as messages_router
 from features.equipe.opportunities import router as matching_router
 from features.equipe.profiles import router as profils_router
 from features.equipe.prospection import router as prospection_router
-from features.equipe.quotes.editeur import router as editeur_router
-from features.equipe.quotes.facturation import router as modeles_router
+from features.equipe.quotes.editor import router as editor_router
+from features.equipe.quotes.invoicing import router as invoicing_router
 from features.equipe.site import router as espaces_router
 from features.equipe.site import site_router
 from features.public.forms import router as forms_router
@@ -53,8 +53,8 @@ app.include_router(agents_router)
 app.include_router(funding_router)
 app.include_router(prospection_router)
 app.include_router(messages_router)
-app.include_router(modeles_router)
-app.include_router(editeur_router)
+app.include_router(invoicing_router)
+app.include_router(editor_router)
 app.include_router(espaces_router)
 app.include_router(site_router)
 app.include_router(bilans_router)

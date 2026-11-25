@@ -10,9 +10,9 @@ from sqlalchemy.orm import Session
 from features.accounts.models import User
 from features.accounts.sessions import optional_user, team_member
 
-from . import benevoles, equipe, partenaires, renseignements, residents
 from .llm import Agent, Context, run_agent
 from .models import ChatReply, ChatRequest, Question, QuestionOut, QuestionUpdate
+from .spaces import benevoles, equipe, partenaires, renseignements, residents
 
 router = APIRouter(prefix="/api")
 Db = Annotated[Session, Depends(get_session)]
