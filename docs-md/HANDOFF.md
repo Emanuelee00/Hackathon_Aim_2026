@@ -81,6 +81,8 @@ cosa è stato deciso e perché, e cosa resta da fare. Ordine di lettura: questo 
   - `6efc399` chatbot in `agents/spaces/`, `quotes/editor|invoicing|templates`, test che rispecchiano il codice (`tests/conftest.py`).
   - `67f6989` frontend raggruppato per sotto-funzioni (`quotes/`, `funding/table/`, `requests/<pannello>/`, `landing/shell/`, hook).
   - Makefile con aiuto, senza Playwright; questo handoff e il `CLAUDE.md` alla radice.
+  - Migrazioni con SQLite: lock su file come il lock di Postgres, così l'immagine parte anche senza Postgres con 2 worker
+    (prima: `table alembic_version already exists`); test `tests/core/test_db.py`.
 
 ## 5. Struttura attuale
 
@@ -108,7 +110,6 @@ docs-md/             Guide, TODO, HANDOFF, TECH_DEBT, business plan, QR, PDF deg
   Financements, Gestion) e poi cartelle `features/equipe/<sezione>/` con gli stessi nomi, frontend e backend. È una modifica di interfaccia:
   solo se l'utente la vuole.
 - **Ciclo tra package** `equipe` ↔ `public`/`sharing` (in `TECH_DEBT.md`): rimedio, spostare `french_date` in `core/`.
-- **SQLite + 2 worker**: migrazioni in parallelo → `table alembic_version already exists` (solo con SQLite; Postgres ha il lock). Solo test locali.
 - **Copie Excel automatiche dei finanziatori** (`excel-sauvegarde/`) dentro il container: si perdono a ogni ricostruzione; la fonte resta il sito.
 - **Backup automatico del database** fuori dalla VM: non esiste ancora (prima voce di `TODO.md`).
 - `/api/bilans` leggibile da ogni account connesso: voluto, ognuno vede solo i bilans che lo riguardano; l'export Excel è solo équipe.

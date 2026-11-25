@@ -12,3 +12,4 @@ qr-demo.png
 /public/
 marthe.db
 !.env.example
+*.migrate.lock

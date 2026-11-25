@@ -11,3 +11,4 @@ frontend/dist
 .env.*
 marthe.db
 deploy/.env
+*.migrate.lock

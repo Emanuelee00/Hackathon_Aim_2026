@@ -1,5 +1,6 @@
 """SQLAlchemy engine and Alembic migrations, on the same database as store.py."""
 
+import fcntl
 from pathlib import Path
 
 from alembic import command
@@ -38,11 +39,18 @@ def migrate() -> None:
     config = Config(ALEMBIC_INI)
     # Keeps uvicorn's logging untouched when called from the app.
     config.attributes["configure_logger"] = False
-    if engine.dialect.name != "postgresql":
-        command.upgrade(config, "head")
-        return
-    # Each uvicorn worker migrates at startup: the lock makes them take turns
+    # Each uvicorn worker migrates at startup: a lock makes them take turns
     # instead of creating the same tables at once on an empty database.
+    if engine.dialect.name != "postgresql":
+        database = engine.url.database
+        if not database or database == ":memory:":
+            command.upgrade(config, "head")
+            return
+        # SQLite has no advisory lock: an exclusive lock on a file next to the database.
+        with open(f"{database}.migrate.lock", "w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            command.upgrade(config, "head")
+        return
     with engine.connect() as lock:
         lock.execute(text("SELECT pg_advisory_lock(:id)"), {"id": MIGRATION_LOCK})
         try:
