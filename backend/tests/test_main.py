@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
-
 import main
+from fastapi.testclient import TestClient
 
 
 def test_html_page_is_never_served_from_browser_cache():
@@ -20,9 +19,7 @@ def test_html_page_is_never_served_from_browser_cache():
 
 def test_hashed_assets_can_still_be_revalidated():
     client = TestClient(main.app)
-    asset = next(
-        (main.Path(main.__file__).parent / "frontend/dist/assets").glob("*.js")
-    ).name
+    asset = next((main.FRONTEND_DIST / "assets").glob("*.js")).name
     first = client.get(f"/assets/{asset}")
     again = client.get(
         f"/assets/{asset}", headers={"If-None-Match": first.headers["etag"]}

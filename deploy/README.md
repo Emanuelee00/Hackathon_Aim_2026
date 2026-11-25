@@ -4,7 +4,7 @@ Architettura: una VM Google Cloud con Docker esegue Postgres, l'app e Caddy.
 Caddy è l'unico servizio raggiungibile da Internet (porte 80 e 443): ottiene da solo i
 certificati HTTPS (Let's Encrypt) e passa le richieste all'app. Postgres non è esposto.
 
-In produzione l'AI è spenta (`MARTHE_AI=0`, `VITE_AI=off` in `Dockerfile.prod`):
+In produzione l'AI è spenta (`MARTHE_AI=0`, `VITE_AI=off` in `deploy/Dockerfile.prod`):
 matching, piani e righe CV usano i testi guidati, i chatbot non compaiono.
 
 La messa online avviene in due tappe:

@@ -27,7 +27,7 @@ const pages = {
   bilan: <PublicShell><OrganizerFeedback /></PublicShell>,
 };
 
-// Pages of the public site; the server sends index.html for these paths (main.py).
+// Pages of the public site; the server sends index.html for these paths (backend/main.py).
 const sitePages = {
   contact: <Contact />,
   'mentions-legales': <LegalNotice />,

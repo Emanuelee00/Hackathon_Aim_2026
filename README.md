@@ -12,14 +12,13 @@ la strategia d'impatto e il pitch sono descritti nel [piano business](docs-md/BU
 backend/         API FastAPI: equipe/, residents/, public/ come gli spazi del sito,
                  più i moduli condivisi, le migrazioni e i test
 frontend/        applicazione React/Vite (sito pubblico e spazi)
-main.py          entry point FastAPI (uvicorn e Docker)
 deploy/          configurazione e istruzioni per il deployment
 docs-md/         documentazione: business plan, TODO, piano di produzione, QR demo
 cloudflare/      configurazione del tunnel Cloudflare
 ```
 
 Il codice applicativo è quindi diviso fisicamente tra `backend/` e `frontend/`;
-`main.py` resta alla root per compatibilità con il deployment.
+l'entry point è `backend/main.py` (`uvicorn main:app --app-dir backend`).
 
 ## Avvio locale
 
@@ -211,7 +210,7 @@ Riferimenti: [modello Ollama](https://ollama.com/library/qwen2.5:0.5b),
 
 ## Sviluppo
 
-- `main.py`: entry point FastAPI richiesto dal deploy; il backend vero è in `backend/`.
+- `backend/main.py`: entry point FastAPI (router, redirect di dominio, frontend compilato).
 - `backend/ai.py`: chat tramite Ollama locale e precaricamento del modello.
 - `backend/equipe/opportunities.py` e `backend/ranking/`: matching ibrido con risposta sempre sotto i 10 secondi.
 - `backend/accounts/`: utenti, password, sessioni ed endpoint `/api/auth`.

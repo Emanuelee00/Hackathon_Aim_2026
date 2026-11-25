@@ -19,12 +19,13 @@ from zoneinfo import ZoneInfo
 
 import mailer
 from core import store
-from equipe import messages
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 from fpdf import FPDF
 from pydantic import BaseModel, ConfigDict, Field
 from sharing.confirmations import french_date
+
+from equipe import messages
 
 from .models import (
     FOLDER,

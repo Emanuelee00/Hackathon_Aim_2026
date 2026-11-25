@@ -5,9 +5,10 @@ from urllib.parse import quote
 
 from accounts.models import User
 from accounts.sessions import team_member
-from equipe.quotes.facturation import FORMATS
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
+
+from equipe.quotes.facturation import FORMATS
 
 from .docx import make_docx
 from .models import Page

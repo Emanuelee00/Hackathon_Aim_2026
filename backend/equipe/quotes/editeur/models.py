@@ -2,8 +2,9 @@
 
 from typing import Annotated, Literal
 
-from equipe.quotes.facturation import ISSUER
 from pydantic import BaseModel, Field, field_validator
+
+from equipe.quotes.facturation import ISSUER
 
 Clean = Annotated[
     str, Field(max_length=20000, pattern=r"^[^\x00-\x08\x0b\x0c\x0e-\x1f]*$")

@@ -2,9 +2,10 @@
 
 from html import escape as html_escape
 
-from equipe.quotes.facturation import FOLDER, GREY, VIOLET
 from fpdf import FPDF
 from fpdf.fonts import FontFace, TextStyle
+
+from equipe.quotes.facturation import FOLDER, GREY, VIOLET
 
 from .models import (
     Block,

@@ -38,7 +38,7 @@ Trovati il 2026-11-20 durante il pilota `backend/mailer/`. Non introdotti dal re
 - [ ] `backend/equipe/messages.py` (385 righe, 16 funzioni) — **coeso**: template, mittenti, lettura/
       scrittura e endpoint sono un solo dominio. Non splittare senza un problema
       concreto (Guide.md §6). Valutato il 2026-11-20, lasciato file.
-- [ ] `main.py`: resta alla root come entry point (uvicorn e Docker).
+- [x] `main.py` spostato in `backend/main.py` (25/11/2026): `uvicorn --app-dir backend`, niente più `sys.path` in `backend/__init__.py`.
 
 ## Note
 

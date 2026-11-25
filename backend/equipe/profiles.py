@@ -10,9 +10,10 @@ from typing import Annotated, Literal
 from accounts.models import User
 from accounts.sessions import team_member
 from core import store
-from equipe import site
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from equipe import site
 
 router = APIRouter(prefix="/api/profils")
 Team = Annotated[User, Depends(team_member)]

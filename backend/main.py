@@ -3,11 +3,6 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from threading import Thread
 
-# isort: off
-# Must run first: puts backend/ on sys.path for the imports below.
-import backend  # noqa: F401
-
-# isort: on
 from accounts.routes import router as accounts_router
 from agenda import router as agenda_router
 from agents.routes import router as agents_router
@@ -114,6 +109,10 @@ SITE_PAGES = {
 OLD_PAGES = {"contactus": "/contact", "privacy": "/politique-de-confidentialite"}
 
 
+# The React build (npm run build), at the repo root next to backend/.
+FRONTEND_DIST = Path(__file__).parent.parent / "frontend" / "dist"
+
+
 class Frontend(StaticFiles):
     """Never answers 304 for HTML pages.
 
@@ -154,7 +153,7 @@ class Frontend(StaticFiles):
 app.mount(
     "/",
     Frontend(
-        directory=Path(__file__).parent / "frontend" / "dist",
+        directory=FRONTEND_DIST,
         html=True,
         check_dir=False,
     ),

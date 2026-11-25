@@ -36,9 +36,10 @@ excluded) is the signal that one more level is needed. The number is a warning
   responsibility. It exposes the public API, not every symbol.
 - **No import cycles** between packages. A lower-level package never imports from
   a higher-level one.
-- **Entry point**: `main.py` stays at the root. It is an external contract
-  (Vercel, `Dockerfile`, `Dockerfile.prod` all use `main:app`). Do not move it
-  without updating those three places and the deploy in the same commit.
+- **Entry point**: `backend/main.py`, started as `uvicorn main:app --app-dir backend`.
+  It is an external contract (`Makefile`, `Dockerfile`, `deploy/Dockerfile.prod`).
+  Do not move or rename it without updating those three places and the deploy in
+  the same commit.
 - **Frontend JS**: tests live next to the sources (`*.test.js` in the same feature
   folder). Do not force the `tests/unit/` layout on the frontend: the runner uses
   the globs in `frontend/package.json` and tests import modules through relative

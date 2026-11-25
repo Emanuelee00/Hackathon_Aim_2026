@@ -15,8 +15,9 @@ from threading import Thread
 from zoneinfo import ZoneInfo
 
 from core import store
-from equipe import messages
 from mailer import configured, deliver
+
+from equipe import messages
 
 from .excel import DEFAULT_FOLLOWUP_MONTHS
 

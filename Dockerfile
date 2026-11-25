@@ -16,4 +16,4 @@ RUN uv sync --locked --no-install-project
 COPY . .
 
 EXPOSE 8000
-CMD ["uv", "run", "--no-sync", "uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "--no-sync", "uvicorn", "main:app", "--app-dir", "backend", "--reload", "--host", "0.0.0.0", "--port", "8000"]

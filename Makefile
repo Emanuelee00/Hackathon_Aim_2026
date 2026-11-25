@@ -28,11 +28,11 @@ all: install
 	done; \
 	ollama pull qwen2.5:0.5b; \
 	ollama pull qwen2.5:3b; \
-	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
+	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 
 # Comme `all`, mais sans Ollama : installe, builde le frontend et lance le backend.
 run: install
-	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
+	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 
 ai:
 	ollama serve
@@ -47,10 +47,10 @@ install:
 	npm --prefix frontend run build
 
 dev:
-	uv run uvicorn main:app --reload --host 127.0.0.1 --port 8000
+	uv run uvicorn main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 
 demo: build
-	MARTHE_DEMO=1 uv run uvicorn main:app --host 0.0.0.0 --port 8000
+	MARTHE_DEMO=1 uv run uvicorn main:app --app-dir backend --host 0.0.0.0 --port 8000
 
 qr:
 	@test -n "$(URL)" || { echo "Usage : make qr URL=https://..."; exit 1; }
