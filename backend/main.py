@@ -83,7 +83,17 @@ def canonical_host(host: str) -> str | None:
 
 @app.middleware("http")
 async def redirect_to_canonical(request: Request, call_next):
-    target = canonical_host(request.url.hostname or "")
+    host = request.url.hostname or ""
+    # The bilan used to be the subdomain bilan.<domain>; it is now the page
+    # /bilan of the site. Old links and QR codes keep working, ?event= included.
+    if host.startswith("bilan."):
+        site = host.removeprefix("bilan.")
+        canonical = canonical_host(site)
+        url = request.url.replace(hostname=canonical or site, path="/bilan")
+        if canonical:
+            url = url.replace(scheme="https", port=None)
+        return RedirectResponse(str(url), status_code=301)
+    target = canonical_host(host)
     if target:
         url = request.url.replace(scheme="https", hostname=target, port=None)
         # 308 keeps the method and body of POST requests.
@@ -104,6 +114,7 @@ SITE_PAGES = {
     "connexion",
     "equipe",
     "on-parle-de-nous",
+    "bilan",
 }
 # Addresses of the previous site (Odoo) that have a page here.
 OLD_PAGES = {"contactus": "/contact", "privacy": "/politique-de-confidentialite"}

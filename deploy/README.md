@@ -81,13 +81,18 @@ sostituire solo quello di `www` (oggi un `CNAME` verso Odoo). Tutti gli altri re
 
 | Tipo | Nome | Valore |
 | --- | --- | --- |
-| `A` | `@` | IP della VM |
-| `A` | `www` | IP della VM |
-| `A` | `equipe` | IP della VM |
-| `A` | `residents` | IP della VM |
-| `A` | `benevoles` | IP della VM |
-| `A` | `partenaires` | IP della VM |
-| `A` | `bilan` | IP della VM |
+| `A` | `@` | IP della VM (l'unico record con l'indirizzo) |
+| `CNAME` | `www` | `chezmarthe.org` |
+| `CNAME` | `equipe` | `chezmarthe.org` |
+| `CNAME` | `residents` | `chezmarthe.org` |
+| `CNAME` | `benevoles` | `chezmarthe.org` |
+| `CNAME` | `partenaires` | `chezmarthe.org` |
+
+Il bilan non ha un sottodominio: è la pagina `chezmarthe.org/bilan` (i vecchi link `bilan.<dominio>` vi
+vengono rimandati dall'app). Su IONOS, aggiungendo `@` il pannello propone di aggiungere anche `www`: scegliere
+« Ne pas ajouter l'enregistrement DNS pour www » finché `www` deve restare sul vecchio sito. Sostituire `www`
+per ultimo, quando l'HTTPS degli altri nomi funziona (stato reale e ritorno a Odoo:
+`docs-md/DNS-chezmarthe-org.md`).
 
 Mettere il **TTL più basso possibile** (5-10 minuti): un cambio di server si propaga
 in fretta. Non toccare il `.env` finché il DNS non risponde: Caddy chiederebbe
@@ -103,7 +108,7 @@ dig +short equipe.chezmarthe.org   # IP della VM
 Poi, in `deploy/.env`, solo `.org`:
 
 ```sh
-SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org
+SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org
 CANONICAL_DOMAIN=chezmarthe.org
 OLD_DOMAINS=
 ```
@@ -113,7 +118,7 @@ Se dei QR stampati usano ancora `chezmarthe.site` e lo si vuole tenere come redi
 (Cloudflare, *DNS only*) e usare invece:
 
 ```sh
-SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, bilan.chezmarthe.org, chezmarthe.site, www.chezmarthe.site, equipe.chezmarthe.site, residents.chezmarthe.site, benevoles.chezmarthe.site, partenaires.chezmarthe.site, bilan.chezmarthe.site
+SITE_HOSTS=chezmarthe.org, www.chezmarthe.org, equipe.chezmarthe.org, residents.chezmarthe.org, benevoles.chezmarthe.org, partenaires.chezmarthe.org, chezmarthe.site, www.chezmarthe.site, equipe.chezmarthe.site, residents.chezmarthe.site, benevoles.chezmarthe.site, partenaires.chezmarthe.site
 CANONICAL_DOMAIN=chezmarthe.org
 OLD_DOMAINS=chezmarthe.site
 ```
@@ -157,8 +162,8 @@ gunzip -c ~/marthe.sql.gz | docker compose exec -T db psql -U marthe marthe
 docker compose up -d --build
 ```
 
-Poi sostituire il vecchio IP con il nuovo in tutti i record `A` (IONOS e, se usato,
-Cloudflare). Abbassare il TTL il giorno prima; spegnere il vecchio server solo dopo
+Poi sostituire il vecchio IP con il nuovo nel record `A` di `@` su IONOS (gli altri nomi sono
+`CNAME` e lo seguono da soli). Abbassare il TTL il giorno prima; spegnere il vecchio server solo dopo
 aver verificato home, login équipe e un modulo sul nuovo. Le copie Excel automatiche
 (`excel-sauvegarde/`, dentro il container) non si spostano: la fonte resta il sito.
 

@@ -34,7 +34,8 @@ def test_old_and_www_domains_redirect_to_canonical(monkeypatch):
     cases = {
         "http://www.chezmarthe.org/?a=1": "https://chezmarthe.org/?a=1",
         "http://chezmarthe.site/": "https://chezmarthe.org/",
-        "http://bilan.chezmarthe.site/?event=yoga": "https://bilan.chezmarthe.org/?event=yoga",
+        "http://bilan.chezmarthe.site/?event=yoga": "https://chezmarthe.org/bilan?event=yoga",
+        "https://bilan.chezmarthe.org/?event=yoga": "https://chezmarthe.org/bilan?event=yoga",
     }
     for url, target in cases.items():
         response = client.get(url)
@@ -61,6 +62,7 @@ def test_site_pages_and_old_addresses():
         "connexion",
         "equipe",
         "on-parle-de-nous",
+        "bilan",
     ):
         response = client.get(f"/{page}")
         assert response.status_code == 200
@@ -79,3 +81,12 @@ def test_api_does_not_allow_cross_origin_calls():
         },
     )
     assert "access-control-allow-origin" not in response.headers
+
+
+def test_old_bilan_subdomain_links_open_the_bilan_page(monkeypatch):
+    # Without a canonical domain (laptop demo, local runs) the scheme and port stay.
+    monkeypatch.setattr(main, "CANONICAL_DOMAIN", "")
+    client = TestClient(main.app, follow_redirects=False)
+    response = client.get("http://bilan.localhost:8000/?event=yoga")
+    assert response.status_code == 301
+    assert response.headers["location"] == "http://localhost:8000/bilan?event=yoga"

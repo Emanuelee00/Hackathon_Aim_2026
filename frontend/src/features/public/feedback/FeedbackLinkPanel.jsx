@@ -3,7 +3,7 @@ import { logisticsAnswers, residentAnswers } from './organizerFeedback.js';
 
 // Team side: the link to send to the organiser after the event, and their answer once received.
 export default function FeedbackLinkPanel({ event, notify }) {
-  const link = `${spaceUrl('bilan')}?event=${encodeURIComponent(event.id)}`;
+  const link = `${spaceUrl(null)}bilan?event=${encodeURIComponent(event.id)}`;
   // Shown on screen or printed at the end of the event: organisers scan it on the spot.
   const qr = `/api/qr.svg?text=${encodeURIComponent(link)}`;
   const feedback = event.organizerFeedback;

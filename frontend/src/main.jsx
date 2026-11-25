@@ -24,7 +24,6 @@ const pages = {
   residents: <AuthGate spaceId="residents"><StoreProvider><PublicShell mainClassName=""><ResidentSpace /></PublicShell></StoreProvider><SpaceAssistant spaceId="residents" /></AuthGate>,
   benevoles: <AuthGate spaceId="benevoles"><StoreProvider><PublicShell><VolunteerSpace /></PublicShell></StoreProvider><SpaceAssistant spaceId="benevoles" /></AuthGate>,
   partenaires: <AuthGate spaceId="partenaires"><StoreProvider><PublicShell><PartnerSpace /></PublicShell></StoreProvider><SpaceAssistant spaceId="partenaires" /></AuthGate>,
-  bilan: <PublicShell><OrganizerFeedback /></PublicShell>,
 };
 
 // Pages of the public site; the server sends index.html for these paths (backend/main.py).
@@ -35,6 +34,8 @@ const sitePages = {
   connexion: <SpacesPortal />,
   equipe: <Team />,
   'on-parle-de-nous': <Press />,
+  // Organisers reach it through the link (or QR) sent after their event; no account needed.
+  bilan: <PublicShell><OrganizerFeedback /></PublicShell>,
 };
 const sitePage = sitePages[window.location.pathname.replace(/^\/|\/$/g, '')];
 

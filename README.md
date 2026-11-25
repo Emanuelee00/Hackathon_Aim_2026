@@ -83,7 +83,7 @@ tiene solo le modifiche permesse al loro ruolo:
 | `partenaires` | eventi senza contatti, la propria scheda associazione | nuove prenotazioni `pending` a proprio nome, la propria scheda |
 
 Le pagine pubbliche non leggono lo store: il modulo della pagina d'accoglienza usa
-`POST /api/requests`, la pagina `bilan.` `GET /api/feedback/events` (solo titolo e
+`POST /api/requests`, la pagina `/bilan` `GET /api/feedback/events` (solo titolo e
 data) e `POST /api/feedback/{id}` (un bilan per evento). Profili demo, associazioni
 e spazi sono copiati in `sharing/identity.py`; `test_store.py` verifica che restino
 uguali ai file del frontend.
@@ -253,7 +253,8 @@ make demo                          # demo senza AI, visibile sulla rete locale
 make qr URL=https://tuo-link.app   # crea qr-demo.png
 ```
 
-`docs-md/qr-bilan.png` porta a https://bilan.chezmarthe.site: da stampare e mostrare alla fine
+`docs-md/qr-bilan.png` porta a https://bilan.chezmarthe.site (il vecchio indirizzo: il sito lo
+rimanda alla pagina `/bilan`): da stampare e mostrare alla fine
 di ogni evento, l'organizzatore sceglie il proprio evento e lascia il bilan (nota,
 presenze, residenti, logistica), che finisce nelle Statistiche e nell'Impatto. Nella
 scheda di un evento l'équipe trova anche un QR con l'evento già scelto
